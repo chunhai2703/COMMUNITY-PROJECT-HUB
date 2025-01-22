@@ -1,7 +1,15 @@
-import React from "react";
+import { RouterProvider } from "react-router-dom";
+import ToastWrapper from './routes/ToastWrapper';
+import { router } from './routes';
 
 function App() {
-  return <div className="App">App</div>;
+
+  return (
+    <>
+      <RouterProvider router={router} />
+      <ToastWrapper />
+    </>
+  )
 }
 
-export default App;
+export default App
