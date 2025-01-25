@@ -6,6 +6,7 @@ import { LayoutDH } from "../layout/layout/LayoutDH";
 import { HomeDH } from "../pages/HomePage/HomeDH";
 import { Projects } from "../pages/ProjectsPage/Projects";
 import RoleBasedGuard from "../guards/RoleBasedGuard";
+import ForgotPasswordPage from "../pages/AuthPage/ForgotPasswordPage";
 
 export const router = createBrowserRouter([
   {
@@ -27,6 +28,11 @@ export const router = createBrowserRouter([
         element: <Projects />
       }
     ]
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPasswordPage />,
+    errorElement: <ErrorPage />
   },
 ]);
 
