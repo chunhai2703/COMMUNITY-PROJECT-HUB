@@ -104,6 +104,7 @@ function AuthProvider({ children }) {
   }, []);
 
   const login = async (username, password) => {
+    console.log(username)
     const response = await SignIn({
       userName: username,
       password: password,
@@ -122,7 +123,7 @@ function AuthProvider({ children }) {
           user,
         },
       });
-      toast.success(responseData.message);
+      toast.success("Đăng nhập thành công");
     } else {
       toast.error("Tên đăng nhập hoặc mật khẩu không đúng");
     }

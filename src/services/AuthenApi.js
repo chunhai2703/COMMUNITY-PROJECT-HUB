@@ -84,3 +84,58 @@ export const Logout = async (refreshToken) => {
         console.log(err);
     }
 };
+
+export const SendOtpEmail = async (email) => {
+    try {
+        const url = `${baseUrl}/api/Email/otp-email?email=${email}`;
+        const request = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        };
+        const response = await fetch(url, request);
+        return response;
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const CheckOtp = async (email, otp) => {
+    try {
+        const url = `${baseUrl}/api/Account/otp-verifying?email=${email}&otp=${otp}`;
+        const request = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        };
+        const response = await fetch(url, request);
+        return response;
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const ChangePassword = async (password, confirmedPassword, email) => {
+    try {
+        const url = `${baseUrl}/api/Account/password`;
+        const bodyJson = {
+            password: password,
+            confirmedPassword: confirmedPassword,
+            email: email
+        };
+        console.log(bodyJson)
+        const request = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(bodyJson)
+        };
+        const response = await fetch(url, request);
+        return response;
+    } catch (err) {
+        console.log(err);
+    }
+};
