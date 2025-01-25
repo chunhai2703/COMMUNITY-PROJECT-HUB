@@ -11,11 +11,13 @@ export default function RoleBasedGuard({ accessibleRoles, children }) {
   const { isInitialized, user } = useAuth();
 
   const currentRole = user?.roleName || "Null";
+  console.log("Accessible Roles:", accessibleRoles);
+  console.log("Current Role:", currentRole);
 
   // Show loading spinner while the authentication state is initializing
   if (!isInitialized) {
     return (
-      <Container>
+      <Container style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '50px' }}>
         <CircularProgress />
       </Container>
     );

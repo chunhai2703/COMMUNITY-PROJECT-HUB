@@ -1,11 +1,14 @@
-import HomeStudent from "../../components/partial/HomePage/HomeStudent";
-
+import { Header } from "../../layout/Header/Header";
+import { Footer } from "../../layout/Footer/Footer";
+import { SideBarDH } from "../../layout/SideBar/SideBarDH";
 
 
 const HomeStudentPage = () => {
     return (
         <>
-            <HomeStudent />
+            <Header />
+            <SideBarDH />
+            <Footer />
         </>
     );
 };
