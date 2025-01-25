@@ -1,10 +1,9 @@
-import Login from "../../components/partial/AuthPage/Login";
-
+import { LoginForm } from "../../components/LoginForm/LoginForm";
 
 const LoginPage = () => {
     return (
         <>
-            <Login />
+            <LoginForm />
         </>
     );
 };
