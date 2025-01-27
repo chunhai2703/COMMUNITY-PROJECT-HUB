@@ -7,6 +7,10 @@ import { HomeDH } from "../pages/HomePage/HomeDH";
 import { Projects } from "../pages/ProjectsPage/Projects";
 import RoleBasedGuard from "../guards/RoleBasedGuard";
 import ForgotPasswordPage from "../pages/AuthPage/ForgotPasswordPage";
+import ViewProfilePage from "../pages/ViewProfilePage/ViewProfilePage";
+import { LayoutAdmin } from "../layout/layout/LayoutAdmin";
+import { HomeAdmin } from "../pages/HomePage/HomeAdmin";
+import ChangePasswordPage from "../pages/ViewProfilePage/ChangePasswordPage";
 
 export const router = createBrowserRouter([
   {
@@ -26,6 +30,15 @@ export const router = createBrowserRouter([
       {
         path: "projects",
         element: <Projects />
+      },
+      {
+        path: "view-profile",
+        element: <ViewProfilePage />,
+      },
+      {
+        path: "change-password",
+        element: <ChangePasswordPage />,
+        errorElement: <ErrorPage />
       }
     ]
   },
@@ -33,6 +46,26 @@ export const router = createBrowserRouter([
     path: "/forgot-password",
     element: <ForgotPasswordPage />,
     errorElement: <ErrorPage />
+  },
+  {
+    path: "/home-admin",
+    element: <LayoutAdmin />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        element: <HomeAdmin />
+      },
+      {
+        path: "view-profile",
+        element: <ViewProfilePage />,
+      },
+      {
+        path: "change-password",
+        element: <ChangePasswordPage />,
+        errorElement: <ErrorPage />
+      }
+    ]
   },
 ]);
 
