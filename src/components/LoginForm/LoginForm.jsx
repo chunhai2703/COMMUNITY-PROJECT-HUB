@@ -7,11 +7,15 @@ import { Link } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import { CircularProgress } from '@mui/material';
 
+
 const cx = classNames.bind(classes)
 
 export const LoginForm = () => {
   const { login } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+
+
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -58,7 +62,7 @@ export const LoginForm = () => {
             <Link to="/forgot-password" className={cx('forgot-password')}>Quên Mật Khẩu ?</Link>
             <button className={cx('login-button')} type="submit" disabled={isLoading}>
               {isLoading ? (
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "center"}}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <CircularProgress size={24} sx={{ color: "white" }} />
                 </div>
               ) : (
@@ -68,7 +72,6 @@ export const LoginForm = () => {
           </form>
           <div className={cx('login-form-image')}>
             <img src={loginImg} alt="" className={cx('login-img')} />
-            <p className={cx('no-account')}>Bạn không có tài khoản ?</p>
           </div>
         </div>
       </div>

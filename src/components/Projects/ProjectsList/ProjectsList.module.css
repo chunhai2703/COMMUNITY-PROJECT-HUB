@@ -1,0 +1,10 @@
+.projects-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.projects-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
