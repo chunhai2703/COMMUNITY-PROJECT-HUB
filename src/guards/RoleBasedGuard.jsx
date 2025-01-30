@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Container, Alert, AlertTitle, CircularProgress } from '@mui/material';
+import { Container, Alert, AlertTitle } from '@mui/material';
 import useAuth from '../hooks/useAuth';
 import { Spinner } from '../components/Spinner/Spinner';
 
@@ -18,9 +18,7 @@ export default function RoleBasedGuard({ accessibleRoles, children }) {
   // Show loading spinner while the authentication state is initializing
   if (!isInitialized) {
     return (
-      <Container style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '50px', height: '100vh' }}>
-        <Spinner />
-      </Container>
+      <Spinner />
     );
   }
 
