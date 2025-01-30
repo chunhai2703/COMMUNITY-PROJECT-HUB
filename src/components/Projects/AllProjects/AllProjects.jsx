@@ -58,7 +58,7 @@ export const AllProjects = () => {
         <div className={cx('search-box-container')}>
           <div className={cx('search-box')}>
             <SearchOutlined color='#285D9A' size={20} />
-            <input type="text" placeholder="Tìm kiếm dự án" className={cx('search-input')} />
+            <input type="search" placeholder="Tìm kiếm dự án" className={cx('search-input')} />
           </div>
           <button className={cx('filter-button')}>
             <FilterOutlined color='white' size={20} style={{ marginRight: '5px' }} />
