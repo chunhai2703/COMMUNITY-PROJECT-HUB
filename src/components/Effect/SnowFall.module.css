@@ -1,0 +1,25 @@
+@keyframes snowfall {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+.snowflake {
+  position: fixed;
+  top: -10px;
+  color: white;
+  font-size: calc(10px + 10 * var(--size));
+  user-select: none;
+  pointer-events: none;
+  animation: snowfall linear infinite;
+}
+
+.snowflake::before {
+  content: "❄️";
+  font-size: 18px;
+}

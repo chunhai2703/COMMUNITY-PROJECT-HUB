@@ -1,4 +1,4 @@
-.login-form-backdrop {
+/* .login-form-backdrop {
   position: fixed;
   top: 0;
   left: 0;
@@ -6,7 +6,7 @@
   height: 100%;
   background-color: #fafafa;
   opacity: 0.9;
-}
+} */
 
 .login-form-container {
   position: fixed;

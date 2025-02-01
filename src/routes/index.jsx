@@ -7,6 +7,9 @@ import { HomeDH } from "../pages/HomePage/HomeDH";
 import { ProjectsDH } from "../pages/ProjectsPage/ProjectsDH";
 import RoleBasedGuard from "../guards/RoleBasedGuard";
 import ForgotPasswordPage from "../pages/AuthPage/ForgotPasswordPage";
+import { LayoutPM } from "../layout/layout/LayoutPM";
+import { HomePM } from "../pages/HomePage/HomePM";
+import { ProjectsPM } from "../pages/ProjectsPage/ProjectsPM";
 
 export const router = createBrowserRouter([
   {
@@ -26,6 +29,21 @@ export const router = createBrowserRouter([
       {
         path: "projects",
         element: <ProjectsDH />
+      }
+    ]
+  },
+  {
+    path: "/home-project-manager",
+    element: <LayoutPM />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        element: <HomePM />
+      },
+      {
+        path: "projects",
+        element: <ProjectsPM />
       }
     ]
   },
