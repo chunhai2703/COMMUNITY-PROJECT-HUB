@@ -1,5 +1,5 @@
 import React from 'react'
-import { SettingOutlined, HomeOutlined, FolderOutlined, MailOutlined } from '@ant-design/icons';
+import { SettingOutlined, HomeOutlined, FolderOutlined, MailOutlined, TeamOutlined } from '@ant-design/icons';
 import { Badge, Menu } from 'antd';
 import { useNavigate } from 'react-router-dom';
 const items = [
@@ -7,6 +7,11 @@ const items = [
     key: 'home',
     label: 'Trang Chủ',
     icon: <HomeOutlined style={{ fontSize: 18 }} />,
+  },
+  {
+    key: 'account',
+    label: 'Tài khoản',
+    icon: <TeamOutlined style={{ fontSize: 18 }} />,
   },
   {
     key: 'setting',
@@ -38,6 +43,9 @@ export const SideBarAdmin = () => {
     }
     if (e.key === 'profile') {
       navigate('/home-admin/view-profile')
+    }
+    if (e.key === 'account') {
+      navigate('/home-admin/account-management')
     }
   };
   return (
