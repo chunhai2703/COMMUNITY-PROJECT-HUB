@@ -13,7 +13,7 @@ export default function GuestAuth({ children }) {
         } else if (user && (user?.roleId === 4)) {
             return <Navigate to="/home-department-head" />;
         } else if (user && (user?.roleId === 5)) {
-            return <Navigate to="/home-business-relation" />;
+            return <Navigate to="/home-associate" />;
         } else if (user && (user?.roleId === 6)) {
             return <Navigate to="/home-business-relation" />;
         } else if (user && (user?.roleId === 7)) {

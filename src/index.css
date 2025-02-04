@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Quicksand" !important;
 }
 
 body {
@@ -14,3 +15,7 @@ body {
     "Roboto",
     "Oxygen";
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
