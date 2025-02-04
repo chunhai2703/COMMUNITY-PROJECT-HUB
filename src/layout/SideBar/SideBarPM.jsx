@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { SettingOutlined, HomeOutlined, FolderOutlined, MailOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { SettingOutlined, HomeOutlined, FolderOutlined, MailOutlined, MenuFoldOutlined, MenuUnfoldOutlined, TeamOutlined, SolutionOutlined } from '@ant-design/icons';
 import { Badge, Menu } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
-export const SideBarDH = () => {
+export const SideBarPM = () => {
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
 
@@ -22,14 +22,24 @@ export const SideBarDH = () => {
       key: 'home',
       label: 'Trang Chủ',
       icon: <HomeOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
-      onClick: () => navigate('/home-department-head'),
+      onClick: () => navigate('/home-project-manager'),
 
     },
     {
       key: 'project',
       label: 'Dự Án',
       icon: <FolderOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
-      onClick: () => navigate('/home-department-head/projects'),
+      onClick: () => navigate('/home-project-manager/projects'),
+    },
+    {
+      key: 'recruitment-management',
+      label: 'Quản Lý Ứng Tuyển',
+      icon: <TeamOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
+    },
+    {
+      key: 'my-recruitment',
+      label: 'Ứng Tuyển Của Tôi',
+      icon: <SolutionOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
     },
     {
       key: 'setting',
@@ -79,4 +89,4 @@ export const SideBarDH = () => {
       items={items}
     />
   );
-};
+}

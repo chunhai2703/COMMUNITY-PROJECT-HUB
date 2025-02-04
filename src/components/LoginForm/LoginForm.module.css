@@ -1,4 +1,4 @@
-.login-form-backdrop {
+/* .login-form-backdrop {
   position: fixed;
   top: 0;
   left: 0;
@@ -6,7 +6,7 @@
   height: 100%;
   background-color: #fafafa;
   opacity: 0.9;
-}
+} */
 
 .login-form-container {
   position: fixed;
@@ -14,7 +14,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
-  border-radius: 10px;
+  border-radius: 25px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   width: 862px;
   display: flex;
@@ -23,6 +23,7 @@
 }
 .login-form-content {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   gap: 1.5rem;
 }
@@ -56,15 +57,25 @@
 .login-form input {
   flex: 1;
   border: none;
-  font-size: 18px;
+  outline: none;
+  font-size: 16px;
   color: #333;
   padding: 10px;
 }
-.login-form input:hover {
-  border: none;
+.login-form input:hover,
+.login-form input:focus,
+.login-form input:active {
+  border: 1px solid transparent;
   background-color: transparent;
 }
-.login-form button {
+.login-form .toggle-password-button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.login-form .login-button {
   width: 150px;
   align-self: flex-start;
   padding: 10px 20px;
@@ -78,7 +89,7 @@
   cursor: pointer;
 }
 
-.login-form button:hover {
+.login-form .login-button:hover {
   background-color: #0056b3;
 }
 
@@ -104,10 +115,4 @@
 .login-form-image img {
   width: 311px;
   height: 290px;
-}
-
-.login-form-image p {
-  font-size: 15px;
-  color: #000;
-  text-decoration: underline;
 }

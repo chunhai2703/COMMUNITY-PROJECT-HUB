@@ -4,9 +4,12 @@ import GuestAuth from "../guards/GuestGuard";
 import { ErrorPage } from "../pages/ErrorPage/ErrorPage";
 import { LayoutDH } from "../layout/layout/LayoutDH";
 import { HomeDH } from "../pages/HomePage/HomeDH";
-import { Projects } from "../pages/ProjectsPage/Projects";
+import { ProjectsDH } from "../pages/ProjectsPage/ProjectsDH";
 import RoleBasedGuard from "../guards/RoleBasedGuard";
 import ForgotPasswordPage from "../pages/AuthPage/ForgotPasswordPage";
+import { LayoutPM } from "../layout/layout/LayoutPM";
+import { HomePM } from "../pages/HomePage/HomePM";
+import { ProjectsPM } from "../pages/ProjectsPage/ProjectsPM";
 import ViewProfilePage from "../pages/ViewProfilePage/ViewProfilePage";
 import { LayoutAdmin } from "../layout/layout/LayoutAdmin";
 import { HomeAdmin } from "../pages/HomePage/HomeAdmin";
@@ -30,7 +33,22 @@ export const router = createBrowserRouter([
       },
       {
         path: "projects",
-        element: <Projects />
+        element: <ProjectsDH />
+      }
+    ]
+  },
+  {
+    path: "/home-project-manager",
+    element: <LayoutPM />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        element: <HomePM />
+      },
+      {
+        path: "projects",
+        element: <ProjectsPM />
       },
       {
         path: "view-profile",

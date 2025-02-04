@@ -1,9 +1,10 @@
 import React from 'react'
+import { Spinner } from '../../components/Spinner/Spinner';
 
 export const HomeDH = () => {
   return (
-    <h1>
-      Hello World
-    </h1>
+    <>
+      <Spinner />
+    </>
   );
 }

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
-import { Container, Alert, AlertTitle, CircularProgress } from '@mui/material';
+import { Container, Alert, AlertTitle } from '@mui/material';
 import useAuth from '../hooks/useAuth';
+import { Spinner } from '../components/Spinner/Spinner';
 
 RoleBasedGuard.propTypes = {
   accessibleRoles: PropTypes.array, // Example ['admin', 'leader']
@@ -17,17 +18,15 @@ export default function RoleBasedGuard({ accessibleRoles, children }) {
   // Show loading spinner while the authentication state is initializing
   if (!isInitialized) {
     return (
-      <Container style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '50px' }}>
-        <CircularProgress />
-      </Container>
+      <Spinner />
     );
   }
 
   // If user is null or does not have the right role, deny access
   if (!user || !accessibleRoles.includes(currentRole)) {
     return (
-      <Container>
-        <Alert severity="error">
+      <Container style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '50px' }}>
+        <Alert severity="error" size="large">
           <AlertTitle>Permission Denied</AlertTitle>
           You do not have permission to access this page
         </Alert>
