@@ -1,8 +1,9 @@
 import React from 'react'
 import classes from './AllProjects.module.css'
 import classNames from 'classnames/bind'
-import { SearchOutlined, FilterOutlined, PlusCircleOutlined } from '@ant-design/icons'
+import { SearchOutlined} from '@ant-design/icons'
 import { ProjectsList } from '../ProjectsList/ProjectsList'
+import { CourseCreateForm } from '../../Popup/Course/CourseCreateForm'
 
 
 const cx = classNames.bind(classes)
@@ -60,16 +61,13 @@ export const AllProjects = () => {
             <SearchOutlined color='#285D9A' size={20} />
             <input type="search" placeholder="Tìm kiếm dự án" className={cx('search-input')} />
           </div>
-          <button className={cx('filter-button')}>
-            <FilterOutlined color='white' size={20} style={{ marginRight: '5px' }} />
-            Bộ lọc
+          <button className={cx('search-button')}>
+            <SearchOutlined color='white' size={20} style={{ marginRight: '5px' }} />
+            Tìm kiếm
           </button>
         </div>
 
-        <button className={cx('create-project-button')}>
-          <PlusCircleOutlined color='white' size={20} style={{ marginRight: '5px' }} />
-          Tạo dự án
-        </button>
+        <CourseCreateForm />
       </div>
       <ProjectsList projects={DUMMY_PROJECTS} />
     </div>

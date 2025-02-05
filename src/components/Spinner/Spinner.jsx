@@ -6,7 +6,7 @@ export const Spinner = () => {
     <div className={classes.backdrop}>
       <div className={classes.container}>
         <div className={classes.loader}></div>
-        <h2>Please wait for a moment...</h2>
+        <h2 className={classes.text}>Vui lòng đợi trong giây lát ...</h2>
       </div>
     </div>
 

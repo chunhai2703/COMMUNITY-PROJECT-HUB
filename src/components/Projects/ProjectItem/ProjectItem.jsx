@@ -16,10 +16,10 @@ export const ProjectItem = (props) => {
           })}>{props.status === 1 ? 'Đang diễn ra' : 'Đã kết thúc'}</sub>
         </div>
         <div className={cx('project-item-description')}>
-          <p className={cx('project-item-code')}>Project code: {props.projectCode}</p>
-          <p className={cx('project-item-duration')}>Duration: {props.duration} days <span>({props.duration * 2} hours) </span></p>
-          <p className={cx('project-item-created-date')}>Created on: {props.createdDate} by {props.createdBy}</p>
-          <p className={cx('project-item-manager')}>Project Manager: {props.projectManager}</p>
+          <p className={cx('project-item-code')}>Mã dự án: {props.projectCode}</p>
+          <p className={cx('project-item-duration')}>Thời lượng khóa học: {props.duration} days <span>({props.duration * 2} hours) </span></p>
+          <p className={cx('project-item-created-date')}>Ngày tạo: {props.createdDate} by {props.createdBy}</p>
+          <p className={cx('project-item-manager')}>Quản lý dự án: {props.projectManager}</p>
 
         </div>
       </div>

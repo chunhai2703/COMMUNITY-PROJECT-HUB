@@ -7,6 +7,7 @@
 }
 .all-projects-title {
   letter-spacing: 5px;
+  font-size: 2rem;
 }
 .all-projects-search {
   display: flex;
@@ -34,7 +35,7 @@
   padding: 5px;
   font-size: 16px;
 }
-.filter-button {
+.search-button {
   color: white;
   background-color: #474d57;
   padding: 10px 7px;
@@ -53,4 +54,8 @@
   font-size: 14px;
   width: 100px;
   cursor: pointer;
+}
+.create-project-button:hover,
+.search-button:hover {
+  background-color: #8e8f92;
 }

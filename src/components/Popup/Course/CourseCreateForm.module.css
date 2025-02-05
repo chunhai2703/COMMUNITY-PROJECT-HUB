@@ -1,0 +1,47 @@
+.create-project-button {
+  color: white;
+  background-color: #474d57;
+  padding: 10px 7px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  width: 100px;
+  cursor: pointer;
+}
+.create-project-button:hover {
+  background-color: #8e8f92;
+}
+
+.create-project-form {
+  margin-top: 10px;
+}
+
+.cancel-button {
+  margin-right: 5px;
+  color: #ff8400;
+  background-color: transparent;
+  padding: 10px 7px;
+  border: 1px solid #ff8400;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 100px;
+  cursor: pointer;
+}
+.cancel-button:hover {
+  background-color: #ff8400;
+  color: white;
+}
+
+.create-button {
+  color: white;
+  background-color: #12cf3e;
+  padding: 10px 7px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 100px;
+  cursor: pointer;
+}
+.create-button:hover {
+  background-color: #00b300;
+}
