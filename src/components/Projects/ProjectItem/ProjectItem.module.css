@@ -23,12 +23,13 @@
 }
 .project-item-name {
   letter-spacing: 5px;
+  font-size: 1.5rem;
 }
 .project-item-status {
-  border-radius: 20px;
-  padding: 5px;
+  border-radius: 15px;
+  padding: 15px 20px;
   color: white;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 .active-status {
   background-color: #2d3748;
