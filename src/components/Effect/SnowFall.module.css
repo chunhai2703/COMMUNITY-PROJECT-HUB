@@ -9,6 +9,14 @@
   }
 }
 
+.snowfall-container {
+  background: linear-gradient(to bottom, #a8dee0, #f9e2ae);
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  opacity: 0.9;
+}
+
 .snowflake {
   position: fixed;
   top: -10px;

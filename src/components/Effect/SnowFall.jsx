@@ -19,7 +19,7 @@ const SnowFall = () => {
   }, []);
 
   return (
-    <div>
+    <div className={cx("snowfall-container")}>
       {flakes.map((flake) => (
         <span
           key={flake.id}
