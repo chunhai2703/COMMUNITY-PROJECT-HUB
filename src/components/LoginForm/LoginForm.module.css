@@ -20,6 +20,7 @@
   display: flex;
   flex-direction: column;
   padding: 2.5rem;
+  z-index: 20;
 }
 .login-form-content {
   display: flex;
