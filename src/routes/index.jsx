@@ -10,6 +10,11 @@ import ForgotPasswordPage from "../pages/AuthPage/ForgotPasswordPage";
 import { LayoutPM } from "../layout/layout/LayoutPM";
 import { HomePM } from "../pages/HomePage/HomePM";
 import { ProjectsPM } from "../pages/ProjectsPage/ProjectsPM";
+import ViewProfilePage from "../pages/ViewProfilePage/ViewProfilePage";
+import { LayoutAdmin } from "../layout/layout/LayoutAdmin";
+import { HomeAdmin } from "../pages/HomePage/HomeAdmin";
+import ChangePasswordPage from "../pages/ViewProfilePage/ChangePasswordPage";
+import AccountManagementPage from "../pages/AccountManagementPage/AccountManagementPage";
 
 export const router = createBrowserRouter([
   {
@@ -44,6 +49,15 @@ export const router = createBrowserRouter([
       {
         path: "projects",
         element: <ProjectsPM />
+      },
+      {
+        path: "view-profile",
+        element: <ViewProfilePage />,
+      },
+      {
+        path: "change-password",
+        element: <ChangePasswordPage />,
+        errorElement: <ErrorPage />
       }
     ]
   },
@@ -51,6 +65,31 @@ export const router = createBrowserRouter([
     path: "/forgot-password",
     element: <ForgotPasswordPage />,
     errorElement: <ErrorPage />
+  },
+  {
+    path: "/home-admin",
+    element: <LayoutAdmin />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        element: <HomeAdmin />
+      },
+      {
+        path: "view-profile",
+        element: <ViewProfilePage />,
+      },
+      {
+        path: "change-password",
+        element: <ChangePasswordPage />,
+        errorElement: <ErrorPage />
+      },
+      {
+        path: "account-management",
+        element: <AccountManagementPage />,
+        errorElement: <ErrorPage />
+      }
+    ]
   },
 ]);
 

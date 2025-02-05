@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { isValidToken, setSession } from "../utils/jwt";
 import { toast } from "react-toastify";
 import { GetAccountByToken, SignIn } from "../services/AuthenApi";
+import { useNavigate } from "react-router-dom";
 // ----------------------------------------------------------------------
 
 const initialState = {
@@ -44,8 +45,7 @@ const AuthContext = createContext({
   ...initialState,
   method: "jwt",
   login: () => Promise.resolve(),
-  logout: () => Promise.resolve(),
-  register_customer: () => Promise.resolve(),
+  logout: () => Promise.resolve()
 });
 
 // ----------------------------------------------------------------------
@@ -124,6 +124,8 @@ function AuthProvider({ children }) {
         },
       });
       toast.success("Đăng nhập thành công");
+      window.location.reload();
+      return;
     } else {
       toast.error("Tên đăng nhập hoặc mật khẩu không đúng");
     }
