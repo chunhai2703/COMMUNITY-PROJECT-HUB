@@ -25,7 +25,6 @@
 
 .leftSection {
     flex: 2;
-    background: #f9f9f9;
     padding: 20px;
     border-radius: 10px;
 }
@@ -33,7 +32,6 @@
 .rightSection {
     flex: 1;
     display: flex;
-    align-items: center;
     justify-content: center;
 }
 
@@ -49,11 +47,11 @@
     border-radius: 50%;
     object-fit: cover;
     border: 3px solid #ccc;
+    margin-bottom: 30px;
 }
 
 .editAvatarButton {
     background-color: #285D9A;
-    margin-top: 10px;
 }
 
 .infoGrid {

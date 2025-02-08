@@ -172,15 +172,16 @@ const AccountManagement = () => {
                         variant="contained"
                         className='w-max'
                         style={{ backgroundColor: "#474D57", marginLeft: 10 }}
+                        sx={{ textTransform: "none" }}
                     >
                         <Search /> Tìm kiếm
                     </Button>
                 </div>
                 <div>
-                    <Button variant="contained" className='w-max' startIcon={<FileUploadOutlined />} style={{ backgroundColor: "#D45B13" }} onClick={handleOpenImport}>
+                    <Button variant="contained" className='w-max' startIcon={<FileUploadOutlined />} style={{ backgroundColor: "#D45B13" }} sx={{ textTransform: "none" }} onClick={handleOpenImport}>
                         Import
                     </Button>
-                    <Button variant="contained" className='w-max' startIcon={<AddCircleOutlineOutlined />} style={{ backgroundColor: "#474D57", marginLeft: 10 }} onClick={handleOpenCreate}>
+                    <Button variant="contained" className='w-max' startIcon={<AddCircleOutlineOutlined />} sx={{ textTransform: "none" }} style={{ backgroundColor: "#474D57", marginLeft: 10 }} onClick={handleOpenCreate}>
                         Tạo mới
                     </Button>
                 </div>
@@ -189,7 +190,7 @@ const AccountManagement = () => {
             <AccountTable accounts={accounts} onUpdate={handleOpenUpdate} onInactive={handleOpenInactive} />
 
             <Dialog open={isImportOpen} onClose={handleClosePopup}>
-                <DialogTitle style={{ backgroundColor: "#474D57", color: "white" }}>Import File Excel</DialogTitle>
+                <DialogTitle style={{ backgroundColor: "#474D57", color: "white" }}>Import file Excel</DialogTitle>
                 <DialogContent>
                     <input
                         type="file"
@@ -199,7 +200,7 @@ const AccountManagement = () => {
                         id="file-upload"
                     />
                     <label htmlFor="file-upload">
-                        <Button variant="contained" component="span" style={{ marginTop: 10 }}>
+                        <Button variant="contained" component="span" style={{ marginTop: 10 }} sx={{ textTransform: "none" }}>
                             Chọn file Excel
                         </Button>
                     </label>
@@ -215,7 +216,8 @@ const AccountManagement = () => {
                         onClick={handleUpload}
                         color="primary"
                         variant="contained"
-                        disabled={isLoadingBtn}>
+                        disabled={isLoadingBtn}
+                        sx={{ textTransform: "none" }}>
                         {isLoadingBtn ? <CircularProgress size={24} color="inherit" /> : "Tải lên"}
                     </Button>
                 </DialogActions>
@@ -429,12 +431,13 @@ const AccountManagement = () => {
                             />
                         </FormControl>
                         <DialogActions>
-                            <Button onClick={handleClosePopup}>Hủy</Button>
+                            <Button onClick={handleClosePopup} sx={{ textTransform: "none" }}>Hủy</Button>
                             <Button
                                 type="submit"
                                 variant="contained"
                                 color="primary"
-                                disabled={isLoadingBtn}>
+                                disabled={isLoadingBtn}
+                                sx={{ textTransform: "none" }}>
                                 {isLoadingBtn ? <CircularProgress size={24} color="inherit" /> : "Tạo"}
                             </Button>
                         </DialogActions>
@@ -581,8 +584,8 @@ const AccountManagement = () => {
                             />
                         </FormControl>
                         <DialogActions>
-                            <Button onClick={handleClosePopup}>Hủy</Button>
-                            <Button type="submit" variant="contained" color="primary">Lưu</Button>
+                            <Button onClick={handleClosePopup} sx={{ textTransform: "none" }}>Hủy</Button>
+                            <Button type="submit" variant="contained" color="primary" sx={{ textTransform: "none" }}>Lưu</Button>
                         </DialogActions>
                     </form>
                 </DialogContent>
@@ -594,8 +597,8 @@ const AccountManagement = () => {
                     <p className='pt-3 pb-3'>Bạn có chắc muốn vô hiệu hóa tài khoản có ID: {selectedAccount?.accountCode}?</p>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClosePopup}>Hủy</Button>
-                    <Button variant="contained" color="error">Xác nhận</Button>
+                    <Button onClick={handleClosePopup} sx={{ textTransform: "none" }}>Hủy</Button>
+                    <Button variant="contained" color="error" sx={{ textTransform: "none" }}>Xác nhận</Button>
                 </DialogActions>
             </Dialog>
         </Box>
