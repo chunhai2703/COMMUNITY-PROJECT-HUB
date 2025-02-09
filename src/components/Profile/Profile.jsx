@@ -4,6 +4,7 @@ import { useForm, Controller } from "react-hook-form";
 import styles from "./Profile.module.css";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import { Spinner } from "../Spinner/Spinner";
 
 const Profile = () => {
     const { control, handleSubmit, setValue, formState: { isDirty } } = useForm();
@@ -11,13 +12,25 @@ const Profile = () => {
     const navigate = useNavigate();
     const { user } = useAuth();
 
-    const defaultValues = {
-        fullName: "Nguyễn Văn A",
-        phone: "0987654321",
-        address: "123 Đường ABC, Quận 1, TP.HCM",
-        birthDate: "01/01/1990",
-        gender: "Nam",
+    const getTodayDate = () => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
     };
+
+    const maxDate = getTodayDate();
+
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return new Intl.DateTimeFormat('vi-VN', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        }).format(date);
+    };
+    
 
     const onSubmit = (data) => {
         console.log("Dữ liệu sau khi chỉnh sửa:", data);
@@ -45,9 +58,14 @@ const Profile = () => {
             navigate('/home-business-relation/change-password');
         } else if (user.roleId === 7) {
             navigate('/home-admin/change-password');
-        }
-        
+        } 
     };
+
+    if(!user) {
+        return (
+            <Spinner />
+        );
+    }
 
     return (
         <div className={styles.container}>
@@ -57,19 +75,19 @@ const Profile = () => {
                 <div className={styles.leftSection}>
                     <form onSubmit={handleSubmit(onSubmit)} className={styles.infoGrid}>
                         {[
-                            { label: "Mã tài khoản:", value: "123456" },
-                            { label: "Tên tài khoản:", value: "user123" },
+                            { label: "Mã tài khoản:", value: user.accountCode },
+                            { label: "Tên tài khoản:", value: user.accountName },
                             {
                                 label: "Họ và tên:",
                                 value: isEditing ? (
                                     <Controller
                                         name="fullName"
                                         control={control}
-                                        defaultValue={defaultValues.fullName}
+                                        defaultValue={user.fullName}
                                         render={({ field }) => <TextField {...field} fullWidth />}
                                     />
                                 ) : (
-                                    defaultValues.fullName
+                                    user.fullName
                                 ),
                             },
                             {
@@ -78,11 +96,11 @@ const Profile = () => {
                                     <Controller
                                         name="phone"
                                         control={control}
-                                        defaultValue={defaultValues.phone}
+                                        defaultValue={user.phone}
                                         render={({ field }) => <TextField {...field} fullWidth />}
                                     />
                                 ) : (
-                                    defaultValues.phone
+                                    user.phone
                                 ),
                             },
                             {
@@ -91,11 +109,11 @@ const Profile = () => {
                                     <Controller
                                         name="address"
                                         control={control}
-                                        defaultValue={defaultValues.address}
+                                        defaultValue={user.address}
                                         render={({ field }) => <TextField {...field} fullWidth />}
                                     />
                                 ) : (
-                                    defaultValues.address
+                                    user.address
                                 ),
                             },
                             {
@@ -104,11 +122,11 @@ const Profile = () => {
                                     <Controller
                                         name="birthDate"
                                         control={control}
-                                        defaultValue={defaultValues.birthDate}
+                                        defaultValue={formatDate(user.dateOfBirth)}
                                         render={({ field }) => <TextField {...field} fullWidth />}
                                     />
                                 ) : (
-                                    defaultValues.birthDate
+                                    formatDate(user.dateOfBirth)
                                 ),
                             },
                             {
@@ -117,14 +135,14 @@ const Profile = () => {
                                     <Controller
                                         name="gender"
                                         control={control}
-                                        defaultValue={defaultValues.gender}
+                                        defaultValue={user.gender}
                                         render={({ field }) => <TextField {...field} fullWidth />}
                                     />
                                 ) : (
-                                    defaultValues.gender
+                                    user.gender
                                 ),
                             },
-                            { label: "Email:", value: "user@example.com" },
+                            { label: "Email:", value: user.email },
                             { label: "Mật khẩu:", value: "********" },
                         ].map((item, index) => (
                             <div key={index} className={styles.infoRow}>

@@ -125,7 +125,27 @@ export const ChangePassword = async (password, confirmedPassword, email) => {
             confirmedPassword: confirmedPassword,
             email: email
         };
-        console.log(bodyJson)
+        const request = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(bodyJson)
+        };
+        const response = await fetch(url, request);
+        return response;
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const CheckOldPassword = async (oldPassword, email) => {
+    try {
+        const url = `${baseUrl}/api/Auth/old-password`;
+        const bodyJson = {
+            password: oldPassword,
+            email: email
+        };
         const request = {
             method: "POST",
             headers: {
