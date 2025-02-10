@@ -1,0 +1,70 @@
+.header {
+    margin: -16px;
+    background-color: #474D57;
+    color: white;
+    border-top: 2px white solid;
+    padding: 20px 20px;
+}
+
+.classTitle {
+    font-size: 24px;
+}
+
+.classcode {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.projectTitle {
+    font-size: 16px;
+    font-weight: bold;
+    padding-bottom: 20px;
+    border-bottom: 1px white solid;
+}
+
+.infoContainer {
+    margin-top: 30px;
+    width: 30%;
+    min-width: 300px;
+    margin-bottom: 20px;
+}
+
+.infoHeader {
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #474D57;
+    color: white;
+    border-radius: 10px;
+    padding: 10px 10px;
+}
+
+.info {
+    padding: 10px 10px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.tabContainer {
+    display: flex;
+    gap: 1px;
+    margin-top: 20px;
+}
+
+.tab {
+    background-color: #6D7684;
+    border-radius: 20px 20px 0 0;
+    min-width: max-content;
+    width: 200px;
+    font-size: 18px;
+    color: white;
+    padding: 5px 0;
+}
+
+.tab.active {
+    background-color: #474D57;
+    color: white;
+}
+
+.componentTab {
+    margin-top: 20px;
+}
