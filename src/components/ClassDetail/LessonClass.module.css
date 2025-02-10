@@ -1,0 +1,24 @@
+.lessonClassItem {
+    border-radius: 20px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
+    padding: 10px 20px;
+}
+
+.lessonContent {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.lessonInfo {
+    font-size: 14px;
+    color: #474D57;
+}
+
+.lessonEditForm {
+    margin-top: 10px;
+}
+
+.fieldInput {
+    margin-right: 20px;
+}
