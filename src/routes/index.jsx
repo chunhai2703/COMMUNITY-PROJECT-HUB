@@ -15,6 +15,7 @@ import { LayoutAdmin } from "../layout/layout/LayoutAdmin";
 import { HomeAdmin } from "../pages/HomePage/HomeAdmin";
 import ChangePasswordPage from "../pages/ViewProfilePage/ChangePasswordPage";
 import AccountManagementPage from "../pages/AccountManagementPage/AccountManagementPage";
+import ClassDetailPage from "../pages/ClassDetailPage/ClassDetailPage";
 
 export const router = createBrowserRouter([
   {
@@ -58,7 +59,12 @@ export const router = createBrowserRouter([
         path: "change-password",
         element: <ChangePasswordPage />,
         errorElement: <ErrorPage />
-      }
+      },
+      {
+        path: "class-detail",
+        element: <ClassDetailPage />,
+        errorElement: <ErrorPage />
+      },
     ]
   },
   {
