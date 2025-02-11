@@ -21,6 +21,8 @@ import { ErrorPagePM } from "../pages/ErrorPage/ErrorPagePM";
 import { ErrorPageAdmin } from "../pages/ErrorPage/ErrorPageAdmin";
 import { ErrorPageLogin } from "../pages/ErrorPage/ErrorPageLogin";
 import { Projectsloader as projectLoader, ProjectDetailsLoader as projectDetailLoader } from "../services/ProjectsApi";
+import ClassDetailPage from "../pages/ClassDetailPage/ClassDetailPage";
+
 
 export const router = createBrowserRouter([
   {
@@ -83,7 +85,12 @@ export const router = createBrowserRouter([
       {
         path: "*", // Bắt tất cả các đường dẫn không xác định 
         element: <ErrorPagePM />
-      }
+      },
+      {
+        path: "class-detail",
+        element: <ClassDetailPage />,
+        errorElement: <ErrorPage />
+      },
     ]
   },
   {
