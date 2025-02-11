@@ -15,18 +15,25 @@ import { LayoutAdmin } from "../layout/layout/LayoutAdmin";
 import { HomeAdmin } from "../pages/HomePage/HomeAdmin";
 import ChangePasswordPage from "../pages/ViewProfilePage/ChangePasswordPage";
 import AccountManagementPage from "../pages/AccountManagementPage/AccountManagementPage";
+import { ProjectDetailDH } from "../pages/ProjectDetailPage/ProjectDetailDH";
+import { ErrorPageDH } from "../pages/ErrorPage/ErrorPageDH";
+import { ErrorPagePM } from "../pages/ErrorPage/ErrorPagePM";
+import { ErrorPageAdmin } from "../pages/ErrorPage/ErrorPageAdmin";
+import { ErrorPageLogin } from "../pages/ErrorPage/ErrorPageLogin";
+import { Projectsloader as projectLoader, ProjectDetailsLoader as projectDetailLoader } from "../services/ProjectsApi";
 import ClassDetailPage from "../pages/ClassDetailPage/ClassDetailPage";
+
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <GuestAuth><LoginPage /></GuestAuth>,
-    errorElement: <ErrorPage />
+    errorElement: <ErrorPageLogin />
   },
   {
     path: "/home-department-head",
     element: <LayoutDH />,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorPageDH />,
     children: [
       {
         index: true,
@@ -34,7 +41,22 @@ export const router = createBrowserRouter([
       },
       {
         path: "projects",
-        element: <ProjectsDH />
+        element: <ProjectsDH />,
+        loader: projectLoader
+
+      },
+      {
+        path: "view-profile",
+        element: <ViewProfilePage />,
+      },
+      {
+        path: "project-detail/:projectId",
+        element: <ProjectDetailDH />,
+        loader: projectDetailLoader
+      },
+      {
+        path: "*", // Bắt tất cả các đường dẫn không xác định trong 
+        element: <ErrorPageDH />
       }
     ]
   },
@@ -61,6 +83,10 @@ export const router = createBrowserRouter([
         errorElement: <ErrorPage />
       },
       {
+        path: "*", // Bắt tất cả các đường dẫn không xác định 
+        element: <ErrorPagePM />
+      },
+      {
         path: "class-detail",
         element: <ClassDetailPage />,
         errorElement: <ErrorPage />
@@ -75,7 +101,7 @@ export const router = createBrowserRouter([
   {
     path: "/home-admin",
     element: <LayoutAdmin />,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorPageAdmin />,
     children: [
       {
         index: true,
@@ -94,6 +120,10 @@ export const router = createBrowserRouter([
         path: "account-management",
         element: <AccountManagementPage />,
         errorElement: <ErrorPage />
+      },
+      {
+        path: "*", // Bắt tất cả các đường dẫn không xác định 
+        element: <ErrorPageAdmin />
       }
     ]
   },

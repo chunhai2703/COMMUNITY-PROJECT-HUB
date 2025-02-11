@@ -18,7 +18,7 @@ export const ProjectsList = (props) => {
   return (
     <div className={cx('projects-list-container')}>
       <div className={cx('projects-list')}>
-        {currentProjects.map((project) => <ProjectItem key={project.id} {...project} />)}
+        {currentProjects.map((project) => <ProjectItem key={project.projectId} {...project} />)}
         <Pagination align="center" defaultCurrent={1} total={props.projects.length} pageSize={ITEMS_PER_PAGE} onChange={(page) => setCurrentPage(page)} />
       </div>
     </div>

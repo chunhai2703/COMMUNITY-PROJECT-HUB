@@ -1,4 +1,4 @@
-.create-project-button {
+.create-class-button {
   color: white;
   background-color: #474d57;
   padding: 10px 7px;
@@ -8,11 +8,11 @@
   width: 100px;
   cursor: pointer;
 }
-.create-project-button:hover {
+.create-class-button:hover {
   background-color: #8e8f92;
 }
 
-.create-project-form {
+.create-class-form {
   margin-top: 10px;
 }
 
