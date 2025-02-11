@@ -1,57 +1,14 @@
 import React from 'react'
 import classes from './AllProjects.module.css'
 import classNames from 'classnames/bind'
-import { SearchOutlined} from '@ant-design/icons'
-import { ProjectsList } from '../ProjectsList/ProjectsList'
+import { SearchOutlined } from '@ant-design/icons'
+import { ProjectsList } from './ProjectsList/ProjectsList'
 import { CourseCreateForm } from '../../Popup/Course/CourseCreateForm'
 
 
 const cx = classNames.bind(classes)
 
-const DUMMY_PROJECTS = [
-  {
-    id: 1,
-    projectName: 'Sử dụng A.I. trong giảng dạy',
-    status: 1,
-    projectCode: 'AI-001',
-    duration: 2,
-    createdDate: '2025-01-01',
-    createdBy: 'John Doe',
-    projectManager: 'Jane Smith',
-  },
-  {
-    id: 2,
-    projectName: 'Excel cơ bản',
-    status: 1,
-    projectCode: 'EXC-001',
-    duration: 3,
-    createdDate: '2025-01-10',
-    createdBy: 'John Doe',
-    projectManager: 'Max Johnson',
-  },
-  {
-    id: 3,
-    projectName: 'Powerpoint cơ bản',
-    status: 2,
-    projectCode: 'PPT-001',
-    duration: 3,
-    createdDate: '2023-02-01',
-    createdBy: 'John Doe',
-    projectManager: 'Mary Brown',
-  },
-  {
-    id: 4,
-    projectName: 'Powerpoint cơ bản',
-    status: 2,
-    projectCode: 'PPT-001',
-    duration: 3,
-    createdDate: '2023-02-01',
-    createdBy: 'John Doe',
-    projectManager: 'Mary Brown',
-  }
-]
-
-export const AllProjects = () => {
+export const AllProjects = (props) => {
   return (
     <div className={cx('all-projects-container')}>
       <h2 className={cx('all-projects-title')}>Dự Án Cộng Đồng</h2>
@@ -69,7 +26,7 @@ export const AllProjects = () => {
 
         <CourseCreateForm />
       </div>
-      <ProjectsList projects={DUMMY_PROJECTS} />
+      <ProjectsList projects={props.projects} />
     </div>
   )
 }

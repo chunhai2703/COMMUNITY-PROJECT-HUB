@@ -1,16 +1,17 @@
 import React from 'react'
-import { AllProjects } from '../../components/Projects/AllProjects/AllProjects'
+import { ProjectDetail } from '../../components/Projects/ProjectDetail/ProjectDetail'
 import { Suspense } from "react";
 import { useLoaderData, Await } from "react-router-dom";
 import { Spinner } from '../../components/Spinner/Spinner';
 
-export const ProjectsDH = () => {
-  const { projects } = useLoaderData();
+
+export const ProjectDetailDH = () => {
+  const { project } = useLoaderData()
   return (
     <>
       <Suspense fallback={<Spinner />}>
-        <Await resolve={projects}>
-          {(loadedProjects) => <AllProjects projects={loadedProjects} />}
+        <Await resolve={project}>
+          {(loadedProject) => <ProjectDetail project={loadedProject} />}
         </Await>
       </Suspense>
     </>

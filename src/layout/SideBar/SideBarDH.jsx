@@ -39,6 +39,7 @@ export const SideBarDH = () => {
         {
           key: 'profile',
           label: 'Hồ Sơ Cá Nhân',
+          onClick: () => navigate('/home-department-head/view-profile'),
         },
       ],
     },

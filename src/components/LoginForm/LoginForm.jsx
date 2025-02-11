@@ -41,7 +41,7 @@ export const LoginForm = () => {
                 <input
                   type="text"
                   className={cx('email-input', "input")}
-                  placeholder="Email"
+                  placeholder="Email or Tên tài khoản"
                   name='email'
                   id='email'
                   required

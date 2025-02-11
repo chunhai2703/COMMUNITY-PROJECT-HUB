@@ -24,10 +24,13 @@
 .project-item-name {
   letter-spacing: 5px;
   font-size: 1.5rem;
+  font-weight: 600;
 }
 .project-item-status {
+  align-self: flex-start;
   border-radius: 15px;
-  padding: 15px 20px;
+  font-size: 14px;
+  padding: 4px 8px;
   color: white;
   margin-bottom: 10px;
 }
