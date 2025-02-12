@@ -55,6 +55,11 @@ export const router = createBrowserRouter([
         loader: projectDetailLoader
       },
       {
+        path: "class-detail/:projectId/:classId",
+        element: <ClassDetailPage />,
+        errorElement: <ErrorPage />
+      },
+      {
         path: "*", // Bắt tất cả các đường dẫn không xác định trong 
         element: <ErrorPageDH />
       }
