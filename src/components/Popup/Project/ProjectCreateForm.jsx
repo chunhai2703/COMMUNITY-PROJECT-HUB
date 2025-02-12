@@ -7,21 +7,23 @@ import { RemoveCircleOutline, AddCircleOutline } from '@mui/icons-material';
 import { Controller, useForm, useFieldArray } from 'react-hook-form';
 import { PlusCircleOutlined, UploadOutlined } from '@ant-design/icons';
 import { Button, Upload } from 'antd';
-import classes from './CourseCreateForm.module.css'
+import classes from './ProjectCreateForm.module.css'
 import classNames from 'classnames/bind';
 import { searchLeturers } from '../../../services/LeturerApi';
 import { createProject } from '../../../services/ProjectsApi';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 
 const cx = classNames.bind(classes);
-export const CourseCreateForm = () => {
+export const ProjectCreateForm = () => {
   const [open, setOpen] = useState(false);
   const [managers, setManagers] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
 
-  const { handleSubmit, control, register, reset, formState: { errors } } = useForm({
+  const { handleSubmit, control, reset, formState: { errors } } = useForm({
     defaultValues: {
       lessonList: [''] // Khởi tạo một input mặc định
     }
@@ -106,7 +108,7 @@ export const CourseCreateForm = () => {
       toast.success("Dự án đã được tạo thành công!");
       handleClose();
       reset();
-      window.location.reload();
+      navigate('/home-department-head/projects');
     } catch (error) {
       console.error("Lỗi khi tạo dự án:", error);
       toast.error("Không thể tạo dự án. Vui lòng thử lại sau!");
@@ -407,7 +409,7 @@ export const CourseCreateForm = () => {
                   value={field.value || ""}
                   control={control}
                   defaultValue=""  // ✅ Đảm bảo giá trị mặc định là chuỗi rỗng
-                  rules={{ required: "Vui lòng nhập bài học" }}
+                  // rules={{ required: "Vui lòng nhập bài học" }}
                   render={({ field }) => (
                     <TextField
                       {...field}

@@ -3,7 +3,7 @@ import classes from './AllProjects.module.css'
 import classNames from 'classnames/bind'
 import { SearchOutlined } from '@ant-design/icons'
 import { ProjectsList } from './ProjectsList/ProjectsList'
-import { CourseCreateForm } from '../../Popup/Course/CourseCreateForm'
+import { ProjectCreateForm } from '../../Popup/Project/ProjectCreateForm'
 
 
 const cx = classNames.bind(classes)
@@ -24,7 +24,7 @@ export const AllProjects = (props) => {
           </button>
         </div>
 
-        <CourseCreateForm />
+        <ProjectCreateForm />
       </div>
       <ProjectsList projects={props.projects} />
     </div>

@@ -1,0 +1,42 @@
+.project-detail-update {
+  background-color: transparent;
+  border: none;
+  font-weight: 600;
+  color: #12cf3e;
+  border: none;
+  cursor: pointer;
+}
+
+.update-project-form {
+  margin-top: 10px;
+}
+
+.cancel-button {
+  margin-right: 5px;
+  color: #d45b13;
+  background-color: transparent;
+  padding: 10px 7px;
+  border: 1px solid #d45b13;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 100px;
+  cursor: pointer;
+}
+.cancel-button:hover {
+  background-color: #d45b13;
+  color: white;
+}
+
+.create-button {
+  color: white;
+  background-color: #2f903f;
+  padding: 10px 7px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 100px;
+  cursor: pointer;
+}
+.create-button:hover {
+  background-color: #00b300;
+}
