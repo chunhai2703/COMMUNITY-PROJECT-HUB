@@ -24,31 +24,29 @@ const LessonClass = ({ projectId, classId }) => {
             year: 'numeric'
         }).format(date);
     };
-    
+
     const formatOnlyTime = (dateString) => {
         const date = new Date(dateString);
         return date.toLocaleTimeString('vi-VN', {
             hour: '2-digit',
             minute: '2-digit',
-            hour12: false, // 24-hour format
+            hour12: false,
         });
     };
 
     const fetchLessonClassList = async () => {
-        try {
-            const response = await GetAllLessonClassOfClass(classId);
-            const responseData = await response.json();
-            if (response.ok) {
-                setLessonClassList(responseData.result);
-                reset({ lessons: responseData.result });
-            } else {
-                console.error("Error fetching lesson classes");
-            }
-        } catch (error) {
-            console.error("API error:", error);
-        } finally {
-            setIsLoading(false);
+        setIsLoading(true);
+        const response = await GetAllLessonClassOfClass(classId);
+        const responseData = await response.json();
+        if (response.ok) {
+            setLessonClassList(responseData.result);
+            reset({ lessons: responseData.result });
+        } else {
+            console.error("Error fetching lesson classes");
         }
+
+        setIsLoading(false);
+
     };
 
     useEffect(() => {
@@ -56,6 +54,17 @@ const LessonClass = ({ projectId, classId }) => {
             fetchLessonClassList();
         }
     }, [classId]);
+
+    useEffect(() => {
+        if (lessonClassList.length > 0) {
+            lessonClassList.forEach((lesson, index) => {
+                setValue(`lessons[${index}].startTime`, lesson.startTime?.slice(11, 16) || "");
+                setValue(`lessons[${index}].endTime`, lesson.endTime?.slice(11, 16) || "");
+                setValue(`lessons[${index}].date`, lesson.startTime ? lesson.startTime.slice(0, 10) : "");
+                setValue(`lessons[${index}].room`, lesson.room || "");
+            });
+        }
+    }, [lessonClassList, setValue]);
 
     const toggleEdit = () => {
         setIsEditing(!isEditing);
@@ -66,8 +75,8 @@ const LessonClass = ({ projectId, classId }) => {
         const formattedLessons = updatedData.lessons.map((lesson) => ({
             lessonClassId: lesson.lessonClassId,
             room: lesson.room,
-            startTime: new Date(`${lesson.date}T${lesson.startTime}`).toISOString(),
-            endTime: new Date(`${lesson.date}T${lesson.endTime}`).toISOString(),
+            startTime: `${lesson.date}T${lesson.startTime}`,
+            endTime: `${lesson.date}T${lesson.endTime}`,
         }))
 
         const response = await UpdateLessonClass(projectId, formattedLessons)
@@ -89,24 +98,47 @@ const LessonClass = ({ projectId, classId }) => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 20 }}>
-                <Button
-                    variant="contained"
-                    className="w-max"
-                    startIcon={<Edit />}
-                    sx={{ textTransform: "none" }}
-                    style={{ backgroundColor: "#474D57" }}
-                    onClick={(e) => {
-                        if (!isEditing) {
-                            e.preventDefault();
-                            toggleEdit();
-                        }
-                    }}
-                    type={isEditing ? "submit" : "button"}
-                >
-                    {isEditing ? "Lưu" : "Cập nhật"}
-                </Button>
+            <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px", marginBottom: 20 }}>
+                {isEditing ? (
+                    <>
+                        <Button
+                            variant="contained"
+                            sx={{ backgroundColor: "#D45B13" }}
+                            onClick={(e) => {
+                                if (isEditing) {
+                                    e.preventDefault();
+                                    toggleEdit();
+                                }
+                            }}
+                        >
+                            Hủy
+                        </Button>
+                        <Button
+                            variant="contained"
+                            sx={{ backgroundColor: "#2F903F" }}
+                            type="submit"
+                        >
+                            Lưu
+                        </Button>
+                    </>
+                ) : (
+                    <Button
+                        variant="contained"
+                        sx={{ backgroundColor: "#474D57" }}
+                        startIcon={<Edit />}
+                        type="button"
+                        onClick={(e) => {
+                            if (!isEditing) {
+                                e.preventDefault();
+                                toggleEdit();
+                            }
+                        }}
+                    >
+                        Cập nhật
+                    </Button>
+                )}
             </div>
+
 
             {lessonClassList.length === 0 ? (
                 <p>Không có dữ liệu lớp học.</p>
