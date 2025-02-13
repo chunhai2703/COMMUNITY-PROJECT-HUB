@@ -73,9 +73,9 @@ export const Header = () => {
           <li>
             <div className={cx('nav-item-notification')}>
               <Badge count={5} size="small">
-                <BellOutlined style={{ fontSize: 25, color: 'white' }} />
+                <BellOutlined style={{ fontSize: "20px", color: 'white' }} />
               </Badge>
-              <span>Thông báo</span>
+              <span style={{ fontSize: "13px" }}>Thông báo</span>
             </div>
           </li>
           <li>
@@ -83,7 +83,7 @@ export const Header = () => {
               <Avatar
                 src={user.avatarLink ? <img src={user.avatarLink} alt="avatar" /> : null}
                 style={{ backgroundColor: avatarBackground, color: avatarColor }}
-                size={50}
+                size={45}
               >
                 {!user.avatarLink ? userName.charAt(0) : ''}
               </Avatar>

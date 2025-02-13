@@ -32,7 +32,7 @@ export const ProjectInformation = (props) => {
         
         <p className={cx('project-number-teacher')}><span className={cx('number-teacher-label', 'label')}>Tổng số giáo viên :</span> <span className={cx('number-teacher-content', 'content')}>{props.project.totalNumberLecturer} người</span></p>
         
-        <p className={cx('project-number-student')}><span className={cx('number-student-label', 'label')}>Tổng sinh viên hỗ trợ (mỗi nhóm) :</span> <span className={cx('number-student-content', 'content')}>{props.project.numberTraineeEachGroup} người</span></p>
+        <p className={cx('project-number-student')}><span className={cx('number-student-label', 'label')}>Số học viên (mỗi nhóm) :</span> <span className={cx('number-student-content', 'content')}>{props.project.numberTraineeEachGroup} người</span></p>
         
         <p className={cx('project-date')}><span className={cx('start-date-label', 'label')} >Ngày bắt đầu: </span><span className={cx('start-date-content', 'content')}>{startDate}</span> <ArrowRightOutlined style={{ margin: "0 10px" }} /> <span className={cx('end-date-label', 'label')}> Ngày kết thúc:</span> <span className={cx('end-date-content', 'content')}>{endDate}</span></p>
         <p className={cx('project-manager')}>

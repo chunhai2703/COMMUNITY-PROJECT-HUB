@@ -30,7 +30,7 @@ export const ProjectLesson = (props) => {
 
   return (
     <div className={cx('project-lesson-container')}>
-      <h2 className={cx('project-lesson-title')}>Nội dung khóa học</h2>
+      <h2 className={cx('project-lesson-title')}>Nội dung dự án</h2>
       <div className={cx('project-lesson-content')}>
         <LessonUpdateForm project={props.project} />
         <Collapse size='large' items={items} onChange={onChange} expandIcon={customExpandIcon} />
