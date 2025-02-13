@@ -6,7 +6,7 @@ import {
   Autocomplete, CircularProgress
 } from '@mui/material';
 import { } from '@mui/icons-material';
-import { Controller, useForm} from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { EditOutlined } from '@ant-design/icons';
 import { searchLeturers } from '../../../services/LeturerApi';
 import { updateProject } from '../../../services/ProjectsApi';
@@ -21,8 +21,7 @@ export const ProjectUpdateForm = (props) => {
   const [managers, setManagers] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-
+console.log(props.project);
 
   const { handleSubmit, control, reset, formState: { errors } } = useForm({
     defaultValues: {
@@ -32,13 +31,8 @@ export const ProjectUpdateForm = (props) => {
 
   const getTodayDate = () => {
     const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+    return today.toISOString().split("T")[0]; // Định dạng YYYY-MM-DD
   };
-
-  const maxDate = getTodayDate();
 
   const handleSearchManager = async (searchTerm) => {
     if (!searchTerm) return;
@@ -61,6 +55,7 @@ export const ProjectUpdateForm = (props) => {
 
   const handleClose = () => {
     setOpen(false);
+    reset()
   };
 
   const onSubmit = async (data) => {
@@ -96,8 +91,8 @@ export const ProjectUpdateForm = (props) => {
       reset();
       navigate(`/home-department-head/project-detail/${props.project.projectId}`);
     } catch (error) {
-      console.error("Lỗi khi cập nhật dự án:", error);
-      toast.error("Không thể cập nhật dự án. Vui lòng thử lại sau!");
+      console.error("Lỗi khi tạo dự án:", error);
+      toast.error(error.message); // Hiển thị danh sách lỗi từ `result`
     }
   };
 
@@ -184,8 +179,8 @@ export const ProjectUpdateForm = (props) => {
                   type='date'
                   slotProps={{
                     inputLabel: { shrink: true }, // Thay thế InputLabelProps
-                    input: { max: maxDate } // Thay thế inputProps
                   }}
+                  inputProps={{ min: getTodayDate() }}
                   error={!!errors.startDate}
                   helperText={errors.startDate?.message}
                 />
@@ -211,8 +206,8 @@ export const ProjectUpdateForm = (props) => {
                   type='date'
                   slotProps={{
                     inputLabel: { shrink: true }, // Thay thế InputLabelProps
-                    input: { max: maxDate } // Thay thế inputProps
                   }}
+                  inputProps={{ min: getTodayDate() }}
                   error={!!errors.endDate}
                   helperText={errors.endDate?.message}
                 />
@@ -283,9 +278,9 @@ export const ProjectUpdateForm = (props) => {
                   margin="normal"
                   type='date'
                   slotProps={{
-                    inputLabel: { shrink: true },
-                    input: { max: maxDate }
+                    inputLabel: { shrink: true }, // Thay thế InputLabelProps
                   }}
+                  inputProps={{ min: getTodayDate() }}
                   error={!!errors.applicationStartDate}
                   helperText={errors.applicationStartDate?.message}
                 />
@@ -310,9 +305,9 @@ export const ProjectUpdateForm = (props) => {
                   margin="normal"
                   type='date'
                   slotProps={{
-                    inputLabel: { shrink: true },
-                    input: { max: maxDate }
+                    inputLabel: { shrink: true }, // Thay thế InputLabelProps
                   }}
+                  inputProps={{ min: getTodayDate() }}
                   error={!!errors.applicationEndDate}
                   helperText={errors.applicationEndDate?.message}
                 />
@@ -325,7 +320,7 @@ export const ProjectUpdateForm = (props) => {
               control={control}
               defaultValue={
                 props.project?.projectManagerId && props.project?.projectManagerName
-                  ? { accountId: props.project.projectManagerId, fullName: props.project.projectManagerName }
+                  ? { accountId: props.project.projectManagerId, fullName: props.project.projectManagerName, accountName: props.project.accountName }
                   : null
               }
               rules={{ required: "Vui lòng chọn người quản lý dự án" }}
@@ -333,7 +328,7 @@ export const ProjectUpdateForm = (props) => {
                 <Autocomplete
                   {...field}
                   options={managers} // Danh sách từ API
-                  getOptionLabel={(option) => option.fullName || ""}
+                  getOptionLabel={(option) => option.fullName && option.accountName ? `${option.fullName} - ${option.accountName}` : option.fullName}
                   isOptionEqualToValue={(option, value) => option.accountId === value?.accountId}
                   onInputChange={(event, newInputValue) => handleSearchManager(newInputValue)}
                   onChange={(event, newValue) => {
@@ -348,7 +343,7 @@ export const ProjectUpdateForm = (props) => {
                       variant="outlined"
                       fullWidth
                       margin="normal"
-                      defaultValue={field.value?.fullName}
+                      defaultValue={field.value?.fullName ? `${field.value.fullName} - ${field.value.accountName}` : ''}
                       error={!!errors.projectManager}
                       helperText={errors.projectManager?.message}
                       slotProps={{
