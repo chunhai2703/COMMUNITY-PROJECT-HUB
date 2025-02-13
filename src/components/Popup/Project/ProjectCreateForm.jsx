@@ -35,15 +35,12 @@ export const ProjectCreateForm = () => {
   });
 
 
+
   const getTodayDate = () => {
     const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+    return today.toISOString().split("T")[0]; // Định dạng YYYY-MM-DD
   };
 
-  const maxDate = getTodayDate();
 
   const handleSearchManager = async (searchTerm) => {
     if (!searchTerm) return;
@@ -66,12 +63,12 @@ export const ProjectCreateForm = () => {
 
   const handleClose = () => {
     setOpen(false);
+    reset()
   };
 
   const onSubmit = async (data) => {
     try {
       console.log("Dữ liệu projectManager trước khi gửi:", data.projectManager);
-
 
       const formData = new FormData();
       formData.append("title", data.title);
@@ -89,10 +86,8 @@ export const ProjectCreateForm = () => {
         }
       });
 
-      // Đảm bảo `projectManagerId` hợp lệ
-      console.log("Dữ liệu projectManager account ID:", data.projectManager.accountId);
-      // formData.append("projectManagerId", String(data.projectManager.accountId) );
       formData.append("projectManagerId", data?.projectManager?.accountId ? String(data.projectManager.accountId) : '');
+
       if (data.trainees?.length > 0) {
         const file = data.trainees[0]?.originFileObj;
         if (file) {
@@ -104,17 +99,18 @@ export const ProjectCreateForm = () => {
       for (let pair of formData.entries()) {
         console.log(pair[0] + ": ", pair[1]);
       }
+
       await createProject(formData);
       toast.success("Dự án đã được tạo thành công!");
       handleClose();
       reset();
       navigate('/home-department-head/projects');
+
     } catch (error) {
       console.error("Lỗi khi tạo dự án:", error);
-      toast.error("Không thể tạo dự án. Vui lòng thử lại sau!");
+      toast.error(error.message); // Hiển thị danh sách lỗi từ `result`
     }
   };
-
 
 
 
@@ -196,8 +192,8 @@ export const ProjectCreateForm = () => {
                   type='date'
                   slotProps={{
                     inputLabel: { shrink: true }, // Thay thế InputLabelProps
-                    input: { max: maxDate } // Thay thế inputProps
                   }}
+                  inputProps={{ min: getTodayDate() }}
                   error={!!errors.startDate}
                   helperText={errors.startDate?.message}
                 />
@@ -222,8 +218,8 @@ export const ProjectCreateForm = () => {
                   type='date'
                   slotProps={{
                     inputLabel: { shrink: true }, // Thay thế InputLabelProps
-                    input: { max: maxDate } // Thay thế inputProps
                   }}
+                  inputProps={{ min: getTodayDate() }}
                   error={!!errors.endDate}
                   helperText={errors.endDate?.message}
                 />
@@ -291,9 +287,9 @@ export const ProjectCreateForm = () => {
                   margin="normal"
                   type='date'
                   slotProps={{
-                    inputLabel: { shrink: true },
-                    input: { max: maxDate }
+                    inputLabel: { shrink: true }, // Thay thế InputLabelProps
                   }}
+                  inputProps={{ min: getTodayDate() }}
                   error={!!errors.applicationStartDate}
                   helperText={errors.applicationStartDate?.message}
                 />
@@ -317,9 +313,9 @@ export const ProjectCreateForm = () => {
                   margin="normal"
                   type='date'
                   slotProps={{
-                    inputLabel: { shrink: true },
-                    input: { max: maxDate }
+                    inputLabel: { shrink: true }, // Thay thế InputLabelProps
                   }}
+                  inputProps={{ min: getTodayDate() }}
                   error={!!errors.applicationEndDate}
                   helperText={errors.applicationEndDate?.message}
                 />
@@ -336,7 +332,7 @@ export const ProjectCreateForm = () => {
                 <Autocomplete
                   {...field}
                   options={managers} // Danh sách từ API
-                  getOptionLabel={(option) => option.fullName || ""}
+                  getOptionLabel={(option) => `${option.fullName} - ${option.accountName}` || ""}
                   isOptionEqualToValue={(option, value) => option.accountId === value?.accountId}
                   onInputChange={(event, newInputValue) => handleSearchManager(newInputValue)}
                   onChange={(event, newValue) => {

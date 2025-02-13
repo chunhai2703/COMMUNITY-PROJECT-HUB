@@ -68,16 +68,21 @@ export async function createProject(formData) {
   });
 
   if (!response.ok) {
-
     const errorData = await response.json();
     console.error("Error details:", errorData);
-    throw new Error("Không thể tạo dự án: " + errorData.message);
 
+    // Kiểm tra nếu có mảng `result`
+    if (errorData.result && Array.isArray(errorData.result)) {
+      throw new Error(errorData.result.join("\n")); // Gộp các lỗi thành chuỗi xuống dòng
+    }
+
+    throw new Error("Không thể tạo dự án: " + (errorData.message || "Lỗi không xác định"));
   }
 
-  console.log(response.json());
   return response.json();
 }
+
+
 
 export async function updateProject(formData) {
   console.log(formData);
@@ -92,9 +97,17 @@ export async function updateProject(formData) {
   if (!response.ok) {
     const errorData = await response.json();
     console.error("Error details:", errorData);
-    throw new Error("Không thể cập nhật dự án: " + errorData.message);
+
+    // Kiểm tra nếu có mảng `result`
+    if (errorData.result && Array.isArray(errorData.result)) {
+      throw new Error(errorData.result.join("\n")); // Gộp các lỗi thành chuỗi xuống dòng
+    }
+
+    throw new Error("Không thể cập nhật dự án: " + (errorData.message || "Lỗi không xác định"));
   }
+
   return response.json();
+
 }
 
 export async function unActiveProject(id) {
