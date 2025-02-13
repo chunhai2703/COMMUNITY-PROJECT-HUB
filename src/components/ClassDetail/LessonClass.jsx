@@ -154,7 +154,7 @@ const LessonClass = ({ projectId, classId }) => {
                                     rules={{ required: "Bắt buộc nhập thời gian bắt đầu" }}
                                     render={({ field }) => (
                                         <TextField
-                                            className={style.fieldInput}
+                                            style={{ marginLeft: 20 }}
                                             {...field}
                                             type="time"
                                             label="Thời gian bắt đầu"
@@ -174,7 +174,7 @@ const LessonClass = ({ projectId, classId }) => {
                                     rules={{ required: "Bắt buộc nhập thời gian kết thúc" }}
                                     render={({ field }) => (
                                         <TextField
-                                            className={style.fieldInput}
+                                            style={{ marginLeft: 20 }}
                                             {...field}
                                             type="time"
                                             label="Thời gian kết thúc"
@@ -194,7 +194,7 @@ const LessonClass = ({ projectId, classId }) => {
                                     rules={{ required: "Bắt buộc nhập ngày học" }}
                                     render={({ field }) => (
                                         <TextField
-                                            className={style.fieldInput}
+                                            style={{ marginLeft: 20 }}
                                             {...field}
                                             type="date"
                                             label="Ngày học"
@@ -215,7 +215,7 @@ const LessonClass = ({ projectId, classId }) => {
                                     rules={{ required: "Bắt buộc nhập phòng học" }}
                                     render={({ field }) => (
                                         <TextField
-                                            className={style.fieldInput}
+                                            style={{ marginLeft: 20 }}
                                             {...field}
                                             label="Phòng học"
                                             slotProps={{
