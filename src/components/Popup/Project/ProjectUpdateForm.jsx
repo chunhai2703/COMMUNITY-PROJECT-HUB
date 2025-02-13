@@ -244,12 +244,12 @@ console.log(props.project);
               control={control}
               defaultValue={props.project.numberTraineeEachGroup}
               rules={{
-                required: 'Vui lòng nhập số sinh viên hỗ trợ cho mỗi nhóm',
+                required: 'Vui lòng nhập số học viên mỗi nhóm',
               }}
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="Tổng số sinh viên hố trợ (mỗi nhóm)"
+                  label="Số học viên mỗi nhóm"
                   variant="outlined"
                   fullWidth
                   margin="normal"

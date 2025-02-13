@@ -254,12 +254,12 @@ export const ProjectCreateForm = () => {
               control={control}
               defaultValue="1"
               rules={{
-                required: 'Vui lòng nhập số sinh viên hỗ trợ cho mỗi nhóm',
+                required: 'Vui lòng nhập số học viên mỗi nhóm',
               }}
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="Tổng số sinh viên hố trợ (mỗi nhóm)"
+                  label="Số học viên mỗi nhóm"
                   variant="outlined"
                   fullWidth
                   margin="normal"
