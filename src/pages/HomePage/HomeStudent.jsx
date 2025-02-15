@@ -1,16 +1,7 @@
-import { Header } from "../../layout/Header/Header";
-import { Footer } from "../../layout/Footer/Footer";
-import { SideBarDH } from "../../layout/SideBar/SideBarDH";
+import React from 'react'
 
-
-const HomeStudentPage = () => {
-    return (
-        <>
-            <Header />
-            <SideBarDH />
-            <Footer />
-        </>
-    );
-};
-
-export default HomeStudentPage;
+export const HomeStudent = () => {
+  return (
+    <div>HomeStudent</div>
+  )
+}

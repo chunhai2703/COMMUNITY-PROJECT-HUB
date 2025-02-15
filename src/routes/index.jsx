@@ -7,29 +7,38 @@ import { HomeDH } from "../pages/HomePage/HomeDH";
 import { ProjectsDH } from "../pages/ProjectsPage/ProjectsDH";
 import RoleBasedGuard from "../guards/RoleBasedGuard";
 import ForgotPasswordPage from "../pages/AuthPage/ForgotPasswordPage";
-import { LayoutPM } from "../layout/layout/LayoutPM";
-import { HomePM } from "../pages/HomePage/HomePM";
-import { ProjectsPM } from "../pages/ProjectsPage/ProjectsPM";
+import { RelatedProjects } from "../pages/ProjectsPage/RelatedProjects";
 import ViewProfilePage from "../pages/ViewProfilePage/ViewProfilePage";
 import { LayoutAdmin } from "../layout/layout/LayoutAdmin";
 import { HomeAdmin } from "../pages/HomePage/HomeAdmin";
 import ChangePasswordPage from "../pages/ViewProfilePage/ChangePasswordPage";
 import AccountManagementPage from "../pages/AccountManagementPage/AccountManagementPage";
-import { ProjectDetailDH } from "../pages/ProjectDetailPage/ProjectDetailDH";
 import { ErrorPageDH } from "../pages/ErrorPage/ErrorPageDH";
-import { ErrorPagePM } from "../pages/ErrorPage/ErrorPagePM";
 import { ErrorPageAdmin } from "../pages/ErrorPage/ErrorPageAdmin";
 import { ErrorPageLogin } from "../pages/ErrorPage/ErrorPageLogin";
 import { Projectsloader as projectLoader, ProjectDetailsLoader as projectDetailLoader } from "../services/ProjectsApi";
+import { AvailableProjectsloader as availableProjectLoader } from "../services/ProjectsApi";
 import ClassDetailPage from "../pages/ClassDetailPage/ClassDetailPage";
+import { LayoutLecturer } from "../layout/layout/LayoutLecturer";
+import { HomeLecturer } from "../pages/HomePage/HomeLecturer";
+import { ErrorPageLecturer } from "../pages/ErrorPage/ErrorPageLecturer";
+import { LayoutStudent } from "../layout/layout/LayoutStudent";
+import { ErrorPageStudent } from "../pages/ErrorPage/ErrorPageStudent";
+import { HomeStudent } from "../pages/HomePage/HomeStudent";
+import { ProjectDetailPage } from "../pages/ProjectDetailPage/ProjectDetail";
+import { AvailableProjects } from "../pages/ProjectsPage/AvailableProjects";
 
 
 export const router = createBrowserRouter([
+  //Path for Guest
   {
     path: "/",
     element: <GuestAuth><LoginPage /></GuestAuth>,
     errorElement: <ErrorPageLogin />
   },
+
+
+  //Path for Department Head
   {
     path: "/home-department-head",
     element: <LayoutDH />,
@@ -42,17 +51,16 @@ export const router = createBrowserRouter([
       {
         path: "projects",
         element: <ProjectsDH />,
-        loader: projectLoader
-
+        loader: projectLoader,
+      },
+      {
+        path: "project-detail/:projectId",
+        element: <ProjectDetailPage />,
+        loader: projectDetailLoader
       },
       {
         path: "view-profile",
         element: <ViewProfilePage />,
-      },
-      {
-        path: "project-detail/:projectId",
-        element: <ProjectDetailDH />,
-        loader: projectDetailLoader
       },
       {
         path: "class-detail/:projectId/:classId",
@@ -65,18 +73,38 @@ export const router = createBrowserRouter([
       }
     ]
   },
+
+
   {
-    path: "/home-project-manager",
-    element: <LayoutPM />,
-    errorElement: <ErrorPage />,
+    path: "/forgot-password",
+    element: <ForgotPasswordPage />,
+    errorElement: <ErrorPage />
+  },
+
+
+  //Path for Lecturer
+  {
+    path: "/home-lecturer",
+    element: <LayoutLecturer />,
+    errorElement: <ErrorPageLecturer />,
     children: [
       {
         index: true,
-        element: <HomePM />
+        element: <HomeLecturer />
       },
       {
-        path: "projects",
-        element: <ProjectsPM />
+        path: "all-related-projects",
+        element: <RelatedProjects />,
+      },
+      {
+        path: "all-available-projects",
+        element: <AvailableProjects />,
+        loader: availableProjectLoader
+      },
+      {
+        path: "project-detail/:projectId",
+        element: <ProjectDetailPage />,
+        loader: projectDetailLoader
       },
       {
         path: "view-profile",
@@ -89,7 +117,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "*", // Bắt tất cả các đường dẫn không xác định 
-        element: <ErrorPagePM />
+        element: <ErrorPageLecturer />
       },
       {
         path: "class-detail",
@@ -98,11 +126,54 @@ export const router = createBrowserRouter([
       },
     ]
   },
+
+  //Path for Student
   {
-    path: "/forgot-password",
-    element: <ForgotPasswordPage />,
-    errorElement: <ErrorPage />
+    path: "/home-student",
+    element: <LayoutStudent />,
+    errorElement: <ErrorPageStudent />,
+    children: [
+      {
+        index: true,
+        element: <HomeStudent />
+      },
+      {
+        path: "all-related-projects",
+        element: <RelatedProjects />,
+      },
+      {
+        path: "all-available-projects",
+        element: <AvailableProjects />,
+        loader: availableProjectLoader
+      },
+      {
+        path: "project-detail/:projectId",
+        element: <ProjectDetailPage />,
+        loader: projectDetailLoader
+      },
+      {
+        path: "view-profile",
+        element: <ViewProfilePage />,
+      },
+      {
+        path: "change-password",
+        element: <ChangePasswordPage />,
+        errorElement: <ErrorPage />
+      },
+      {
+        path: "*", // Bắt tất cả các đường dẫn không xác định 
+        element: <ErrorPageStudent />
+      },
+      {
+        path: "class-detail",
+        element: <ClassDetailPage />,
+        errorElement: <ErrorPage />
+      },
+    ]
   },
+
+
+  //Path for Admin
   {
     path: "/home-admin",
     element: <LayoutAdmin />,

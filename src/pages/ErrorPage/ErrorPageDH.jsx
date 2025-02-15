@@ -1,10 +1,11 @@
 import React from 'react'
 import { Button, Result } from 'antd';
 import { useNavigate, useRouteError } from 'react-router-dom';
+
 export const ErrorPageDH = () => {
   const error = useRouteError();
   const navigate = useNavigate();
-  let message = "Đã xảy ra lỗi !";
+  let message = "Xin lỗi, trang bạn truy cập không tồn tại.";
 
   if (error.status === 500) {
     message = JSON.parse(error.data).message;
@@ -18,7 +19,7 @@ export const ErrorPageDH = () => {
     <Result
       status={error.status || "404"}
       title={error.status || "404"}
-      subTitle={message || "Xin lỗi, trang bạn truy cập không tồn tại."}
+      subTitle={message}
       extra={<Button type="primary" onClick={() => navigate('/home-department-head')}>Trở về</Button>}
     />
   )
