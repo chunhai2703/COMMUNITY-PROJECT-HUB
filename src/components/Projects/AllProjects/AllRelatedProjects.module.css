@@ -1,15 +1,15 @@
-.all-projects-container {
+.all-related-projects-container {
   margin-top: 10px;
   display: flex;
   flex-direction: column;
   padding: 1rem;
   gap: 2rem;
 }
-.all-projects-title {
+.all-related-projects-title {
   letter-spacing: 5px;
   font-size: 2rem;
 }
-.all-projects-search {
+.all-related-projects-search {
   display: flex;
   align-items: center;
   justify-content: space-between;

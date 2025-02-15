@@ -4,16 +4,15 @@ import { Footer } from "../../layout/Footer/Footer";
 import classes from './Layout.module.css'
 import classNames from 'classnames/bind';
 import { Outlet } from 'react-router-dom';
-import { SideBarPM } from '../SideBar/SideBarPM';
+import { SideBarStudent } from '../SideBar/SideBarStudent';
 
 const cx = classNames.bind(classes);
-
-export const LayoutPM = () => {
+export const LayoutStudent = () => {
   return (
     <div className={cx("layout-container")}>
       <Header />
       <div className={cx("wrapper")}>
-        <SideBarPM />
+        <SideBarStudent />
         <main className={cx("main")}>
           <Outlet />
         </main>

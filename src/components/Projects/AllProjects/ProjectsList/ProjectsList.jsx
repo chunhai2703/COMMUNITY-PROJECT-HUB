@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import classes from './ProjectsList.module.css'
 import classNames from 'classnames/bind'
 import { Pagination } from 'antd';
+import { Result, ConfigProvider } from 'antd';
+import { DatabaseOutlined } from '@ant-design/icons';
 import { ProjectItem } from '../ProjectItem/ProjectItem'
 
 const cx = classNames.bind(classes)
@@ -14,6 +16,31 @@ export const ProjectsList = (props) => {
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const currentProjects = props.projects.slice(startIndex, endIndex);
 
+  if (currentProjects.length === 0) {
+    return (
+      <div className={cx('projects-list-container')}>
+        <div className={cx('projects-list')}>
+          <ConfigProvider
+            theme={{
+              components: {
+                Result: {
+                  iconFontSize: '40px',
+                  colorInfo: 'grey',
+                },
+              },
+            }}
+          >
+            <Result
+              title="Chưa có dự án nào"
+              icon={<DatabaseOutlined style={{ opacity: '0.5' }} />}
+              style={{ color: 'grey', opacity: '0.5' }}
+            />
+          </ConfigProvider>
+
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className={cx('projects-list-container')}>

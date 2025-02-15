@@ -8,3 +8,7 @@
   flex-direction: column;
   gap: 30px;
 }
+.projects-list-empty {
+  font-size: 24px;
+  font-weight: 700;
+}

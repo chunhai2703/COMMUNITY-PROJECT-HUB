@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { useLoaderData, Await } from "react-router-dom";
 import { Spinner } from "../../components/Spinner/Spinner";
 
-export const ProjectDetailDH = () => {
+export const ProjectDetailPage = () => {
   const { project } = useLoaderData();
   const [currentProject, setCurrentProject] = useState(project);
 

@@ -41,6 +41,7 @@
   align-self: flex-end;
   display: flex;
   align-items: center;
+  gap: 2rem;
 }
 .project-material-button {
   color: white;
@@ -55,4 +56,18 @@
 }
 .project-material-button:hover {
   background-color: #ce6d05;
+}
+.project-register-button {
+  color: white;
+  background-color: #57c94c;
+  padding: 10px 7px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  width: 180px;
+  cursor: pointer;
+}
+.project-register-button:hover {
+  background-color: #41903a;
 }
