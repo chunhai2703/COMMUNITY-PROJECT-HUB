@@ -42,9 +42,10 @@ export const SideBarStudent = () => {
       ]
     },
     {
-      key: 'my-recruitment',
+      key: 'my-registration',
       label: 'Ứng Tuyển Của Tôi',
       icon: <SolutionOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
+      onClick: () => navigate('/home-student/my-registration'),
     },
     {
       key: 'setting',

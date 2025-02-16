@@ -1,0 +1,14 @@
+.registration-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.registration-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.registration-list-empty {
+  font-size: 24px;
+  font-weight: 700;
+}
