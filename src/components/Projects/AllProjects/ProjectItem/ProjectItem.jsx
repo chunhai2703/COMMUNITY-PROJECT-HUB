@@ -11,15 +11,27 @@ export const ProjectItem = (props) => {
   const { user } = useAuth();
   console.log(user);
 
+
   // Chuyển đổi startDate & endDate thành đối tượng Date
   const startDate = new Date(props.startDate);
   const endDate = new Date(props.endDate);
+
 
   // Tính duration (số ngày)
   const duration = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
 
   // Format ngày tạo theo kiểu Việt Nam
   const createdDate = new Date(props.createdDate).toLocaleDateString('vi-VN', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
+  const applicationStartDate = new Date(props.applicationStartDate).toLocaleDateString('vi-VN', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
+  const applicationEndDate = new Date(props.applicationEndDate).toLocaleDateString('vi-VN', {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
@@ -58,14 +70,22 @@ export const ProjectItem = (props) => {
         </div>
         <div className={cx('project-item-description')}>
           <p className={cx('project-item-duration')}>
-            Thời lượng khóa học: {duration} ngày
+            <span style={{ fontWeight: '600', fontStyle: 'normal' }}>Thời lượng dự án: </span> <span style={{ fontStyle: 'italic' }}>{duration} ngày</span>
           </p>
           <p className={cx('project-item-created-date')}>
-            Ngày tạo: {createdDate}
+            <span style={{ fontWeight: '600' }}>Ngày tạo: </span> <span >{createdDate}</span>
           </p>
           <p className={cx('project-item-manager')}>
-            Quản lý dự án: {props.projectManagerName ? (props.projectManagerName) : (<span style={{ color: 'red', fontWeight: '600' }}>Chưa có</span>)}
+            <span style={{ fontWeight: '600' }}>Quản lý dự án: </span> <span >{props.projectManagerName ? (props.projectManagerName) : (<span style={{ color: 'red', fontWeight: '600' }}>Chưa có</span>)}</span>
           </p>
+          {Date.now() <= new Date(props.applicationEndDate) && (
+            <p className={cx('project-item-application-date')}>
+              (Thời gian đăng kí bắt đầu từ ngày <span style={{ fontStyle: 'italic' }}>{applicationStartDate}</span>
+              {'\t'}đến ngày <span style={{ fontStyle: 'italic' }}>{applicationEndDate}</span>)
+            </p>
+          )}
+
+
         </div>
       </div>
     </div>

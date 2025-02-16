@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { ConfigProvider, Dropdown, Table, Tag } from 'antd';
-import { EditOutlined, DeleteOutlined, InfoCircleOutlined, ContainerOutlined, EllipsisOutlined, SearchOutlined } from '@ant-design/icons';
+import { InfoCircleOutlined, EllipsisOutlined, SearchOutlined } from '@ant-design/icons';
 import classes from './ClassTable.module.css';
 import classNames from 'classnames/bind';
-import { ClassCreateForm } from '../../../Popup/Class/ClassCreateForm';
 import { GetAllClassOfProject } from '../../../../services/ClassApi';
 import { useParams, useNavigate } from 'react-router-dom';
 import { debounce } from 'lodash';
 import useAuth from '../../../../hooks/useAuth';
 import { Spinner } from '../../../Spinner/Spinner';
+import { RegisterClassForm } from '../../../Popup/Class/RegisterClassForm';
+
 
 const cx = classNames.bind(classes);
 
@@ -77,14 +78,10 @@ export const ClassTable = () => {
         </button>
       ),
     },
-    {
+    ...(user?.roleId !== 4 ? [{
       key: '2',
-      label: (
-        <button className={cx('detail-register', 'detail-button')}>
-          <ContainerOutlined style={{ marginRight: '8px' }} /> Đăng ký
-        </button>
-      ),
-    }
+      label: <RegisterClassForm />,
+    }] : [])
   ];
 
   const columns = [
@@ -188,6 +185,7 @@ export const ClassTable = () => {
         <Table
           size='large'
           columns={columns}
+          rowKey="classId"
           dataSource={classList}
           pagination={{
             position: ['bottomCenter'],

@@ -3,12 +3,16 @@ import { ArrowRightOutlined } from '@ant-design/icons'
 import classes from './ProjectInformation.module.css'
 import classNames from 'classnames/bind'
 import useAuth from '../../../../hooks/useAuth'
+import { Spinner } from '../../../Spinner/Spinner'
 
 const cx = classNames.bind(classes)
 
 export const ProjectInformation = (props) => {
-  const { user } = useAuth();
-  console.log(user.fullName);
+  const { user, isInitialized } = useAuth();
+
+  if (!isInitialized) {
+    return <Spinner />
+  }
 
   const startDate = new Date(props.project.startDate).toLocaleDateString('vi-VN', {
     day: '2-digit',
@@ -21,12 +25,28 @@ export const ProjectInformation = (props) => {
     year: 'numeric',
   });
 
+  const applicationStartDate = new Date(props.project.applicationStartDate).toLocaleDateString('vi-VN', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
+  const applicationEndDate = new Date(props.project.applicationEndDate).toLocaleDateString('vi-VN', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
+  console.log(applicationStartDate, applicationEndDate);
+
 
   return (
     <div className={cx('project-information-container')}>
       <div className={cx('project-information-title')} >
         <h3 className={cx('project-title')}>Thông tin chi tiết</h3>
-        <p className={cx('project-description')}>{props.project.description}</p>
+        <p className={cx('project-description')}>
+          {props.project.description.split('\n').map((line, index) => (
+            <span key={index}>{line}<br /></span>
+          ))}
+        </p>
       </div>
       <div className={cx('project-information-content')}>
         <p className={cx('project-address')}><span className={cx('address-label', 'label')}>Địa chỉ :</span> <span className={cx('address-content', 'content')}>{props.project.address}</span></p>
@@ -52,11 +72,19 @@ export const ProjectInformation = (props) => {
             )}
           </span>
         </p>
+        {Date.now() <= new Date(props.project.applicationEndDate) && (
+          <p className={cx('project-application-date')}>
+            (Thời gian đăng kí bắt đầu từ ngày <span style={{ fontStyle: 'italic' }}>{applicationStartDate}</span> {'\t'} đến ngày <span style={{ fontStyle: 'italic' }} >{applicationEndDate}</span>)
+          </p>
+        )}
 
       </div>
       <div className={cx('project-material-buttons')}>
         <button className={cx('project-material-button')}>Xem tài liệu</button>
-        {user?.fullName === props.project.projectManagerName && <button className={cx('project-register-button')}>Xem đăng kí</button>}
+        {user?.fullName === props.project.projectManagerName && (
+          <button className={cx('project-register-button')}>Xem đăng kí</button>
+        )}
+
       </div>
     </div>
   )

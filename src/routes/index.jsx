@@ -27,6 +27,8 @@ import { ErrorPageStudent } from "../pages/ErrorPage/ErrorPageStudent";
 import { HomeStudent } from "../pages/HomePage/HomeStudent";
 import { ProjectDetailPage } from "../pages/ProjectDetailPage/ProjectDetail";
 import { AvailableProjects } from "../pages/ProjectsPage/AvailableProjects";
+import { MyRegistrationPage } from "../pages/RegistrationPage/MyRegistrationPage";
+
 
 
 export const router = createBrowserRouter([
@@ -107,6 +109,10 @@ export const router = createBrowserRouter([
         loader: projectDetailLoader
       },
       {
+        path: "my-registration",
+        element: <MyRegistrationPage />
+      },
+      {
         path: "view-profile",
         element: <ViewProfilePage />,
       },
@@ -150,6 +156,10 @@ export const router = createBrowserRouter([
         path: "project-detail/:projectId",
         element: <ProjectDetailPage />,
         loader: projectDetailLoader
+      },
+      {
+        path: "my-registration",
+        element: <MyRegistrationPage />
       },
       {
         path: "view-profile",

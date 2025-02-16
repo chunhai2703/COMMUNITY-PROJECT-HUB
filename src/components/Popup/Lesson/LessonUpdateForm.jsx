@@ -65,13 +65,13 @@ export const LessonUpdateForm = (props) => {
 
       await updateLesson(payload);
 
-      toast.success("Nội dung khóa học đã được cập nhật!");
+      toast.success("Nội dung dự án đã được cập nhật!");
       handleClose();
       reset();
       navigate(`/home-department-head/project-detail/${props.project.projectId}`);
     } catch (error) {
-      console.error("Lỗi khi cập nhật nội dung khóa học :", error);
-      toast.error("Không thể cập nhật nội dung khóa học. Vui lòng thử lại sau!");
+      console.error("Lỗi khi cập nhật nội dung dự án :", error);
+      toast.error("Không thể cập nhật nội dung dự án. Vui lòng thử lại sau!");
     }
   };
 
@@ -84,13 +84,13 @@ export const LessonUpdateForm = (props) => {
       </button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle style={{ backgroundColor: "#474D57", color: "white" }}>
-          Cập nhật nội dung khóa học
+          Cập nhật nội dung dự án
         </DialogTitle>
         <DialogContent>
           <form className={cx("update-lesson-form")}>
-            {/* Danh sách bài học */}
+            {/* Danh sách nội dung */}
             <Typography variant="h6" sx={{ mt: 4, mb: 2 }}>
-              Danh sách bài học
+              Danh sách nội dung
             </Typography>
 
             {fields.map((field, index) => (
@@ -102,7 +102,7 @@ export const LessonUpdateForm = (props) => {
                   render={({ field }) => (
                     <TextField
                       {...field}
-                      label={`Bài học ${index + 1}`}
+                      label={`Nội dung ${index + 1}`}
                       fullWidth
                       error={!!errors.lessonList?.[index]}
                       helperText={errors.lessonList?.[index]?.message}
@@ -120,7 +120,7 @@ export const LessonUpdateForm = (props) => {
               icon={<AddCircleOutline />}
               onClick={() => append({ value: "" })}
             >
-              Thêm bài học
+              Thêm nội dung
             </Button>
           </form>
         </DialogContent>

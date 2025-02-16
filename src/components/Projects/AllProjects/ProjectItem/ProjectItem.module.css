@@ -52,3 +52,7 @@
 .project-item-duration span {
   font-style: italic;
 }
+.project-item-application-date {
+  color: rgb(238, 33, 33);
+  font-weight: 600;
+}

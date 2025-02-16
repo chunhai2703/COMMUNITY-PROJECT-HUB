@@ -25,6 +25,11 @@
   font-weight: 500;
   line-height: 2;
 }
+.project-application-date {
+  color: rgb(238, 33, 33);
+  font-weight: 600;
+}
+
 .project-information-content {
   display: flex;
   flex-direction: column;
