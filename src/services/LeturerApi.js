@@ -1,5 +1,6 @@
+const baseUrl = process.env.REACT_APP_API_URL;
 export async function searchLeturers(searchTerm) {
-  const response = await fetch(`http://localhost:5145/api/Lecturer/search-lecturer?searchValue=${searchTerm}`, {
+  const response = await fetch(`${baseUrl}/api/Lecturer/search-lecturer?searchValue=${searchTerm}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

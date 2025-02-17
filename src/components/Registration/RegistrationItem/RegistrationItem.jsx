@@ -13,10 +13,11 @@ export const RegistrationItem = (props) => {
     <div className={cx('registration-item-container')}>
       <div className={cx('registration-item')}>
         <div className={cx('registration-item-header')}>
-          <h2 className={cx('project-name')}><span>{props.projectName}</span></h2>
+          <h2 className={cx('registration-item-title')}><span>Đơn đăng ký</span></h2>
           <RegistRemoveForm />
         </div>
         <div className={cx('registration-item-content')}>
+        <p className={cx('project-name')}><span style={{ fontWeight: '600' }}>Tên dự án: </span> <span>{props.projectName}</span></p>
           <p className={cx('created-date')}><span style={{ fontWeight: '600' }}>Ngày tạo: </span> <span>{props.createdDate}</span></p>
           <p className={cx('status')}><span style={{ fontWeight: '600' }}>Trạng thái: </span> <span>{props.status === 1 ?
             <Tag icon={<CheckCircleOutlined style={{ verticalAlign: 'middle' }} />} color="success">Đã duyệt</Tag> :
@@ -36,15 +37,29 @@ export const RegistrationItem = (props) => {
                 },
               }}
             >
-              <Tooltip overlayInnerStyle={{ width: '500px', padding: '12px', alignContent: 'justify' }} placement='right' title={props.description.split('\n').map((line, index) => (
-                <span key={index}>{line}<br /></span>
-              ))} >
-                <span style={{ paddingLeft: "5px", fontStyle: 'italic', cursor: 'pointer' }}>Chạm vào để xem nội dung</span>
+              <Tooltip
+                overlayInnerStyle={{ width: '500px', padding: '12px', alignContent: 'justify' }}
+                placement="right"
+                title={
+                  <>
+                    <p style={{ fontWeight: '600' }}>Mô tả bản thân: </p>
+                    {props.description.split('\n').map((line, index) => (
+                      <span key={index}>
+                        {line}
+                        <br />
+                      </span>
+                    ))}
+                  </>
+                }
+              >
+                <span className={cx('description-content')} >
+                  Chạm vào để xem nội dung
+                </span>
               </Tooltip>
             </ConfigProvider>
           </p>
         </div>
       </div>
-    </div>
+    </div >
   )
 }

@@ -1,15 +1,17 @@
 import React from 'react'
-import { ArrowRightOutlined } from '@ant-design/icons'
+import { ArrowRightOutlined, ContactsOutlined } from '@ant-design/icons'
 import classes from './ProjectInformation.module.css'
 import classNames from 'classnames/bind'
 import useAuth from '../../../../hooks/useAuth'
 import { Spinner } from '../../../Spinner/Spinner'
+import { useNavigate } from 'react-router-dom'
+import { Button } from 'antd'
 
 const cx = classNames.bind(classes)
 
 export const ProjectInformation = (props) => {
   const { user, isInitialized } = useAuth();
-
+  const navigate = useNavigate();
   if (!isInitialized) {
     return <Spinner />
   }
@@ -59,6 +61,13 @@ export const ProjectInformation = (props) => {
 
         <p className={cx('project-number-student')}><span className={cx('number-student-label', 'label')}>Số học viên (mỗi nhóm) :</span> <span className={cx('number-student-content', 'content')}>{props.project.numberTraineeEachGroup} người</span></p>
 
+        {/* <p className={cx('project-number-member')}><span className={cx('number-member-label', 'label')}>Danh sách thành viên :</span> <span className={cx('number-member-content', 'content')}><ContactsOutlined className={cx('number-member-icon')} onClick={() => navigate(`/home-lecturer/project-registration/${props.project.projectId}`)} /></span></p> */}
+
+        {/* <p className={cx('project-number-member')}><span className={cx('number-member-label', 'label')}>Danh sách thành viên :</span> <span className={cx('number-member-content', 'content')} onClick={() => navigate(`/home-lecturer/project-registration/${props.project.projectId}`)} style={{ cursor: 'pointer', fontStyle: 'italic' }}>Xem chi tiết</span></p> */}
+
+        <p className={cx('project-number-member')}><span className={cx('number-member-label', 'label')}>Danh sách thành viên :</span> <span className={cx('number-member-content', 'content')} onClick={() => navigate(`/home-lecturer/project-registration/${props.project.projectId}`)}><Button type='primary' icon={<ContactsOutlined />} size='small' onClick={() => navigate(`/home-lecturer/project-registration/${props.project.projectId}`)}>Xem chi tiết</Button></span></p>
+
+
         <p className={cx('project-date')}><span className={cx('start-date-label', 'label')} >Ngày bắt đầu: </span><span className={cx('start-date-content', 'content')}>{startDate}</span> <ArrowRightOutlined style={{ margin: "0 10px" }} /> <span className={cx('end-date-label', 'label')}> Ngày kết thúc:</span> <span className={cx('end-date-content', 'content')}>{endDate}</span></p>
         <p className={cx('project-manager')}>
           <span className={cx('manager-label', 'label')}>Quản lý dự án :</span>
@@ -82,9 +91,8 @@ export const ProjectInformation = (props) => {
       <div className={cx('project-material-buttons')}>
         <button className={cx('project-material-button')}>Xem tài liệu</button>
         {user?.fullName === props.project.projectManagerName && (
-          <button className={cx('project-register-button')}>Xem đăng kí</button>
+          <button className={cx('project-register-button')} onClick={() => navigate(`/home-lecturer/project-registration/${props.project.projectId}`)}>Xem đăng kí</button>
         )}
-
       </div>
     </div>
   )

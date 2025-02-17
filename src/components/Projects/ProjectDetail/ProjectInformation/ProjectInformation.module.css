@@ -1,7 +1,7 @@
 .project-information-container {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
   background-color: white;
   border-radius: 25px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
@@ -75,4 +75,15 @@
 }
 .project-register-button:hover {
   background-color: #41903a;
+}
+
+.number-member-icon {
+  font-size: 24px;
+}
+.number-member-icon:hover {
+  color: rgb(102, 101, 101);
+}
+.number-member-content:hover {
+  text-decoration: underline;
+  color: #034ea2;
 }

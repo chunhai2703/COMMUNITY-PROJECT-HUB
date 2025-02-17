@@ -15,7 +15,7 @@
   align-items: center;
   justify-content: space-between;
 }
-.project-name {
+.registration-item-title {
   font-size: 1.5rem;
   font-weight: 600;
   letter-spacing: 5px;
@@ -26,4 +26,12 @@
   gap: 15px;
   font-size: 14px;
   color: #474747;
+}
+.description-content {
+  padding-left: 5px;
+  font-style: italic;
+  cursor: pointer;
+}
+.description-content:hover {
+  text-decoration: underline;
 }
