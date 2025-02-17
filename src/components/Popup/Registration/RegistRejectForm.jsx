@@ -1,22 +1,21 @@
 import React from 'react'
-import { DeleteOutlined, WarningOutlined } from '@ant-design/icons';
+import { ExclamationCircleFilled, CloseSquareOutlined } from '@ant-design/icons';
 import { Modal } from 'antd';
-import classes from './RegistRemoveForm.module.css';
+import classes from './RegistRejectForm.module.css';
 import classNames from 'classnames/bind';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const cx = classNames.bind(classes);
-
-export const RegistRemoveForm = () => {
+export const RegistRejectForm = () => {
   const [modal, contextHolder] = Modal.useModal();
   const navigate = useNavigate();
 
   const confirm = () => {
     modal.confirm({
-      title: 'Xóa đơn đăng kí',
-      icon: <WarningOutlined style={{ color: 'red' }} />,
-      content: 'Bạn chắc chắn xóa đơn đăng kí này?',
+      title: 'Từ chối đơn đăng kí',
+      icon: <ExclamationCircleFilled style={{ color: 'red' }} />,
+      content: 'Bạn chắc chắn từ chối đơn đăng kí này?',
       okText: 'Đồng ý',
       cancelText: 'Hủy',
       centered: true,
@@ -36,7 +35,7 @@ export const RegistRemoveForm = () => {
 
   return (
     <>
-      <DeleteOutlined className={cx('delete-icon')} onClick={confirm} />
+      <CloseSquareOutlined className={cx('reject-icon')} onClick={confirm} />
       {contextHolder}
     </>
   );

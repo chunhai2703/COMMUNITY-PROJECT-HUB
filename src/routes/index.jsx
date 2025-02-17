@@ -28,6 +28,7 @@ import { HomeStudent } from "../pages/HomePage/HomeStudent";
 import { ProjectDetailPage } from "../pages/ProjectDetailPage/ProjectDetail";
 import { AvailableProjects } from "../pages/ProjectsPage/AvailableProjects";
 import { MyRegistrationPage } from "../pages/RegistrationPage/MyRegistrationPage";
+import { ProjectRegistrationPage } from "../pages/RegistrationPage/ProjectRegistrationPage";
 
 
 
@@ -77,13 +78,6 @@ export const router = createBrowserRouter([
   },
 
 
-  {
-    path: "/forgot-password",
-    element: <ForgotPasswordPage />,
-    errorElement: <ErrorPage />
-  },
-
-
   //Path for Lecturer
   {
     path: "/home-lecturer",
@@ -109,8 +103,17 @@ export const router = createBrowserRouter([
         loader: projectDetailLoader
       },
       {
+        path: 'project-registration/:projectId',
+        element: <ProjectRegistrationPage/>
+      },
+      {
         path: "my-registration",
         element: <MyRegistrationPage />
+      },
+      {
+        path: "class-detail/:projectId/:classId",
+        element: <ClassDetailPage />,
+        errorElement: <ErrorPage />
       },
       {
         path: "view-profile",
@@ -124,11 +127,6 @@ export const router = createBrowserRouter([
       {
         path: "*", // Bắt tất cả các đường dẫn không xác định 
         element: <ErrorPageLecturer />
-      },
-      {
-        path: "class-detail",
-        element: <ClassDetailPage />,
-        errorElement: <ErrorPage />
       },
     ]
   },
@@ -162,6 +160,11 @@ export const router = createBrowserRouter([
         element: <MyRegistrationPage />
       },
       {
+        path: "class-detail/:projectId/:classId",
+        element: <ClassDetailPage />,
+        errorElement: <ErrorPage />
+      },
+      {
         path: "view-profile",
         element: <ViewProfilePage />,
       },
@@ -173,11 +176,6 @@ export const router = createBrowserRouter([
       {
         path: "*", // Bắt tất cả các đường dẫn không xác định 
         element: <ErrorPageStudent />
-      },
-      {
-        path: "class-detail",
-        element: <ClassDetailPage />,
-        errorElement: <ErrorPage />
       },
     ]
   },
@@ -212,6 +210,14 @@ export const router = createBrowserRouter([
         element: <ErrorPageAdmin />
       }
     ]
+  },
+
+
+  //Path for forgot password
+  {
+    path: "/forgot-password",
+    element: <ForgotPasswordPage />,
+    errorElement: <ErrorPage />
   },
 ]);
 
