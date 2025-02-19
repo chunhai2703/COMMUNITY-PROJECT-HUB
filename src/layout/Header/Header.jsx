@@ -28,7 +28,6 @@ export const Header = () => {
     return color;
   };
 
-
   // Xử lý màu nền avatar nếu không có ảnh
   useEffect(() => {
     if (user && !user.avatarLink) {

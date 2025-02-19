@@ -27,6 +27,26 @@ export const ProjectInformation = (props) => {
     year: 'numeric',
   });
 
+  const handleClickMaterial = () => {
+    if (user && user?.roleId === 1) {
+      navigate(`/home-student/project-detail/${props.project.projectId}/material`);
+    } else if (user && (user?.roleId === 2)) {
+      navigate(`/home-lecturer/project-detail/${props.project.projectId}/material`);
+    } else if (user && (user?.roleId === 3)) {
+      navigate(`/home-trainee/project-detail/${props.project.projectId}/material`);
+    } else if (user && (user?.roleId === 4)) {
+      navigate(`/home-department-head/project-detail/${props.project.projectId}/material`);
+    } else if (user && (user?.roleId === 5)) {
+      navigate(`/home-asscociat/project-detail/${props.project.projectId}/material`);
+    } else if (user && (user?.roleId === 6)) {
+      navigate(`/home-business-relation/project-detail/${props.project.projectId}/material`);
+    }
+  }
+
+  if(!user) {
+    return <Spinner />
+  }
+
   const applicationStartDate = new Date(props.project.applicationStartDate).toLocaleDateString('vi-VN', {
     day: '2-digit',
     month: '2-digit',
@@ -38,7 +58,6 @@ export const ProjectInformation = (props) => {
     year: 'numeric',
   });
   console.log(applicationStartDate, applicationEndDate);
-
 
   return (
     <div className={cx('project-information-container')}>
@@ -89,10 +108,11 @@ export const ProjectInformation = (props) => {
 
       </div>
       <div className={cx('project-material-buttons')}>
-        <button className={cx('project-material-button')}>Xem tài liệu</button>
+        <button className={cx('project-material-button')} onClick={() => handleClickMaterial()}>Xem tài liệu</button>
         {user?.fullName === props.project.projectManagerName && (
           <button className={cx('project-register-button')} onClick={() => navigate(`/home-lecturer/project-registration/${props.project.projectId}`)}>Xem đăng kí</button>
         )}
+
       </div>
     </div>
   )
