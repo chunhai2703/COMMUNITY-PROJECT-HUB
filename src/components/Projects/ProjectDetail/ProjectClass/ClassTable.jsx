@@ -33,6 +33,9 @@ export const ClassTable = () => {
       setTotalItem(responseData.result.totalCount);
       setPageNumber(responseData.result.currentPage);
     } else {
+      setClassList([]);
+      setTotalItem(0);
+      setPageNumber(1);
       console.log("Error fetching classes");
     }
   };
@@ -61,8 +64,6 @@ export const ClassTable = () => {
       navigate(`/home-asscociate/class-detail/${projectId}/${classId}`);
     } else if (user && (user?.roleId === 6)) {
       navigate(`/home-business-relation/class-detail/${projectId}/${classId}`);
-    } else {
-      navigate(`/home-department-head/class-detail/${projectId}/${classId}`);
     }
   };
 
