@@ -3,11 +3,12 @@ import { ExclamationCircleFilled, CloseSquareOutlined } from '@ant-design/icons'
 import { Modal } from 'antd';
 import classes from './RegistRejectForm.module.css';
 import classNames from 'classnames/bind';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { approveDenyRegistration, rejectRegistration } from '../../../services/RegistrationApi';
 
 const cx = classNames.bind(classes);
-export const RegistRejectForm = () => {
+export const RegistRejectForm = (props) => {
   const [modal, contextHolder] = Modal.useModal();
   const navigate = useNavigate();
 
@@ -21,15 +22,20 @@ export const RegistRejectForm = () => {
       centered: true,
       okButtonProps: { className: cx('ok-button') },
       cancelButtonProps: { className: cx('cancel-button') },
-      // onOk: async () => {
-      //   try {
-      //     await unActiveProject(params.projectId);
-      //     toast.success('Vô hiệu hóa dự án thành công');
-      //     navigate(`/home-department-head/projects`);
-      //   } catch (error) {
-      //     toast.error('Không thể vô hiệu hóa dự án');
-      //   }
-      // },
+      onOk: async () => {
+             try {
+               const payload = {
+                 "registrationId": props.registrationId,
+                 "type": 'Deny'
+               }
+               await approveDenyRegistration(payload);
+               toast.success('Đã từ chối đơn đăng kí thành công');
+               window.location.reload();
+             } catch (error) {
+               console.error("Lỗi khi từ chối đơn đăng kí:", error);
+               toast.error(error.message);
+             }
+           },
     });
   };
 

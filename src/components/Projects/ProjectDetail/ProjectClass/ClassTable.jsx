@@ -80,7 +80,7 @@ export const ClassTable = () => {
     },
     ...(user?.roleId !== 4 ? [{
       key: '2',
-      label: <RegisterClassForm />,
+      label: <RegisterClassForm classId={classId} />,
     }] : [])
   ];
 
