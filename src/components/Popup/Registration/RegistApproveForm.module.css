@@ -1,0 +1,15 @@
+.approve-icon {
+  color: #2ecc71;
+  font-size: 18px;
+  cursor: pointer;
+}
+.approve-icon:hover {
+  color: #27ae60;
+}
+.ok-button {
+  background-color: #034ea2;
+  color: white;
+}
+.ok-button:hover {
+  background-color: #054186;
+}

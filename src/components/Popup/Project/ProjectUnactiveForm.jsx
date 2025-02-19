@@ -29,7 +29,7 @@ export const ProjectUnactiveForm = () => {
           toast.success('Vô hiệu hóa dự án thành công');
           navigate(`/home-department-head/projects`);
         } catch (error) {
-          toast.error('Lỗi: Không thể vô hiệu hóa dự án');
+          toast.error('Không thể vô hiệu hóa dự án');
         }
       },
     });

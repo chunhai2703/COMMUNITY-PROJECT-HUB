@@ -1,15 +1,9 @@
-.all-projects-container {
-  margin-top: 10px;
+.project-registration-table-container {
   display: flex;
   flex-direction: column;
-  padding: 1rem;
-  gap: 2rem;
+  gap: 20px;
 }
-.all-projects-title {
-  letter-spacing: 5px;
-  font-size: 2rem;
-}
-.all-projects-search {
+.project-registration-search {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -45,6 +39,11 @@
   width: 100px;
   cursor: pointer;
 }
-.search-button:hover {
-  background-color: #8e8f92;
+.action-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+ 
 }
+

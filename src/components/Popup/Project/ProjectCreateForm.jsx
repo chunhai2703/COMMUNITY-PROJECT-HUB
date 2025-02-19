@@ -327,7 +327,6 @@ export const ProjectCreateForm = () => {
               name="projectManager"
               control={control}
               defaultValue={null}
-              rules={{ required: "Vui lòng chọn người quản lý dự án" }}
               render={({ field }) => (
                 <Autocomplete
                   {...field}
@@ -396,7 +395,7 @@ export const ProjectCreateForm = () => {
             />
 
             {/* Danh sách bài học */}
-            <Typography variant="h6" sx={{ mt: 4, mb: 2 }}>Danh sách bài học</Typography>
+            <Typography variant="h6" sx={{ mt: 4, mb: 2 }}>Danh sách nội dung</Typography>
 
             {fields.map((field, index) => (
               <Box key={field.id} sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
@@ -405,11 +404,11 @@ export const ProjectCreateForm = () => {
                   value={field.value || ""}
                   control={control}
                   defaultValue=""  // ✅ Đảm bảo giá trị mặc định là chuỗi rỗng
-                  // rules={{ required: "Vui lòng nhập bài học" }}
+                  rules={{ required: "Vui lòng nhập nội dung dự án" }}
                   render={({ field }) => (
                     <TextField
                       {...field}
-                      label={`Bài học ${index + 1}`}
+                      label={`Nội dung ${index + 1}`}
                       fullWidth
                       error={!!errors.lessonList?.[index]}
                       helperText={errors.lessonList?.[index]?.message}
@@ -427,7 +426,7 @@ export const ProjectCreateForm = () => {
               icon={<AddCircleOutline />}
               onClick={() => append({ value: "" })}
             >
-              Thêm bài học
+              Thêm nội dung
             </Button>
 
 

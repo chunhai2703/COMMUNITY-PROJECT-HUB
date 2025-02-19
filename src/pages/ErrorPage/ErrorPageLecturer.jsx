@@ -1,7 +1,8 @@
 import React from 'react'
 import { Button, Result } from 'antd';
 import { useNavigate, useRouteError } from 'react-router-dom';
-export const ErrorPageAdmin = () => {
+
+export const ErrorPageLecturer = () => {
   const error = useRouteError();
   const navigate = useNavigate();
   let message = "Xin lỗi, trang bạn truy cập không tồn tại.";
@@ -18,8 +19,9 @@ export const ErrorPageAdmin = () => {
     <Result
       status={error.status || "404"}
       title={error.status || "404"}
-      subTitle={message}
-      extra={<Button type="primary" onClick={() => navigate('/home-admin')}>Trở về</Button>}
+      subTitle={message }
+      extra={<Button type="primary" onClick={() => navigate('/home-lecturer')}>Trở về</Button>}
     />
   )
+
 }

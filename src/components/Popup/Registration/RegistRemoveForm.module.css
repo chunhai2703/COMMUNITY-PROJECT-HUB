@@ -1,0 +1,14 @@
+.delete-icon {
+  font-size: 20px;
+  cursor: pointer;
+}
+.delete-icon:hover {
+  color: rgb(213, 20, 20);
+}
+.ok-button {
+  background-color: #034ea2;
+  color: white;
+}
+.ok-button:hover {
+  background-color: #054186;
+}

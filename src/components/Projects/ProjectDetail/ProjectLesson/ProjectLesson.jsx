@@ -4,15 +4,17 @@ import { DownOutlined } from '@ant-design/icons';
 import classes from './ProjectLesson.module.css'
 import classNames from 'classnames/bind'
 import { LessonUpdateForm } from '../../../Popup/Lesson/LessonUpdateForm';
+import useAuth from '../../../../hooks/useAuth';
 
 
 const cx = classNames.bind(classes)
 export const ProjectLesson = (props) => {
+  const { user } = useAuth();
   console.log(props.project.lessons);
   const items = props.project.lessons
     .sort((a, b) => a.lessonNo - b.lessonNo)
     .map((lesson, index) => ({
-      key: lesson.lessonNo.toString(), 
+      key: lesson.lessonNo.toString(),
       label: (
         <span style={{ color: 'white', fontSize: '18px', fontWeight: '600' }}>
           Ngày {index + 1}
@@ -32,7 +34,8 @@ export const ProjectLesson = (props) => {
     <div className={cx('project-lesson-container')}>
       <h2 className={cx('project-lesson-title')}>Nội dung dự án</h2>
       <div className={cx('project-lesson-content')}>
-        <LessonUpdateForm project={props.project} />
+        {user?.roleId === 4 ? <LessonUpdateForm project={props.project} /> : null}
+        {/* <LessonUpdateForm project={props.project} /> */}
         <Collapse size='large' items={items} onChange={onChange} expandIcon={customExpandIcon} />
       </div>
 

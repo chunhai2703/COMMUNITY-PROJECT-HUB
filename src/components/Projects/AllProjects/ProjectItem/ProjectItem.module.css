@@ -25,6 +25,7 @@
   letter-spacing: 5px;
   font-size: 1.5rem;
   font-weight: 600;
+  text-wrap: wrap;
 }
 .project-item-status {
   align-self: flex-start;
@@ -51,4 +52,8 @@
 }
 .project-item-duration span {
   font-style: italic;
+}
+.project-item-application-date {
+  color: rgb(238, 33, 33);
+  font-weight: 600;
 }

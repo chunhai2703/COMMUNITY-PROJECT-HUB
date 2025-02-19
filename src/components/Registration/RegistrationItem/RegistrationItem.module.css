@@ -1,0 +1,37 @@
+.registration-item-container {
+  border: 1px solid transparent;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+.registration-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.registration-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.registration-item-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 5px;
+}
+.registration-item-content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  font-size: 14px;
+  color: #474747;
+}
+.description-content {
+  padding-left: 5px;
+  font-style: italic;
+  cursor: pointer;
+}
+.description-content:hover {
+  text-decoration: underline;
+}

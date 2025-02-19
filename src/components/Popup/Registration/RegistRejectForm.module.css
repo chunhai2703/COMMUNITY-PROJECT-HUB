@@ -1,0 +1,15 @@
+.reject-icon {
+  color: #e74c3c;
+  font-size: 18px;
+  cursor: pointer;
+}
+.reject-icon:hover {
+  color: #c0392b;
+}
+.ok-button {
+  background-color: #034ea2;
+  color: white;
+}
+.ok-button:hover {
+  background-color: #054186;
+}

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { SettingOutlined, HomeOutlined, FolderOutlined, MailOutlined, MenuFoldOutlined, MenuUnfoldOutlined, TeamOutlined, SolutionOutlined } from '@ant-design/icons';
+import React, { useState } from 'react'
+import { SettingOutlined, HomeOutlined, FolderOutlined, MailOutlined, MenuFoldOutlined, MenuUnfoldOutlined, SolutionOutlined } from '@ant-design/icons';
 import { Badge, Menu } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
-export const SideBarPM = () => {
+export const SideBarLecturer = () => {
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
 
@@ -22,24 +22,30 @@ export const SideBarPM = () => {
       key: 'home',
       label: 'Trang Chủ',
       icon: <HomeOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
-      onClick: () => navigate('/home-project-manager'),
+      onClick: () => navigate('/home-lecturer'),
 
     },
     {
-      key: 'project',
+      key: 'projects',
       label: 'Dự Án',
       icon: <FolderOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
-      onClick: () => navigate('/home-project-manager/projects'),
+      children: [
+        {
+          key: 'all-related-projects',
+          label: 'Dự Án Của Tôi',
+          onClick: () => navigate('/home-lecturer/all-related-projects'),
+        }, {
+          key: 'all-available-projects',
+          label: 'Dự Án Khác',
+          onClick: () => navigate('/home-lecturer/all-available-projects'),
+        }
+      ]
     },
     {
-      key: 'recruitment-management',
-      label: 'Quản Lý Ứng Tuyển',
-      icon: <TeamOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
-    },
-    {
-      key: 'my-recruitment',
+      key: 'my-registration',
       label: 'Ứng Tuyển Của Tôi',
       icon: <SolutionOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
+      onClick: () => navigate('/home-lecturer/my-registration'),
     },
     {
       key: 'setting',
@@ -49,6 +55,7 @@ export const SideBarPM = () => {
         {
           key: 'profile',
           label: 'Hồ Sơ Cá Nhân',
+          onClick: () => navigate('/home-lecturer/view-profile'),
         },
       ],
     },

@@ -8,10 +8,13 @@ import { ProjectLesson } from './ProjectLesson/ProjectLesson';
 import { ProjectClass } from './ProjectClass/ProjectClass';
 import { ProjectUnactiveForm } from '../../Popup/Project/ProjectUnactiveForm';
 import { ProjectUpdateForm } from '../../Popup/Project/ProjectUpdateForm';
+import useAuth from '../../../hooks/useAuth';
 
 
 const cx = classNames.bind(classes)
 export const ProjectDetail = (props) => {
+  const { user } = useAuth();
+  console.log(user);
   const items = [
     {
       key: '1',
@@ -35,7 +38,7 @@ export const ProjectDetail = (props) => {
             <h2 className={cx('project-detail-name-title')}>{props.project.title}</h2>
             <span className={cx('project-detail-name-status')}>{props.project.status ? 'Đang diễn ra' : 'Đã kết thúc'}</span>
           </div>
-          <Dropdown
+          {user?.roleId === 4 ? <Dropdown
             menu={{
               items,
             }}
@@ -43,7 +46,8 @@ export const ProjectDetail = (props) => {
             disabled={!props.project.status}
           >
             <EllipsisOutlined style={{ fontSize: "36px", color: 'white' }} />
-          </Dropdown>
+          </Dropdown> : null}
+
 
 
         </div>

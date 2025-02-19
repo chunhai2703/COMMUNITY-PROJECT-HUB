@@ -1,15 +1,15 @@
-.all-projects-container {
+.my-registration-container {
   margin-top: 10px;
   display: flex;
   flex-direction: column;
   padding: 1rem;
   gap: 2rem;
 }
-.all-projects-title {
+.my-registration-title {
   letter-spacing: 5px;
   font-size: 2rem;
 }
-.all-projects-search {
+.my-registration-search {
   display: flex;
   align-items: center;
   justify-content: space-between;
