@@ -3,34 +3,34 @@ import { DeleteOutlined, WarningOutlined } from '@ant-design/icons';
 import { Modal } from 'antd';
 import classes from './RegistRemoveForm.module.css';
 import classNames from 'classnames/bind';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { removeRegistration } from '../../../services/RegistrationApi';
 
 const cx = classNames.bind(classes);
 
-export const RegistRemoveForm = () => {
+export const RegistRemoveForm = (props) => {
   const [modal, contextHolder] = Modal.useModal();
-  const navigate = useNavigate();
 
   const confirm = () => {
     modal.confirm({
-      title: 'Xóa đơn đăng kí',
+      title: 'Hủy đơn đăng kí',
       icon: <WarningOutlined style={{ color: 'red' }} />,
-      content: 'Bạn chắc chắn xóa đơn đăng kí này?',
+      content: 'Bạn chắc chắn hủy đơn đăng kí này?',
       okText: 'Đồng ý',
       cancelText: 'Hủy',
       centered: true,
       okButtonProps: { className: cx('ok-button') },
       cancelButtonProps: { className: cx('cancel-button') },
-      // onOk: async () => {
-      //   try {
-      //     await unActiveProject(params.projectId);
-      //     toast.success('Vô hiệu hóa dự án thành công');
-      //     navigate(`/home-department-head/projects`);
-      //   } catch (error) {
-      //     toast.error('Không thể vô hiệu hóa dự án');
-      //   }
-      // },
+      onOk: async () => {
+        try {
+          await removeRegistration(props.registrationId);
+          toast.success('Đã từ chối đơn đăng kí thành công');
+          window.location.reload();
+        } catch (error) {
+          console.error("Lỗi khi hủy đơn đăng kí:", error);
+          toast.error(error.message);
+        }
+      },
     });
   };
 

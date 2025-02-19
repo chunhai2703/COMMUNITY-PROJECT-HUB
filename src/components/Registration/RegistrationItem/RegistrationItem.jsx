@@ -9,23 +9,29 @@ import { RegistRemoveForm } from '../../Popup/Registration/RegistRemoveForm'
 const cx = classNames.bind(classes)
 
 export const RegistrationItem = (props) => {
+  const createdAt = new Date(props.createdAt).toLocaleDateString('vi-VN', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
   return (
     <div className={cx('registration-item-container')}>
       <div className={cx('registration-item')}>
         <div className={cx('registration-item-header')}>
           <h2 className={cx('registration-item-title')}><span>Đơn đăng ký</span></h2>
-          <RegistRemoveForm />
+          <RegistRemoveForm registrationId={props.registrationId} />
         </div>
         <div className={cx('registration-item-content')}>
-        <p className={cx('project-name')}><span style={{ fontWeight: '600' }}>Tên dự án: </span> <span>{props.projectName}</span></p>
-          <p className={cx('created-date')}><span style={{ fontWeight: '600' }}>Ngày tạo: </span> <span>{props.createdDate}</span></p>
-          <p className={cx('status')}><span style={{ fontWeight: '600' }}>Trạng thái: </span> <span>{props.status === 1 ?
-            <Tag icon={<CheckCircleOutlined style={{ verticalAlign: 'middle' }} />} color="success">Đã duyệt</Tag> :
-            props.status === 2 ?
+          <p className={cx('project-name')}><span style={{ fontWeight: '600' }}>Tên dự án: </span> <span>{props.title}</span></p>
+          <p className={cx('class-code')}><span style={{ fontWeight: '600' }}>Mã lớp: </span> <span>{props.classCode}</span></p>
+          <p className={cx('created-date')}><span style={{ fontWeight: '600' }}>Ngày tạo: </span> <span>{createdAt}</span></p>
+          <p className={cx('status')}><span style={{ fontWeight: '600' }}>Trạng thái: </span> <span>{props.status === 'Đã duyệt' ?
+            <Tag icon={<CheckCircleOutlined style={{ verticalAlign: 'middle' }} />} color="success">{props.status}</Tag> :
+            props.status === 'Đang chờ duyệt' ?
               <Tag icon={<SyncOutlined spin style={{ verticalAlign: 'middle' }} />} color="processing">
-                Đang chờ duyệt
+              {props.status}
               </Tag> :
-              <Tag icon={<CloseCircleOutlined style={{ verticalAlign: 'middle' }} />} color="error">Từ chối</Tag>}
+              <Tag icon={<CloseCircleOutlined style={{ verticalAlign: 'middle' }} />} color="error">{props.status}</Tag>}
           </span>
           </p>
           <p className={cx('description')}><span style={{ fontWeight: '600' }}>Nội dung: </span>

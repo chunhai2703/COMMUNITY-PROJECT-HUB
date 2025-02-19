@@ -21,7 +21,7 @@ export const ProjectUpdateForm = (props) => {
   const [managers, setManagers] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-console.log(props.project);
+  console.log(props.project);
 
   const { handleSubmit, control, reset, formState: { errors } } = useForm({
     defaultValues: {
@@ -89,7 +89,9 @@ console.log(props.project);
       toast.success("Dự án đã được cập nhật thành công!");
       handleClose();
       reset();
-      navigate(`/home-department-head/project-detail/${props.project.projectId}`);
+      // navigate();
+      // window.location.href=(`/home-department-head/project-detail/${props.project.projectId}`);
+      window.location.reload();
     } catch (error) {
       console.error("Lỗi khi tạo dự án:", error);
       toast.error(error.message); // Hiển thị danh sách lỗi từ `result`
@@ -323,7 +325,6 @@ console.log(props.project);
                   ? { accountId: props.project.projectManagerId, fullName: props.project.projectManagerName, accountName: props.project.accountName }
                   : null
               }
-              rules={{ required: "Vui lòng chọn người quản lý dự án" }}
               render={({ field }) => (
                 <Autocomplete
                   {...field}

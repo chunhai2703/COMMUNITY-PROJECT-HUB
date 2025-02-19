@@ -1,40 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import { ConfigProvider, Dropdown, Table, Tag } from 'antd';
-import { InfoCircleOutlined, EllipsisOutlined, SearchOutlined } from '@ant-design/icons';
-import { GetAllClassOfProject } from '../../../services/ClassApi';
-import { useParams, useNavigate } from 'react-router-dom';
+import { ConfigProvider, Table, Tag } from 'antd';
+import { SearchOutlined, CheckCircleOutlined, CloseCircleOutlined, SyncOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
+import { useParams } from 'react-router-dom';
 import { debounce } from 'lodash';
 import useAuth from '../../../hooks/useAuth';
 import classes from './RegistrationTable.module.css'
 import classNames from 'classnames/bind'
-import { RegisterClassForm } from '../../Popup/Class/RegisterClassForm';
 import { Spinner } from '../../Spinner/Spinner';
 import { RegistApproveForm } from '../../Popup/Registration/RegistApproveForm';
 import { RegistRejectForm } from '../../Popup/Registration/RegistRejectForm';
+import { GetAllRegistrationOfProject } from '../../../services/RegistrationApi';
 
 const cx = classNames.bind(classes)
 
 export const RegistrationTable = () => {
-  const navigate = useNavigate();
   const { projectId } = useParams();
   const { user } = useAuth();
 
   const [pageNumber, setPageNumber] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [classList, setClassList] = useState([]);
+  const [registrationList, setRegistrationList] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [totalItem, setTotalItem] = useState(0);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const fetchAllClassesOfProject = async () => {
-    const response = await GetAllClassOfProject(projectId, searchValue, pageNumber, rowsPerPage);
+    const response = await GetAllRegistrationOfProject(projectId, searchValue, pageNumber, rowsPerPage);
     const responseData = await response.json();
 
     if (response.ok) {
-      setClassList(responseData.result.getAllClassOfProjectDTOs);
+      setRegistrationList(responseData.result.registrations);
       setTotalItem(responseData.result.totalCount);
       setPageNumber(responseData.result.currentPage);
     } else {
-      console.log("Error fetching classes");
+      console.log("Lỗi khi lấy dữ liệu đơn đăng kí của dự án");
     }
   };
 
@@ -49,41 +48,6 @@ export const RegistrationTable = () => {
     }
   }, [pageNumber, projectId, searchValue]);
 
-  const handleNavigateToDetail = (navigate, projectId, classId) => {
-    if (user && user?.roleId === 1) {
-      navigate(`/home-student/class-detail/${projectId}/${classId}`);
-    } else if (user && (user?.roleId === 2)) {
-      navigate(`/home-lecturer/class-detail/${projectId}/${classId}`);
-    } else if (user && (user?.roleId === 3)) {
-      navigate(`/home-trainee/class-detail/${projectId}/${classId}`);
-    } else if (user && (user?.roleId === 4)) {
-      navigate(`/home-department-head/class-detail/${projectId}/${classId}`);
-    } else if (user && (user?.roleId === 5)) {
-      navigate(`/home-asscociate/class-detail/${projectId}/${classId}`);
-    } else if (user && (user?.roleId === 6)) {
-      navigate(`/home-business-relation/class-detail/${projectId}/${classId}`);
-    } else {
-      navigate(`/home-department-head/class-detail/${projectId}/${classId}`);
-    }
-  };
-
-  const getMenuItems = (classId) => [
-    {
-      key: '1',
-      label: (
-        <button
-          className={cx('view-detail', 'detail-button')}
-          onClick={() => handleNavigateToDetail(navigate, projectId, classId)}
-        >
-          <InfoCircleOutlined style={{ marginRight: '8px' }} /> Xem chi tiết
-        </button>
-      ),
-    },
-    {
-      key: '2',
-      label: <RegisterClassForm />,
-    }
-  ];
 
   const columns = [
     {
@@ -94,61 +58,78 @@ export const RegistrationTable = () => {
     },
     {
       title: 'Giảng viên',
-      dataIndex: 'lecturerName',
-      key: 'teacher',
+      dataIndex: 'fullName',
+      key: 'fullName',
       align: 'center',
     },
     {
-      title: 'Số điện thoại',
-      dataIndex: 'lecturerPhone',
-      key: 'lecturerPhone',
+      title: 'Mã giảng viên',
+      dataIndex: 'accountCode',
+      key: 'accountCode',
       align: 'center',
     },
     {
-      title: 'Số học viên',
-      dataIndex: 'totalTrainee',
-      key: 'totalTrainee',
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
       align: 'center',
     },
     {
-      title: 'Slot giảng viên trống',
-      key: 'lecturerSlotAvailable',
-      dataIndex: 'lecturerSlotAvailable',
+      title: "Nội dung",
+      dataIndex: "description",
+      key: "description",
+      align: "center",
+      render: (text) => {
+
+        return (
+          <div style={{ cursor: "pointer" }} onClick={() => setIsExpanded(!isExpanded)}>
+            {!isExpanded ? (
+              <EyeInvisibleOutlined style={{ fontSize: "16px", fontWeight: "bold" }} />
+            ) : (
+              <p style={{ textAlign: "left" }}>
+                {text.split("\n").map((line, index) => (
+                  <span key={index}>
+                    {line}
+                    <br />
+                  </span>
+                ))}
+              </p>
+            )}
+          </div>
+        );
+      },
+    },
+    {
+      title: 'Tình trạng',
+      key: 'status',
+      dataIndex: 'status',
       align: 'center',
       render: (text) => (
-        <Tag color={text >= 1 ? 'green' : 'orange'}>
-          {text}
-        </Tag>
-      ),
-    },
-    {
-      title: 'Slot sinh viên trống',
-      key: 'studentSlotAvailable',
-      dataIndex: 'studentSlotAvailable',
-      align: 'center',
-      render: (text) => (
-        <Tag color={text >= 1 ? 'green' : 'orange'}>
-          {text}
-        </Tag>
+        text === 'Đã duyệt' ? (
+          <Tag icon={<CheckCircleOutlined style={{ verticalAlign: 'middle' }} />} color="success">
+            {text}
+          </Tag>
+        ) : text === 'Đang chờ duyệt' ? (
+          <Tag icon={<SyncOutlined spin style={{ verticalAlign: 'middle' }} />} color="processing">
+            {text}
+          </Tag>
+        ) : (
+          <Tag icon={<CloseCircleOutlined style={{ verticalAlign: 'middle' }} />} color="error">
+            {text}
+          </Tag>
+        )
       ),
     },
     {
       title: '',
       key: 'action',
       render: (record) => (
-        // <Dropdown
-        //   menu={{
-        //     items: getMenuItems(record.classId),
-        //   }}
-        //   placement="bottomRight"
-        //   trigger={['click']}
-        // >
-        //   <EllipsisOutlined style={{ fontSize: "18px", color: 'black' }} />
-        // </Dropdown>
-        <div className={cx('action-icon')}>
-          <RegistApproveForm />
-          <RegistRejectForm />
-        </div>
+        (record.status === 'Đang chờ duyệt') ?
+          <div className={cx('action-icon')}>
+            <RegistApproveForm registrationId={record.registrationId} />
+            <RegistRejectForm registrationId={record.registrationId} />
+          </div>
+          : (<p style={{ textAlign: 'center', fontStyle: 'italic', fontWeight: '400', color: '#368aea' }}>Đơn đăng kí đã được xem qua</p>)
       ),
     },
   ];
@@ -191,7 +172,7 @@ export const RegistrationTable = () => {
           size='large'
           columns={columns}
           rowKey="classId"
-          dataSource={classList}
+          dataSource={registrationList}
           pagination={{
             position: ['bottomCenter'],
             current: pageNumber,
