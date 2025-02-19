@@ -19,6 +19,8 @@ import { ErrorPageLogin } from "../pages/ErrorPage/ErrorPageLogin";
 import { Projectsloader as projectLoader, ProjectDetailsLoader as projectDetailLoader } from "../services/ProjectsApi";
 import { AvailableProjectsloader as availableProjectLoader } from "../services/ProjectsApi";
 import ClassDetailPage from "../pages/ClassDetailPage/ClassDetailPage";
+import MaterialManagementPage from "../pages/MaterialManagementPage/MaterialManagementPage";
+import MemberManagementPage from "../pages/MemberManagementPage/MemberManagementPage";
 import { LayoutLecturer } from "../layout/layout/LayoutLecturer";
 import { HomeLecturer } from "../pages/HomePage/HomeLecturer";
 import { ErrorPageLecturer } from "../pages/ErrorPage/ErrorPageLecturer";
@@ -71,8 +73,19 @@ export const router = createBrowserRouter([
         errorElement: <ErrorPage />
       },
       {
+        path: "project-detail/:projectId/material",
+        element: <MaterialManagementPage />,
+        errorElement: <ErrorPage />
+      },
+      {
+        path: "project-detail/:projectId/member-list",
+        element: <MemberManagementPage />,
+        errorElement: <ErrorPage />
+      },
+      {
         path: "*", // Bắt tất cả các đường dẫn không xác định trong 
-        element: <ErrorPageDH />
+        element: <ErrorPageDH />,
+        errorElement: <ErrorPage />
       }
     ]
   },

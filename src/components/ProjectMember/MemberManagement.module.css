@@ -1,0 +1,14 @@
+.header {
+      background-color: #474D57;
+      color: white;
+      border-top: 2px white solid;
+      padding: 20px 20px;
+      margin: 5px 0;
+  }
+  
+  .project-title {
+    font-size: 24px;
+    font-weight: bold;
+    padding-bottom: 20px;
+    border-bottom: 1px white solid;
+  }
