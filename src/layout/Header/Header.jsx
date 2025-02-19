@@ -29,11 +29,11 @@ export const Header = () => {
   };
 
   // Redirect nếu user null (hook luôn gọi đúng thứ tự)
-  useEffect(() => {
-    if (user === null) {
-      navigate("/");
-    }
-  }, [user, navigate]);
+  // useEffect(() => {
+  //   if (user === null) {
+  //     navigate("/");
+  //   }
+  // }, [user, navigate]);
 
   // Xử lý màu nền avatar nếu không có ảnh
   useEffect(() => {

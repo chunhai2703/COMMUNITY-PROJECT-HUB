@@ -2,6 +2,9 @@ import React from 'react'
 import { ArrowRightOutlined } from '@ant-design/icons'
 import classes from './ProjectInformation.module.css'
 import classNames from 'classnames/bind'
+import useAuth from '../../../../hooks/useAuth'
+import { Spinner } from '../../../Spinner/Spinner'
+import { useNavigate } from 'react-router-dom'
 
 const cx = classNames.bind(classes)
 
@@ -16,6 +19,29 @@ export const ProjectInformation = (props) => {
     month: '2-digit',
     year: 'numeric',
   });
+
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleClickMaterial = () => {
+    if (user && user?.roleId === 1) {
+      navigate(`/home-student/project-detail/${props.project.projectId}/material`);
+    } else if (user && (user?.roleId === 2)) {
+      navigate(`/home-lecturer/project-detail/${props.project.projectId}/material`);
+    } else if (user && (user?.roleId === 3)) {
+      navigate(`/home-trainee/project-detail/${props.project.projectId}/material`);
+    } else if (user && (user?.roleId === 4)) {
+      navigate(`/home-department-head/project-detail/${props.project.projectId}/material`);
+    } else if (user && (user?.roleId === 5)) {
+      navigate(`/home-asscociat/project-detail/${props.project.projectId}/material`);
+    } else if (user && (user?.roleId === 6)) {
+      navigate(`/home-business-relation/project-detail/${props.project.projectId}/material`);
+    }
+  }
+
+  if(!user) {
+    return <Spinner />
+  }
 
   return (
     <div className={cx('project-information-container')}>
@@ -50,7 +76,7 @@ export const ProjectInformation = (props) => {
 
       </div>
       <div className={cx('project-material-buttons')}>
-        <button className={cx('project-material-button')}>Xem tài liệu</button>
+        <button className={cx('project-material-button')} onClick={() => handleClickMaterial()}>Xem tài liệu</button>
       </div>
     </div>
   )
