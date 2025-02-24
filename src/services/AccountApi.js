@@ -1,8 +1,8 @@
 const baseUrl = process.env.REACT_APP_API_URL;
 
-export const GetAllAccount = async () => {
+export const GetAllAccount = async (pageNumber, rowsPerPage, searchValue) => {
     try {
-        const url = `${baseUrl}/api/Account/all-accounts`;
+        const url = `${baseUrl}/api/Account/all-accounts?pageNumber=${pageNumber}&rowsPerPage=${rowsPerPage}&searchValue=${searchValue}`;
         const request = {
             method: "GET",
             headers: {
@@ -19,7 +19,6 @@ export const GetAllAccount = async () => {
 export const CreateAccount = (data) => {
     const formData = new FormData();
     formData.append('AccountName', data.accountName);
-    formData.append('Password', data.password);
     formData.append('FullName', data.fullName);
     formData.append('Phone', data.phone);
     formData.append('Address', data.address);

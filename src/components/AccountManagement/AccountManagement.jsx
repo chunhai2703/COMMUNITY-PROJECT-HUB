@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { TextField, Button, Box, Dialog, DialogTitle, DialogContent, DialogActions, MenuItem, FormControl, InputLabel, FormControlLabel, RadioGroup, Radio, CircularProgress } from '@mui/material';
+import { TextField, Button, Box, Dialog, DialogTitle, DialogContent, DialogActions, MenuItem, FormControl, InputLabel, FormControlLabel, RadioGroup, Radio, CircularProgress, Pagination, debounce } from '@mui/material';
 import { Search, AddCircleOutlineOutlined, FileUploadOutlined } from '@mui/icons-material';
 import { CreateAccount, GetAllAccount, ImportAccount } from '../../services/AccountApi';
 import AccountTable from './AccountTable';
@@ -17,23 +17,41 @@ const AccountManagement = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [isLoadingBtn, setIsLoadingBtn] = useState(false);
     const [errorListImporting, setErrorListImporting] = useState([]);
+    const [pageNumber, setPageNumber] = useState(1);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [searchValue, setSearchValue] = useState("");
+    const [totalItem, setTotalItem] = useState(0);
+    const [totalPage, setTotalPage] = useState(0);
 
 
     const { handleSubmit, control, register, reset, formState: { errors } } = useForm();
 
     useEffect(() => {
         fetchAccountData();
-    }, []);
+    }, [pageNumber, rowsPerPage, searchValue]);
 
     const fetchAccountData = async () => {
-        const response = await GetAllAccount();
+        const response = await GetAllAccount(pageNumber, rowsPerPage, searchValue);
         const responseData = await response.json();
         if (response.ok) {
-            setAccounts(responseData.result);
+            setAccounts(responseData.result.accountResponseDTOs);
+            setTotalPage(responseData.result.totalPages);
+            setTotalItem(responseData.result.totalCount);
         } else {
-            console.log("Error fetching accounts");
+            setAccounts(responseData.result.accountResponseDTOs);
+            setTotalPage(0);
+            setTotalItem(0)
         }
     };
+
+    const handlePageChange = (event, newPage) => {
+        setPageNumber(newPage);
+    };
+
+    const handleInputSearch = debounce((e) => {
+        setSearchValue(e.target.value);
+        setPageNumber(1);
+    }, 500);
 
     const getTodayDate = () => {
         const today = new Date();
@@ -155,7 +173,7 @@ const AccountManagement = () => {
     };
 
     return (
-        <Box>
+        <Box className="ml-3 mr-3">
             <p className='text-3xl mb-6'>Quản lý tài khoản</p>
             <Box className="mb-6 flex justify-between">
                 <div>
@@ -166,7 +184,7 @@ const AccountManagement = () => {
                         InputProps={{
                             startAdornment: <Search />,
                         }}
-                        value={searchText}
+                        onChange={(e) => handleInputSearch(e)}
                     />
                     <Button
                         variant="contained"
@@ -188,6 +206,16 @@ const AccountManagement = () => {
             </Box>
 
             <AccountTable accounts={accounts} onUpdate={handleOpenUpdate} onInactive={handleOpenInactive} />
+            <div className='flex justify-center mt-5 mb-5'>
+                <Pagination
+
+                    count={totalPage}
+                    page={pageNumber}
+                    onChange={handlePageChange}
+                    variant="outlined"
+                    shape="rounded"
+                />
+            </div>
 
             <Dialog open={isImportOpen} onClose={handleClosePopup}>
                 <DialogTitle style={{ backgroundColor: "#474D57", color: "white" }}>Import file Excel</DialogTitle>
@@ -250,34 +278,7 @@ const AccountManagement = () => {
                                 />
                             )}
                         />
-                        <Controller
-                            name="password"
-                            control={control}
-                            defaultValue=""
-                            rules={{
-                                required: 'Vui lòng nhập mật khẩu',
-                                minLength: {
-                                    value: 8,
-                                    message: 'Mật khẩu phải có ít nhất 8 ký tự'
-                                },
-                                pattern: {
-                                    value: /^(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/,
-                                    message: "Mật khẩu phải có ít nhất 8 ký tự và 1 ký tự đặc biệt",
-                                }
-                            }}
-                            render={({ field }) => (
-                                <TextField
-                                    type='password'
-                                    {...field}
-                                    label="Mật khẩu"
-                                    variant="outlined"
-                                    fullWidth
-                                    margin="normal"
-                                    error={!!errors.password}
-                                    helperText={errors.password?.message}
-                                />
-                            )}
-                        />
+                        
                         <Controller
                             name="fullName"
                             control={control}
