@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   TextField, Dialog, DialogActions, DialogContent, DialogTitle,
   IconButton, Box, Typography, Autocomplete, CircularProgress
@@ -6,7 +6,7 @@ import {
 import { RemoveCircleOutline, AddCircleOutline } from '@mui/icons-material';
 import { Controller, useForm, useFieldArray } from 'react-hook-form';
 import { PlusCircleOutlined, UploadOutlined } from '@ant-design/icons';
-import { Button, Upload } from 'antd';
+import { Button, Upload, message } from 'antd';
 import classes from './ProjectCreateForm.module.css'
 import classNames from 'classnames/bind';
 import { searchLeturers } from '../../../services/LeturerApi';
@@ -15,10 +15,13 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 
+
 const cx = classNames.bind(classes);
 export const ProjectCreateForm = () => {
   const [open, setOpen] = useState(false);
   const [managers, setManagers] = useState([]);
+  const [messageApi, contextHolder] = message.useMessage();
+  const [errorMessages, setErrorMessages] = useState([]); // ✅ Lưu lỗi vào state
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -66,6 +69,23 @@ export const ProjectCreateForm = () => {
     reset()
   };
 
+  useEffect(() => {
+    if (errorMessages.length > 0) {
+      messageApi.open({
+        type: 'error',
+        title: 'Thông báo lỗi',
+        content: (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-start' }}>
+            {errorMessages.map((error, index) => (
+              <p key={index} >{error}</p>
+            ))}
+          </div>
+        ),
+      });
+    }
+  }, [errorMessages, messageApi]);
+
+
   const onSubmit = async (data) => {
     try {
       console.log("Dữ liệu projectManager trước khi gửi:", data.projectManager);
@@ -108,7 +128,11 @@ export const ProjectCreateForm = () => {
 
     } catch (error) {
       console.error("Lỗi khi tạo dự án:", error);
-      toast.error(error.message); // Hiển thị danh sách lỗi từ `result`
+      toast.error(error.message);
+
+      console.log(error.result)
+      setErrorMessages(Array.isArray(error.result) ? error.result : [error.result]);
+
     }
   };
 
@@ -120,12 +144,30 @@ export const ProjectCreateForm = () => {
         <PlusCircleOutlined color='white' size={20} style={{ marginRight: '5px' }} />
         Tạo dự án
       </button>
+
+      {/* ✅ Hiển thị Alert nếu có lỗi
+      {Array.isArray(errorMessages) && errorMessages.length > 0 && (
+        <Alert
+          message="Thông báo lỗi"
+          description={errorMessages.map((error, index) => (
+            <p key={index} style={{ marginTop: 5 }}>{error}</p>
+          ))}
+          type="error"
+          closable
+          showIcon
+          onClose={() => setErrorMessages([])}
+        />
+      )} */}
+      {contextHolder}
       <Dialog
         open={open}
         onClose={handleClose}
       >
-        <DialogTitle style={{ backgroundColor: "#474D57", color: "white" }} >Tạo mới dự án</DialogTitle>
+        <DialogTitle style={{ backgroundColor: "#474D57", color: "white" }} >
+          Tạo mới dự án
+        </DialogTitle>
         <DialogContent>
+
           <form className={cx('create-project-form')}>
             {/* Tên dự án */}
             <Controller

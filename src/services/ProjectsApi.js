@@ -77,16 +77,16 @@ export async function createProject(formData) {
     const errorData = await response.json();
     console.error("Error details:", errorData);
 
-    // Kiểm tra nếu có mảng `result`
-    if (errorData.result && Array.isArray(errorData.result)) {
-      throw new Error(errorData.result.join("\n")); // Gộp các lỗi thành chuỗi xuống dòng
-    }
+    // Tạo một đối tượng `Error` với message là JSON.stringify để giữ thông tin lỗi
+    const error = new Error(errorData.message || "Không thể tạo dự án");
+    error.result = errorData.result || []; // Thêm `result` vào đối tượng lỗi
 
-    throw new Error("Không thể tạo dự án: " + (errorData.message || "Lỗi không xác định"));
+    throw error;
   }
 
   return response.json();
 }
+
 
 
 // cập nhật dự án
