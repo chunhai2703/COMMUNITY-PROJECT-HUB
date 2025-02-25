@@ -43,7 +43,15 @@ export const ProjectInformation = (props) => {
     }
   }
 
-  if(!user) {
+  const handleClickViewMember = () => {
+    if (user && user?.roleId === 4) {
+      navigate(`/home-department-head/project-detail/${props.project.projectId}/member-list`);
+    } else if (user && (user?.roleId === 2)) {
+      navigate(`/home-lecturer/project-detail/${props.project.projectId}/member-list`);
+    }
+  }
+
+  if (!user) {
     return <Spinner />
   }
 
@@ -84,8 +92,27 @@ export const ProjectInformation = (props) => {
 
         {/* <p className={cx('project-number-member')}><span className={cx('number-member-label', 'label')}>Danh sách thành viên :</span> <span className={cx('number-member-content', 'content')} onClick={() => navigate(`/home-lecturer/project-registration/${props.project.projectId}`)} style={{ cursor: 'pointer', fontStyle: 'italic' }}>Xem chi tiết</span></p> */}
 
-        <p className={cx('project-number-member')}><span className={cx('number-member-label', 'label')}>Danh sách thành viên :</span> <span className={cx('number-member-content', 'content')}><Button type='primary' icon={<ContactsOutlined />} size='small' >Xem chi tiết</Button></span></p>
 
+        {user
+          && (user.roleId === 4 || (user.roleId === 2 && user.accountId === props.project.projectManagerId))
+          && (
+            <p className={cx('project-number-member')}>
+              <span className={cx('number-member-label', 'label')}>
+                Danh sách thành viên :
+              </span>
+              <span
+                className={cx('number-member-content', 'content')}
+                onClick={() => handleClickViewMember()}>
+                <Button
+                  type='primary'
+                  icon={<ContactsOutlined />}
+                  size='small'
+                  onClick={() => handleClickViewMember()}>
+                  Xem chi tiết
+                </Button>
+              </span>
+            </p>
+          )}
 
         <p className={cx('project-date')}><span className={cx('start-date-label', 'label')} >Ngày bắt đầu: </span><span className={cx('start-date-content', 'content')}>{startDate}</span> <ArrowRightOutlined style={{ margin: "0 10px" }} /> <span className={cx('end-date-label', 'label')}> Ngày kết thúc:</span> <span className={cx('end-date-content', 'content')}>{endDate}</span></p>
         <p className={cx('project-manager')}>
