@@ -55,7 +55,7 @@ export const Header = () => {
       ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
         console.log(data)
-        if (data.Type === "Notification" && data.AccountId == user.userId) {
+        if (data.Type === "Notification" && data.AccountId == user.accountId) {
           fetchNotification();
         }
       };
