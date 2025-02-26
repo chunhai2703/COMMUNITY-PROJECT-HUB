@@ -57,7 +57,7 @@ export async function createRegistration(payload) {
       throw new Error(errorData.result.join("\n")); // Gộp các lỗi thành chuỗi xuống dòng
     }
 
-    throw new Error("Không thể tạo dơn đăng ký: " + (errorData.message || "Lỗi không xác định"));
+    throw new Error(errorData.message);
   }
 
 }

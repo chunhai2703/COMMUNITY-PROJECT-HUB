@@ -73,6 +73,7 @@ export const SideBarStudent = () => {
           <MailOutlined style={{ fontSize: 18 }} />
         </Badge>
       ),
+      onClick: () => navigate('/home-student/chat'),
     },
   ];
 
