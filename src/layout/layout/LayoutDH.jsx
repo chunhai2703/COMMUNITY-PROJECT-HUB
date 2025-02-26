@@ -5,6 +5,7 @@ import { SideBarDH } from "../../layout/SideBar/SideBarDH";
 import classes from './Layout.module.css'
 import classNames from 'classnames/bind';
 import { Outlet } from 'react-router-dom';
+import 'animate.css';
 
 const cx = classNames.bind(classes);
 export const LayoutDH = () => {

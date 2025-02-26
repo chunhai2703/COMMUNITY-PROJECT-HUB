@@ -57,6 +57,7 @@ export const SideBarDH = () => {
           <MailOutlined style={{ fontSize: 18 }} />
         </Badge>
       ),
+      onClick: () => navigate('/home-department-head/chat'),
     },
   ];
 

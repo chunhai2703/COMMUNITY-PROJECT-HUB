@@ -36,7 +36,7 @@ export const ProjectDetail = (props) => {
         <div className={cx('project-detail-name-container')}>
           <div className={cx('project-detail-name')}>
             <h2 className={cx('project-detail-name-title')}>{props.project.title}</h2>
-            <span className={cx('project-detail-name-status')}>{props.project.status ? 'Đang diễn ra' : 'Đã kết thúc'}</span>
+            <span className={cx('project-detail-name-status')}>{props.project.status}</span>
           </div>
           {user?.roleId === 4 ? <Dropdown
             menu={{
