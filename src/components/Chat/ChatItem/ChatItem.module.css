@@ -1,0 +1,58 @@
+.chat-item-container {
+  border: 1px solid transparent;
+  padding: 10px;
+  border-radius: 10px;
+  transition: all 0.2s ease-in-out;
+}
+
+.chat-item-container:hover {
+  cursor: pointer;
+  transform: scale(1.02);
+}
+
+.chat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.chat-item-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 500;
+  word-wrap: break-word;
+}
+
+.unread-title {
+  font-size: 18px;
+  font-weight: bold;
+  word-wrap: break-word;
+}
+
+.chat-item-content {
+  color: black;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.unread-content {
+  color: black;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: bold;
+}
+
+a:hover,
+a:active,
+a.active {
+  background-color: #ccc;
+}

@@ -124,11 +124,11 @@ export const ProjectCreateForm = () => {
       toast.success("Dự án đã được tạo thành công!");
       handleClose();
       reset();
-      navigate('/home-department-head/projects');
+      window.location.reload();
 
     } catch (error) {
       console.error("Lỗi khi tạo dự án:", error);
-      toast.error(error.message);
+      // toast.error(error.message);
 
       console.log(error.result)
       setErrorMessages(Array.isArray(error.result) ? error.result : [error.result]);

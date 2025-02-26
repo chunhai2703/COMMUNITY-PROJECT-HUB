@@ -87,14 +87,14 @@ export const router = createBrowserRouter([
       {
         path: "chat",
         element: <ChatLayout />,
-        errorElement: <ErrorPage />,
+        errorElement: <ErrorPageDH />,
         children: [
           {
             index: true,
             element: <ChatContent />,
           },
           {
-            path: "chat/1",
+            path: ":id",
             element: <ChatContent />,
           }
         ]
@@ -151,6 +151,21 @@ export const router = createBrowserRouter([
         errorElement: <ErrorPage />
       },
       {
+        path: "chat",
+        element: <ChatLayout />,
+        errorElement: <ErrorPageLecturer />,
+        children: [
+          {
+            index: true,
+            element: <ChatContent />,
+          },
+          {
+            path: ":id",
+            element: <ChatContent />,
+          }
+        ]
+      },
+      {
         path: "view-profile",
         element: <ViewProfilePage />,
       },
@@ -198,6 +213,21 @@ export const router = createBrowserRouter([
         path: "class-detail/:projectId/:classId",
         element: <ClassDetailPage />,
         errorElement: <ErrorPage />
+      },
+      {
+        path: "chat",
+        element: <ChatLayout />,
+        errorElement: <ErrorPageStudent />,
+        children: [
+          {
+            index: true,
+            element: <ChatContent />,
+          },
+          {
+            path: ":id",
+            element: <ChatContent />,
+          }
+        ]
       },
       {
         path: "view-profile",
