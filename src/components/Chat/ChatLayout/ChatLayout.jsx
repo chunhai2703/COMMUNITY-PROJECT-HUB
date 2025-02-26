@@ -6,6 +6,8 @@ import { Outlet } from 'react-router-dom';
 
 const cx = classNames.bind(classes);
 
+
+
 export const ChatLayout = () => {
   return (
     <div className={cx('chat-layout')}>

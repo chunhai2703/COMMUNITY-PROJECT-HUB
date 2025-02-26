@@ -1,6 +1,7 @@
 .chat-layout {
   display: flex;
+  gap: 5px;
 }
 .main {
-  flex-grow: 1;
+  flex-grow: 2;
 }
