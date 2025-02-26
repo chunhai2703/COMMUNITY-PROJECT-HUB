@@ -27,7 +27,8 @@ export const ProjectUnactiveForm = () => {
         try {
           await unActiveProject(params.projectId);
           toast.success('Vô hiệu hóa dự án thành công');
-          navigate(`/home-department-head/projects`);
+          // navigate(`/home-department-head/projects`);
+          window.location.reload();
         } catch (error) {
           toast.error('Không thể vô hiệu hóa dự án');
         }

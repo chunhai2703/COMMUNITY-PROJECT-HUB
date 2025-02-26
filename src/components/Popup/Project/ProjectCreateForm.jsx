@@ -215,6 +215,59 @@ export const ProjectCreateForm = () => {
                 />
               )}
             />
+            {/* Ngày bắt đầu đăng ký */}
+            <Controller
+              name="applicationStartDate"
+              id="applicationStartDate"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: 'Vui lòng chọn ngày bắt đầu đăng ký'
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Ngày bắt đầu đăng ký"
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  type='date'
+                  slotProps={{
+                    inputLabel: { shrink: true }, // Thay thế InputLabelProps
+                  }}
+                  inputProps={{ min: getTodayDate() }}
+                  error={!!errors.applicationStartDate}
+                  helperText={errors.applicationStartDate?.message}
+                />
+              )}
+            />
+            {/* Ngày kết thúc đăng ký */}
+            <Controller
+              name="applicationEndDate"
+              id="applicationEndDate"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: 'Vui lòng chọn ngày kết thúc đăng ký'
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Ngày kết thúc đăng ký"
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  type='date'
+                  slotProps={{
+                    inputLabel: { shrink: true }, // Thay thế InputLabelProps
+                  }}
+                  inputProps={{ min: getTodayDate() }}
+                  error={!!errors.applicationEndDate}
+                  helperText={errors.applicationEndDate?.message}
+                />
+              )}
+            />
+
             {/* Ngày bắt đầu dự án */}
             <Controller
               name="startDate"
@@ -308,58 +361,6 @@ export const ProjectCreateForm = () => {
                   type='number'
                   error={!!errors.numberTraineeEachGroup}
                   helperText={errors.numberTraineeEachGroup?.message}
-                />
-              )}
-            />
-            {/* Ngày bắt đầu đăng ký */}
-            <Controller
-              name="applicationStartDate"
-              id="applicationStartDate"
-              control={control}
-              defaultValue=""
-              rules={{
-                required: 'Vui lòng chọn ngày bắt đầu đăng ký'
-              }}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Ngày bắt đầu đăng ký"
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
-                  type='date'
-                  slotProps={{
-                    inputLabel: { shrink: true }, // Thay thế InputLabelProps
-                  }}
-                  inputProps={{ min: getTodayDate() }}
-                  error={!!errors.applicationStartDate}
-                  helperText={errors.applicationStartDate?.message}
-                />
-              )}
-            />
-            {/* Ngày kết thúc đăng ký */}
-            <Controller
-              name="applicationEndDate"
-              id="applicationEndDate"
-              control={control}
-              defaultValue=""
-              rules={{
-                required: 'Vui lòng chọn ngày kết thúc đăng ký'
-              }}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Ngày kết thúc đăng ký"
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
-                  type='date'
-                  slotProps={{
-                    inputLabel: { shrink: true }, // Thay thế InputLabelProps
-                  }}
-                  inputProps={{ min: getTodayDate() }}
-                  error={!!errors.applicationEndDate}
-                  helperText={errors.applicationEndDate?.message}
                 />
               )}
             />

@@ -129,7 +129,7 @@ export const RegistrationTable = () => {
             <RegistApproveForm registrationId={record.registrationId} />
             <RegistRejectForm registrationId={record.registrationId} />
           </div>
-          : (<p style={{ textAlign: 'center', fontStyle: 'italic', fontWeight: '400', color: '#368aea' }}>Đơn đăng kí đã được xem qua</p>)
+          : (<p style={{ textAlign: 'center', fontStyle: 'italic', fontWeight: '400', color: '#368aea' }}>Đơn đăng kí đã được xử lý</p>)
       ),
     },
   ];

@@ -1,57 +1,75 @@
 const baseUrl = process.env.REACT_APP_API_URL;
-// load tất cả dự án
-export async function loadProjects() {
 
-  const response = await fetch(
-    `${baseUrl}/api/Project/all-project`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
-    },
-  }
-  );
-  if (!response.ok) {
-    throw new Response(
-      JSON.stringify({ message: response.json().message }),
-      {
-        status: response.json().statusCode,
-      }
-    );
-  } else {
+// Load tất cả dự án
+export async function loadProjects() {
+  try {
+    const response = await fetch(`${baseUrl}/api/Project/all-project`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+      },
+    });
+
+    // Đọc JSON chỉ một lần
     const resData = await response.json();
+
+    if (!response.ok) {
+      throw new Response(
+        JSON.stringify({ message: resData.message }),
+        {
+          status: resData.statusCode,
+        }
+      );
+    }
+
     console.log(resData);
     return resData.result;
+
+  } catch (error) {
+    console.error("Lỗi khi lấy dự án:", error);
+    throw error; // Ném lỗi để component xử lý
   }
 }
-export function Projectsloader() {
+
+// Loader phải chờ dữ liệu trước khi trả về
+export async function Projectsloader() {
   return {
-    projects: loadProjects(),
+    projects: await loadProjects(), // Sử dụng await để nhận dữ liệu thực tế
   };
 }
 
 
 // load chi tiết dự án
 export async function loadProjectDetails(id) {
-  const response = await fetch(`${baseUrl}/api/Project/project-detail?projectId=` + id, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
-    },
-  })
-  if (!response.ok) {
-    throw new Response(
-      JSON.stringify({ message: "Không thể lấy thông tin của dự án được chọn." }),
-      {
-        status: 500,
-      }
-    );
-  } else {
+  try {
+    const response = await fetch(`${baseUrl}/api/Project/project-detail?projectId=` + id, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+      },
+    })
+
     const resData = await response.json();
+
+    if (!response.ok) {
+      throw new Response(
+        JSON.stringify({ message: resData.message }),
+        {
+          status: resData.statusCode,
+        }
+      );
+    }
+
     console.log(resData);
     return resData.result;
+
+  } catch (error) {
+    console.error("Lỗi khi lấy chi tiết dự án:", error);
+    throw error; // Ném lỗi để component xử lý
   }
+
 }
 export function ProjectDetailsLoader({ params }) {
   const projectId = params.projectId;
@@ -140,52 +158,71 @@ export async function unActiveProject(id) {
 
 // load dự án liên quan
 export async function loadRelatedProjects(accountId) {
-  const response = await fetch(
-    `${baseUrl}/api/Project/all-related-project?userId=${accountId}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
-    },
-  }
-  );
+  try {
+    const response = await fetch(
+      `${baseUrl}/api/Project/all-related-project?userId=${accountId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }
+    );
 
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Response(JSON.stringify({ message: errorData.message }), {
-      status: errorData.statusCode,
-    });
+    const resData = await response.json();
+
+    if (!response.ok) {
+      throw new Response(
+        JSON.stringify({ message: resData.message }),
+        {
+          status: resData.statusCode,
+        }
+      );
+    }
+
+    console.log(resData);
+    return resData.result;
+
+  } catch (error) {
+    console.error("Lỗi khi lấy các dự án liên quan:", error);
+    throw error; // Ném lỗi để component xử lý
   }
 
-  const resData = await response.json();
-  return resData.result;
 }
 
 
 // load dự án có sẵn với người dùng
 export async function loadAvailableProjects() {
-
-  const response = await fetch(
-    `${baseUrl}/api/Project/available-project`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
-    },
-  }
-  );
-  if (!response.ok) {
-    throw new Response(
-      JSON.stringify({ message: response.json().message }),
-      {
-        status: response.json().statusCode,
-      }
+  try {
+    const response = await fetch(
+      `${baseUrl}/api/Project/available-project`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+      },
+    }
     );
-  } else {
+    // Đọc JSON chỉ một lần
     const resData = await response.json();
+
+    if (!response.ok) {
+      throw new Response(
+        JSON.stringify({ message: resData.message }),
+        {
+          status: resData.statusCode,
+        }
+      );
+    }
+
     console.log(resData);
     return resData.result;
+
+  } catch (error) {
+    console.error("Lỗi khi lấy dự án:", error);
+    throw error; // Ném lỗi để component xử lý
   }
+
 }
 export function AvailableProjectsloader() {
   return {

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import classes from './LoginForm.module.css'
 import classNames from 'classnames/bind'
 import loginImg from '../../assets/login-img.png';
+import loginImg2 from '../../assets/logo-transparent.png'
 import { LockFilled, MailFilled } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
@@ -72,6 +73,7 @@ export const LoginForm = () => {
           </form>
           <div className={cx('login-form-image')}>
             <img src={loginImg} alt="" className={cx('login-img')} />
+            <h2 style={{ color: '#4e9bbb', fontSize: "20px", fontWeight: "600" }}>Community Project Hub</h2>
           </div>
         </div>
       </div>
