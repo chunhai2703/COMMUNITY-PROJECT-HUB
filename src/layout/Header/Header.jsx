@@ -10,7 +10,7 @@ import { Logout } from '../../services/AuthenApi';
 import useAuth from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { Spinner } from '../../components/Spinner/Spinner';
-import { GetAllANotification } from '../../services/Notification';
+import { GetAllNotification, UpdateIsReadNotification } from '../../services/Notification';
 
 const cx = classNames.bind(classes);
 const baseWebSocketUrl = process.env.REACT_APP_WEB_SOCKET_URL;
@@ -77,12 +77,24 @@ export const Header = () => {
   }, [user]);
 
   const fetchNotification = async () => {
-    const response = await GetAllANotification(user.accountId);
+    const response = await GetAllNotification(user.accountId);
     const responseData = await response.json();
     if (response.ok) {
       setNotifications(responseData.result);
     } else {
       setNotifications([]);
+    }
+  };
+
+  const handleDropdownOpen = async (open) => {
+    if (open) {
+      const unreadNotificationIds = notifications
+        .filter(n => !n.isRead)
+        .map(n => n.notificationId);
+  
+      if (unreadNotificationIds.length > 0) {
+        await UpdateIsReadNotification(unreadNotificationIds);
+      }
     }
   };
 
@@ -116,7 +128,7 @@ export const Header = () => {
 
 
   const notificationMenu = (
-    <Menu style={{ width: "300px", padding: 0, maxHeight: "800px", overflowY: "auto" }}>
+    <Menu style={{ width: "300px", padding: 0, maxHeight: "80vh", overflowY: "auto" }}>
       {notifications.length > 0 ? (
         notifications.map((notification, index) => (
           <Menu.Item
@@ -149,7 +161,7 @@ export const Header = () => {
     </Menu>
   );
 
-  if(!user) {
+  if (!user) {
     return <Spinner />
   }
 
@@ -159,9 +171,9 @@ export const Header = () => {
       <nav className={cx('nav')}>
         <ul className={cx('nav-list')}>
           <li>
-            <Dropdown overlay={notificationMenu} trigger={['click']} placement="bottomRight">
+            <Dropdown overlay={notificationMenu} trigger={['click']} placement="bottomRight" onOpenChange={handleDropdownOpen}>
               <div className={cx('nav-item-notification')} style={{ cursor: 'pointer' }}>
-                <Badge count={notifications.length} size="small">
+                <Badge count={notifications.filter(n => !n.isRead).length} size="small">
                   <BellOutlined style={{ fontSize: "20px", color: 'white' }} />
                 </Badge>
                 <span style={{ fontSize: "13px" }}>Thông báo</span>

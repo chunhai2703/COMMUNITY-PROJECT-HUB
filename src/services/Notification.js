@@ -1,6 +1,6 @@
 const baseUrl = process.env.REACT_APP_API_URL;
 
-export const GetAllANotification = async (accountId) => {
+export const GetAllNotification = async (accountId) => {
     try {
         const url = `${baseUrl}/api/Notification/notifications?accountId=${accountId}`;
         const request = {
@@ -15,3 +15,21 @@ export const GetAllANotification = async (accountId) => {
         console.log(err);
     }
 };
+
+export const UpdateIsReadNotification = async (notificationIds) => {
+    try {
+        const url = `${baseUrl}/api/Notification/notifications`;
+        const request = {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ notificationIds: notificationIds }), 
+        };
+        const response = await fetch(url, request);
+        return response;
+    } catch (err) {
+        console.log(err);
+    }
+};
+
