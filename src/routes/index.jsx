@@ -31,6 +31,8 @@ import { ProjectDetailPage } from "../pages/ProjectDetailPage/ProjectDetail";
 import { AvailableProjects } from "../pages/ProjectsPage/AvailableProjects";
 import { MyRegistrationPage } from "../pages/RegistrationPage/MyRegistrationPage";
 import { ProjectRegistrationPage } from "../pages/RegistrationPage/ProjectRegistrationPage";
+import { ChatLayout } from "../components/Chat/ChatLayout/ChatLayout";
+import { ChatContent } from "../components/Chat/ChatContent/ChatContent";
 
 
 
@@ -83,6 +85,21 @@ export const router = createBrowserRouter([
         errorElement: <ErrorPage />
       },
       {
+        path: "chat",
+        element: <ChatLayout />,
+        errorElement: <ErrorPage />,
+        children: [
+          {
+            index: true,
+            element: <ChatContent />,
+          },
+          {
+            path: "chat/1",
+            element: <ChatContent />,
+          }
+        ]
+      },
+      {
         path: "*", // Bắt tất cả các đường dẫn không xác định trong 
         element: <ErrorPageDH />,
         errorElement: <ErrorPage />
@@ -117,7 +134,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'project-registration/:projectId',
-        element: <ProjectRegistrationPage/>
+        element: <ProjectRegistrationPage />
       },
       {
         path: "my-registration",

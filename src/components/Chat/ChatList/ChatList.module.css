@@ -1,0 +1,31 @@
+.chat-item-container {
+  border: 1px solid transparent;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+.chat-item-container:hover {
+  cursor: pointer;
+  scale: 1.02;
+  transition: all 0.2s ease-in-out;
+}
+.chat-item {
+  display: flex;
+  flex-direction: column;
+}
+.chat-item-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+.unread-title {
+  color: #000;
+  font-weight: bold;
+}
+.chat-item-content {
+  color: grey;
+  font-size: 12px;
+}
+.unread-content {
+  color: black;
+  font-weight: bold;
+}

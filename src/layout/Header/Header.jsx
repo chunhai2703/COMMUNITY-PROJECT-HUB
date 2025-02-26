@@ -3,6 +3,7 @@ import logo from '../../assets/logo-fpt.png';
 import classes from './Header.module.css';
 import classNames from 'classnames/bind';
 import { BellOutlined } from '@ant-design/icons';
+import LogoutIcon from '@mui/icons-material/Logout';
 import Avatar from 'antd/es/avatar/avatar';
 import { Badge } from 'antd';
 import { Logout } from '../../services/AuthenApi';
@@ -82,7 +83,7 @@ export const Header = () => {
               </Avatar>
               <div className={cx('user-info')}>
                 <p>{user.fullName}</p>
-                <button onClick={handleClickLogout}>Log out</button>
+                <button onClick={handleClickLogout}>Log out <LogoutIcon style={{ fontSize: "18px", marginLeft: "5px", fontWeight: "600" }} /></button>
               </div>
             </div>
           </li>

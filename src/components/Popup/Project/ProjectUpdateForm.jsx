@@ -216,52 +216,6 @@ export const ProjectUpdateForm = (props) => {
               )}
             />
 
-            {/* Địa chi dự án */}
-            <Controller
-              name="address"
-              id="address"
-              control={control}
-              defaultValue={props.project.address}
-              rules={{
-                required: 'Vui lòng nhập địa chỉ',
-              }}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Địa chỉ"
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
-                  type='text'
-                  error={!!errors.address}
-                  helperText={errors.address?.message}
-                />
-              )}
-            />
-
-            {/* Tổng số sinh viên hố trợ (mỗi nhóm) */}
-            <Controller
-              name="numberTraineeEachGroup"
-              id="numberTraineeEachGroup"
-              control={control}
-              defaultValue={props.project.numberTraineeEachGroup}
-              rules={{
-                required: 'Vui lòng nhập số học viên mỗi nhóm',
-              }}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Số học viên mỗi nhóm"
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
-                  type='number'
-                  error={!!errors.numberTraineeEachGroup}
-                  helperText={errors.numberTraineeEachGroup?.message}
-                />
-              )}
-            />
-
             {/* Ngày bắt đầu đăng ký */}
             <Controller
               name="applicationStartDate"
@@ -315,6 +269,54 @@ export const ProjectUpdateForm = (props) => {
                 />
               )}
             />
+
+            {/* Địa chi dự án */}
+            <Controller
+              name="address"
+              id="address"
+              control={control}
+              defaultValue={props.project.address}
+              rules={{
+                required: 'Vui lòng nhập địa chỉ',
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Địa chỉ"
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  type='text'
+                  error={!!errors.address}
+                  helperText={errors.address?.message}
+                />
+              )}
+            />
+
+            {/* Tổng số sinh viên hố trợ (mỗi nhóm) */}
+            <Controller
+              name="numberTraineeEachGroup"
+              id="numberTraineeEachGroup"
+              control={control}
+              defaultValue={props.project.numberTraineeEachGroup}
+              rules={{
+                required: 'Vui lòng nhập số học viên mỗi nhóm',
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Số học viên mỗi nhóm"
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  type='number'
+                  error={!!errors.numberTraineeEachGroup}
+                  helperText={errors.numberTraineeEachGroup?.message}
+                />
+              )}
+            />
+
+
 
             {/* Quản lý dự án */}
             <Controller
