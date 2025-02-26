@@ -1,31 +1,51 @@
-.chat-item-container {
-  border: 1px solid transparent;
-  padding: 10px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-}
-.chat-item-container:hover {
-  cursor: pointer;
-  scale: 1.02;
-  transition: all 0.2s ease-in-out;
-}
-.chat-item {
+.chat-list-container {
   display: flex;
   flex-direction: column;
+  gap: 20px;
+  padding-top: 10px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100vh;
 }
-.chat-item-title {
-  font-size: 18px;
+.chat-list-title {
+  font-size: 20px;
   font-weight: 600;
+  padding: 1rem;
 }
-.unread-title {
-  color: #000;
-  font-weight: bold;
+.chat-list-search {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin: 0 16px;
 }
-.chat-item-content {
-  color: grey;
-  font-size: 12px;
+.chat-list-search input {
+  border: none;
+  outline: none;
+  font-size: 16px;
+  width: 100%;
 }
-.unread-content {
-  color: black;
-  font-weight: bold;
+.chat-list {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 400px;
+}
+/* Tùy chỉnh thanh cuộn */
+.chat-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-list::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.chat-list::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

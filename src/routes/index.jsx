@@ -87,14 +87,14 @@ export const router = createBrowserRouter([
       {
         path: "chat",
         element: <ChatLayout />,
-        errorElement: <ErrorPage />,
+        errorElement: <ErrorPageDH />,
         children: [
           {
             index: true,
             element: <ChatContent />,
           },
           {
-            path: "chat/1",
+            path: ":id",
             element: <ChatContent />,
           }
         ]
