@@ -30,6 +30,15 @@ export const LecturerList = () => {
 
     const { handleSubmit, control, register, reset, formState: { errors } } = useForm();
 
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return new Intl.DateTimeFormat('vi-VN', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        }).format(date);
+    };
+
     const fetchAllLecturer = async () => {
         setIsLoading(true);
         const response = await GetAllLecturerOfProject(projectId, searchValue, pageNumber, rowsPerPage);
@@ -49,18 +58,23 @@ export const LecturerList = () => {
         setIsLoading(false);
     };
 
-    const handleInputSearch = debounce((e) => {
-        setSearchValue(e.target.value);
-        setPageNumber(1);
-    }, 500);
-
     useEffect(() => {
 
         fetchAllLecturer();
-    }, [pageNumber, searchValue, projectId]);
+    }, [pageNumber, projectId]);
 
-    const handleDetailOpen = (student) => {
-        setSelectedLecturer(student);
+    useEffect(() => {
+        const delaySearch = setTimeout(() => {
+            if (searchValue.trim() === "") {
+                fetchAllLecturer();
+            }
+        }, 500);
+
+        return () => clearTimeout(delaySearch);
+    }, [searchValue]);
+
+    const handleDetailOpen = (lecturer) => {
+        setSelectedLecturer(lecturer);
         setOpenDetail(true);
     };
 
@@ -70,14 +84,18 @@ export const LecturerList = () => {
     };
 
 
-    const handleDeleteOpen = (student) => {
-        setSelectedLecturer(student);
+    const handleDeleteOpen = (lecturer) => {
+        setSelectedLecturer(lecturer);
         setOpenDelete(true);
     };
 
     const handleDeleteClose = () => {
         setOpenDelete(false);
         setSelectedLecturer(null);
+    };
+
+    const handleSearch = () => {
+        fetchAllLecturer();
     };
 
     const onConfirmDelete = async () => {
@@ -135,6 +153,18 @@ export const LecturerList = () => {
             align: 'center',
         },
         {
+            title: 'Lớp',
+            dataIndex: 'classCode',
+            key: 'classCode',
+            align: 'center',
+        },
+        {
+            title: 'Lớp',
+            dataIndex: 'classCode',
+            key: 'classCode',
+            align: 'center',
+        },
+        {
             title: '',
             key: 'action',
             align: 'center',
@@ -146,14 +176,14 @@ export const LecturerList = () => {
         },
     ];
 
-    if (!user || !projectId) {
+    if (!user || !projectId || isLoading) {
         return <Spinner />
     }
 
     return (
         <div>
             <div className={cx('lecturer-table-container')}>
-            <p className='text-3xl'>Quản lý giảng viên</p>
+                <p className='text-3xl'>Quản lý giảng viên</p>
                 <div className={cx('project-detail-search')}>
                     <div className='flex w-full justify-between items-center'>
                         <div className={cx('search-box-container')}>
@@ -163,10 +193,12 @@ export const LecturerList = () => {
                                     type="search"
                                     placeholder="Tìm kiếm giảng viên"
                                     className={cx('search-input')}
-                                    onChange={(e) => handleInputSearch(e)}
+                                    value={searchValue}
+                                    onChange={(e) => setSearchValue(e.target.value)}
+                                    onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                                 />
                             </div>
-                            <button className={cx('search-button')}>
+                            <button className={cx('search-button')} onClick={handleSearch}>
                                 <SearchOutlined color='white' size={20} style={{ marginRight: '5px' }} />
                                 Tìm kiếm
                             </button>
@@ -219,20 +251,20 @@ export const LecturerList = () => {
                     {selectedLecturer && (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginTop: 25 }}>
                             <div className='flex'>
-                                <div className='w-1/2' style={{marginRight: 5}}>
+                                <div className='w-1/2' style={{ marginRight: 5 }}>
                                     <img src={selectedLecturer.avatar} alt="Avatar" style={{ width: '80px', height: '80px', borderRadius: '50%' }} />
                                 </div>
-                                <div className='w-1/2'  style={{ flex: 1}}>
-                                    <TextField style={{ marginBottom: 18}} label="ID" fullWidth value={selectedLecturer.accountCode} variant="outlined" />
+                                <div className='w-1/2' style={{ flex: 1 }}>
+                                    <TextField style={{ marginBottom: 18 }} label="ID" fullWidth value={selectedLecturer.accountCode} variant="outlined" />
                                     <TextField label="Họ và tên" fullWidth value={selectedLecturer.fullName} variant="outlined" />
                                 </div>
                             </div>
                             <div className='flex mt-2'>
-                                <TextField style={{marginRight: 10}} label="Email" fullWidth value={selectedLecturer.email} variant="outlined" />
+                                <TextField style={{ marginRight: 10 }} label="Email" fullWidth value={selectedLecturer.email} variant="outlined" />
                                 <TextField label="Số điện thoại" fullWidth value={selectedLecturer.phone} variant="outlined" />
                             </div>
                             <div className='flex mt-2'>
-                                <TextField style={{marginRight: 10}} label="Ngày sinh" fullWidth value={selectedLecturer.birthdate} variant="outlined" />
+                                <TextField style={{ marginRight: 10 }} label="Ngày sinh" fullWidth value={formatDate(selectedLecturer.birthdate)} variant="outlined" />
                                 <TextField label="Giới tính" fullWidth value={selectedLecturer.gender} variant="outlined" />
                             </div>
                         </div>

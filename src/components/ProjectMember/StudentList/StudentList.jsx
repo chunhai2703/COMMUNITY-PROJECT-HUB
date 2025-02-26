@@ -30,6 +30,15 @@ export const StudentList = () => {
 
     const { handleSubmit, control, register, reset, formState: { errors } } = useForm();
 
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return new Intl.DateTimeFormat('vi-VN', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        }).format(date);
+    };
+
     const fetchAllStudent = async () => {
         setIsLoading(true);
         const response = await GetAllStudentOfProject(projectId, searchValue, pageNumber, rowsPerPage);
@@ -49,15 +58,20 @@ export const StudentList = () => {
         setIsLoading(false);
     };
 
-    const handleInputSearch = debounce((e) => {
-        setSearchValue(e.target.value);
-        setPageNumber(1);
-    }, 500);
-
     useEffect(() => {
 
         fetchAllStudent();
-    }, [pageNumber, searchValue, projectId]);
+    }, [pageNumber, projectId]);
+
+    useEffect(() => {
+            const delaySearch = setTimeout(() => {
+                if (searchValue.trim() === "") {
+                    fetchAllStudent();
+                }
+            }, 500);
+    
+            return () => clearTimeout(delaySearch);
+        }, [searchValue]);
 
     const handleDetailOpen = (student) => {
         setSelectedStudent(student);
@@ -78,6 +92,10 @@ export const StudentList = () => {
     const handleDeleteClose = () => {
         setOpenDelete(false);
         setSelectedStudent(null);
+    };
+
+    const handleSearch = () => {
+        fetchAllStudent();
     };
 
     const onConfirmDelete = async () => {
@@ -152,7 +170,7 @@ export const StudentList = () => {
         },
     ];
 
-    if (!user || !projectId) {
+    if (!user || !projectId || isLoading) {
         return <Spinner />
     }
 
@@ -169,10 +187,12 @@ export const StudentList = () => {
                                     type="search"
                                     placeholder="Tìm kiếm sinh viên"
                                     className={cx('search-input')}
-                                    onChange={(e) => handleInputSearch(e)}
+                                    value={searchValue}
+                                    onChange={(e) => setSearchValue(e.target.value)}
+                                    onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                                 />
                             </div>
-                            <button className={cx('search-button')}>
+                            <button className={cx('search-button')} onClick={handleSearch}>
                                 <SearchOutlined color='white' size={20} style={{ marginRight: '5px' }} />
                                 Tìm kiếm
                             </button>
@@ -238,7 +258,7 @@ export const StudentList = () => {
                                 <TextField label="Số điện thoại" fullWidth value={selectedStudent.phone} variant="outlined" />
                             </div>
                             <div className='flex mt-2'>
-                                <TextField style={{marginRight: 10}} label="Ngày sinh" fullWidth value={selectedStudent.birthdate} variant="outlined" />
+                                <TextField style={{marginRight: 10}} label="Ngày sinh" fullWidth value={formatDate(selectedStudent.birthdate)} variant="outlined" />
                                 <TextField label="Giới tính" fullWidth value={selectedStudent.gender} variant="outlined" />
                             </div>
                         </div>

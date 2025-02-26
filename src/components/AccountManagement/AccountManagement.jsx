@@ -33,12 +33,12 @@ const AccountManagement = () => {
     const fetchAccountData = async () => {
         const response = await GetAllAccount(pageNumber, rowsPerPage, searchValue);
         const responseData = await response.json();
-        if (response.ok) {
+        if (response.ok && responseData.statusCode === 200) {
             setAccounts(responseData.result.accountResponseDTOs);
             setTotalPage(responseData.result.totalPages);
             setTotalItem(responseData.result.totalCount);
         } else {
-            setAccounts(responseData.result.accountResponseDTOs);
+            setAccounts([]);
             setTotalPage(0);
             setTotalItem(0)
         }
