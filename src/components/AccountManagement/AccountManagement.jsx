@@ -173,8 +173,8 @@ const AccountManagement = () => {
     };
 
     return (
-        <Box className="ml-3 mr-3">
-            <p className='text-3xl mb-6'>Quản lý tài khoản</p>
+        <Box className="ml-4 mr-4">
+            <p className='text-3xl mb-6 mt-6'>Quản lý tài khoản</p>
             <Box className="mb-6 flex justify-between">
                 <div>
                     <TextField
@@ -234,7 +234,7 @@ const AccountManagement = () => {
                     </label>
                     {selectedFile && <p style={{ marginTop: 10 }}>{selectedFile.name}</p>}
                     {errorListImporting && errorListImporting.map((error, index) => (
-                        <p key={index} style={{ color: "red", marginTop: 5 }}>{error}</p>
+                        <p key={index} style={{ color: "red", marginTop: 5 }}>• {error}</p>
                     ))}
 
                 </DialogContent>
@@ -278,7 +278,7 @@ const AccountManagement = () => {
                                 />
                             )}
                         />
-                        
+
                         <Controller
                             name="fullName"
                             control={control}
