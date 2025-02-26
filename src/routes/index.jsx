@@ -146,6 +146,11 @@ export const router = createBrowserRouter([
         errorElement: <ErrorPage />
       },
       {
+        path: "project-detail/:projectId/member-list",
+        element: <MemberManagementPage />,
+        errorElement: <ErrorPage />
+      },
+      {
         path: "view-profile",
         element: <ViewProfilePage />,
       },
