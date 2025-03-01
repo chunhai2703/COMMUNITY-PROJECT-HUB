@@ -131,6 +131,11 @@ export const router = createBrowserRouter([
         errorElement: <ErrorPage />
       },
       {
+        path: "project-detail/:projectId/material",
+        element: <MaterialManagementPage />,
+        errorElement: <ErrorPage />
+      },
+      {
         path: "project-detail/:projectId/member-list",
         element: <MemberManagementPage />,
         errorElement: <ErrorPage />
@@ -189,6 +194,11 @@ export const router = createBrowserRouter([
         path: "project-detail/:projectId",
         element: <ProjectDetailPage />,
         loader: projectDetailLoader
+      },
+      {
+        path: "project-detail/:projectId/material",
+        element: <MaterialManagementPage />,
+        errorElement: <ErrorPage />
       },
       {
         path: "my-registration",
