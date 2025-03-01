@@ -85,21 +85,6 @@ export const router = createBrowserRouter([
         errorElement: <ErrorPage />
       },
       {
-        path: "chat",
-        element: <ChatLayout />,
-        errorElement: <ErrorPageDH />,
-        children: [
-          {
-            index: true,
-            element: <ChatContent />,
-          },
-          {
-            path: ":id",
-            element: <ChatContent />,
-          }
-        ]
-      },
-      {
         path: "*", // Bắt tất cả các đường dẫn không xác định trong 
         element: <ErrorPageDH />,
         errorElement: <ErrorPage />
@@ -160,7 +145,7 @@ export const router = createBrowserRouter([
             element: <ChatContent />,
           },
           {
-            path: ":id",
+            path: ":classId",
             element: <ChatContent />,
           }
         ]
@@ -224,7 +209,7 @@ export const router = createBrowserRouter([
             element: <ChatContent />,
           },
           {
-            path: ":id",
+            path: ":classId",
             element: <ChatContent />,
           }
         ]
