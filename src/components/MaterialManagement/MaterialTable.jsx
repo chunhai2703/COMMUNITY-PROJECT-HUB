@@ -12,6 +12,7 @@ import { Spinner } from '../Spinner/Spinner';
 import { CreateMaterial, DeleteMaterial, GetAllMaterial, UpdateMaterial } from '../../services/MaterialApi';
 import { toast } from 'react-toastify';
 import { AddCircleOutlineOutlined } from '@mui/icons-material';
+import { loadProjectDetails } from '../../services/ProjectsApi';
 
 const cx = classNames.bind(materials);
 
@@ -29,6 +30,7 @@ export const MaterialTable = () => {
     const [openDelete, setOpenDelete] = useState(false);
     const [selectedMaterial, setSelectedMaterial] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [dataProject, setDataProject] = useState(null);
 
     const { handleSubmit, control, register, reset, formState: { errors } } = useForm();
 
@@ -50,6 +52,13 @@ export const MaterialTable = () => {
         setIsLoading(false);
     };
 
+    const fetchProjectDetail = async () => {
+        setIsLoading(true);
+        const responseData = await loadProjectDetails(projectId);
+        setDataProject(responseData ? responseData : null)
+        setIsLoading(false);
+    };
+
     const handleInputSearch = debounce((e) => {
         setSearchValue(e.target.value);
         setPageNumber(1);
@@ -58,6 +67,7 @@ export const MaterialTable = () => {
     useEffect(() => {
         if (projectId) {
             fetchAllMaterial();
+            fetchProjectDetail();
         }
     }, [pageNumber, searchValue, projectId]);
 
@@ -185,21 +195,23 @@ export const MaterialTable = () => {
             key: 'action',
             align: 'center',
             render: (record) => (
-                <Dropdown menu={{ items: getMenuItems(record) }} placement="bottomRight" trigger={['click']}>
-                    <EllipsisOutlined style={{ fontSize: "18px", color: 'black' }} />
-                </Dropdown>
+                (user.roleIdd === 4 || (user.roleId == 2 && user.accountId == dataProject?.projectManagerId)) ? (
+                    <Dropdown menu={{ items: getMenuItems(record) }} placement="bottomRight" trigger={['click']}>
+                        <EllipsisOutlined style={{ fontSize: "18px", color: 'black' }} />
+                    </Dropdown>
+                ) : null
             ),
         },
     ];
 
-    if (!user || !projectId) {
+    if (!user || !projectId || !dataProject) {
         return <Spinner />
     }
 
     return (
         <div>
             <div className={cx('header')}>
-                <p className={cx('project-title')}>aaaaaaaaaa</p>
+                <p className={cx('project-title')}>{dataProject.title}</p>
             </div>
             <div className={cx('material-table-container')}>
                 <div className={cx('project-detail-search')}>
@@ -302,13 +314,22 @@ export const MaterialTable = () => {
                     </DialogContent>
 
                     <DialogActions>
-                        <Button onClick={handleCreateClose}>Hủy</Button>
+                        <Button
+                            style={{
+                                backgroundColor: "#d45b13",
+                                color: "white"
+                            }}
+                            variant='outlined'
+                            onClick={handleCreateClose}>Hủy
+                        </Button>
                         <Button
                             type="submit"
                             variant="contained"
-                            color="primary"
+                            style={{
+                                backgroundColor: "#00b300"
+                            }}
                             disabled={isLoading}>
-                            {isLoading ? <CircularProgress size={24} color="inherit" /> : "Tạo mới"}
+                            {isLoading ? <CircularProgress size={24} /> : "Tạo mới"}
                         </Button>
                     </DialogActions>
                 </form>
@@ -356,13 +377,25 @@ export const MaterialTable = () => {
                         />
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleUpdateClose}>Hủy</Button>
+                        <Button
+                            onClick={handleUpdateClose}
+                            style={{
+                                backgroundColor: "#d45b13",
+                                color: "white"
+                            }}
+                            variant='outlined'
+                        >
+                            Hủy
+
+                        </Button>
                         <Button
                             type="submit"
                             variant="contained"
-                            color="primary"
+                            style={{
+                                backgroundColor: "#00b300"
+                            }}
                             disabled={isLoading}>
-                            {isLoading ? <CircularProgress size={24} color="inherit" /> : "Cập nhật"}
+                            {isLoading ? <CircularProgress size={24} /> : "Cập nhật"}
                         </Button>
                     </DialogActions>
                 </form>
