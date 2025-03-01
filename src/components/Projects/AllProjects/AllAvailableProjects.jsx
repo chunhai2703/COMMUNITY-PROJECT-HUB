@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import classes from "./AllAvailableProjects.module.css";
 import classNames from "classnames/bind";
 import { SearchOutlined } from "@ant-design/icons";
 import { ProjectsList } from "./ProjectsList/ProjectsList";
+import useAuth from '../../../hooks/useAuth';
 
 
 const cx = classNames.bind(classes);
@@ -10,12 +11,13 @@ const cx = classNames.bind(classes);
 export const AllAvailableProjects = () => {
   const [searchValue, setSearchValue] = useState("");
   const [projects, setProjects] = useState([]);
+  const { user } = useAuth();
 
   // Hàm gọi API để lấy danh sách dự án theo từ khóa tìm kiếm
-  const fetchProjects = async (searchQuery = "") => {
+  const fetchProjects = useCallback(async (searchQuery = "") => {
     try {
       const response = await fetch(
-        `http://localhost:5145/api/Project/available-project?searchValue=${searchQuery}`,
+        `http://localhost:5145/api/Project/available-project?userId=${user.accountId}&searchValue=${searchQuery}`,
         {
           method: "GET",
           headers: {
@@ -24,19 +26,28 @@ export const AllAvailableProjects = () => {
           },
         }
       );
-      if (!response.ok) throw new Error("Lỗi khi lấy dữ liệu");
 
       const resData = await response.json();
-      setProjects(resData.result);
+      if (!response.ok) {
+        throw new Response(
+          JSON.stringify({ message: resData.message }),
+          {
+            status: resData.statusCode,
+          }
+        );
+      }
+     setProjects(resData.result);
+  
     } catch (error) {
-      console.error("Lỗi lấy dự án:", error);
+      console.error("Lỗi khi lấy dự án:", error);
+      throw error; // Ném lỗi để component xử lý
     }
-  };
+  }, [user?.accountId]);
 
   // Gọi API khi component được mount để lấy danh sách ban đầu
   useEffect(() => {
     fetchProjects();
-  }, []);
+  }, [fetchProjects]);
 
   // Theo dõi searchValue, nếu rỗng thì tự động lấy tất cả dự án
   useEffect(() => {
@@ -47,7 +58,7 @@ export const AllAvailableProjects = () => {
     }, 500); // Tránh spam API, chờ 500ms
 
     return () => clearTimeout(delaySearch);
-  }, [searchValue]);
+  }, [searchValue, fetchProjects]);
 
   // Xử lý khi nhấn nút tìm kiếm
   const handleSearch = () => {

@@ -192,10 +192,10 @@ export async function loadRelatedProjects(accountId) {
 
 
 // load dự án có sẵn với người dùng
-export async function loadAvailableProjects() {
+export async function loadAvailableProjects(accountId) {
   try {
     const response = await fetch(
-      `${baseUrl}/api/Project/available-project`, {
+      `${baseUrl}/api/Project/available-project?userId=${accountId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

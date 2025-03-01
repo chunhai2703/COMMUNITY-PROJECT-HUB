@@ -48,6 +48,30 @@ const DUMMY = [
     time: 7,
     status: 1
   },
+  {
+    id: '6',
+    title: 'SE1715 - Cách sử dụng A.I. trong giảng dạy',
+    user: 'Ocean',
+    message: "Tui biết rồi",
+    time: 7,
+    status: 1
+  },
+  {
+    id: '7',
+    title: 'SE1715 - Cách sử dụng A.I. trong giảng dạy',
+    user: 'Ocean',
+    message: "Tui biết rồi",
+    time: 7,
+    status: 1
+  },
+  {
+    id: '8',
+    title: 'SE1715 - Cách sử dụng A.I. trong giảng dạy',
+    user: 'Ocean',
+    message: "Tui biết rồi",
+    time: 7,
+    status: 0
+  },
 ]
 
 export const ChatList = () => {

@@ -40,19 +40,11 @@
   border: 1px solid white;
   background-color: transparent;
 }
-.project-detail-update {
+.project-detail-backlog {
   background-color: transparent;
   border: none;
   font-weight: 600;
-  color: #12cf3e;
-  border: none;
-  cursor: pointer;
-}
-.project-detail-delete {
-  background-color: transparent;
-  border: none;
-  font-weight: 600;
-  color: rgb(232, 52, 52);
+  color: #ffd93d;
   border: none;
   cursor: pointer;
 }

@@ -72,8 +72,6 @@ export const ProjectUpdateForm = (props) => {
       formData.append("applicationStartDate", data.applicationStartDate);
       formData.append("applicationEndDate", data.applicationEndDate);
       formData.append("address", data.address);
-      formData.append("numberTraineeEachGroup", data.numberTraineeEachGroup);
-
 
       // Đảm bảo `projectManagerId` hợp lệ
       console.log("Dữ liệu projectManager account ID:", data.projectManager.accountId);
@@ -292,31 +290,6 @@ export const ProjectUpdateForm = (props) => {
                 />
               )}
             />
-
-            {/* Tổng số sinh viên hố trợ (mỗi nhóm) */}
-            <Controller
-              name="numberTraineeEachGroup"
-              id="numberTraineeEachGroup"
-              control={control}
-              defaultValue={props.project.numberTraineeEachGroup}
-              rules={{
-                required: 'Vui lòng nhập số học viên mỗi nhóm',
-              }}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Số học viên mỗi nhóm"
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
-                  type='number'
-                  error={!!errors.numberTraineeEachGroup}
-                  helperText={errors.numberTraineeEachGroup?.message}
-                />
-              )}
-            />
-
-
 
             {/* Quản lý dự án */}
             <Controller
