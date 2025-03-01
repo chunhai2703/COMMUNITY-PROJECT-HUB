@@ -98,7 +98,6 @@ export const ProjectCreateForm = () => {
       formData.append("applicationStartDate", data.applicationStartDate);
       formData.append("applicationEndDate", data.applicationEndDate);
       formData.append("address", data.address);
-      formData.append("numberTraineeEachGroup", data.numberTraineeEachGroup);
 
       data.lessonList.forEach((lesson) => {
         if (lesson.value) {
@@ -144,20 +143,6 @@ export const ProjectCreateForm = () => {
         <PlusCircleOutlined color='white' size={20} style={{ marginRight: '5px' }} />
         Tạo dự án
       </button>
-
-      {/* ✅ Hiển thị Alert nếu có lỗi
-      {Array.isArray(errorMessages) && errorMessages.length > 0 && (
-        <Alert
-          message="Thông báo lỗi"
-          description={errorMessages.map((error, index) => (
-            <p key={index} style={{ marginTop: 5 }}>{error}</p>
-          ))}
-          type="error"
-          closable
-          showIcon
-          onClose={() => setErrorMessages([])}
-        />
-      )} */}
       {contextHolder}
       <Dialog
         open={open}
@@ -342,29 +327,6 @@ export const ProjectCreateForm = () => {
                 />
               )}
             />
-            {/* Tổng số sinh viên hố trợ (mỗi nhóm) */}
-            <Controller
-              name="numberTraineeEachGroup"
-              id="numberTraineeEachGroup"
-              control={control}
-              defaultValue="1"
-              rules={{
-                required: 'Vui lòng nhập số học viên mỗi nhóm',
-              }}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Số học viên mỗi nhóm"
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
-                  type='number'
-                  error={!!errors.numberTraineeEachGroup}
-                  helperText={errors.numberTraineeEachGroup?.message}
-                />
-              )}
-            />
-
             {/* Quản lý dự án */}
             <Controller
               name="projectManager"

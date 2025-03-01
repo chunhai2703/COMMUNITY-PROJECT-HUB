@@ -110,7 +110,6 @@ export const router = createBrowserRouter([
       {
         path: "all-available-projects",
         element: <AvailableProjects />,
-        loader: availableProjectLoader
       },
       {
         path: "project-detail/:projectId",
@@ -188,7 +187,6 @@ export const router = createBrowserRouter([
       {
         path: "all-available-projects",
         element: <AvailableProjects />,
-        loader: availableProjectLoader
       },
       {
         path: "project-detail/:projectId",

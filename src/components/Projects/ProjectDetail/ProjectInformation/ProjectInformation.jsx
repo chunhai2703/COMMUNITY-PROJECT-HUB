@@ -86,12 +86,9 @@ export const ProjectInformation = (props) => {
 
         <p className={cx('project-number-teacher')}><span className={cx('number-teacher-label', 'label')}>Tổng số giáo viên :</span> <span className={cx('number-teacher-content', 'content')}>{props.project.totalNumberLecturer} người</span></p>
 
-        <p className={cx('project-number-student')}><span className={cx('number-student-label', 'label')}>Số học viên (mỗi nhóm) :</span> <span className={cx('number-student-content', 'content')}>{props.project.numberTraineeEachGroup} người</span></p>
-
         {/* <p className={cx('project-number-member')}><span className={cx('number-member-label', 'label')}>Danh sách thành viên :</span> <span className={cx('number-member-content', 'content')}><ContactsOutlined className={cx('number-member-icon')} onClick={() => navigate(`/home-lecturer/project-registration/${props.project.projectId}`)} /></span></p> */}
 
         {/* <p className={cx('project-number-member')}><span className={cx('number-member-label', 'label')}>Danh sách thành viên :</span> <span className={cx('number-member-content', 'content')} onClick={() => navigate(`/home-lecturer/project-registration/${props.project.projectId}`)} style={{ cursor: 'pointer', fontStyle: 'italic' }}>Xem chi tiết</span></p> */}
-
 
         {user
           && (user.roleId === 4 || (user.roleId === 2 && user.accountId === props.project.projectManagerId))

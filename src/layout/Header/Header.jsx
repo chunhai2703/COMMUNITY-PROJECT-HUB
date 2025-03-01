@@ -91,7 +91,7 @@ export const Header = () => {
       const unreadNotificationIds = notifications
         .filter(n => !n.isRead)
         .map(n => n.notificationId);
-  
+
       if (unreadNotificationIds.length > 0) {
         await UpdateIsReadNotification(unreadNotificationIds);
       }
@@ -123,6 +123,22 @@ export const Header = () => {
     if (response.ok) {
       await logout();
       navigate("/");
+    }
+  };
+
+  const backToHome = () => {
+    if (user && user?.roleId === 1) {
+      window.location.href = `/home-student`;
+    } else if (user && (user?.roleId === 2)) {
+      window.location.href = `/home-lecturer`;
+    } else if (user && (user?.roleId === 3)) {
+      window.location.href = `/home-trainee`;
+    } else if (user && (user?.roleId === 4)) {
+      window.location.href = `/home-department-head`;
+    } else if (user && (user?.roleId === 5)) {
+      window.location.href = `/home-asscociate`;
+    } else if (user && (user?.roleId === 6)) {
+      window.location.href = `/home-business-relation`;
     }
   };
 
@@ -167,7 +183,7 @@ export const Header = () => {
 
   return (
     <header className={cx('header')}>
-      <img src={logo} alt="logo" className={cx('logo')} />
+      <img src={logo} alt="logo" className={cx('logo')} onClick={backToHome} />
       <nav className={cx('nav')}>
         <ul className={cx('nav-list')}>
           <li>

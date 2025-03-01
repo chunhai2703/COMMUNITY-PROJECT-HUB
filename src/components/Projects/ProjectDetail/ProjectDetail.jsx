@@ -1,5 +1,5 @@
 import React from 'react'
-import { EllipsisOutlined } from '@ant-design/icons'
+import { EllipsisOutlined, SolutionOutlined } from '@ant-design/icons'
 import { Dropdown } from 'antd';
 import classes from './ProjectDetail.module.css'
 import classNames from 'classnames/bind'
@@ -19,15 +19,24 @@ export const ProjectDetail = (props) => {
     {
       key: '1',
       label: (
-        <ProjectUpdateForm project={props.project} />
+        <button className={cx('project-detail-backlog')} >
+          <SolutionOutlined style={{ marginRight: '8px'}} /> Xem backlog
+        </button>
       ),
     },
     {
       key: '2',
       label: (
+        <ProjectUpdateForm project={props.project} />
+      ),
+    },
+    {
+      key: '3',
+      label: (
         <ProjectUnactiveForm />
       ),
     },
+
   ];
   return (
     <div className={cx('project-detail-container')}>

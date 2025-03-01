@@ -34,7 +34,7 @@
   flex-direction: column;
   overflow-y: auto;
   overflow-x: hidden;
-  max-height: 400px;
+  max-height: 100vh;
 }
 /* Tùy chỉnh thanh cuộn */
 .chat-list::-webkit-scrollbar {
