@@ -38,6 +38,9 @@
 .active-status {
   background-color: #2d3748;
 }
+.planning-status {
+  background-color: #5d77a2;
+}
 .inactive-status {
   background-color: #9e9c9c;
 }

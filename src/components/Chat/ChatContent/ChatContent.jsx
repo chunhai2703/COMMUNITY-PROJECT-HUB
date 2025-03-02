@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import classes from './ChatContent.module.css';
 import classNames from 'classnames/bind';
-import { Avatar, Badge, Button } from 'antd';
+import { Avatar, Badge, Button, Tooltip } from 'antd';
 import { SendOutlined, UserOutlined } from '@ant-design/icons';
 import useAuth from '../../../hooks/useAuth';
 import { CreateMessage, GetMessage } from '../../../services/MessageApi';
@@ -136,7 +136,9 @@ export const ChatContent = () => {
             <div className={cx('chat-message')}>
               {message.sendAccountId !== user.accountId && <p className={cx('sender')}>{message.sendAccountName}</p>}
               <div className={cx(message.sendAccountId === user.accountId ? 'user-message' : 'admin-message')}>
-                <p>{message.content}</p>
+                <Tooltip title='10pm'>
+                  <p>{message.content}</p>
+                </Tooltip>
               </div>
             </div>
           </div>
