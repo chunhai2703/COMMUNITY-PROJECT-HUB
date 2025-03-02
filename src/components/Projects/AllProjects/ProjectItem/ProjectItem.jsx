@@ -62,6 +62,7 @@ export const ProjectItem = (props) => {
         <div className={cx('project-item-title')}>
           <h2 className={cx('project-item-name')}>{props.title}</h2>
           <span className={cx('project-item-status', {
+            'planning-status': props.status === 'Lên kế hoạch',
             'active-status': props.status === 'Sắp diễn ra' || props.status === 'Đang diễn ra',
             'inactive-status': props.status === 'Hủy' || props.status === 'Hoàn thành',
           })}>

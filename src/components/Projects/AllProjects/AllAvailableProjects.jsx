@@ -4,6 +4,7 @@ import classNames from "classnames/bind";
 import { SearchOutlined } from "@ant-design/icons";
 import { ProjectsList } from "./ProjectsList/ProjectsList";
 import useAuth from '../../../hooks/useAuth';
+import { Spinner } from '../../Spinner/Spinner';
 
 
 const cx = classNames.bind(classes);
@@ -36,20 +37,20 @@ export const AllAvailableProjects = () => {
           }
         );
       }
-     setProjects(resData.result);
-  
+      setProjects(resData.result);
+
     } catch (error) {
       console.error("Lỗi khi lấy dự án:", error);
       throw error; // Ném lỗi để component xử lý
     }
   }, [user?.accountId]);
 
-  // Gọi API khi component được mount để lấy danh sách ban đầu
   useEffect(() => {
-    fetchProjects();
-  }, [fetchProjects]);
+    if (user && user.accountId) {
+      fetchProjects();
+    }
+  }, [fetchProjects, user]);
 
-  // Theo dõi searchValue, nếu rỗng thì tự động lấy tất cả dự án
   useEffect(() => {
     const delaySearch = setTimeout(() => {
       if (searchValue.trim() === "") {
@@ -64,6 +65,11 @@ export const AllAvailableProjects = () => {
   const handleSearch = () => {
     fetchProjects(searchValue);
   };
+
+  if (!user || !user.accountId) {
+    return <Spinner />;
+  }
+
 
   return (
     <div className={cx("all-available-projects-container")}>

@@ -17,7 +17,7 @@ export const ProjectUnactiveForm = () => {
   const confirm = () => {
     modal.confirm({
       title: 'Vô hiệu hóa dự án',
-      icon: <ExclamationCircleOutlined />,
+      icon: <ExclamationCircleOutlined style={{ color: 'red' }} />,
       content: 'Bạn chắc chắn muốn vô hiệu hóa dự án này?',
       okText: 'Đồng ý',
       cancelText: 'Hủy',

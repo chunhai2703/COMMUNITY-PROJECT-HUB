@@ -224,8 +224,3 @@ export async function loadAvailableProjects(accountId) {
   }
 
 }
-export function AvailableProjectsloader() {
-  return {
-    projects: loadAvailableProjects(),
-  };
-}
