@@ -6,12 +6,14 @@ import classNames from 'classnames/bind';
 import { useParams, useNavigate } from 'react-router-dom';
 import { unActiveProject } from '../../../services/ProjectsApi';
 import { toast } from 'react-toastify';
+import useAuth from '../../../hooks/useAuth';
 
 const cx = classNames.bind(classes);
 
 export const ProjectUnactiveForm = () => {
   const [modal, contextHolder] = Modal.useModal();
   const params = useParams();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const confirm = () => {
@@ -27,8 +29,12 @@ export const ProjectUnactiveForm = () => {
         try {
           await unActiveProject(params.projectId);
           toast.success('Vô hiệu hóa dự án thành công');
-          // navigate(`/home-department-head/projects`);
-          window.location.reload();
+          if (user && (user?.roleId === 2)) {
+            navigate(`/home-lecturer/project-detail/${params.projectId}`);
+          } else if (user && (user?.roleId === 4)) {
+            navigate(`/home-department-head/project-detail/${params.projectId}`);
+          }
+      
         } catch (error) {
           toast.error('Không thể vô hiệu hóa dự án');
         }

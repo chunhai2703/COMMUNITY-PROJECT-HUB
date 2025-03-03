@@ -11,15 +11,17 @@ import { EditOutlined } from '@ant-design/icons';
 import { searchLeturers } from '../../../services/LeturerApi';
 import { updateProject } from '../../../services/ProjectsApi';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import useAuth from '../../../hooks/useAuth';
 
 
 const cx = classNames.bind(classes)
 
 export const ProjectUpdateForm = (props) => {
   const [open, setOpen] = useState(false);
-  const [managers, setManagers] = useState([]);
   const [loading, setLoading] = useState(false);
+  const { projectId } = useParams();
+  const { user } = useAuth();
   const navigate = useNavigate();
   console.log(props.project);
 
@@ -33,20 +35,6 @@ export const ProjectUpdateForm = (props) => {
     const today = new Date();
     return today.toISOString().split("T")[0]; // Định dạng YYYY-MM-DD
   };
-
-  const handleSearchManager = async (searchTerm) => {
-    if (!searchTerm) return;
-    setLoading(true);
-    try {
-      const data = await searchLeturers(searchTerm);
-      console.log("Danh sách giảng viên từ API:", data); // Kiểm tra dữ liệu trả về
-      setManagers(data);
-    } catch (error) {
-      console.error("Lỗi tìm kiếm giảng viên:", error);
-    }
-    setLoading(false);
-  };
-
 
 
   const handleClickOpen = () => {
@@ -73,11 +61,6 @@ export const ProjectUpdateForm = (props) => {
       formData.append("applicationEndDate", data.applicationEndDate);
       formData.append("address", data.address);
 
-      // Đảm bảo `projectManagerId` hợp lệ
-      console.log("Dữ liệu projectManager account ID:", data.projectManager.accountId);
-      // formData.append("projectManagerId", String(data.projectManager.accountId) );
-      formData.append("projectManagerId", data?.projectManager?.accountId ? String(data.projectManager.accountId) : '');
-
 
       console.log("Dữ liệu formData trước khi gửi:");
       for (let pair of formData.entries()) {
@@ -87,9 +70,11 @@ export const ProjectUpdateForm = (props) => {
       toast.success("Dự án đã được cập nhật thành công!");
       handleClose();
       reset();
-      // navigate();
-      // window.location.href=(`/home-department-head/project-detail/${props.project.projectId}`);
-      window.location.reload();
+      if (user && (user?.roleId === 2)) {
+        navigate(`/home-lecturer/project-detail/${projectId}`);
+      } else if (user && (user?.roleId === 4)) {
+        navigate(`/home-department-head/project-detail/${projectId}`);
+      }
     } catch (error) {
       console.error("Lỗi khi tạo dự án:", error);
       toast.error(error.message); // Hiển thị danh sách lỗi từ `result`
@@ -160,59 +145,6 @@ export const ProjectUpdateForm = (props) => {
               )}
             />
 
-            {/* Ngày bắt đầu dự án */}
-            <Controller
-              name="startDate"
-              id="startDate"
-              control={control}
-              defaultValue={props.project.startDate ? props.project.startDate.split('T')[0] : ''}
-              rules={{
-                required: 'Vui lòng chọn ngày bắt đầu dự án'
-              }}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Ngày bắt đầu"
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
-                  type='date'
-                  slotProps={{
-                    inputLabel: { shrink: true }, // Thay thế InputLabelProps
-                  }}
-                  inputProps={{ min: getTodayDate() }}
-                  error={!!errors.startDate}
-                  helperText={errors.startDate?.message}
-                />
-              )}
-            />
-
-            {/* Ngày kết thúc dự án */}
-            <Controller
-              name="endDate"
-              id="endDate"
-              control={control}
-              defaultValue={props.project.endDate ? props.project.endDate.split('T')[0] : ''}
-              rules={{
-                required: 'Vui lòng chọn ngày kết thúc dự án'
-              }}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Ngày kết thúc"
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
-                  type='date'
-                  slotProps={{
-                    inputLabel: { shrink: true }, // Thay thế InputLabelProps
-                  }}
-                  inputProps={{ min: getTodayDate() }}
-                  error={!!errors.endDate}
-                  helperText={errors.endDate?.message}
-                />
-              )}
-            />
 
             {/* Ngày bắt đầu đăng ký */}
             <Controller
@@ -268,6 +200,61 @@ export const ProjectUpdateForm = (props) => {
               )}
             />
 
+            {/* Ngày bắt đầu dự án */}
+            <Controller
+              name="startDate"
+              id="startDate"
+              control={control}
+              defaultValue={props.project.startDate ? props.project.startDate.split('T')[0] : ''}
+              rules={{
+                required: 'Vui lòng chọn ngày bắt đầu dự án'
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Ngày bắt đầu"
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  type='date'
+                  slotProps={{
+                    inputLabel: { shrink: true }, // Thay thế InputLabelProps
+                  }}
+                  inputProps={{ min: getTodayDate() }}
+                  error={!!errors.startDate}
+                  helperText={errors.startDate?.message}
+                />
+              )}
+            />
+
+            {/* Ngày kết thúc dự án */}
+            <Controller
+              name="endDate"
+              id="endDate"
+              control={control}
+              defaultValue={props.project.endDate ? props.project.endDate.split('T')[0] : ''}
+              rules={{
+                required: 'Vui lòng chọn ngày kết thúc dự án'
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Ngày kết thúc"
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  type='date'
+                  slotProps={{
+                    inputLabel: { shrink: true }, // Thay thế InputLabelProps
+                  }}
+                  inputProps={{ min: getTodayDate() }}
+                  error={!!errors.endDate}
+                  helperText={errors.endDate?.message}
+                />
+              )}
+            />
+
+
             {/* Địa chi dự án */}
             <Controller
               name="address"
@@ -290,63 +277,19 @@ export const ProjectUpdateForm = (props) => {
                 />
               )}
             />
-
-            {/* Quản lý dự án */}
-            <Controller
-              name="projectManager"
-              control={control}
-              defaultValue={
-                props.project?.projectManagerId && props.project?.projectManagerName
-                  ? { accountId: props.project.projectManagerId, fullName: props.project.projectManagerName, accountName: props.project.accountName }
-                  : null
-              }
-              render={({ field }) => (
-                <Autocomplete
-                  {...field}
-                  options={managers} // Danh sách từ API
-                  getOptionLabel={(option) => option.fullName && option.accountName ? `${option.fullName} - ${option.accountName}` : option.fullName}
-                  isOptionEqualToValue={(option, value) => option.accountId === value?.accountId}
-                  onInputChange={(event, newInputValue) => handleSearchManager(newInputValue)}
-                  onChange={(event, newValue) => {
-                    console.log("Người quản lý được chọn:", newValue);
-                    field.onChange(newValue);
-                  }}
-                  loading={loading}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Quản lý dự án"
-                      variant="outlined"
-                      fullWidth
-                      margin="normal"
-                      defaultValue={field.value?.fullName ? `${field.value.fullName} - ${field.value.accountName}` : ''}
-                      error={!!errors.projectManager}
-                      helperText={errors.projectManager?.message}
-                      slotProps={{
-                        input: {
-                          ...params.InputProps,
-                        },
-                        endAdornment: (
-                          <>
-                            {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                            {params.InputProps.endAdornment}
-                          </>
-                        ),
-                      }}
-                    />
-                  )}
-                />
-              )}
-            />
-
-
           </form>
 
         </DialogContent>
         <DialogActions>
           <button onClick={handleClose} className={cx('cancel-button')}>Hủy</button>
-          <button type="submit" onClick={handleSubmit(onSubmit)} className={cx('create-button')}>
-            Cập nhật
+          <button type="submit" onClick={handleSubmit(onSubmit)} className={cx('create-button')} disabled={loading}>
+            {loading ? (
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <CircularProgress size={24} sx={{ color: "white" }} />
+              </div>
+            ) : (
+              "Cập nhật"
+            )}
           </button>
         </DialogActions>
       </Dialog>

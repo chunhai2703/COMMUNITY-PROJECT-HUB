@@ -1,5 +1,5 @@
 import React from 'react'
-import { EllipsisOutlined, FileTextOutlined} from '@ant-design/icons'
+import { EllipsisOutlined, FileTextOutlined } from '@ant-design/icons'
 import { Dropdown } from 'antd';
 import classes from './ProjectDetail.module.css'
 import classNames from 'classnames/bind'
@@ -11,12 +11,23 @@ import { ProjectUpdateForm } from '../../Popup/Project/ProjectUpdateForm';
 import useAuth from '../../../hooks/useAuth';
 import { Spinner } from '../../Spinner/Spinner';
 import { ProjectChangeStatus } from '../../Popup/Project/ProjectChangeStatus';
+import { useNavigate, useParams } from 'react-router-dom';
 
 
 const cx = classNames.bind(classes)
 export const ProjectDetail = (props) => {
   const { user } = useAuth();
+  const { projectId } = useParams();
+  const navigate = useNavigate();
   console.log(user);
+
+  const moveToProjectLog = () => {
+    if (user && (user?.roleId === 2)) {
+      navigate(`/home-lecturer/project-detail/${projectId}/project-log`);
+    } else if (user && (user?.roleId === 4)) {
+      navigate(`/home-department-head/project-detail/${projectId}/project-log`);
+    }
+  }
   const items = [
     {
       key: '1',
@@ -27,8 +38,8 @@ export const ProjectDetail = (props) => {
     {
       key: '2',
       label: (
-        <button className={cx('project-detail-backlog')} >
-          <FileTextOutlined style={{ marginRight: '8px' }} /> Xem backlog
+        <button className={cx('project-detail-backlog')} onClick={moveToProjectLog} >
+          <FileTextOutlined style={{ marginRight: '8px' }} /> Xem log
         </button>
       ),
     },

@@ -89,25 +89,28 @@ export async function removeRegistration(registrationId) {
 }
 
 export async function approveDenyRegistration(payload) {
-  const response = await fetch(`${baseUrl}/api/Registration/registration`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
-    },
-    body: JSON.stringify(payload),
-  });
+  try {
+    const response = await fetch(`${baseUrl}/api/Registration/registration`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+      },
+      body: JSON.stringify(payload),
+    });
 
-  if (!response.ok) {
-    const errorData = await response.json();
-    console.error("Error details:", errorData);
+    const resData = await response.json();
 
-    // Kiểm tra nếu có mảng `result`
-    if (errorData.result && Array.isArray(errorData.result)) {
-      throw new Error(errorData.result.join("\n")); // Gộp các lỗi thành chuỗi xuống dòng
+    if (!response.ok) {
+      throw new Error(resData.message || "Lỗi không xác định từ API");
     }
 
-    throw new Error((errorData.message || "Lỗi không xác định"));
+    console.log(resData);
+    return resData;
+
+  } catch (error) {
+    console.error(error.message);
+    throw new Error(error.message || "Có lỗi xảy ra khi xác nhận đơn");
   }
 
 }
