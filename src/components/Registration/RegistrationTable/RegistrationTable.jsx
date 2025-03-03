@@ -33,7 +33,10 @@ export const RegistrationTable = () => {
       setTotalItem(responseData.result.totalCount);
       setPageNumber(responseData.result.currentPage);
     } else {
-      console.log("Lỗi khi lấy dữ liệu đơn đăng kí của dự án");
+      setRegistrationList([]);
+      setTotalItem(0);
+      setPageNumber(1);
+      console.log("Lỗi khi láy danh sách đơn đăng kí ");
     }
   };
 
@@ -46,7 +49,7 @@ export const RegistrationTable = () => {
     if (projectId) {
       fetchAllClassesOfProject();
     }
-  }, [pageNumber, projectId, searchValue]);
+  }, [pageNumber, projectId, searchValue, registrationList, rowsPerPage]);
 
 
   const columns = [

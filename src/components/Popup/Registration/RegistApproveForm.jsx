@@ -3,7 +3,7 @@ import { CheckCircleFilled, CheckSquareOutlined } from '@ant-design/icons';
 import { Modal } from 'antd';
 import classes from './RegistApproveForm.module.css';
 import classNames from 'classnames/bind';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { approveDenyRegistration } from '../../../services/RegistrationApi';
 
@@ -11,6 +11,7 @@ const cx = classNames.bind(classes);
 export const RegistApproveForm = (props) => {
   const [modal, contextHolder] = Modal.useModal();
   const navigate = useNavigate();
+  const { projectId } = useParams();
 
   const confirm = () => {
     modal.confirm({
@@ -30,7 +31,7 @@ export const RegistApproveForm = (props) => {
           }
           await approveDenyRegistration(payload);
           toast.success('Đã duyệt đơn đăng kí thành công');
-          window.location.reload();
+          navigate(`/home-lecturer/project-registration/${projectId}`);
         } catch (error) {
           console.error("Lỗi khi duyệt đơn đăng kí:", error);
           toast.error(error.message);

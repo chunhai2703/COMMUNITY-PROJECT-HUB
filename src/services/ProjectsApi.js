@@ -224,3 +224,44 @@ export async function loadAvailableProjects(accountId) {
   }
 
 }
+
+export async function getProjectLog(projectId, searchValue, pageNumber, rowsPerPage) {
+  try {
+    const response = await fetch(`${baseUrl}/api/ProjectLogging/all-project-logging?projectId=${projectId}&searchValue=${searchValue}&pageNumber=${pageNumber}&rowsPerPage=${rowsPerPage}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    return response
+  } catch (error) {
+    console.error("Lỗi khi lấy log của dự án:", error);
+    throw error; // Ném lỗi để component xử lý
+  }
+}
+
+export async function toUpComingProject(projectId) {
+  try {
+    const response = await fetch(`${baseUrl}/api/Project/to-up-coming-status?projectId=${projectId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+      },
+    })
+    const resData = await response.json();
+
+    if (!response.ok) {
+      throw new Error(resData.message || "Lỗi không xác định từ API");
+    }
+
+    console.log("Trạng thái dự án cập nhật thành công:", resData);
+    return resData;
+
+  } catch (error) {
+    console.error("❌ Lỗi khi chuyển trạng thái dự án:", error.message);
+    throw new Error(error.message || "Có lỗi xảy ra khi chuyển trạng thái");
+  }
+
+
+}

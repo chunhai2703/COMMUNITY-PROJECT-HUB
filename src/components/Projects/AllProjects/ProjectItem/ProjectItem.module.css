@@ -39,7 +39,13 @@
   background-color: #2d3748;
 }
 .planning-status {
-  background-color: #5d77a2;
+  background-color: #608BC1;
+}
+.ongoing-status {
+  background-color: #55679C;
+}
+.completed-status {
+  background-color: #0B2F9F;
 }
 .inactive-status {
   background-color: #9e9c9c;

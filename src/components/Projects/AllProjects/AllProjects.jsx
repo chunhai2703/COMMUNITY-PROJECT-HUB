@@ -33,18 +33,18 @@ export const AllProjects = () => {
           }
         );
       }
-     setProjects(resData.result);
-  
+      setProjects(resData.result);
+
     } catch (error) {
       console.error("Lỗi khi lấy dự án:", error);
-      throw error; 
+      throw error;
     }
   };
 
   // Gọi API khi component được mount để lấy danh sách ban đầu
   useEffect(() => {
     fetchProjects();
-  }, []);
+  }, [projects]);
 
   // Theo dõi searchValue, nếu rỗng thì tự động lấy tất cả dự án
   useEffect(() => {
