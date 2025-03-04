@@ -17,7 +17,6 @@ import { ErrorPageDH } from "../pages/ErrorPage/ErrorPageDH";
 import { ErrorPageAdmin } from "../pages/ErrorPage/ErrorPageAdmin";
 import { ErrorPageLogin } from "../pages/ErrorPage/ErrorPageLogin";
 import { Projectsloader as projectLoader, ProjectDetailsLoader as projectDetailLoader } from "../services/ProjectsApi";
-import { AvailableProjectsloader as availableProjectLoader } from "../services/ProjectsApi";
 import ClassDetailPage from "../pages/ClassDetailPage/ClassDetailPage";
 import MaterialManagementPage from "../pages/MaterialManagementPage/MaterialManagementPage";
 import MemberManagementPage from "../pages/MemberManagementPage/MemberManagementPage";
@@ -33,6 +32,7 @@ import { MyRegistrationPage } from "../pages/RegistrationPage/MyRegistrationPage
 import { ProjectRegistrationPage } from "../pages/RegistrationPage/ProjectRegistrationPage";
 import { ChatLayout } from "../components/Chat/ChatLayout/ChatLayout";
 import { ChatContent } from "../components/Chat/ChatContent/ChatContent";
+import { ProjectLog } from "../pages/ProjectsPage/ProjectLog";
 
 
 
@@ -85,6 +85,11 @@ export const router = createBrowserRouter([
         errorElement: <ErrorPage />
       },
       {
+        path: "project-detail/:projectId/project-log",
+        element: <ProjectLog />,
+        errorElement: <ErrorPageDH />
+      },
+      {
         path: "*", // Bắt tất cả các đường dẫn không xác định trong 
         element: <ErrorPageDH />,
         errorElement: <ErrorPage />
@@ -118,7 +123,8 @@ export const router = createBrowserRouter([
       },
       {
         path: 'project-registration/:projectId',
-        element: <ProjectRegistrationPage />
+        element: <ProjectRegistrationPage />,
+        errorElement: <ErrorPageLecturer />
       },
       {
         path: "my-registration",
@@ -138,6 +144,11 @@ export const router = createBrowserRouter([
         path: "project-detail/:projectId/member-list",
         element: <MemberManagementPage />,
         errorElement: <ErrorPage />
+      },
+      {
+        path: "project-detail/:projectId/project-log",
+        element: <ProjectLog />,
+        errorElement: <ErrorPageLecturer />
       },
       {
         path: "chat",

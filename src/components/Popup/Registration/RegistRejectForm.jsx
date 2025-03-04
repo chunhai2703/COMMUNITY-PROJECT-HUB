@@ -5,10 +5,13 @@ import classes from './RegistRejectForm.module.css';
 import classNames from 'classnames/bind';
 import { toast } from 'react-toastify';
 import { approveDenyRegistration } from '../../../services/RegistrationApi';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const cx = classNames.bind(classes);
 export const RegistRejectForm = (props) => {
   const [modal, contextHolder] = Modal.useModal();
+  const navigate = useNavigate();
+  const { projectId } = useParams();
 
 
   const confirm = () => {
@@ -29,10 +32,10 @@ export const RegistRejectForm = (props) => {
           }
           await approveDenyRegistration(payload);
           toast.success('Đã từ chối đơn đăng kí thành công');
-          window.location.reload();
+          navigate(`/home-lecturer/project-registration/${projectId}`);
         } catch (error) {
           console.error("Lỗi khi từ chối đơn đăng kí:", error);
-          toast.error(error.message);
+          toast.error(error.message || error.result);
         }
       },
     });

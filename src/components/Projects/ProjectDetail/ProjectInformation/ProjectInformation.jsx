@@ -133,7 +133,7 @@ export const ProjectInformation = (props) => {
       </div>
       <div className={cx('project-material-buttons')}>
         <button className={cx('project-material-button')} onClick={() => handleClickMaterial()}>Xem tài liệu</button>
-        {user?.fullName === props.project.projectManagerName && (
+        {user && user.accountId === props.project.projectManagerId && (
           <button className={cx('project-register-button')} onClick={() => navigate(`/home-lecturer/project-registration/${props.project.projectId}`)}>Xem đăng kí</button>
         )}
 

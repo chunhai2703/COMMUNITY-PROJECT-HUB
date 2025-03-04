@@ -44,7 +44,15 @@
   background-color: transparent;
   border: none;
   font-weight: 600;
-  color: #ffd93d;
+  color: #00879E;
+  border: none;
+  cursor: pointer;
+}
+.project-detail-status-change {
+  background-color: transparent;
+  border: none;
+  font-weight: 600;
+  color: #B8D576;
   border: none;
   cursor: pointer;
 }

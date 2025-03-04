@@ -123,7 +123,7 @@ export const ProjectCreateForm = () => {
       toast.success("Dự án đã được tạo thành công!");
       handleClose();
       reset();
-      window.location.reload();
+      navigate('/home-department-head/projects');
 
     } catch (error) {
       console.error("Lỗi khi tạo dự án:", error);
@@ -440,8 +440,14 @@ export const ProjectCreateForm = () => {
         </DialogContent>
         <DialogActions>
           <button onClick={handleClose} className={cx('cancel-button')}>Hủy</button>
-          <button type="submit" onClick={handleSubmit(onSubmit)} className={cx('create-button')}>
-            Tạo mới
+          <button type="submit" onClick={handleSubmit(onSubmit)} className={cx('create-button')} disabled={loading}>
+            {loading ? (
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <CircularProgress size={24} sx={{ color: "white" }} />
+              </div>
+            ) : (
+              "Tạo mới"
+            )}
           </button>
         </DialogActions>
       </Dialog>

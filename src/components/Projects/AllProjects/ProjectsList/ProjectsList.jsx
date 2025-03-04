@@ -16,7 +16,7 @@ export const ProjectsList = (props) => {
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const currentProjects = props.projects.slice(startIndex, endIndex);
 
-  if (currentProjects.length === 0) {
+  if (!props.projects || props.projects.length === 0) {
     return (
       <div className={cx('projects-list-container')}>
         <div className={cx('projects-list')}>

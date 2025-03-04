@@ -24,19 +24,27 @@ export const AllProjects = () => {
           },
         }
       );
-      if (!response.ok) throw new Error("Lỗi khi lấy dữ liệu");
-
       const resData = await response.json();
+      if (!response.ok) {
+        throw new Response(
+          JSON.stringify({ message: resData.message }),
+          {
+            status: resData.statusCode,
+          }
+        );
+      }
       setProjects(resData.result);
+
     } catch (error) {
-      console.error("Lỗi lấy dự án:", error);
+      console.error("Lỗi khi lấy dự án:", error);
+      throw error;
     }
   };
 
   // Gọi API khi component được mount để lấy danh sách ban đầu
   useEffect(() => {
     fetchProjects();
-  }, []);
+  }, [projects]);
 
   // Theo dõi searchValue, nếu rỗng thì tự động lấy tất cả dự án
   useEffect(() => {
