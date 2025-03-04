@@ -9,11 +9,12 @@ import { debounce } from 'lodash';
 import useAuth from '../../../../hooks/useAuth';
 import { Spinner } from '../../../Spinner/Spinner';
 import { RegisterClassForm } from '../../../Popup/Class/RegisterClassForm';
+import { ClassGroupForm } from '../../../Popup/Class/ClassGroupForm';
 
 
 const cx = classNames.bind(classes);
 
-export const ClassTable = () => {
+export const ClassTable = (props) => {
   const navigate = useNavigate();
   const { projectId } = useParams();
   const { user } = useAuth();
@@ -67,23 +68,40 @@ export const ClassTable = () => {
     }
   };
 
-  const getMenuItems = (classId) => [
-    {
-      key: '1',
-      label: (
-        <button
-          className={cx('view-detail', 'detail-button')}
-          onClick={() => handleNavigateToDetail(navigate, projectId, classId)}
-        >
-          <InfoCircleOutlined style={{ marginRight: '8px' }} /> Xem chi tiết
-        </button>
-      ),
-    },
-    ...(user?.roleId !== 4 ? [{
-      key: '2',
-      label: <RegisterClassForm classId={classId} />,
-    }] : [])
-  ];
+  const getMenuItems = (classData) => {
+    let items = [
+      {
+        key: '1',
+        label: (
+          <button
+            className={cx('view-detail', 'detail-button')}
+            onClick={() => handleNavigateToDetail(navigate, projectId, classData.classId)}
+          >
+            <InfoCircleOutlined style={{ marginRight: '8px' }} /> Xem chi tiết
+          </button>
+        ),
+      },
+    ];
+  
+    if (
+      (user?.roleId === 1 && classData.studentSlotAvailable !== null && props.project.status === "Sắp diễn ra") ||
+      (user?.roleId === 2 && user?.accountId !== props.project.projectManagerId && classData.lecturerSlotAvailable !== 0 && props.project.status === "Sắp diễn ra")
+    ) {
+      items.push({
+        key: '2',
+        label: <RegisterClassForm classId={classData.classId} />,
+      });
+    }
+  
+    if (user?.roleId === 2 && user?.accountId === props.project.projectManagerId && props.project.status === "Lên kế hoạch") {
+      items.push({
+        key: '3',
+        label: <ClassGroupForm classData={classData} fetchAllClassesOfProject={fetchAllClassesOfProject} />,
+      });
+    }
+  
+    return items;
+  };
 
   const columns = [
     {
@@ -96,6 +114,12 @@ export const ClassTable = () => {
       title: 'Giảng viên',
       dataIndex: 'lecturerName',
       key: 'teacher',
+      align: 'center',
+    },
+    {
+      title: 'Email',
+      dataIndex: 'lecturerEmail',
+      key: 'lecturerEmail',
       align: 'center',
     },
     {
@@ -138,7 +162,7 @@ export const ClassTable = () => {
       render: (record) => (
         <Dropdown
           menu={{
-            items: getMenuItems(record.classId),
+            items: getMenuItems(record),
           }}
           placement="bottomRight"
           trigger={['click']}
