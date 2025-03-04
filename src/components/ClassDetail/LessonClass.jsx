@@ -6,8 +6,9 @@ import { Button, TextField } from "@mui/material";
 import { Edit } from "@mui/icons-material";
 import { GetAllLessonClassOfClass, UpdateLessonClass } from "../../services/ClassApi";
 import { toast } from "react-toastify";
+import useAuth from "../../hooks/useAuth";
 
-const LessonClass = ({ projectId, classId }) => {
+const LessonClass = ({ projectId, classId, dataClass }) => {
     const { control, handleSubmit, setValue, reset, formState: { errors } } = useForm({
         defaultValues: { lessons: [] }
     });
@@ -15,6 +16,7 @@ const LessonClass = ({ projectId, classId }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [lessonClassList, setLessonClassList] = useState([]);
+    const { user } = useAuth();
 
     const formatOnlyDate = (dateString) => {
         const date = new Date(dateString);
@@ -92,52 +94,56 @@ const LessonClass = ({ projectId, classId }) => {
     };
 
 
-    if (isLoading) {
+    if (isLoading || !user) {
         return <Spinner />;
     }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px", marginBottom: 20 }}>
-                {isEditing ? (
-                    <>
-                        <Button
-                            variant="contained"
-                            sx={{ backgroundColor: "#D45B13" }}
-                            onClick={(e) => {
-                                if (isEditing) {
-                                    e.preventDefault();
-                                    toggleEdit();
-                                }
-                            }}
-                        >
-                            Hủy
-                        </Button>
-                        <Button
-                            variant="contained"
-                            sx={{ backgroundColor: "#2F903F" }}
-                            type="submit"
-                        >
-                            Lưu
-                        </Button>
-                    </>
-                ) : (
-                    <Button
-                        variant="contained"
-                        sx={{ backgroundColor: "#474D57" }}
-                        startIcon={<Edit />}
-                        type="button"
-                        onClick={(e) => {
-                            if (!isEditing) {
-                                e.preventDefault();
-                                toggleEdit();
-                            }
-                        }}
-                    >
-                        Cập nhật
-                    </Button>
+            {((user.roleId === 4 && dataClass.projectStatus === "Lên kế hoạch")
+                || (user.roleId === 2 && user.accountId === dataClass.projectManagerId && dataClass.projectStatus === "Lên kế hoạch")) && (
+                    <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px", marginBottom: 20 }}>
+                        {isEditing ? (
+                            <>
+                                <Button
+                                    variant="contained"
+                                    sx={{ backgroundColor: "#D45B13" }}
+                                    onClick={(e) => {
+                                        if (isEditing) {
+                                            e.preventDefault();
+                                            toggleEdit();
+                                        }
+                                    }}
+                                >
+                                    Hủy
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    sx={{ backgroundColor: "#2F903F" }}
+                                    type="submit"
+                                >
+                                    Lưu
+                                </Button>
+                            </>
+                        ) : (
+                            <Button
+                                variant="contained"
+                                sx={{ backgroundColor: "#474D57" }}
+                                startIcon={<Edit />}
+                                type="button"
+                                onClick={(e) => {
+                                    if (!isEditing) {
+                                        e.preventDefault();
+                                        toggleEdit();
+                                    }
+                                }}
+                            >
+                                Cập nhật
+                            </Button>
+                        )}
+                    </div>
                 )}
-            </div>
+
 
 
             {lessonClassList.length === 0 ? (

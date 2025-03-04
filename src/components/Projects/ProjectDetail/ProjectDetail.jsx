@@ -96,7 +96,7 @@ export const ProjectDetail = (props) => {
       </header>
       <ProjectInformation project={props.project} />
       <ProjectLesson project={props.project} />
-      <ProjectClass />
+      <ProjectClass project={props.project}/>
     </div>
   )
 }
