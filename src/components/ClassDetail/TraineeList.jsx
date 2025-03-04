@@ -72,16 +72,6 @@ const TraineeList = () => {
         fetchAllTrainee();
     }, [pageNumber, sortColumn, sortOrder, classId]);
 
-    useEffect(() => {
-        const delaySearch = setTimeout(() => {
-            if (searchValue.trim() === "") {
-                fetchAllTrainee();
-            }
-        }, 500);
-
-        return () => clearTimeout(delaySearch);
-    }, [searchValue]);
-
     const handleDetailOpen = (trainee) => {
         setSelectedTrainee(trainee);
         setOpenDetail(true);

@@ -8,9 +8,11 @@ import EvaluateResult from "./EvaluateResult";
 import { useParams } from "react-router-dom";
 import { GetClassDetail } from "../../services/ClassApi";
 import { Spinner } from "../Spinner/Spinner";
+import useAuth from "../../hooks/useAuth";
 const ClassDetail = () => {
     const [activeTab, setActiveTab] = useState("lesson");
     const { classId } = useParams();
+    const { user } = useAuth();
     const { projectId } = useParams();
     const [dataClass, setDataClass] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -19,6 +21,7 @@ const ClassDetail = () => {
         setIsLoading(true);
         const response = await GetClassDetail(classId)
         const responseData = await response.json();
+        console.log(responseData.result)
         if (response.ok) {
             setDataClass(responseData.result);
         } else {
@@ -33,7 +36,7 @@ const ClassDetail = () => {
         }
     }, [classId])
 
-    if (!dataClass) {
+    if (!dataClass || !user) {
         return <Spinner />
     }
 
@@ -52,9 +55,9 @@ const ClassDetail = () => {
                     <div className={style.info}>
                         <div className="flex mb-5">
                             <p className="mr-10 font-bold w-1/3"><RecordVoiceOver /> Giảng viên</p>
-                            {dataClass.ClasslecturerName ? (
+                            {dataClass.lecturerName ? (
                                 <p>
-                                    {dataClass.ClasslecturerName}
+                                    {dataClass.lecturerName}
                                 </p>
                             ) : (
                                 <p style={{ color: 'red' }}>
@@ -92,14 +95,30 @@ const ClassDetail = () => {
                         className={`${style.tab} ${activeTab === "lesson" ? style.active : ""}`}
                         onClick={() => setActiveTab("lesson")}
                     >Buổi học</button>
-                    <button
-                        className={`${style.tab} ${activeTab === "traineeList" ? style.active : ""}`}
-                        onClick={() => setActiveTab("traineeList")}
-                    >Danh sách học viên</button>
-                    <button
-                        className={`${style.tab} ${activeTab === "evaluateResult" ? style.active : ""}`}
-                        onClick={() => setActiveTab("evaluateResult")}
-                    >Đánh giá kết quả</button>
+                    {(user.roleId === 4
+                        || (user.roleId === 2 && user.accountId === dataClass.projectManagerId)
+                        || (user.roleId === 2 && user.accountId === dataClass.lecturerId)
+                        || (user.roleId === 1 && dataClass.getMemberOfClassDTOs.some(member => member.accountId === user.accountId)))
+                        && (
+                            <button
+                                className={`${style.tab} ${activeTab === "traineeList" ? style.active : ""}`}
+                                onClick={() => setActiveTab("traineeList")}
+                            >
+                                Danh sách học viên
+                            </button>
+                        )}
+
+                    {(user.roleId === 4
+                        || (user.roleId === 2 && user.accountId === dataClass.projectManagerId)
+                        || (user.roleId === 2 && user.accountId === dataClass.lecturerId))
+                        && (
+                            <button
+                                className={`${style.tab} ${activeTab === "evaluateResult" ? style.active : ""}`}
+                                onClick={() => setActiveTab("evaluateResult")}
+                            >
+                                Đánh giá kết quả
+                            </button>
+                        )}
                 </div>
                 <div style={{ backgroundColor: "#474D57", padding: "10px 30px", color: "white" }}>
                     <p style={{ fontSize: 24 }}>{dataClass.projectTitle}</p>
@@ -108,9 +127,19 @@ const ClassDetail = () => {
 
 
                 <div className={style.componentTab}>
-                    {activeTab === "lesson" && <LessonClass projectId={projectId} classId={classId} />}
-                    {activeTab === "traineeList" && <TraineeList />}
-                    {activeTab === "evaluateResult" && <EvaluateResult />}
+                    {activeTab === "lesson" && <LessonClass projectId={projectId} classId={classId} dataClass={dataClass} />}
+                    {(user.roleId === 4
+                        || (user.roleId === 2 && user.accountId === dataClass.projectManagerId)
+                        || (user.roleId === 2 && user.accountId === dataClass.lecturerId)
+                        || (user.roleId === 1 && dataClass.getMemberOfClassDTOs.some(member => member.accountId === user.accountId)))
+                        && (activeTab === "traineeList" && <TraineeList />
+                        )}
+
+                    {(user.roleId === 4
+                        || (user.roleId === 2 && user.accountId === dataClass.projectManagerId)
+                        || (user.roleId === 2 && user.accountId === dataClass.lecturerId))
+                        && (activeTab === "evaluateResult" && <EvaluateResult />
+                        )}
                 </div>
             </div>
         </div>
