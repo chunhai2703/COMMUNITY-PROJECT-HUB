@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { SettingOutlined, HomeOutlined, FolderOutlined, MailOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
-import { Badge, Menu } from 'antd';
+import {Menu } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 export const SideBarDH = () => {
@@ -47,15 +47,13 @@ export const SideBarDH = () => {
       key: 'message',
       label: 'Tin Nhắn',
       icon: collapsed ? (
-        <span style={{ marginTop: '10px' }}>
-          <Badge count={5} size='default'>
+       
+          
             <MailOutlined style={{ fontSize: 20 }} />
-          </Badge>
-        </span>
+        
       ) : (
-        <Badge count={5} size={'small'}>
+       
           <MailOutlined style={{ fontSize: 18 }} />
-        </Badge>
       ),
       onClick: () => navigate('/home-department-head/chat'),
     },

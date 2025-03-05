@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { ConfigProvider, Table } from 'antd';
-import { SearchOutlined, EyeInvisibleOutlined, RightOutlined } from '@ant-design/icons';
+import { SearchOutlined, EyeInvisibleOutlined} from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
 import { debounce } from 'lodash';
 import useAuth from '../../../hooks/useAuth';
@@ -9,7 +9,7 @@ import classNames from 'classnames/bind'
 import { Spinner } from '../../Spinner/Spinner';
 import { getProjectLog } from '../../../services/ProjectsApi';
 import { DatePicker } from 'antd';
-import { ArrowRightOutlined } from '@mui/icons-material';
+
 
 const { RangePicker } = DatePicker;
 
