@@ -19,7 +19,7 @@ export const RegisterClassForm = (props) => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const { handleSubmit, control, register, reset, formState: { errors } } = useForm();
+  const { handleSubmit, control,reset, formState: { errors } } = useForm();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -56,7 +56,7 @@ export const RegisterClassForm = (props) => {
 
   return (
     <React.Fragment>
-      <button className={cx('detail-register', 'detail-button')} onClick={handleClickOpen}>
+      <button className={cx('register-class-button')} onClick={handleClickOpen}>
         <ContainerOutlined style={{ marginRight: '8px' }} /> Đăng ký
       </button>
       <Dialog

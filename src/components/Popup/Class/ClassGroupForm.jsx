@@ -6,7 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Controller, useForm } from 'react-hook-form';
 import { ContainerOutlined, UsergroupAddOutlined } from '@ant-design/icons';
-import classes from './RegisterClassForm.module.css'
+import classes from './ClassGroupForm.module.css'
 import classNames from 'classnames/bind';
 import useAuth from '../../../hooks/useAuth';
 import { createRegistration } from '../../../services/RegistrationApi';
@@ -51,7 +51,7 @@ export const ClassGroupForm = ({ classData, fetchAllClassesOfProject }) => {
 
     return (
         <React.Fragment>
-            <button className={cx('detail-register', 'detail-button')} onClick={handleClickOpen}>
+            <button className={cx('class-group-button')} onClick={handleClickOpen}>
                 <UsergroupAddOutlined style={{ marginRight: '8px' }} /> Chia nhóm
             </button>
             <Dialog
@@ -60,7 +60,7 @@ export const ClassGroupForm = ({ classData, fetchAllClassesOfProject }) => {
             >
                 <DialogTitle style={{ backgroundColor: "#474D57", color: "white" }} >Chia nhóm - Tổng số học viên của lớp: {classData.totalTrainee}</DialogTitle>
                 <DialogContent>
-                    <form className={cx('register-class-form')}>
+                    <form className={cx('class-group-form')}>
                         {/* Mô tả dự án */}
                         <Controller
                             name="numberGroup"

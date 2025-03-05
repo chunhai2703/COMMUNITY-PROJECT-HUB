@@ -8,7 +8,7 @@ import {
 import { } from '@mui/icons-material';
 import { Controller, useForm } from 'react-hook-form';
 import { EditOutlined } from '@ant-design/icons';
-import { searchLeturers } from '../../../services/LeturerApi';
+import { searchLeturers } from '../../../services/AssignApi';
 import { updateProject } from '../../../services/ProjectsApi';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';

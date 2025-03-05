@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ConfigProvider, Table } from 'antd';
 import { SearchOutlined, EyeInvisibleOutlined, RightOutlined } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
@@ -27,9 +27,22 @@ export const ProjectsLog = () => {
     const [dateRange, setDateRange] = useState([]); // Lưu khoảng ngày được chọn
     const [searchValue, setSearchValue] = useState("");
     const [totalItem, setTotalItem] = useState(0);
-    const [isExpanded, setIsExpanded] = useState(false);
+    const [expandedRows, setExpandedRows] = useState(new Set());
 
-    const fetchAllLogOfProject = async () => {
+
+    const toggleExpand = (recordId) => {
+        setExpandedRows(prev => {
+            const newExpandedRows = new Set(prev);
+            if (newExpandedRows.has(recordId)) {
+                newExpandedRows.delete(recordId); // Đóng nếu đã mở
+            } else {
+                newExpandedRows.add(recordId); // Mở nếu chưa mở
+            }
+            return newExpandedRows;
+        });
+    };
+
+    const fetchAllLogOfProject = useCallback(async () => {
         const response = await getProjectLog(projectId, searchValue, pageNumber, rowsPerPage);
         const responseData = await response.json();
 
@@ -38,7 +51,7 @@ export const ProjectsLog = () => {
             setOriginalProjectLog(logs); // Lưu dữ liệu gốc
             setFilteredProjectLog(logs); // Ban đầu hiển thị toàn bộ
             setTotalItem(responseData.result.totalCount);
-            setPageNumber(responseData.result.currentPage);
+            // setPageNumber(responseData.result.currentPage);
         } else {
             setOriginalProjectLog([]); // Lưu dữ liệu gốc
             setFilteredProjectLog([]); // Ban đầu hiển thị toàn bộ
@@ -46,18 +59,19 @@ export const ProjectsLog = () => {
             setPageNumber(1);
             console.log("Lỗi khi lấy log dự án");
         }
-    };
+    }, [pageNumber, projectId, searchValue, rowsPerPage]);
 
-    const handleInputSearch = debounce((e) => {
-        setSearchValue(e.target.value);
-        setPageNumber(1);
-    }, 500);
 
     useEffect(() => {
         if (projectId) {
             fetchAllLogOfProject();
         }
-    }, [pageNumber, projectId, searchValue, rowsPerPage, filteredProjectLog]);
+    }, [fetchAllLogOfProject, projectId]);
+
+    const handleInputSearch = debounce((value) => {
+        setSearchValue(value);
+        setPageNumber(1); // Reset về trang đầu tiên khi tìm kiếm
+    }, 500);
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -68,32 +82,50 @@ export const ProjectsLog = () => {
         }).format(date);
     };
 
+    const convertToISODate = (dateStr) => {
+        const [day, month, year] = dateStr.split("/");
+        return `${year}-${month}-${day}`;
+    };
+
+
     const filterLogsByDate = (dates, dateStrings) => {
         if (!dates || dateStrings[0] === "" || dateStrings[1] === "") {
-            // Nếu không có ngày được chọn, hiển thị toàn bộ dữ liệu gốc
+
             setFilteredProjectLog(originalProjectLog);
-            setDateRange([]); // Xóa khoảng ngày đã chọn
+            setDateRange([]);
             return;
         }
 
         setDateRange(dateStrings);
         const [startDate, endDate] = dateStrings;
 
+
+        const start = new Date(convertToISODate(startDate)).setHours(0, 0, 0, 0);
+        const end = new Date(convertToISODate(endDate)).setHours(23, 59, 59, 999);
+
+
+
         // Lọc log theo khoảng thời gian
         const filteredLogs = originalProjectLog.filter(log => {
-            const logDate = new Date(log.actionDate);
-            return logDate >= new Date(startDate) && logDate <= new Date(endDate);
+            const logDate = new Date(log.actionDate).getTime();
+            return logDate >= start && logDate <= end;
         });
 
-        setFilteredProjectLog(filteredLogs);
+        if (filteredLogs.length === 0) {
+            // Nếu không có dữ liệu, cập nhật danh sách rỗng
+            setFilteredProjectLog([]);
+        } else {
+            setFilteredProjectLog(filteredLogs);
+        }
     };
+
 
 
     const columns = [
         {
             title: 'STT',
-            dataIndex: 'index',
-            key: 'index',
+            dataIndex: 'projectNoteId',
+            key: 'projectNoteId',
             align: 'center',
             render: (_, __, index) => index + 1 + (pageNumber - 1) * rowsPerPage,
         },
@@ -120,39 +152,33 @@ export const ProjectsLog = () => {
             dataIndex: 'actionContent',
             key: 'actionContent',
             align: 'center',
-            render: (text) => {
-
-                return (
-                    <div style={{ cursor: "pointer" }} onClick={() => setIsExpanded(!isExpanded)}>
-                        {!isExpanded ? (
-                            <EyeInvisibleOutlined style={{ fontSize: "16px", fontWeight: "bold" }} />
-                        ) : (
-                            <p style={{ textAlign: "left" }}>
-                                {text.split("\n").map((line, index) => (
-                                    <span key={index}>
-                                        {line}
-                                        <br />
-                                    </span>
-                                ))}
-                            </p>
-                        )}
-                    </div>
-                );
-            },
+            render: (text, record) => (
+                <div style={{ cursor: "pointer" }} onClick={() => toggleExpand(record.projectNoteId)}>
+                    {!expandedRows.has(record.projectNoteId) ? (
+                        <EyeInvisibleOutlined style={{ fontSize: "16px", fontWeight: "bold" }} />
+                    ) : (
+                        <p style={{ textAlign: "left" }}>
+                            {text.split("\n").map((line, index) => (
+                                <span key={index}>
+                                    {line}
+                                    <br />
+                                </span>
+                            ))}
+                        </p>
+                    )}
+                </div>
+            ),
         },
         {
             title: 'Ghi chú',
             dataIndex: 'noteContent',
             key: 'noteContent',
             align: 'center',
-            render: (text) => {
-                if (!text) {
-                    return <span>-</span>; // Hiển thị dấu "-" nếu text null hoặc undefined
-                }
-
+            render: (text, record) => {
+                if (!text) return <span>-</span>;
                 return (
-                    <div style={{ cursor: "pointer" }} onClick={() => setIsExpanded(!isExpanded)}>
-                        {!isExpanded ? (
+                    <div style={{ cursor: "pointer" }} onClick={() => toggleExpand(record.projectNoteId)}>
+                        {!expandedRows.has(record.projectNoteId) ? (
                             <EyeInvisibleOutlined style={{ fontSize: "16px", fontWeight: "bold" }} />
                         ) : (
                             <p style={{ textAlign: "left" }}>
@@ -167,7 +193,7 @@ export const ProjectsLog = () => {
                     </div>
                 );
             },
-        },
+        }
 
     ];
 
@@ -186,7 +212,7 @@ export const ProjectsLog = () => {
                             type="search"
                             placeholder="Tìm kiếm phần log"
                             className={cx('search-input')}
-                            onChange={(e) => handleInputSearch(e)}
+                            onChange={(e) => handleInputSearch(e.target.value)}
                         />
                     </div>
                     <button className={cx('search-button')}>
@@ -222,13 +248,13 @@ export const ProjectsLog = () => {
                 <Table
                     size='large'
                     columns={columns}
-                    rowKey="projectId"
+                    rowKey={(record) => record.projectNoteId} // Đảm bảo giá trị này là duy nhất
                     dataSource={filteredProjectLog}
                     pagination={{
                         position: ['bottomCenter'],
                         current: pageNumber,
                         pageSize: rowsPerPage,
-                        total: filteredProjectLog.length,
+                        total: totalItem,
                         onChange: (page, pageSize) => {
                             setPageNumber(page);
                             setRowsPerPage(pageSize);
