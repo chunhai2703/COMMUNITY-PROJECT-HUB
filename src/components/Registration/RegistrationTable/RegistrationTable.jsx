@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ConfigProvider, Table, Tag } from 'antd';
 import { SearchOutlined, CheckCircleOutlined, CloseCircleOutlined, SyncOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
@@ -22,9 +22,21 @@ export const RegistrationTable = () => {
   const [registrationList, setRegistrationList] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [totalItem, setTotalItem] = useState(0);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [expandedRows, setExpandedRows] = useState(new Set());
 
-  const fetchAllClassesOfProject = async () => {
+  const toggleExpand = (recordId) => {
+    setExpandedRows((prev) => {
+      const newExpandedRows = new Set(prev);
+      if (newExpandedRows.has(recordId)) {
+        newExpandedRows.delete(recordId);
+      } else {
+        newExpandedRows.add(recordId);
+      }
+      return newExpandedRows;
+    });
+  };
+
+  const fetchAllClassesOfProject = useCallback(async () => {
     const response = await GetAllRegistrationOfProject(projectId, searchValue, pageNumber, rowsPerPage);
     const responseData = await response.json();
 
@@ -36,9 +48,9 @@ export const RegistrationTable = () => {
       setRegistrationList([]);
       setTotalItem(0);
       setPageNumber(1);
-      console.log("Lỗi khi láy danh sách đơn đăng kí ");
+      console.log("Lỗi khi lấy danh sách đơn đăng kí ");
     }
-  };
+  }, [projectId, searchValue, pageNumber, rowsPerPage]);
 
   const handleInputSearch = debounce((e) => {
     setSearchValue(e.target.value);
@@ -49,10 +61,16 @@ export const RegistrationTable = () => {
     if (projectId) {
       fetchAllClassesOfProject();
     }
-  }, [pageNumber, projectId, searchValue, registrationList, rowsPerPage]);
+  }, [fetchAllClassesOfProject, projectId]);
 
 
   const columns = [
+    {
+      title: "STT",
+      dataIndex: "registrationId",
+      key: "registrationId",
+      render: (_, __, index) => index + 1 + (pageNumber - 1) * rowsPerPage,
+    },
     {
       title: 'Lớp',
       dataIndex: 'classCode',
@@ -82,25 +100,22 @@ export const RegistrationTable = () => {
       dataIndex: "description",
       key: "description",
       align: "center",
-      render: (text) => {
-
-        return (
-          <div style={{ cursor: "pointer" }} onClick={() => setIsExpanded(!isExpanded)}>
-            {!isExpanded ? (
-              <EyeInvisibleOutlined style={{ fontSize: "16px", fontWeight: "bold" }} />
-            ) : (
-              <p style={{ textAlign: "left" }}>
-                {text.split("\n").map((line, index) => (
-                  <span key={index}>
-                    {line}
-                    <br />
-                  </span>
-                ))}
-              </p>
-            )}
-          </div>
-        );
-      },
+      render: (text, record) => (
+        <div style={{ cursor: "pointer" }} onClick={() => toggleExpand(record.registrationId)}>
+          {!expandedRows.has(record.registrationId) ? (
+            <EyeInvisibleOutlined style={{ fontSize: "16px", fontWeight: "bold" }} />
+          ) : (
+            <p style={{ textAlign: "left" }}>
+              {text.split("\n").map((line, index) => (
+                <span key={index}>
+                  {line}
+                  <br />
+                </span>
+              ))}
+            </p>
+          )}
+        </div>
+      ),
     },
     {
       title: 'Tình trạng',
@@ -129,8 +144,8 @@ export const RegistrationTable = () => {
       render: (record) => (
         (record.status === 'Đang chờ duyệt') ?
           <div className={cx('action-icon')}>
-            <RegistApproveForm registrationId={record.registrationId} />
-            <RegistRejectForm registrationId={record.registrationId} />
+            <RegistApproveForm registrationId={record.registrationId} refreshTable={fetchAllClassesOfProject} />
+            <RegistRejectForm registrationId={record.registrationId} refreshTable={fetchAllClassesOfProject}  />
           </div>
           : (<p style={{ textAlign: 'center', fontStyle: 'italic', fontWeight: '400', color: '#368aea' }}>Đơn đăng kí đã được xử lý</p>)
       ),
@@ -174,7 +189,7 @@ export const RegistrationTable = () => {
         <Table
           size='large'
           columns={columns}
-          rowKey="classId"
+          rowKey={record => record.registrationId}
           dataSource={registrationList}
           pagination={{
             position: ['bottomCenter'],

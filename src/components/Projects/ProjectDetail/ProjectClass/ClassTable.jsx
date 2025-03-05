@@ -10,6 +10,8 @@ import useAuth from '../../../../hooks/useAuth';
 import { Spinner } from '../../../Spinner/Spinner';
 import { RegisterClassForm } from '../../../Popup/Class/RegisterClassForm';
 import { ClassGroupForm } from '../../../Popup/Class/ClassGroupForm';
+import { AssignLecturer } from '../../../Popup/Class/AssignLecturer';
+import { AssignStudent } from '../../../Popup/Class/AssignStudent';
 
 
 const cx = classNames.bind(classes);
@@ -74,7 +76,7 @@ export const ClassTable = (props) => {
         key: '1',
         label: (
           <button
-            className={cx('view-detail', 'detail-button')}
+            className={cx('class-detail')}
             onClick={() => handleNavigateToDetail(navigate, projectId, classData.classId)}
           >
             <InfoCircleOutlined style={{ marginRight: '8px' }} /> Xem chi tiết
@@ -82,7 +84,7 @@ export const ClassTable = (props) => {
         ),
       },
     ];
-  
+
     if (
       (user?.roleId === 1 && classData.studentSlotAvailable !== null && props.project.status === "Sắp diễn ra") ||
       (user?.roleId === 2 && user?.accountId !== props.project.projectManagerId && classData.lecturerSlotAvailable !== 0 && props.project.status === "Sắp diễn ra")
@@ -92,14 +94,44 @@ export const ClassTable = (props) => {
         label: <RegisterClassForm classId={classData.classId} />,
       });
     }
-  
+
     if (user?.roleId === 2 && user?.accountId === props.project.projectManagerId && props.project.status === "Lên kế hoạch") {
       items.push({
         key: '3',
         label: <ClassGroupForm classData={classData} fetchAllClassesOfProject={fetchAllClassesOfProject} />,
       });
     }
-  
+
+    if (
+      (user?.roleId === 2 &&
+        user?.accountId === props.project.projectManagerId &&
+        ["Sắp diễn ra", "Đang diễn ra"].includes(props.project.status) &&
+        classData.lecturerSlotAvailable !== 0) ||
+      (user?.roleId === 4 &&
+        ["Sắp diễn ra", "Đang diễn ra"].includes(props.project.status) &&
+        classData.lecturerSlotAvailable !== 0)
+    ) {
+      items.push({
+        key: '4',
+        label: <AssignLecturer classId={classData.classId} project={props.project}  />
+      });
+    }
+
+    if (
+      (user?.roleId === 2 &&
+        user?.accountId === props.project.projectManagerId &&
+        ["Sắp diễn ra", "Đang diễn ra"].includes(props.project.status) &&
+        classData.studentSlotAvailable > 0) ||
+      (user?.roleId === 4 &&
+        ["Sắp diễn ra", "Đang diễn ra"].includes(props.project.status) &&
+        classData.studentSlotAvailable > 0)
+    ) {
+      items.push({
+        key: '5',
+        label: <AssignStudent classId={classData.classId} project={props.project}  />
+      });
+    }
+
     return items;
   };
 

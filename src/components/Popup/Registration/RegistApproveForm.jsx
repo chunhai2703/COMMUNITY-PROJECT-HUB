@@ -31,6 +31,8 @@ export const RegistApproveForm = (props) => {
           }
           await approveDenyRegistration(payload);
           toast.success('Đã duyệt đơn đăng kí thành công');
+          // Gọi lại hàm refreshTable để render lại danh sách đăng ký
+          props.refreshTable();
           navigate(`/home-lecturer/project-registration/${projectId}`);
         } catch (error) {
           console.error("Lỗi khi duyệt đơn đăng kí:", error);

@@ -1,49 +1,42 @@
-.register-class-button {
-    color: white;
-    background-color: #474d57;
-    padding: 10px 7px;
-    border: none;
-    border-radius: 5px;
-    font-size: 14px;
-    width: 100px;
-    cursor: pointer;
-  }
-  .register-class-button:hover {
-    background-color: #8e8f92;
-  }
-  
-  .register-class-form {
-    margin-top: 10px;
-    width: 500px;
-  }
-  
-  .cancel-button {
-    margin-right: 5px;
-    color: #FF5F00;
-    background-color: transparent;
-    padding: 10px 7px;
-    border: 1px solid #FF5F00;
-    border-radius: 5px;
-    font-size: 16px;
-    width: 100px;
-    cursor: pointer;
-  }
-  .cancel-button:hover {
-    background-color: #FF5F00;
-    color: white;
-  }
-  
-  .register-button {
-    color: white;
-    background-color: #00b300;
-    padding: 10px 7px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    width: 100px;
-    cursor: pointer;
-  }
-  .register-button:hover {
-    opacity: 0.8;
-  }
-  
+.class-group-button {
+  background-color: transparent;
+  border: none;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+.class-group-form{
+  margin-top: 10px;
+  width: 500px;
+}
+
+.cancel-button {
+  margin-right: 5px;
+  color: #ff5f00;
+  background-color: transparent;
+  padding: 10px 7px;
+  border: 1px solid #ff5f00;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 100px;
+  cursor: pointer;
+}
+.cancel-button:hover {
+  background-color: #ff5f00;
+  color: white;
+}
+
+.register-button {
+  color: white;
+  background-color: #00b300;
+  padding: 10px 7px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 100px;
+  cursor: pointer;
+}
+.register-button:hover {
+  opacity: 0.8;
+}

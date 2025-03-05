@@ -32,6 +32,8 @@ export const RegistRejectForm = (props) => {
           }
           await approveDenyRegistration(payload);
           toast.success('Đã từ chối đơn đăng kí thành công');
+          // Gọi lại hàm refreshTable để render lại danh sách đăng ký
+          props.refreshTable();
           navigate(`/home-lecturer/project-registration/${projectId}`);
         } catch (error) {
           console.error("Lỗi khi từ chối đơn đăng kí:", error);

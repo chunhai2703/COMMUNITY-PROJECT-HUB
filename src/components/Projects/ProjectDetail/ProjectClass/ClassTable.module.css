@@ -1,3 +1,11 @@
+.class-detail {
+  background-color: transparent;
+  border: none;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
 .class-table-container {
   display: flex;
   flex-direction: column;

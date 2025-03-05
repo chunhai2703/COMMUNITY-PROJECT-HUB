@@ -6,6 +6,7 @@ import useAuth from '../../../../hooks/useAuth'
 import { Spinner } from '../../../Spinner/Spinner'
 import { useNavigate } from 'react-router-dom'
 import { Button } from 'antd'
+import { ProjectUpdatePM } from '../../../Popup/Project/ProjectUpdatePM'
 
 const cx = classNames.bind(classes)
 
@@ -123,6 +124,9 @@ export const ProjectInformation = (props) => {
               </>
             )}
           </span>
+          {user && user.roleId === 4 && props.project.status !== 'Hủy' && (
+            <ProjectUpdatePM project={props.project} />
+          )}
         </p>
         {Date.now() <= new Date(props.project.applicationEndDate) && (
           <p className={cx('project-application-date')}>

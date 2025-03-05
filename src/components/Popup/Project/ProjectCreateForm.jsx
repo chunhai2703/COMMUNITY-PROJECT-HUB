@@ -9,7 +9,7 @@ import { PlusCircleOutlined, UploadOutlined } from '@ant-design/icons';
 import { Button, Upload, message } from 'antd';
 import classes from './ProjectCreateForm.module.css'
 import classNames from 'classnames/bind';
-import { searchLeturers } from '../../../services/LeturerApi';
+import { searchLeturers } from '../../../services/AssignApi';
 import { createProject } from '../../../services/ProjectsApi';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
@@ -51,7 +51,7 @@ export const ProjectCreateForm = () => {
     try {
       const data = await searchLeturers(searchTerm);
       console.log("Danh sách giảng viên từ API:", data); // Kiểm tra dữ liệu trả về
-      setManagers(data);
+      setManagers(data.result);
     } catch (error) {
       console.error("Lỗi tìm kiếm giảng viên:", error);
     }
@@ -88,6 +88,7 @@ export const ProjectCreateForm = () => {
 
   const onSubmit = async (data) => {
     try {
+      setLoading(true)
       console.log("Dữ liệu projectManager trước khi gửi:", data.projectManager);
 
       const formData = new FormData();
@@ -118,14 +119,16 @@ export const ProjectCreateForm = () => {
       for (let pair of formData.entries()) {
         console.log(pair[0] + ": ", pair[1]);
       }
-
       await createProject(formData);
+
       toast.success("Dự án đã được tạo thành công!");
+      setLoading(false);
       handleClose();
       reset();
       navigate('/home-department-head/projects');
 
     } catch (error) {
+      setLoading(false)
       console.error("Lỗi khi tạo dự án:", error);
       // toast.error(error.message);
 
