@@ -6,6 +6,7 @@ import { SendOutlined, UserOutlined } from '@ant-design/icons';
 import useAuth from '../../../hooks/useAuth';
 import { CreateMessage, GetMessage } from '../../../services/MessageApi';
 import { useParams } from 'react-router-dom';
+import { Spinner } from '../../Spinner/Spinner';
 
 const cx = classNames.bind(classes);
 const baseWebSocketUrl = process.env.REACT_APP_WEB_SOCKET_URL;
@@ -19,6 +20,15 @@ export const ChatContent = () => {
   const [textMessage, setTextMessage] = useState('');
   const messagesEndRef = useRef(null);
   const ws = useRef(null);
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('vi-VN', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    }).format(date);
+};
 
   const fetchMessage = async () => {
     const response = await GetMessage(user.accountId, classId);
@@ -93,6 +103,9 @@ export const ChatContent = () => {
       </div>
     );
   }
+  if(!user){
+    return <Spinner />
+  }
 
   const handleOnSendMessage = async () => {
     if (textMessage === '') return;
@@ -136,7 +149,7 @@ export const ChatContent = () => {
             <div className={cx('chat-message')}>
               {message.sendAccountId !== user.accountId && <p className={cx('sender')}>{message.sendAccountName}</p>}
               <div className={cx(message.sendAccountId === user.accountId ? 'user-message' : 'admin-message')}>
-                <Tooltip title='10pm' placement={message.sendAccountId === user.accountId ? 'left' : 'right'}>
+                <Tooltip title={formatDate(message.createdDate)} placement={message.sendAccountId === user.accountId ? 'left' : 'right'}>
                   <p>{message.content}</p>
                 </Tooltip>
               </div>
