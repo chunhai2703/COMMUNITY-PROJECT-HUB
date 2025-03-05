@@ -136,7 +136,7 @@ export const ChatContent = () => {
             <div className={cx('chat-message')}>
               {message.sendAccountId !== user.accountId && <p className={cx('sender')}>{message.sendAccountName}</p>}
               <div className={cx(message.sendAccountId === user.accountId ? 'user-message' : 'admin-message')}>
-                <Tooltip title='10pm'>
+                <Tooltip title='10pm' placement={message.sendAccountId === user.accountId ? 'left' : 'right'}>
                   <p>{message.content}</p>
                 </Tooltip>
               </div>

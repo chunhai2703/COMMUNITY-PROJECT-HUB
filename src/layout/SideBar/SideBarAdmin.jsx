@@ -1,6 +1,6 @@
 import React from 'react'
 import { SettingOutlined, HomeOutlined, FolderOutlined, MailOutlined, TeamOutlined } from '@ant-design/icons';
-import { Badge, Menu } from 'antd';
+import { Menu } from 'antd';
 import { useNavigate } from 'react-router-dom';
 const items = [
   {
@@ -28,9 +28,9 @@ const items = [
   {
     key: "message",
     label: "Tin Nhắn",
-    icon: (<Badge count={5} size='small'>
+    icon: (
       <MailOutlined style={{ fontSize: 18 }} />
-    </Badge>),
+    ),
   }
 ];
 
