@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import { GetClassDetail } from "../../services/ClassApi";
 import { Spinner } from "../Spinner/Spinner";
 import useAuth from "../../hooks/useAuth";
+import TraineeScoreList from "./TraineeScoreList";
 const ClassDetail = () => {
     const [activeTab, setActiveTab] = useState("lesson");
     const { classId } = useParams();
@@ -131,14 +132,16 @@ const ClassDetail = () => {
                     {(user.roleId === 4
                         || (user.roleId === 2 && user.accountId === dataClass.projectManagerId)
                         || (user.roleId === 2 && user.accountId === dataClass.lecturerId)
+                        || user.roleId === 5
                         || (user.roleId === 1 && dataClass.getMemberOfClassDTOs.some(member => member.accountId === user.accountId)))
                         && (activeTab === "traineeList" && <TraineeList />
                         )}
 
                     {(user.roleId === 4
                         || (user.roleId === 2 && user.accountId === dataClass.projectManagerId)
-                        || (user.roleId === 2 && user.accountId === dataClass.lecturerId))
-                        && (activeTab === "evaluateResult" && <EvaluateResult />
+                        || (user.roleId === 2 && user.accountId === dataClass.lecturerId)
+                        || user.roleId === 5)
+                        && (activeTab === "evaluateResult" && <TraineeScoreList dataClass={dataClass} />
                         )}
                 </div>
             </div>
