@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Suspense } from "react";
-import { useLoaderData, Await} from "react-router-dom";
 import { Spinner } from "../../components/Spinner/Spinner";
 import { AllAvailableProjects } from "../../components/Projects/AllProjects/AllAvailableProjects";
 import useAuth from "../../hooks/useAuth";

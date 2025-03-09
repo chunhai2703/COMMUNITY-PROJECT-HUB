@@ -133,7 +133,15 @@ export const ProjectCreateForm = () => {
       // toast.error(error.message);
 
       console.log(error.result)
-      setErrorMessages(Array.isArray(error.result) ? error.result : [error.result]);
+      const messages = Array.isArray(error.result)
+        ? error.result
+        : error.result
+          ? [error.result]
+          : typeof error.message === "string"
+            ? error.message
+            : [error.message];
+
+      setErrorMessages(messages);
 
     }
   };
@@ -395,7 +403,7 @@ export const ProjectCreateForm = () => {
                     }}
                     beforeUpload={() => false}
                   >
-                    <Button icon={<UploadOutlined />} type='primary'>Click to Upload</Button>
+                    <Button icon={<UploadOutlined />} type='primary'>Nhấn vào để upload</Button>
                   </Upload>
                   {errors.trainees && <p style={{ color: "red" }}>{errors.trainees.message}</p>}
                 </div>

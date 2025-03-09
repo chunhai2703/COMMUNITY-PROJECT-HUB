@@ -3,18 +3,17 @@ import { FileSyncOutlined, SyncOutlined } from '@ant-design/icons';
 import { Modal } from 'antd';
 import classes from './ProjectChangeStatus.module.css';
 import classNames from 'classnames/bind';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams} from 'react-router-dom';
 import { toUpComingProject } from '../../../services/ProjectsApi';
 import { toast } from 'react-toastify';
-import useAuth from '../../../hooks/useAuth';
+
 
 const cx = classNames.bind(classes);
 
 export const ProjectChangeStatus = () => {
   const [modal, contextHolder] = Modal.useModal();
   const params = useParams();
-  const {user } = useAuth();
-  const navigate = useNavigate();
+  
 
   const confirm = () => {
     modal.confirm({

@@ -1,14 +1,26 @@
 .header {
-      background-color: #474D57;
-      color: white;
-      border-top: 2px white solid;
-      padding: 20px 20px;
-      margin: 5px 0;
-  }
-  
-  .project-title {
-    font-size: 24px;
-    font-weight: bold;
-    padding-bottom: 20px;
-    border-bottom: 1px white solid;
-  }
+  background-color: #474d57;
+  color: white;
+  border-top: 2px white solid;
+  padding: 20px 20px;
+  margin: 5px 0;
+}
+
+.project-title {
+  font-size: 24px;
+  font-weight: bold;
+  padding-bottom: 20px;
+  border-bottom: 1px white solid;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.project-status {
+  font-size: 10px;
+  border-radius: 15px;
+  font-weight: normal;
+  padding: 4px 8px;
+  border: 1px solid white;
+  background-color: transparent;
+}
