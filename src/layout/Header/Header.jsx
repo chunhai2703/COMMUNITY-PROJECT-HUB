@@ -43,6 +43,16 @@ export const Header = () => {
       setAvatarBackground(storedColor);
     }
 
+    const fetchNotification = async () => {
+      const response = await GetAllNotification(user.accountId);
+      const responseData = await response.json();
+      if (response.ok) {
+        setNotifications(responseData.result);
+      } else {
+        setNotifications([]);
+      }
+    };
+
     if (user) {
       fetchNotification();
 
@@ -55,7 +65,7 @@ export const Header = () => {
       ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
         console.log(data)
-        if (data.Type === "Notification" && data.AccountId == user.accountId) {
+        if (data.Type === "Notification" && data.AccountId === user.accountId) {
           fetchNotification();
         }
       };
@@ -76,15 +86,7 @@ export const Header = () => {
     }
   }, [user]);
 
-  const fetchNotification = async () => {
-    const response = await GetAllNotification(user.accountId);
-    const responseData = await response.json();
-    if (response.ok) {
-      setNotifications(responseData.result);
-    } else {
-      setNotifications([]);
-    }
-  };
+
 
   const handleDropdownOpen = async (open) => {
     if (open) {

@@ -56,7 +56,7 @@ export const AllAvailableProjects = () => {
       if (searchValue.trim() === "") {
         fetchProjects();
       }
-    }, 500); // Tránh spam API, chờ 500ms
+    }, 500); 
 
     return () => clearTimeout(delaySearch);
   }, [searchValue, fetchProjects]);

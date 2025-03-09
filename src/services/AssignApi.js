@@ -110,7 +110,7 @@ export async function assignLecturerStudentToProject(data) {
 
     if (!response.ok) {
       const errorData = await response.json(); // Lấy dữ liệu lỗi từ API
-      throw new Error(errorData.message || errorData.error || "Lỗi không xác định từ API");
+      throw new Error(errorData.result||errorData.message || errorData.error || "Lỗi không xác định từ API");
     }
     console.log(response);
     return response;

@@ -25,7 +25,7 @@ export const AssignStudent = (props) => {
   const { handleSubmit, control, reset, formState: { errors } } = useForm({});
 
 
-  const handleSearchManager = async (searchTerm) => {
+  const handleSearchStudent = async (searchTerm) => {
     if (!searchTerm) return;
     setLoading(true);
     try {
@@ -68,9 +68,26 @@ export const AssignStudent = (props) => {
       }
 
     } catch (error) {
+      // console.error("Lỗi khi phân công sinh viên:", error);
+      // if (error.result) {
+      //   toast.error(
+      //     <div>
+      //       {error.result.map((msg, index) => (
+      //         <p key={index} style={{ margin: 0 }}>{msg}</p>
+      //       ))}
+      //     </div>
+      //   );
+      // } else {
+      //   toast.error(error.message);
+      // }
       console.error("Lỗi khi phân công sinh viên:", error);
-      toast.error(error.message); // Hiển thị danh sách lỗi từ `result`
+      if (error.result && error.result.length > 0) {
+        toast.error(error.result);
+      } else {
+        toast.error(error.message);
+      }
     }
+
   };
 
 
@@ -96,7 +113,7 @@ export const AssignStudent = (props) => {
                   options={students} // Danh sách từ API
                   getOptionLabel={(option) => option.fullName && option.accountName ? `${option.fullName} - ${option.accountName}` : option.fullName}
                   isOptionEqualToValue={(option, value) => option.accountId === value?.accountId}
-                  onInputChange={(event, newInputValue) => handleSearchManager(newInputValue)}
+                  onInputChange={(event, newInputValue) => handleSearchStudent(newInputValue)}
                   onChange={(event, newValue) => {
                     console.log("Người sinh viên được chọn:", newValue);
                     field.onChange(newValue);
@@ -111,6 +128,7 @@ export const AssignStudent = (props) => {
                       label="Sinh viên hỗ trợ"
                       variant="outlined"
                       fullWidth
+                      required
                       margin="normal"
                       defaultValue={field.value?.fullName ? `${field.value.fullName} - ${field.value.accountName}` : ''}
                       error={!!errors.lecturer}

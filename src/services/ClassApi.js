@@ -81,3 +81,34 @@ export const SetGroupClass = async (data) => {
         console.log(err);
     }
 };
+
+export async function getAllClassesOfLecturer(lecturerId, searchValue) {
+    try {
+        const response = await fetch(
+            `${baseUrl}/api/Class/all-class-of-lecturer?searchValue=${searchValue}&lecturerId=${lecturerId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+            },
+        }
+        );
+
+        const resData = await response.json()
+        if (!response.ok) {
+            throw new Response(
+                JSON.stringify({ message: resData.message || resData.result }),
+                {
+                    status: response.statusCode,
+                }
+            );
+        }
+
+        console.log(resData);
+        return resData;
+
+    } catch (error) {
+        console.error("Lỗi khi lấy lớp của giảng viên:", error);
+        throw error;
+    }
+}

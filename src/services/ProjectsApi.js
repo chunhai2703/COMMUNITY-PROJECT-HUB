@@ -146,8 +146,10 @@ export async function unActiveProject(id) {
       },
     });
 
+
     if (!response.ok) {
-      throw new Error('Không thể vô hiệu hóa dự án.');
+      const errorData = await response.json();
+      throw new Error(errorData.result || errorData.message || errorData.error || "Lỗi không xác định");
     }
   } catch (error) {
     console.error(error);

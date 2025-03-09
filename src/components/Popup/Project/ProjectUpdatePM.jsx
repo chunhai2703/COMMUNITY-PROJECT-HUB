@@ -132,6 +132,7 @@ export const ProjectUpdatePM = (props) => {
                       label="Quản lý dự án"
                       variant="outlined"
                       fullWidth
+                      required
                       margin="normal"
                       defaultValue={field.value?.fullName ? `${field.value.fullName} - ${field.value.accountName}` : ''}
                       error={!!errors.projectManager}

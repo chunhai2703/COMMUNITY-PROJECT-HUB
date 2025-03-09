@@ -1,0 +1,12 @@
+.classes-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.classes-list {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+

@@ -31,14 +31,12 @@ export const ProjectDetail = (props) => {
   const items = [
     {
       key: '1',
-      label: (
-        <ProjectUpdateForm project={props.project} />
-      ),
+      label: <ProjectUpdateForm project={props.project} />,
     },
     {
       key: '2',
       label: (
-        <button className={cx('project-detail-backlog')} onClick={moveToProjectLog} >
+        <button className={cx('project-detail-backlog')} onClick={moveToProjectLog}>
           <FileTextOutlined style={{ marginRight: '8px' }} /> Xem log
         </button>
       ),
@@ -47,27 +45,21 @@ export const ProjectDetail = (props) => {
       ? [
         {
           key: '3',
-          label: (
-            <ProjectChangeStatus />
-          ),
+          label: <ProjectChangeStatus />,
         },
       ]
       : []),
-    // {
-    //   key: '3',
-    //   label: (
-    //     <ProjectChangeStatus />
-    //   ),
-    // },
-    {
-      key: '4',
-      label: (
-        <ProjectUnactiveForm />
-      ),
-    },
+    ...(props.project.status === 'Lên kế hoạch' || props.project.status === 'Sắp diễn ra'
+      ? [
+        {
+          key: '4',
+          label: <ProjectUnactiveForm />,
+        },
+      ]
+      : []),
+  ].filter(Boolean);
 
-
-  ];
+  
   if (!user) {
     return <Spinner />;
   }
@@ -96,7 +88,7 @@ export const ProjectDetail = (props) => {
       </header>
       <ProjectInformation project={props.project} />
       <ProjectLesson project={props.project} />
-      <ProjectClass project={props.project}/>
+      <ProjectClass project={props.project} />
     </div>
   )
 }

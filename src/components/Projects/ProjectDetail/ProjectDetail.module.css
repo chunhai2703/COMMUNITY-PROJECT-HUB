@@ -16,6 +16,9 @@
 .project-detail-title {
   font-size: 16px;
   letter-spacing: 5px;
+  word-wrap: break-word; /* Đảm bảo xuống dòng khi nội dung quá dài */
+  overflow-wrap: break-word; /* Đảm bảo xuống dòng khi có từ quá dài */
+  white-space: pre-wrap; /* Giữ nguyên định dạng xuống dòng */
 }
 .project-detail-name-container {
   display: flex;
@@ -44,7 +47,7 @@
   background-color: transparent;
   border: none;
   font-weight: 600;
-  color: #00879E;
+  color: #00879e;
   border: none;
   cursor: pointer;
 }
@@ -52,7 +55,7 @@
   background-color: transparent;
   border: none;
   font-weight: 600;
-  color: #B8D576;
+  color: #b8d576;
   border: none;
   cursor: pointer;
 }
