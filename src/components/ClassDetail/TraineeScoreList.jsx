@@ -52,6 +52,7 @@ const TraineeScoreList = ({ dataClass }) => {
         setIsLoading(false);
     };
 
+    const hasNullScore = traineeList.some(trainee => trainee.score === null);
 
     useEffect(() => {
         fetchAllTraineeScoreList();
@@ -77,6 +78,7 @@ const TraineeScoreList = ({ dataClass }) => {
     };
 
     const handleCancelEdit = () => {
+        setScores({});
         setEditing(false);
     };
 
@@ -204,7 +206,7 @@ const TraineeScoreList = ({ dataClass }) => {
                                 <Button sx={{ backgroundColor: "#2F903F" }} onClick={handleSaveScores} color="primary" variant="contained" style={{ marginLeft: 8 }}>Lưu</Button>
                             </div>
                         ) : (
-                            <Button sx={{ backgroundColor: "#2F903F" }} onClick={handleEditClick} color="primary" variant="contained">Cập nhật</Button>
+                            <Button sx={{ backgroundColor: "#2F903F" }} onClick={handleEditClick} color="primary" variant="contained" disabled={hasNullScore}>Cập nhật</Button>
                         )
                     )}
                 </div>
