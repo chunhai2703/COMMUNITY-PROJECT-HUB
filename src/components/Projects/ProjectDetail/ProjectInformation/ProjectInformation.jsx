@@ -66,7 +66,6 @@ export const ProjectInformation = (props) => {
     month: '2-digit',
     year: 'numeric',
   });
-  console.log("aa:", props);
 
   return (
     <div className={cx('project-information-container')}>
