@@ -1,27 +1,26 @@
 import React, { useState } from 'react'
-import classes from './AssignLecturer.module.css'
+import classes from './ChangeClassLecturer.module.css'
 import classNames from 'classnames/bind'
-import {
-  TextField, Dialog, DialogActions, DialogContent, DialogTitle,
-  Autocomplete, CircularProgress
-} from '@mui/material';
-import { } from '@mui/icons-material';
-import { Controller, useForm } from 'react-hook-form';
-import { UserAddOutlined } from '@ant-design/icons';
-import { assignLecturerStudentToProject, searchLeturers } from '../../../services/AssignApi';
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { Autocomplete, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import { useNavigate, useParams } from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth';
+import { Controller, useForm } from 'react-hook-form';
+import { searchLeturers } from '../../../services/AssignApi';
+import { toast } from 'react-toastify';
+import { UserSwitchOutlined } from '@ant-design/icons';
+import { ChangeLecturerStudentToClass } from '../../../services/LecturerApi';
 
 
-const cx = classNames.bind(classes)
-
-export const AssignLecturer = (props) => {
+const cx = classNames.bind(classes);
+export const ChangeClassLecturer = (props) => {
   const [open, setOpen] = useState(false);
   const [lecturers, setLecturers] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { projectId } = useParams();
+  console.log(props.lecturer);
+
 
   const { handleSubmit, control, reset, formState: { errors } } = useForm({});
 
@@ -54,39 +53,26 @@ export const AssignLecturer = (props) => {
     try {
 
       const sent = {
-        classId: props.classId,
+        removedAccountId: props.lecturer.lecturerId,
+        classId: props.lecturer.classId,
         accountId: data.lecturer.accountId,
         roleId: 2
       }
-      await assignLecturerStudentToProject(sent);
-      toast.success("Giảng viên đã được phân công thành công!");
+      await ChangeLecturerStudentToClass(sent);
+      props.refresh();
+      toast.success("Giảng viên đã được thay đổi thành công!");
       handleClose();
       reset();
       if (user && (user?.roleId === 2)) {
-        navigate(`/home-lecturer/project-detail/${props.project.projectId}`);
+        navigate(`/home-lecturer/project-detail/${projectId}/member-list`);
       } else if (user && (user?.roleId === 4)) {
-        navigate(`/home-department-head/project-detail/${props.project.projectId}`);
+        navigate(`/home-department-head/project-detail/${projectId}/member-list`);
       }
 
     } catch (error) {
-      // console.error("Lỗi khi phân công giảng viên:", error);
-      // if (error.result) {
-      //   toast.error(
-      //     <div>
-      //       {error.result.map((msg, index) => (
-      //         <>
-      //           <p key={index}>{msg}</p> 
-      //         </>
-
-      //       ))}
-      //     </div>
-      //   );
-      // } else {
-      //   toast.error(error.message);
-      // }
-      console.error("Lỗi khi phân công giảng viên:", error);
+      console.error("Lỗi khi thay đổi giảng viên:", error);
       if (error.result && error.result.length > 0) {
-        toast.error(error.result[0]);
+        toast.error(error.result);
       } else {
         toast.error(error.message);
       }
@@ -97,17 +83,22 @@ export const AssignLecturer = (props) => {
 
   return (
     <React.Fragment>
-      <button className={cx('class-assign-lecturer')} onClick={handleClickOpen}>
-        <UserAddOutlined style={{ marginRight: '8px' }} /> Phân công giảng viên
+      <button className={cx('class-change-lecturer')} onClick={handleClickOpen}>
+        <UserSwitchOutlined style={{ marginRight: '8px' }} /> Thay đổi giảng viên
       </button>
       <Dialog
         open={open}
         onClose={handleClose}
       >
-        <DialogTitle style={{ backgroundColor: "#474D57", color: "white" }} >Phân công giảng viên</DialogTitle>
+        <DialogTitle style={{ backgroundColor: "#474D57", color: "white" }} >Thay đổi giảng viên</DialogTitle>
         <DialogContent>
-          <form className={cx('assign-lecturer-form')}>
-            {/* Giảng viên */}
+          <p style={{
+            fontSize: '16px',
+            marginTop: '15px'
+          }}>Vui lòng chọn giảng viên bên dưới để thay thế giảng viên <span style={{ fontStyle: 'italic', fontWeight: '600' }}>{props.lecturer.fullName} - {props.lecturer.accountCode}</span> : </p>
+          <form className={cx('change-lecturer-form')}>
+
+            {/* Giảng viên thay thế */}
             <Controller
               name="lecturer"
               control={control}
@@ -124,7 +115,7 @@ export const AssignLecturer = (props) => {
                   }}
                   loading={loading}
                   rules={{
-                    required: 'Vui lòng chọn giảng viên để phân công'
+                    required: 'Vui lòng chọn giảng viên thay thế'
                   }}
                   renderInput={(params) => (
                     <TextField
@@ -154,17 +145,17 @@ export const AssignLecturer = (props) => {
               )}
             />
 
+
           </form>
 
         </DialogContent>
         <DialogActions>
           <button onClick={handleClose} className={cx('cancel-button')}>Hủy</button>
           <button type="submit" onClick={handleSubmit(onSubmit)} className={cx('create-button')}>
-            Phân công
+            Thay đổi
           </button>
         </DialogActions>
       </Dialog>
     </React.Fragment>
   );
-
 }

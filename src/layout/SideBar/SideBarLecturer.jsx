@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { SettingOutlined, HomeOutlined, FolderOutlined, MailOutlined, MenuFoldOutlined, MenuUnfoldOutlined, SolutionOutlined } from '@ant-design/icons';
+import { SettingOutlined, HomeOutlined, FolderOutlined, MailOutlined, MenuFoldOutlined, MenuUnfoldOutlined, SolutionOutlined, SnippetsOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
@@ -48,6 +48,12 @@ export const SideBarLecturer = () => {
       onClick: () => navigate('/home-lecturer/my-registration'),
     },
     {
+      key: 'my-classes',
+      label: 'Lớp Học Của Tôi',
+      icon: <SnippetsOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
+      onClick: () => navigate('/home-lecturer/my-classes'),
+    },
+    {
       key: 'setting',
       label: 'Cài Đặt',
       icon: <SettingOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
@@ -63,9 +69,9 @@ export const SideBarLecturer = () => {
       key: 'message',
       label: 'Tin Nhắn',
       icon: collapsed ? (
-            <MailOutlined style={{ fontSize: 20 }} />
+        <MailOutlined style={{ fontSize: 20 }} />
       ) : (
-          <MailOutlined style={{ fontSize: 18 }} />
+        <MailOutlined style={{ fontSize: 18 }} />
       ),
       onClick: () => navigate('/home-lecturer/chat'),
     },

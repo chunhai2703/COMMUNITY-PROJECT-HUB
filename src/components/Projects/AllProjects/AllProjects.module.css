@@ -8,6 +8,9 @@
 .all-projects-title {
   letter-spacing: 5px;
   font-size: 2rem;
+  word-wrap: break-word; /* Đảm bảo xuống dòng khi nội dung quá dài */
+  overflow-wrap: break-word; /* Đảm bảo xuống dòng khi có từ quá dài */
+  white-space: pre-wrap; /* Giữ nguyên định dạng xuống dòng */
 }
 .all-projects-search {
   display: flex;

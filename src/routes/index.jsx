@@ -33,6 +33,8 @@ import { ProjectRegistrationPage } from "../pages/RegistrationPage/ProjectRegist
 import { ChatLayout } from "../components/Chat/ChatLayout/ChatLayout";
 import { ChatContent } from "../components/Chat/ChatContent/ChatContent";
 import { ProjectLog } from "../pages/ProjectsPage/ProjectLog";
+import { MyClassesOfLecturer } from "../pages/Classes/MyClassesLecturer";
+import { ReportPage } from "../pages/Classes/ReportPage";
 
 
 
@@ -82,7 +84,7 @@ export const router = createBrowserRouter([
       {
         path: "project-detail/:projectId/member-list",
         element: <MemberManagementPage />,
-        errorElement: <ErrorPage />
+        errorElement: <ErrorPageDH />
       },
       {
         path: "project-detail/:projectId/project-log",
@@ -129,6 +131,14 @@ export const router = createBrowserRouter([
       {
         path: "my-registration",
         element: <MyRegistrationPage />
+      },
+      {
+        path: "my-classes",
+        element: <MyClassesOfLecturer />
+      },
+      {
+        path: 'my-classes/report',
+        element: <ReportPage />,
       },
       {
         path: "class-detail/:projectId/:classId",

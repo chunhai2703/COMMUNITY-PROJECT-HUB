@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ConfigProvider, Dropdown, Table, Tag, Modal as AntModal, message } from 'antd';
 import { EditOutlined, DeleteOutlined, EllipsisOutlined, SearchOutlined, DownloadOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
@@ -11,10 +11,11 @@ import { toast } from 'react-toastify';
 import { Spinner } from '../../Spinner/Spinner';
 import useAuth from '../../../hooks/useAuth';
 import { GetAllStudentOfProject, RemoveStudentFromClass } from '../../../services/StudentApi';
+import { ChangeClassStudent } from '../../Popup/Members/ChangeClassStudent';
 
 const cx = classNames.bind(students);
 
-export const StudentList = () => {
+export const StudentList = (props) => {
     const { user } = useAuth();
     const { projectId } = useParams();
 
@@ -39,7 +40,7 @@ export const StudentList = () => {
         }).format(date);
     };
 
-    const fetchAllStudent = async () => {
+    const fetchAllStudent = useCallback(async () => {
         setIsLoading(true);
         const response = await GetAllStudentOfProject(projectId, searchValue, pageNumber, rowsPerPage);
         const responseData = await response.json();
@@ -56,12 +57,12 @@ export const StudentList = () => {
         }
 
         setIsLoading(false);
-    };
+    }, [searchValue, pageNumber, rowsPerPage, projectId]);
 
     useEffect(() => {
 
         fetchAllStudent();
-    }, [pageNumber, projectId]);
+    }, [fetchAllStudent]);
 
     useEffect(() => {
             const delaySearch = setTimeout(() => {
@@ -71,7 +72,7 @@ export const StudentList = () => {
             }, 500);
     
             return () => clearTimeout(delaySearch);
-        }, [searchValue]);
+        }, [searchValue, fetchAllStudent]);
 
     const handleDetailOpen = (student) => {
         setSelectedStudent(student);
@@ -118,19 +119,34 @@ export const StudentList = () => {
         {
             key: '1',
             label: (
-                <button style={{ color: "blue" }} onClick={() => handleDetailOpen(student)}>
+                <button style={{ color: "#00879E", fontWeight: "600"}} onClick={() => handleDetailOpen(student)}>
                     <InfoCircleOutlined style={{ marginRight: '8px' }} /> Chi tiết
                 </button>
             ),
         },
-        {
-            key: '2',
-            label: (
-                <button style={{ color: "red" }} onClick={() => handleDeleteOpen(student)}>
-                    <DeleteOutlined style={{ marginRight: '8px' }} /> Xóa
-                </button>
-            ),
-        }
+       ...(props.project.status === 'Sắp diễn ra'
+                  ? [
+                      {
+                          key: '2',
+                          label: (
+                              <button style={{ color: "#D70654", fontWeight: "600" }} onClick={() => handleDeleteOpen(student)}>
+                                  <DeleteOutlined style={{ marginRight: '8px' }} /> Xóa
+                              </button>
+                          ),
+                      },
+                  ]
+                  : []),
+      
+              ...(props.project.status === 'Đang diễn ra'
+                  ? [
+                      {
+                          key: '3',
+                          label: (
+                              <ChangeClassStudent student={student} refresh={fetchAllStudent} projectId={projectId} />
+                          )
+                      }
+                  ]
+                  : []),
     ];
 
     const columns = [
@@ -156,6 +172,18 @@ export const StudentList = () => {
             title: 'Nhóm hỗ trợ',
             dataIndex: 'groupSupportNo',
             key: 'groupSupportNo',
+            align: 'center',
+        },
+        {
+            title: 'Email',
+            dataIndex: 'email',
+            key: 'email',
+            align: 'center',
+        },
+        {
+            title: 'Số điện thoại',
+            dataIndex: 'phone',
+            key: 'phone',
             align: 'center',
         },
         {
@@ -212,12 +240,15 @@ export const StudentList = () => {
                     <Table
                         size='large'
                         columns={columns}
+                        rowKey={(record) => record.classCode + record.accountCode}
                         dataSource={studentList.map((student) => ({
                             key: student.memberId,
                             memberId: student.memberId,
+                            studentId: student.account.accountId,
                             accountCode: student.account.accountCode,
                             fullName: student.account.fullName,
                             classCode: student.classCode,
+                            classId: student.classId,
                             groupSupportNo: student.groupSupportNo,
                             email: student.account.email,
                             phone: student.account.phone,

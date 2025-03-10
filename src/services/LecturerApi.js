@@ -31,3 +31,29 @@ export const RemoveLecturerFromClass = async (lecturerId, classId) => {
         console.log(err);
     }
 }
+
+export async function ChangeLecturerStudentToClass(data) {
+  console.log(data);
+  try {
+    const response = await fetch(`${baseUrl}/api/Class/remove-update-class`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+      },
+      body: JSON.stringify(data)
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json(); // Lấy dữ liệu lỗi từ API
+      throw new Error(errorData.result||errorData.message || errorData.error || "Lỗi không xác định từ API");
+    }
+    console.log(response);
+    return response;
+
+  } catch (error) {
+    console.error(error.message);
+    throw new Error(error.message);
+  }
+}
+

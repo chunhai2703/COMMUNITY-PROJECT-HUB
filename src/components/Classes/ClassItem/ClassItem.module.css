@@ -1,0 +1,55 @@
+.class-item {
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+.class-item:hover {
+  cursor: pointer;
+  scale: 1.02;
+  transition: all 0.2s ease-in-out;
+}
+.class-item-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+}
+.class-name {
+  font-size: 18px;
+  letter-spacing: 5px;
+}
+a:active,
+a:hover {
+  background-color: transparent;
+  text-decoration: 1px underline #3987e1;
+}
+.label {
+  font-weight: 600;
+}
+.project-status {
+  font-size: 12px;
+  border-radius: 15px;
+  padding: 4px 8px;
+  color: white;
+}
+.active-status {
+  background-color: #2d3748;
+}
+.planning-status {
+  background-color: #608bc1;
+}
+.ongoing-status {
+  background-color: #55679c;
+}
+.completed-status {
+  background-color: #0b2f9f;
+}
+.inactive-status {
+  background-color: #9e9c9c;
+}
+.report-icon {
+  font-size: 16px;
+  vertical-align: middle;
+}
+.report-icon:hover {
+  cursor: pointer;
+  color: #3987e1;
+}

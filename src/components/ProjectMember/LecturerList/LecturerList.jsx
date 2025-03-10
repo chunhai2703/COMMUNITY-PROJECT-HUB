@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ConfigProvider, Dropdown, Table, Tag, Modal as AntModal, message } from 'antd';
 import { EditOutlined, DeleteOutlined, EllipsisOutlined, SearchOutlined, DownloadOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
@@ -11,13 +11,13 @@ import { toast } from 'react-toastify';
 import { Spinner } from '../../Spinner/Spinner';
 import useAuth from '../../../hooks/useAuth';
 import { GetAllLecturerOfProject, RemoveLecturerFromClass } from '../../../services/LecturerApi';
+import { ChangeClassLecturer } from '../../Popup/Members/ChangeClassLecturer';
 
 const cx = classNames.bind(lecturers);
 
-export const LecturerList = () => {
+export const LecturerList = (props) => {
     const { user } = useAuth();
     const { projectId } = useParams();
-
     const [pageNumber, setPageNumber] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [lecturerList, setLecturerList] = useState([]);
@@ -39,7 +39,7 @@ export const LecturerList = () => {
         }).format(date);
     };
 
-    const fetchAllLecturer = async () => {
+    const fetchAllLecturer = useCallback(async () => {
         setIsLoading(true);
         const response = await GetAllLecturerOfProject(projectId, searchValue, pageNumber, rowsPerPage);
         const responseData = await response.json();
@@ -56,12 +56,12 @@ export const LecturerList = () => {
         }
 
         setIsLoading(false);
-    };
+    }, [searchValue, pageNumber, rowsPerPage, projectId]);
 
     useEffect(() => {
 
         fetchAllLecturer();
-    }, [pageNumber, projectId]);
+    }, [fetchAllLecturer]);
 
     useEffect(() => {
         const delaySearch = setTimeout(() => {
@@ -71,7 +71,7 @@ export const LecturerList = () => {
         }, 500);
 
         return () => clearTimeout(delaySearch);
-    }, [searchValue]);
+    }, [searchValue, fetchAllLecturer]);
 
     const handleDetailOpen = (lecturer) => {
         setSelectedLecturer(lecturer);
@@ -118,19 +118,34 @@ export const LecturerList = () => {
         {
             key: '1',
             label: (
-                <button style={{ color: "blue" }} onClick={() => handleDetailOpen(lecturer)}>
+                <button style={{ color: "#00879E", fontWeight: "600" }} onClick={() => handleDetailOpen(lecturer)}>
                     <InfoCircleOutlined style={{ marginRight: '8px' }} /> Chi tiết
                 </button>
             ),
         },
-        {
-            key: '2',
-            label: (
-                <button style={{ color: "red" }} onClick={() => handleDeleteOpen(lecturer)}>
-                    <DeleteOutlined style={{ marginRight: '8px' }} /> Xóa
-                </button>
-            ),
-        }
+        ...(props.project.status === 'Sắp diễn ra'
+            ? [
+                {
+                    key: '2',
+                    label: (
+                        <button style={{ color: "#D70654", fontWeight: "600" }} onClick={() => handleDeleteOpen(lecturer)}>
+                            <DeleteOutlined style={{ marginRight: '8px' }} /> Xóa
+                        </button>
+                    ),
+                },
+            ]
+            : []),
+
+        ...(props.project.status === 'Đang diễn ra'
+            ? [
+                {
+                    key: '3',
+                    label: (
+                        <ChangeClassLecturer lecturer={lecturer} refresh={fetchAllLecturer} projectId={projectId} />
+                    )
+                }
+            ]
+            : []),
     ];
 
     const columns = [
@@ -153,15 +168,15 @@ export const LecturerList = () => {
             align: 'center',
         },
         {
-            title: 'Lớp',
-            dataIndex: 'classCode',
-            key: 'classCode',
+            title: 'Email',
+            dataIndex: 'email',
+            key: 'email',
             align: 'center',
         },
         {
-            title: 'Lớp',
-            dataIndex: 'classCode',
-            key: 'classCode',
+            title: 'Số điện thoại',
+            dataIndex: 'phone',
+            key: 'phone',
             align: 'center',
         },
         {
@@ -218,6 +233,7 @@ export const LecturerList = () => {
                     <Table
                         size='large'
                         columns={columns}
+                        rowKey={(record) => record.classId}
                         dataSource={lecturerList.map((lecturer) => ({
                             key: lecturer.memberId,
                             lecturerId: lecturer.account.accountId,
