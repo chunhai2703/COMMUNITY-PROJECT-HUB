@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { ConfigProvider, Table } from 'antd';
-import { SearchOutlined, EyeInvisibleOutlined} from '@ant-design/icons';
+import { SearchOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
 import { debounce } from 'lodash';
 import useAuth from '../../../hooks/useAuth';
@@ -78,10 +78,12 @@ export const ProjectsLog = () => {
         return new Intl.DateTimeFormat('vi-VN', {
             day: '2-digit',
             month: '2-digit',
-            year: 'numeric'
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false // Sử dụng định dạng 24h
         }).format(date);
     };
-
     const convertToISODate = (dateStr) => {
         const [day, month, year] = dateStr.split("/");
         return `${year}-${month}-${day}`;

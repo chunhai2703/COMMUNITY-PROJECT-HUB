@@ -11,6 +11,8 @@ import useAuth from '../../hooks/useAuth';
 import { Spinner } from '../Spinner/Spinner';
 import { ExportTraineeList, GetAllTraineeOfClass, GetAllTraineeScoreList, UpdateScoreTraineeList } from '../../services/TraineeApi';
 
+import { ImportScore } from '../Popup/Class/ImportScore';
+
 const cx = classNames.bind(trainees);
 
 const TraineeScoreList = ({ dataClass }) => {
@@ -236,7 +238,18 @@ const TraineeScoreList = ({ dataClass }) => {
                                     <Button sx={{ backgroundColor: "#2F903F" }} onClick={handleSaveScores} color="primary" variant="contained" style={{ marginLeft: 8 }}>Lưu</Button>
                                 </div>
                             ) : (
-                                <Button sx={{ backgroundColor: "#2F903F" }} onClick={handleEditClick} color="primary" variant="contained" disabled={hasNullScore}>Cập nhật</Button>
+                                hasNullScore ? (
+                                    <ImportScore classId={classId} fetchAllTraineeScoreList={fetchAllTraineeScoreList} />
+                                ) : (
+                                    <Button
+                                        sx={{ backgroundColor: "#2F903F" }}
+                                        onClick={handleEditClick}
+                                        color="primary"
+                                        variant="contained"
+                                    >
+                                        Cập nhật
+                                    </Button>
+                                )
                             )
                         )}
                     </div>

@@ -57,3 +57,27 @@ export async function ChangeLecturerStudentToClass(data) {
   }
 }
 
+export async function submitScoreTrainee(classId, formData) {
+    console.log( classId, formData);
+    try {
+        const response = await fetch(`${baseUrl}/api/Trainee/import-trainee-score?classId=${classId}`, {
+            method: 'POST',
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+            },
+            body: formData,
+        })
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.result || errorData.message || errorData.error || "Lỗi không xác định từ API");
+        }
+        console.log(response);
+        return response;
+
+    } catch (error) {
+        console.error(error.message);
+        throw new Error(error.message);
+    }
+}
+
