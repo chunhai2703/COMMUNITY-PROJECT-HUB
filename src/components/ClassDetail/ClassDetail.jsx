@@ -134,7 +134,7 @@ const ClassDetail = () => {
                         || (user.roleId === 2 && user.accountId === dataClass.lecturerId)
                         || user.roleId === 5
                         || (user.roleId === 1 && dataClass.getMemberOfClassDTOs.some(member => member.accountId === user.accountId)))
-                        && (activeTab === "traineeList" && <TraineeList />
+                        && (activeTab === "traineeList" && <TraineeList dataClass={dataClass} />
                         )}
 
                     {(user.roleId === 4
