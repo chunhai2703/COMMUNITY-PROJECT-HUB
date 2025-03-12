@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import classes from './SubmitReport.module.css'
+import classes from './ImportScore.module.css'
 import classNames from 'classnames/bind'
 import {
   Dialog, DialogActions, DialogContent, DialogTitle,
@@ -8,21 +8,26 @@ import {
 import { Controller, useForm } from 'react-hook-form';
 import { FormOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth';
 import { Button, Tooltip, Typography, Upload } from 'antd';
 import { UploadOutlined } from '@mui/icons-material';
-import { submitReportTrainee } from '../../../services/TraineeApi';
+
+import { submitScoreTrainee } from '../../../services/LecturerApi';
 
 
 const cx = classNames.bind(classes)
 const { Title } = Typography;
 
-export const SubmitReport = (props) => {
+export const ImportScore = (props) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { classId } = useParams();
+
+  console.log(classId);
+
 
   const { handleSubmit, control, reset, formState: { errors } } = useForm({});
 
@@ -51,8 +56,8 @@ export const SubmitReport = (props) => {
         console.log(pair[0] + ": ", pair[1]);
       }
 
-      await submitReportTrainee(user.accountId, props.classId, formData);
-      toast.success("Nộp báo cáo thành công!");
+      await submitScoreTrainee(classId, formData);
+      toast.success("Nộp báo cáo điểm thành công!");
       handleClose();
       reset();
       setLoading(false);
@@ -60,7 +65,7 @@ export const SubmitReport = (props) => {
 
     } catch (error) {
       setLoading(false);
-      console.error("Lỗi khi nộp báo cáo:", error);
+      console.error("Lỗi khi nộp báo cáo điểm:", error);
       if (error.result && error.result.length > 0) {
         toast.error(error.result[0]);
       } else {
@@ -73,7 +78,7 @@ export const SubmitReport = (props) => {
 
   return (
     <React.Fragment>
-      <span><Tooltip title={props.reportContent !== null ? 'Cập nhật báo cáo' : 'Tạo báo cáo'}><FormOutlined className={cx('report-icon')} onClick={handleClickOpen} /></Tooltip></span>
+      <Button sx={{ backgroundColor: "#2F903F" }} onClick={handleClickOpen} color="primary" variant="contained">Import</Button>
       <Dialog
         open={open}
         onClose={handleClose}
@@ -89,13 +94,13 @@ export const SubmitReport = (props) => {
               control={control}
               defaultValue={[]}
               rules={{
-                required: 'Vui lòng chọn file báo cáo',
+                required: 'Vui lòng chọn file báo cáo điểm',
               }}
               render={({ field }) => (
                 <div>
                   <Upload
                     name="file"
-                    accept='.doc, .docx, .pdf'
+                    accept='.xls,.xlsx'
                     action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
                     headers={{ authorization: 'authorization-text' }}
                     fileList={field.value}
