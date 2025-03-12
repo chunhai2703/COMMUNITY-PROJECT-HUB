@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ConfigProvider, Dropdown, Table, Tag, Modal as AntModal, message } from 'antd';
-import { EditOutlined, DeleteOutlined, EllipsisOutlined, SearchOutlined, DownloadOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, EllipsisOutlined, SearchOutlined, DownloadOutlined, InfoCircleOutlined, ExportOutlined } from '@ant-design/icons';
 import { Button, CircularProgress, debounce, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { useForm, Controller } from "react-hook-form";
 import trainees from './TraineeScoreList.module.css';
@@ -9,7 +9,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useAuth from '../../hooks/useAuth';
 import { Spinner } from '../Spinner/Spinner';
-import { GetAllTraineeOfClass, GetAllTraineeScoreList, UpdateScoreTraineeList } from '../../services/TraineeApi';
+import { ExportTraineeList, GetAllTraineeOfClass, GetAllTraineeScoreList, UpdateScoreTraineeList } from '../../services/TraineeApi';
 
 const cx = classNames.bind(trainees);
 
@@ -80,6 +80,26 @@ const TraineeScoreList = ({ dataClass }) => {
     const handleCancelEdit = () => {
         setScores({});
         setEditing(false);
+    };
+
+    const handleExport = async () => {
+        setIsLoading(true);
+        const response = await ExportTraineeList(classId);
+        if (response.ok) {
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "DanhSachHocVien.xlsx";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            toast.success("Export dữ liệu thành công")
+        } else {
+            toast.error("Export dữ liệu thất bại")
+        }
+        setIsLoading(false);
     };
 
     const handleSaveScores = async () => {
@@ -198,17 +218,29 @@ const TraineeScoreList = ({ dataClass }) => {
             <div className={cx('trainee-table-container')}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
                     <p className='text-3xl'>Đánh giá kết quả học viên</p>
+                    <div>
+                        {(user.accountId === dataClass.lecturerId
+                            || user.accountId === dataClass.projectManagerId
+                            || user.roleId === 4
+                        ) && dataClass.projectStatus === 'Đang diễn ra' && (
+                                <button className={cx('export-button')} onClick={handleExport}>
+                                    <ExportOutlined color='white' size={20} style={{ marginRight: '5px' }} />
+                                    Export
+                                </button>
+                            )}
 
-                    {user.accountId === dataClass.lecturerId && dataClass.projectStatus === "Đang diễn ra" && (
-                        editing ? (
-                            <div>
-                                <Button sx={{ backgroundColor: "#D45B13", color: "white" }} onClick={handleCancelEdit} color="secondary" variant="outlined">Hủy</Button>
-                                <Button sx={{ backgroundColor: "#2F903F" }} onClick={handleSaveScores} color="primary" variant="contained" style={{ marginLeft: 8 }}>Lưu</Button>
-                            </div>
-                        ) : (
-                            <Button sx={{ backgroundColor: "#2F903F" }} onClick={handleEditClick} color="primary" variant="contained" disabled={hasNullScore}>Cập nhật</Button>
-                        )
-                    )}
+                        {user.accountId === dataClass.lecturerId && dataClass.projectStatus === "Đang diễn ra" && (
+                            editing ? (
+                                <div>
+                                    <Button sx={{ backgroundColor: "#D45B13", color: "white" }} onClick={handleCancelEdit} color="secondary" variant="outlined">Hủy</Button>
+                                    <Button sx={{ backgroundColor: "#2F903F" }} onClick={handleSaveScores} color="primary" variant="contained" style={{ marginLeft: 8 }}>Lưu</Button>
+                                </div>
+                            ) : (
+                                <Button sx={{ backgroundColor: "#2F903F" }} onClick={handleEditClick} color="primary" variant="contained" disabled={hasNullScore}>Cập nhật</Button>
+                            )
+                        )}
+                    </div>
+
                 </div>
                 <ConfigProvider
                     theme={{

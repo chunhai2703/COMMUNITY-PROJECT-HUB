@@ -65,3 +65,14 @@
   width: 150px;
   cursor: pointer;
 }
+
+.export-button {
+  color: white;
+  background-color: #d45b13;
+  padding: 10px 7px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  width: 100px;
+  cursor: pointer;
+}
