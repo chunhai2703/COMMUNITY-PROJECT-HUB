@@ -195,7 +195,7 @@ export const MaterialTable = () => {
             key: 'action',
             align: 'center',
             render: (record) => (
-                (user.roleIdd === 4 || (user.roleId == 2 && user.accountId == dataProject?.projectManagerId)) ? (
+                (user.roleId === 4 || (user.roleId == 2 && user.accountId == dataProject?.projectManagerId)) ? (
                     <Dropdown menu={{ items: getMenuItems(record) }} placement="bottomRight" trigger={['click']}>
                         <EllipsisOutlined style={{ fontSize: "18px", color: 'black' }} />
                     </Dropdown>

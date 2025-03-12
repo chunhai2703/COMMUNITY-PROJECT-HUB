@@ -15,7 +15,7 @@ import { AddNewTrainee } from '../Popup/Class/AddNewTrainee';
 
 const cx = classNames.bind(trainees);
 
-const TraineeList = (props) => {
+const TraineeList = ({ dataClass }) => {
     const { user } = useAuth();
     const { classId } = useParams();
 
@@ -99,51 +99,87 @@ const TraineeList = (props) => {
         },
     ];
 
-    const columns = [
-        {
-            title: 'ID',
-            dataIndex: 'accountCode',
-            key: 'accountCode',
-            align: 'center',
-            sorter: true
-        },
-        {
-            title: 'Họ và tên',
-            dataIndex: 'fullName',
-            key: 'fullName',
-            align: 'center',
-            sorter: true
-        },
-        {
-            title: 'Email',
-            dataIndex: 'email',
-            key: 'email',
-            align: 'center',
-            sorter: true
-        },
-        {
-            title: 'Số điện thoại',
-            dataIndex: 'phone',
-            key: 'phone',
-            align: 'center',
-        },
-        {
-            title: 'Giới tính',
-            dataIndex: 'gender',
-            key: 'gender',
-            align: 'center',
-        },
-        {
-            title: '',
-            key: 'action',
-            align: 'center',
-            render: (record) => (
-                <Dropdown menu={{ items: getMenuItems(record) }} placement="bottomRight" trigger={['click']}>
-                    <EllipsisOutlined style={{ fontSize: "18px", color: 'black' }} />
-                </Dropdown>
-            ),
-        },
-    ];
+    const getColumn = () => {
+        const columns = [
+            {
+                title: 'ID',
+                dataIndex: 'accountCode',
+                key: 'accountCode',
+                align: 'center',
+                sorter: true
+            },
+            {
+                title: 'Họ và tên',
+                dataIndex: 'fullName',
+                key: 'fullName',
+                align: 'center',
+                sorter: true
+            },
+            {
+                title: 'Email',
+                dataIndex: 'email',
+                key: 'email',
+                align: 'center',
+                sorter: true
+            },
+            {
+                title: 'Số điện thoại',
+                dataIndex: 'phone',
+                key: 'phone',
+                align: 'center',
+            },
+            {
+                title: 'Giới tính',
+                dataIndex: 'gender',
+                key: 'gender',
+                align: 'center',
+            }
+        ];
+
+        if (user?.roleId === 2 && user?.accountId === dataClass.lecturerId && dataClass.projectStatus === "Đang diễn ra") {
+            columns.push(
+                {
+                    title: 'Báo cáo',
+                    dataIndex: 'feedbackContent',
+                    key: 'feedbackContent',
+                    align: 'center',
+                    render: (record) => (
+                        record ? (
+                            <a href={record} className='text-blue-600 underline' target="_blank" rel="noopener noreferrer" download>
+                                Tải xuống
+                                < DownloadOutlined style={{ marginLeft: 2 }} />
+                            </a>
+                        ) : "N/A"
+                    ),
+                },
+                {
+                    title: 'Ngày nộp báo cáo',
+                    dataIndex: 'feedbackCreatedDate',
+                    key: 'feedbackCreatedDate',
+                    align: 'center',
+                    render: (record) => (
+                        record ? formatDate(record) : "N/A"
+                    ),
+                }
+            );
+        }
+
+        columns.push(
+            {
+                title: '',
+                key: 'action',
+                align: 'center',
+                render: (record) => (
+                    <Dropdown menu={{ items: getMenuItems(record) }} placement="bottomRight" trigger={['click']}>
+                        <EllipsisOutlined style={{ fontSize: "18px", color: 'black' }} />
+                    </Dropdown>
+                ),
+            },
+        )
+
+        return columns
+    }
+
 
     if (!user || !classId || isLoading) {
         return <Spinner />
@@ -172,7 +208,7 @@ const TraineeList = (props) => {
                                 Tìm kiếm
                             </button>
                         </div>
-                        {user?.accountId === props.dataClass.projectManagerId && props.dataClass.projectStatus === 'Lên kế hoạch' && (<div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        {user?.accountId === dataClass.projectManagerId && dataClass.projectStatus === 'Lên kế hoạch' && (<div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                             <AddTrainee classId={classId} refresh={fetchAllTrainee} />
                             <AddNewTrainee classId={classId} refresh={fetchAllTrainee} />
                         </div>)}
@@ -192,7 +228,7 @@ const TraineeList = (props) => {
                 >
                     <Table
                         size='large'
-                        columns={columns}
+                        columns={getColumn()}
                         dataSource={traineeList.map((trainee) => ({
                             key: trainee.traineeId,
                             traineeId: trainee.account.accountId,
@@ -203,6 +239,8 @@ const TraineeList = (props) => {
                             gender: trainee.account.gender,
                             birthdate: trainee.account.dateOfBirth,
                             avatar: trainee.account.avatarLink,
+                            feedbackCreatedDate: trainee.feedbackCreatedDate,
+                            feedbackContent: trainee.feedbackContent
                         }))}
                         pagination={{
                             position: ['bottomCenter'],
