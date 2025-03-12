@@ -7,7 +7,6 @@ import {
 } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import { FormOutlined } from '@ant-design/icons';
-import { assignLecturerStudentToProject } from '../../../services/AssignApi';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth';
@@ -38,6 +37,7 @@ export const SubmitReport = (props) => {
 
   const onSubmit = async (data) => {
     try {
+      setLoading(true)
       const formData = new FormData();
       if (data.report?.length > 0) {
         const file = data.report[0]?.originFileObj;
@@ -50,11 +50,12 @@ export const SubmitReport = (props) => {
       for (let pair of formData.entries()) {
         console.log(pair[0] + ": ", pair[1]);
       }
-      setLoading(true)
+
       await submitReportTrainee(user.accountId, props.classId, formData);
       toast.success("Nộp báo cáo thành công!");
       handleClose();
       reset();
+      setLoading(false);
       navigate('/home-trainee/my-classes');
 
     } catch (error) {
