@@ -5,6 +5,7 @@ import classes from './ClassItem.module.css'
 import classNames from 'classnames/bind'
 import useAuth from '../../../hooks/useAuth'
 import { BookOutlined, FormOutlined } from '@ant-design/icons'
+import { SubmitReport } from '../../Popup/Class/SubmitReport'
 
 const cx = classNames.bind(classes)
 
@@ -12,28 +13,53 @@ export const ClassItem = (props) => {
   const { user } = useAuth();
   const navigate = useNavigate()
 
+  const moveToClassDetail = () => {
+    if (user?.roleId === 2) {
+      navigate(`/home-lecturer/class-detail/${props.projectId}/${props.classId}`)
+    } else if (user?.roleId === 4) {
+      navigate(`/home-department-head/class-detail/${props.projectId}/${props.classId}`)
+    } else if (user?.roleId === 1) {
+      navigate(`/home-student/class-detail/${props.projectId}/${props.classId}`)
+    } else if (user?.roleId === 3) {
+      navigate(`/home-trainee/class-detail/${props.projectId}/${props.classId}`)
+    }
+  }
+
   return (
     <Card
       title={
         <h3 className={cx('class-name')}>{props.classCode}</h3>
       }
-      extra={<Link style={{ color: '#3987e1', fontWeight: '600' }} to={user?.roleId === 2 ? `/home-lecturer/class-detail/${props.projectId}/${props.classId}` : `/home-department-head/class-detail/${props.projectId}/${props.classId}`}>Xem thêm</Link>}
+      extra={
+
+        <Link style={{ color: '#3987e1', fontWeight: '600' }} onClick={moveToClassDetail}>Xem thêm</Link>}
       style={{
         width: 400,
       }}
       className={cx('class-item')}
     >
       <div className={cx('class-item-content')}>
-        <p className={cx('project-name')}><span className={cx('label')}>Dự án:</span> <span className={cx('project-name-value')}>{props.projectTitle}</span> - <span className={cx('project-status', {
+        <p className={cx('project-name')}><span className={cx('label')}>Dự án:</span> <span className={cx('project-name-value')}>{props.projectTitle}</span> </p>
+        <p><span className={cx('label')}>Hiện trạng: </span><span className={cx('project-status', {
           'planning-status': props.projectStatus === 'Lên kế hoạch',
           'ongoing-status': props.projectStatus === 'Sắp diễn ra',
           'active-status': props.projectStatus === 'Đang diễn ra',
           'inactive-status': props.projectStatus === 'Hủy',
           'completed-status': props.projectStatus === 'Hoàn thành',
         })}>{props.projectStatus}</span></p>
-        <p className={cx('room')}><span className={cx('label')}>Địa điểm: </span><span className={cx('address-value')}>{props.projectAddress}</span></p>
-        <p><span className={cx('label')}>Báo cáo: </span> <Tag color={props.reportContent !== null ? '#87d068' : '#f50'}>{props.reportContent !== null ? 'Đã có' : 'Chưa có'}</Tag> <span><Tooltip title={props.reportContent !== null ? 'Cập nhật báo cáo' : 'Tạo báo cáo'} onClick={() => navigate(`/home-lecturer/my-classes/report`)}
-        ><FormOutlined className={cx('report-icon')} /></Tooltip></span></p>
+
+        {(user?.roleId === 1 || user?.roleId === 3) && (
+          <p className={cx('lecturer')}>
+            <span className={cx('label')}>Giảng viên: </span>
+            <span className={cx('lecturer-value')}>{props.lecturerName}</span>
+          </p>
+        )}
+
+        <p className={cx('address')}><span className={cx('label')}>Địa điểm: </span><span className={cx('address-value')}>{props.projectAddress}</span></p>
+        {user?.roleId === 3 && (
+          <p><span className={cx('label')}>Báo cáo học tập: </span> <Tag color={props.reportContent !== null ? '#87d068' : '#f50'}>{props.reportContent !== null ? 'Đã có' : 'Chưa có'}</Tag> <SubmitReport reportContent={props.reportContent} projectId={props.projectId} classId={props.classId} /></p>
+        )}
+
       </div>
 
     </Card>

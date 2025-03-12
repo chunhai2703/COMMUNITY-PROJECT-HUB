@@ -72,8 +72,32 @@ export async function searchStudents(searchTerm) {
 
 }
 
+export async function searchTrainees(searchTerm) {
+  try {
+    const response = await fetch(`${baseUrl}/api/Trainee/search-trainee-add-to-class?searchValue=${searchTerm}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+      }
+    })
+    const resData = await response.json();
+
+    if (!response.ok) {
+      throw new Error(resData.message);
+    }
+
+    console.log(resData);
+    return resData;
+
+  } catch (error) {
+    console.error(error.message);
+    throw new Error(error.message);
+  }
+
+}
+
 export async function assignPMToProject(projectId, accountId) {
-  console.log(projectId, accountId);
   try {
     const response = await fetch(`${baseUrl}/api/Project/assign-pm-to-project?projectId=${projectId}&accountId=${accountId}`, {
       method: 'PUT',
@@ -97,7 +121,6 @@ export async function assignPMToProject(projectId, accountId) {
 }
 
 export async function assignLecturerStudentToProject(data) {
-  console.log(data);
   try {
     const response = await fetch(`${baseUrl}/api/Class/updated-class`, {
       method: 'PUT',
@@ -113,6 +136,53 @@ export async function assignLecturerStudentToProject(data) {
       throw new Error(errorData.result||errorData.message || errorData.error || "Lỗi không xác định từ API");
     }
     console.log(response);
+    return response;
+
+  } catch (error) {
+    console.error(error.message);
+    throw new Error(error.message);
+  }
+}
+export async function addTraineeToClass(data) {
+  console.log(data);
+  try {
+    const response = await fetch(`${baseUrl}/api/Trainee/trainee`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+      },
+      body: JSON.stringify(data)
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json(); // Lấy dữ liệu lỗi từ API
+      throw new Error(errorData.result||errorData.message || errorData.error || "Lỗi không xác định từ API");
+    }
+    console.log(response);
+    return response;
+
+  } catch (error) {
+    console.error(error.message);
+    throw new Error(error.message);
+  }
+}
+
+export async function addNewTraineeToClass(formData) {
+  console.log(formData);
+  try {
+    const response = await fetch(`${baseUrl}/api/Trainee/new-account-of-trainee`, {
+      method: 'POST',
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+      },
+      body: formData,
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.result||errorData.message || errorData.error || "Lỗi không xác định từ API");
+    }
     return response;
 
   } catch (error) {

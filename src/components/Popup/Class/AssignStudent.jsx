@@ -107,6 +107,9 @@ export const AssignStudent = (props) => {
             <Controller
               name="student"
               control={control}
+              rules={{
+                required: 'Vui lòng chọn sinh viên hỗ trợ để phân công'
+              }}
               render={({ field }) => (
                 <Autocomplete
                   {...field}
@@ -119,9 +122,6 @@ export const AssignStudent = (props) => {
                     field.onChange(newValue);
                   }}
                   loading={loading}
-                  rules={{
-                    required: 'Vui lòng chọn sinh viên hỗ trợ để phân công'
-                  }}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -131,8 +131,8 @@ export const AssignStudent = (props) => {
                       required
                       margin="normal"
                       defaultValue={field.value?.fullName ? `${field.value.fullName} - ${field.value.accountName}` : ''}
-                      error={!!errors.lecturer}
-                      helperText={errors.lecturer?.message}
+                      error={!!errors.student}
+                      helperText={errors.student?.message}
                       slotProps={{
                         input: {
                           ...params.InputProps,

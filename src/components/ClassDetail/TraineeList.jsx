@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ConfigProvider, Dropdown, Table, Tag, Modal as AntModal, message } from 'antd';
-import { EditOutlined, DeleteOutlined, EllipsisOutlined, SearchOutlined, DownloadOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, EllipsisOutlined, SearchOutlined, DownloadOutlined, InfoCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { Button, CircularProgress, debounce, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { useForm, Controller } from "react-hook-form";
 import trainees from './TraineeList.module.css';
@@ -10,10 +10,12 @@ import { toast } from 'react-toastify';
 import useAuth from '../../hooks/useAuth';
 import { Spinner } from '../Spinner/Spinner';
 import { GetAllTraineeOfClass } from '../../services/TraineeApi';
+import { AddTrainee } from '../Popup/Class/AddTrainee';
+import { AddNewTrainee } from '../Popup/Class/AddNewTrainee';
 
 const cx = classNames.bind(trainees);
 
-const TraineeList = () => {
+const TraineeList = (props) => {
     const { user } = useAuth();
     const { classId } = useParams();
 
@@ -39,7 +41,7 @@ const TraineeList = () => {
         }).format(date);
     };
 
-    const fetchAllTrainee = async () => {
+    const fetchAllTrainee = useCallback(async () => {
         setIsLoading(true);
         const response = await GetAllTraineeOfClass(classId, searchValue, pageNumber, rowsPerPage, sortColumn, sortOrder);
         const responseData = await response.json();
@@ -56,7 +58,7 @@ const TraineeList = () => {
         }
 
         setIsLoading(false);
-    };
+    }, [classId, searchValue, pageNumber, rowsPerPage, sortColumn, sortOrder]);
 
     const handleTableChange = (pagination, filters, sorter) => {
         if (sorter.order) {
@@ -70,7 +72,7 @@ const TraineeList = () => {
 
     useEffect(() => {
         fetchAllTrainee();
-    }, [pageNumber, sortColumn, sortOrder, classId]);
+    }, [fetchAllTrainee]);
 
     const handleDetailOpen = (trainee) => {
         setSelectedTrainee(trainee);
@@ -170,6 +172,10 @@ const TraineeList = () => {
                                 Tìm kiếm
                             </button>
                         </div>
+                        {user?.accountId === props.dataClass.projectManagerId && props.dataClass.projectStatus === 'Lên kế hoạch' && (<div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <AddTrainee classId={classId} refresh={fetchAllTrainee} />
+                            <AddNewTrainee classId={classId} refresh={fetchAllTrainee} />
+                        </div>)}
                     </div>
                 </div>
                 <ConfigProvider

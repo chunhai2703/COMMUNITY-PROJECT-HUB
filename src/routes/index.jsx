@@ -33,8 +33,11 @@ import { ProjectRegistrationPage } from "../pages/RegistrationPage/ProjectRegist
 import { ChatLayout } from "../components/Chat/ChatLayout/ChatLayout";
 import { ChatContent } from "../components/Chat/ChatContent/ChatContent";
 import { ProjectLog } from "../pages/ProjectsPage/ProjectLog";
-import { MyClassesOfLecturer } from "../pages/Classes/MyClassesLecturer";
+import { MyClasses } from "../pages/Classes/MyClasses";
 import { ReportPage } from "../pages/Classes/ReportPage";
+import { LayoutTrainee } from "../layout/layout/LayoutTrainee";
+import { ErrorPageTrainee } from "../pages/ErrorPage/ErrorPageTrainee";
+import { HomeTrainee } from "../pages/HomePage/HomeTrainee";
 
 
 
@@ -134,11 +137,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "my-classes",
-        element: <MyClassesOfLecturer />
-      },
-      {
-        path: 'my-classes/report',
-        element: <ReportPage />,
+        element: <MyClasses />
       },
       {
         path: "class-detail/:projectId/:classId",
@@ -222,6 +221,73 @@ export const router = createBrowserRouter([
       {
         path: "my-registration",
         element: <MyRegistrationPage />
+      },
+      {
+        path: "my-classes",
+        element: <MyClasses />
+      },
+      {
+        path: "class-detail/:projectId/:classId",
+        element: <ClassDetailPage />,
+        errorElement: <ErrorPage />
+      },
+      {
+        path: "chat",
+        element: <ChatLayout />,
+        errorElement: <ErrorPageStudent />,
+        children: [
+          {
+            index: true,
+            element: <ChatContent />,
+          },
+          {
+            path: ":classId",
+            element: <ChatContent />,
+          }
+        ]
+      },
+      {
+        path: "view-profile",
+        element: <ViewProfilePage />,
+      },
+      {
+        path: "change-password",
+        element: <ChangePasswordPage />,
+        errorElement: <ErrorPage />
+      },
+      {
+        path: "*", // Bắt tất cả các đường dẫn không xác định 
+        element: <ErrorPageStudent />
+      },
+    ]
+  },
+
+  {
+    path: "/home-trainee",
+    element: <LayoutTrainee />,
+    errorElement: <ErrorPageTrainee />,
+    children: [
+      {
+        index: true,
+        element: <HomeTrainee />
+      },
+      {
+        path: "all-related-projects",
+        element: <RelatedProjects />,
+      },
+      {
+        path: "project-detail/:projectId",
+        element: <ProjectDetailPage />,
+        loader: projectDetailLoader
+      },
+      {
+        path: "project-detail/:projectId/material",
+        element: <MaterialManagementPage />,
+        errorElement: <ErrorPage />
+      },
+      {
+        path: "my-classes",
+        element: <MyClasses />
       },
       {
         path: "class-detail/:projectId/:classId",
