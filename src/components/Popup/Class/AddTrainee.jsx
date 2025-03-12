@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import classes from './AssignLecturer.module.css'
+import classes from './AddTrainee.module.css'
 import classNames from 'classnames/bind'
 import {
   TextField, Dialog, DialogActions, DialogContent, DialogTitle,
@@ -7,32 +7,31 @@ import {
 } from '@mui/material';
 import { } from '@mui/icons-material';
 import { Controller, useForm } from 'react-hook-form';
-import { UserAddOutlined } from '@ant-design/icons';
-import { assignLecturerStudentToProject, searchLeturers } from '../../../services/AssignApi';
+import { PlusCircleOutlined } from '@ant-design/icons';
+import { addTraineeToClass, searchTrainees } from '../../../services/AssignApi';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth';
 
-
 const cx = classNames.bind(classes)
-
-export const AssignLecturer = (props) => {
+export const AddTrainee = (props) => {
   const [open, setOpen] = useState(false);
-  const [lecturers, setLecturers] = useState([]);
+  const [trainees, setTrainees] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { projectId } = useParams();
 
   const { handleSubmit, control, reset, formState: { errors } } = useForm({});
 
 
-  const handleSearchLecturer = async (searchTerm) => {
+  const handleSearchTrainees = async (searchTerm) => {
     if (!searchTerm) return;
     setLoading(true);
     try {
-      const data = await searchLeturers(searchTerm);
-      console.log("Danh sách giảng viên từ API:", data); // Kiểm tra dữ liệu trả về
-      setLecturers(data.result);
+      const data = await searchTrainees(searchTerm);
+      console.log("Danh sách học viên từ API:", data);
+      setTrainees(data.result);
     } catch (error) {
       console.error(error.message);
     }
@@ -52,41 +51,27 @@ export const AssignLecturer = (props) => {
 
   const onSubmit = async (data) => {
     try {
-
+      setLoading(true);
       const sent = {
         classId: props.classId,
-        accountId: data.lecturer.accountId,
-        roleId: 2
+        accountId: data.trainee.accountId,
       }
-      await assignLecturerStudentToProject(sent);
-      toast.success("Giảng viên đã được phân công thành công!");
+      await addTraineeToClass(sent);
+      toast.success("Học viên đã được thêm vào lớp thành công!");
       handleClose();
+      props.refresh();
+      setLoading(false);
       reset();
       if (user && (user?.roleId === 2)) {
-        navigate(`/home-lecturer/project-detail/${props.project.projectId}`);
+        navigate(`/home-lecturer/class-detail/${projectId}/${props.classId}`);
       } else if (user && (user?.roleId === 4)) {
-        navigate(`/home-department-head/project-detail/${props.project.projectId}`);
+        navigate(`/home-department-head/class-detail/${projectId}/${props.classId}`);
       }
 
     } catch (error) {
-      // console.error("Lỗi khi phân công giảng viên:", error);
-      // if (error.result) {
-      //   toast.error(
-      //     <div>
-      //       {error.result.map((msg, index) => (
-      //         <>
-      //           <p key={index}>{msg}</p> 
-      //         </>
-
-      //       ))}
-      //     </div>
-      //   );
-      // } else {
-      //   toast.error(error.message);
-      // }
-      console.error("Lỗi khi phân công giảng viên:", error);
+      console.error("Lỗi khi phân công học viên:", error);
       if (error.result && error.result.length > 0) {
-        toast.error(error.result[0]);
+        toast.error(error.result);
       } else {
         toast.error(error.message);
       }
@@ -97,46 +82,47 @@ export const AssignLecturer = (props) => {
 
   return (
     <React.Fragment>
-      <button className={cx('class-assign-lecturer')} onClick={handleClickOpen}>
-        <UserAddOutlined style={{ marginRight: '8px' }} /> Phân công giảng viên
+      <button className={cx('add-trainee-button')} onClick={handleClickOpen} >
+        <PlusCircleOutlined color='white' size={20} style={{ marginRight: '5px' }} />
+        Thêm học viên
       </button>
       <Dialog
         open={open}
         onClose={handleClose}
       >
-        <DialogTitle style={{ backgroundColor: "#474D57", color: "white" }} >Phân công giảng viên</DialogTitle>
+        <DialogTitle style={{ backgroundColor: "#474D57", color: "white" }} >Thêm học viên vào lớp</DialogTitle>
         <DialogContent>
-          <form className={cx('assign-lecturer-form')}>
-            {/* Giảng viên */}
+          <form className={cx('add-trainee-form')}>
+            {/* Học viên */}
             <Controller
-              name="lecturer"
+              name="trainee"
               control={control}
               rules={{
-                required: 'Vui lòng chọn giảng viên để phân công'
+                required: 'Vui lòng chọn học viên để thêm vào'
               }}
               render={({ field }) => (
                 <Autocomplete
                   {...field}
-                  options={lecturers} // Danh sách từ API
+                  options={trainees} // Danh sách từ API
                   getOptionLabel={(option) => option.fullName && option.accountName ? `${option.fullName} - ${option.accountName}` : option.fullName}
                   isOptionEqualToValue={(option, value) => option.accountId === value?.accountId}
-                  onInputChange={(event, newInputValue) => handleSearchLecturer(newInputValue)}
+                  onInputChange={(event, newInputValue) => handleSearchTrainees(newInputValue)}
                   onChange={(event, newValue) => {
-                    console.log("Người giảng viên được chọn:", newValue);
+                    console.log("Người học viên được chọn:", newValue);
                     field.onChange(newValue);
                   }}
                   loading={loading}
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label="Giảng viên"
+                      label="Học viên"
                       variant="outlined"
                       fullWidth
                       required
                       margin="normal"
                       defaultValue={field.value?.fullName ? `${field.value.fullName} - ${field.value.accountName}` : ''}
-                      error={!!errors.lecturer}
-                      helperText={errors.lecturer?.message}
+                      error={!!errors.trainee}
+                      helperText={errors.trainee?.message}
                       slotProps={{
                         input: {
                           ...params.InputProps,
@@ -159,12 +145,11 @@ export const AssignLecturer = (props) => {
         </DialogContent>
         <DialogActions>
           <button onClick={handleClose} className={cx('cancel-button')}>Hủy</button>
-          <button type="submit" onClick={handleSubmit(onSubmit)} className={cx('create-button')}>
-            Phân công
+          <button type="submit" onClick={handleSubmit(onSubmit)} className={cx('create-button')} disabled={loading}>
+            {loading ? <CircularProgress color="inherit" size={20} /> : "Thêm vào"}
           </button>
         </DialogActions>
       </Dialog>
     </React.Fragment>
   );
-
 }

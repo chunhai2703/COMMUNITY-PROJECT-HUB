@@ -5,7 +5,7 @@ import useAuth from '../../hooks/useAuth';
 import { Spinner } from '../Spinner/Spinner';
 import { SearchOutlined } from '@ant-design/icons';
 import { ClassList } from './ClassList/ClassList';
-import { getAllClassesOfLecturer } from '../../services/ClassApi';
+import { getAllClassesOfLecturer, getAllClassesOfStudent, getAllClassesOfTrainee } from '../../services/ClassApi';
 
 const cx = classNames.bind(classes);
 
@@ -19,14 +19,26 @@ export const AllClasses = () => {
     if (!user?.accountId) return;
 
     try {
-      const data = await getAllClassesOfLecturer(user.accountId, query);
-      console.log('📢 Dữ liệu từ API:', data.result);
-      setAllClasses(data.result || []);
+      if (user.roleId === 1) {
+        const data = await getAllClassesOfStudent(user.accountId, query);
+        console.log('📢 Dữ liệu từ API:', data.result);
+        setAllClasses(data.result || []);
+      } else if (user.roleId === 2) {
+        const data = await getAllClassesOfLecturer(user.accountId, query);
+        console.log('📢 Dữ liệu từ API:', data.result);
+        setAllClasses(data.result || []);
+      } else if (user.roleId === 3) {
+        const data = await getAllClassesOfTrainee(user.accountId, query);
+        console.log('📢 Dữ liệu từ API:', data.result);
+        setAllClasses(data.result || []);
+      }
+    
+     
     } catch (error) {
       console.error('❌ Lỗi khi lấy lớp của giảng viên:', error);
       setAllClasses([]);
     }
-  }, [user?.accountId]);
+  }, [user?.accountId, user?.roleId]);
 
   // useEffect gọi API khi lần đầu vào trang
   useEffect(() => {
@@ -53,7 +65,7 @@ export const AllClasses = () => {
 
   return (
     <div className={cx('all-classes-container')}>
-      <h2 className={cx('all-classes-title')}>Các lớp được phân công</h2>
+      <h2 className={cx('all-classes-title')}>{user?.roleId === 3 ? 'Các lớp tham gia' : 'Các lớp được phân công'}</h2>
       <div className={cx('all-classes-search')}>
         <div className={cx('search-box-container')}>
           <div className={cx('search-box')}>
