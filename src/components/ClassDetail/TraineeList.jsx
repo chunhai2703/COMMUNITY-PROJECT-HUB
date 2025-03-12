@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { ConfigProvider, Dropdown, Table, Tag, Modal as AntModal, message } from 'antd';
-import { EditOutlined, DeleteOutlined, EllipsisOutlined, SearchOutlined, DownloadOutlined, InfoCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, EllipsisOutlined, SearchOutlined, DownloadOutlined, InfoCircleOutlined, PlusCircleOutlined, ExportOutlined } from '@ant-design/icons';
 import { Button, CircularProgress, debounce, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { useForm, Controller } from "react-hook-form";
 import trainees from './TraineeList.module.css';
@@ -9,7 +9,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useAuth from '../../hooks/useAuth';
 import { Spinner } from '../Spinner/Spinner';
-import { GetAllTraineeOfClass } from '../../services/TraineeApi';
+import { ExportTraineeList, GetAllTraineeOfClass } from '../../services/TraineeApi';
 import { AddTrainee } from '../Popup/Class/AddTrainee';
 import { AddNewTrainee } from '../Popup/Class/AddNewTrainee';
 
@@ -88,6 +88,26 @@ const TraineeList = ({ dataClass }) => {
         fetchAllTrainee();
     };
 
+    const handleExport = async () => {
+        setIsLoading(true);
+        const response = await ExportTraineeList(classId);
+        if (response.ok) {
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "DanhSachHocVien.xlsx";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            toast.success("Export dữ liệu thành công")
+        } else {
+            toast.error("Export dữ liệu thất bại")
+        }
+        setIsLoading(false);
+    };
+
     const getMenuItems = (trainee) => [
         {
             key: '1',
@@ -140,8 +160,8 @@ const TraineeList = ({ dataClass }) => {
             columns.push(
                 {
                     title: 'Báo cáo',
-                    dataIndex: 'feedbackContent',
-                    key: 'feedbackContent',
+                    dataIndex: 'reportContent',
+                    key: 'reportContent',
                     align: 'center',
                     render: (record) => (
                         record ? (
@@ -154,8 +174,8 @@ const TraineeList = ({ dataClass }) => {
                 },
                 {
                     title: 'Ngày nộp báo cáo',
-                    dataIndex: 'feedbackCreatedDate',
-                    key: 'feedbackCreatedDate',
+                    dataIndex: 'reportCreatedDate',
+                    key: 'reportCreatedDate',
                     align: 'center',
                     render: (record) => (
                         record ? formatDate(record) : "N/A"
@@ -212,6 +232,16 @@ const TraineeList = ({ dataClass }) => {
                             <AddTrainee classId={classId} refresh={fetchAllTrainee} />
                             <AddNewTrainee classId={classId} refresh={fetchAllTrainee} />
                         </div>)}
+
+                        {(user.accountId === dataClass.lecturerId
+                            || user.accountId === dataClass.projectManagerId
+                            || user.roleId === 4
+                        ) && dataClass.projectStatus === 'Đang diễn ra' && (
+                                <button className={cx('export-button')} onClick={handleExport}>
+                                    <ExportOutlined color='white' size={20} style={{ marginRight: '5px' }} />
+                                    Export
+                                </button>
+                            )}
                     </div>
                 </div>
                 <ConfigProvider
@@ -240,7 +270,9 @@ const TraineeList = ({ dataClass }) => {
                             birthdate: trainee.account.dateOfBirth,
                             avatar: trainee.account.avatarLink,
                             feedbackCreatedDate: trainee.feedbackCreatedDate,
-                            feedbackContent: trainee.feedbackContent
+                            feedbackContent: trainee.feedbackContent,
+                            reportCreatedDate: trainee.reportCreatedDate,
+                            reportContent: trainee.reportContent
                         }))}
                         pagination={{
                             position: ['bottomCenter'],

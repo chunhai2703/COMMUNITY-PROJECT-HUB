@@ -72,3 +72,19 @@ export async function submitReportTrainee(accountId, classId, formData) {
         throw new Error(error.message);
     }
 }
+
+export const ExportTraineeList = async (classId) => {
+    try {
+        var url = `${baseUrl}/api/Trainee/export-trainee?classId=${classId}`;
+        const request = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+        const response = await fetch(url, request);
+        return response;
+    } catch (err) {
+        console.log(err);
+    }
+}
