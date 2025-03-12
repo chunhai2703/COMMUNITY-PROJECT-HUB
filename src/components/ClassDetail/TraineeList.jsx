@@ -149,6 +149,12 @@ const TraineeList = ({ dataClass }) => {
                 align: 'center',
             },
             {
+                title: 'Nhóm',
+                dataIndex: 'groupNo',
+                key: 'groupNo',
+                align: 'center',
+            },
+            {
                 title: 'Giới tính',
                 dataIndex: 'gender',
                 key: 'gender',
@@ -272,7 +278,8 @@ const TraineeList = ({ dataClass }) => {
                             feedbackCreatedDate: trainee.feedbackCreatedDate,
                             feedbackContent: trainee.feedbackContent,
                             reportCreatedDate: trainee.reportCreatedDate,
-                            reportContent: trainee.reportContent
+                            reportContent: trainee.reportContent,
+                            groupNo: trainee.groupNo
                         }))}
                         pagination={{
                             position: ['bottomCenter'],
