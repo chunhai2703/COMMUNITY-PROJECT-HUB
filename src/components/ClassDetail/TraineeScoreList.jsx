@@ -224,7 +224,7 @@ const TraineeScoreList = ({ dataClass }) => {
                         {(user.accountId === dataClass.lecturerId
                             || user.accountId === dataClass.projectManagerId
                             || user.roleId === 4
-                        ) && dataClass.projectStatus === 'Đang diễn ra' && (
+                        ) && dataClass.projectStatus === 'Đang diễn ra' && !editing && (
                                 <button className={cx('export-button')} onClick={handleExport}>
                                     <ExportOutlined color='white' size={20} style={{ marginRight: '5px' }} />
                                     Export
@@ -239,7 +239,7 @@ const TraineeScoreList = ({ dataClass }) => {
                                 </div>
                             ) : (
                                 hasNullScore ? (
-                                    <ImportScore classId={classId} fetchAllTraineeScoreList={fetchAllTraineeScoreList} />
+                                    <ImportScore classId={classId} refresh={fetchAllTraineeScoreList} />
                                 ) : (
                                     <Button
                                         sx={{ backgroundColor: "#2F903F" }}

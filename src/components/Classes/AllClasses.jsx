@@ -32,8 +32,8 @@ export const AllClasses = () => {
         console.log('📢 Dữ liệu từ API:', data.result);
         setAllClasses(data.result || []);
       }
-    
-     
+
+
     } catch (error) {
       console.error('❌ Lỗi khi lấy lớp của giảng viên:', error);
       setAllClasses([]);
@@ -84,7 +84,7 @@ export const AllClasses = () => {
           </button>
         </div>
       </div>
-      <ClassList classes={allClasses} />
+      <ClassList classes={allClasses} onRefresh={fetchClasses} />
     </div>
   );
 };

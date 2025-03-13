@@ -24,7 +24,7 @@ export const ImportScore = (props) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { classId } = useParams();
+  const { classId, projectId } = useParams();
 
   console.log(classId);
 
@@ -61,7 +61,12 @@ export const ImportScore = (props) => {
       handleClose();
       reset();
       setLoading(false);
-      navigate('/home-trainee/my-classes');
+      props.refresh();
+      if (user && (user?.roleId === 2)) {
+        navigate(`/home-lecturer/class-detail/${projectId}/${classId}`);
+      } else if (user && (user?.roleId === 4)) {
+        navigate(`/home-department-head/class-detail/${projectId}/${classId}`);
+      }
 
     } catch (error) {
       setLoading(false);
@@ -78,7 +83,7 @@ export const ImportScore = (props) => {
 
   return (
     <React.Fragment>
-      <Button sx={{ backgroundColor: "#2F903F" }} onClick={handleClickOpen} color="primary" variant="contained">Import</Button>
+      <Button size='large' style={{ backgroundColor: "#2F903F", color: "white" }} onClick={handleClickOpen} color="primary" variant="contained">Import</Button>
       <Dialog
         open={open}
         onClose={handleClose}

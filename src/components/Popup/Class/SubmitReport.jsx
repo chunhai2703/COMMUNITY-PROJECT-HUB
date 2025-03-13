@@ -56,6 +56,7 @@ export const SubmitReport = (props) => {
       handleClose();
       reset();
       setLoading(false);
+      props.onRefresh();
       navigate('/home-trainee/my-classes');
 
     } catch (error) {
@@ -73,7 +74,7 @@ export const SubmitReport = (props) => {
 
   return (
     <React.Fragment>
-      <span><Tooltip title={props.reportContent !== null ? 'Cập nhật báo cáo' : 'Tạo báo cáo'}><FormOutlined className={cx('report-icon')} onClick={handleClickOpen} /></Tooltip></span>
+      <span><Tooltip title={props.traineeReportContent !== null ? 'Cập nhật báo cáo' : 'Tạo báo cáo'}><FormOutlined className={cx('report-icon')} onClick={handleClickOpen} /></Tooltip></span>
       <Dialog
         open={open}
         onClose={handleClose}
