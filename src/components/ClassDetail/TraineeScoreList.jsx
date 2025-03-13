@@ -5,11 +5,11 @@ import { Button, CircularProgress, debounce, Dialog, DialogActions, DialogConten
 import { useForm, Controller } from "react-hook-form";
 import trainees from './TraineeScoreList.module.css';
 import classNames from 'classnames/bind';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useAuth from '../../hooks/useAuth';
 import { Spinner } from '../Spinner/Spinner';
-import { ExportTraineeList, GetAllTraineeOfClass, GetAllTraineeScoreList, UpdateScoreTraineeList } from '../../services/TraineeApi';
+import { ExportTraineeList, GetAllTraineeScoreList, UpdateScoreTraineeList } from '../../services/TraineeApi';
 
 import { ImportScore } from '../Popup/Class/ImportScore';
 
@@ -224,7 +224,7 @@ const TraineeScoreList = ({ dataClass }) => {
                         {(user.accountId === dataClass.lecturerId
                             || user.accountId === dataClass.projectManagerId
                             || user.roleId === 4
-                        ) && dataClass.projectStatus === 'Đang diễn ra' && (
+                        ) && dataClass.projectStatus === 'Đang diễn ra' && !editing && (
                                 <button className={cx('export-button')} onClick={handleExport}>
                                     <ExportOutlined color='white' size={20} style={{ marginRight: '5px' }} />
                                     Export
@@ -239,7 +239,7 @@ const TraineeScoreList = ({ dataClass }) => {
                                 </div>
                             ) : (
                                 hasNullScore ? (
-                                    <ImportScore classId={classId} fetchAllTraineeScoreList={fetchAllTraineeScoreList} />
+                                    <ImportScore classId={classId} refresh={fetchAllTraineeScoreList} />
                                 ) : (
                                     <Button
                                         sx={{ backgroundColor: "#2F903F" }}

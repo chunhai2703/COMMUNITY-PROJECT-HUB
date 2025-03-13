@@ -57,7 +57,7 @@ export const ClassItem = (props) => {
 
         <p className={cx('address')}><span className={cx('label')}>Địa điểm: </span><span className={cx('address-value')}>{props.projectAddress}</span></p>
         {user?.roleId === 3 && (
-          <p><span className={cx('label')}>Báo cáo học tập: </span> <Tag color={props.reportContent !== null ? '#87d068' : '#f50'}>{props.reportContent !== null ? 'Đã có' : 'Chưa có'}</Tag> <SubmitReport reportContent={props.reportContent} projectId={props.projectId} classId={props.classId} /></p>
+          <p><span className={cx('label')}>Báo cáo học tập: </span> <Tag color={props.traineeReportContent !== null ? '#87d068' : '#f50'}>{props.traineeReportContent !== null ? 'Đã có' : 'Chưa có'}</Tag> <SubmitReport traineeReportContent={props.traineeReportContent} projectId={props.projectId} classId={props.classId} onRefresh={props.onRefresh} /></p>
         )}
 
       </div>

@@ -17,6 +17,10 @@ export const ClassList = (props) => {
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const currentClasses = props.classes.slice(startIndex, endIndex);
 
+  const refreshClasses = () => {
+    props.onRefresh();  // Gọi callback từ AllClasses
+  };
+
   if (!props.classes || props.classes.length === 0) {
     return (
       <div className={cx('classes-list-container')}>
@@ -46,7 +50,7 @@ export const ClassList = (props) => {
   return (
     <div className={cx('classes-list-container')}>
       <div className={cx('classes-list')}>
-        {currentClasses.map((item) => <ClassItem key={item.classId} {...item} />)}
+        {currentClasses.map((item) => <ClassItem key={item.classId} {...item} onRefresh={refreshClasses} />)}
       </div>
       <Pagination align="center" defaultCurrent={1} total={props.classes.length} pageSize={ITEMS_PER_PAGE} onChange={(page) => setCurrentPage(page)} />
     </div>
