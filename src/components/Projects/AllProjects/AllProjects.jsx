@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import classes from "./AllProjects.module.css";
 import classNames from "classnames/bind";
 import { SearchOutlined } from "@ant-design/icons";
@@ -10,9 +10,10 @@ const cx = classNames.bind(classes);
 export const AllProjects = () => {
   const [searchValue, setSearchValue] = useState("");
   const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  // Hàm gọi API để lấy danh sách dự án theo từ khóa tìm kiếm
-  const fetchProjects = async (searchQuery = "") => {
+  const fetchProjects = useCallback(async (searchQuery = "") => {
+    setLoading(true);
     try {
       const response = await fetch(
         `http://localhost:5145/api/Project/all-project?searchValue=${searchQuery}`,
@@ -24,43 +25,33 @@ export const AllProjects = () => {
           },
         }
       );
+
       const resData = await response.json();
       if (!response.ok) {
-        throw new Response(
-          JSON.stringify({ message: resData.message }),
-          {
-            status: resData.statusCode,
-          }
-        );
+        throw new Error(resData.message || "Lỗi khi lấy danh sách dự án");
       }
-      setProjects(resData.result);
 
+      setProjects(resData.result);
     } catch (error) {
       console.error("Lỗi khi lấy dự án:", error);
-      throw error;
+    } finally {
+      setLoading(false);
     }
-  };
+  }, []);
 
-  // Gọi API khi component được mount để lấy danh sách ban đầu
+  // Gọi API khi component được mount
   useEffect(() => {
     fetchProjects();
-  }, [projects]);
+  }, [fetchProjects]);
 
-  // Theo dõi searchValue, nếu rỗng thì tự động lấy tất cả dự án
+  // Debounce khi thay đổi searchValue
   useEffect(() => {
     const delaySearch = setTimeout(() => {
-      if (searchValue.trim() === "") {
-        fetchProjects();
-      }
-    }, 500); // Tránh spam API, chờ 500ms
+      fetchProjects(searchValue);
+    }, 500);
 
     return () => clearTimeout(delaySearch);
-  }, [searchValue]);
-
-  // Xử lý khi nhấn nút tìm kiếm
-  const handleSearch = () => {
-    fetchProjects(searchValue);
-  };
+  }, [searchValue, fetchProjects]);
 
   return (
     <div className={cx("all-projects-container")}>
@@ -75,10 +66,10 @@ export const AllProjects = () => {
               className={cx("search-input")}
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSearch()} // Nhấn Enter để tìm kiếm
+              onKeyDown={(e) => e.key === "Enter" && fetchProjects(searchValue)}
             />
           </div>
-          <button className={cx("search-button")} onClick={handleSearch}>
+          <button className={cx("search-button")} onClick={() => fetchProjects(searchValue)}>
             <SearchOutlined color="white" size={20} style={{ marginRight: "5px" }} />
             Tìm kiếm
           </button>
@@ -86,7 +77,8 @@ export const AllProjects = () => {
 
         <ProjectCreateForm />
       </div>
-      <ProjectsList projects={projects} />
+
+      {loading ? <p>Đang tải dữ liệu...</p> : <ProjectsList projects={projects} />}
     </div>
   );
 };

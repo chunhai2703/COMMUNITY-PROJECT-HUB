@@ -43,21 +43,24 @@ const TraineeList = ({ dataClass }) => {
 
     const fetchAllTrainee = useCallback(async () => {
         setIsLoading(true);
-        const response = await GetAllTraineeOfClass(classId, searchValue, pageNumber, rowsPerPage, sortColumn, sortOrder);
-        const responseData = await response.json();
+        try {
+            const response = await GetAllTraineeOfClass(classId, searchValue, pageNumber, rowsPerPage, sortColumn, sortOrder);
+            const responseData = await response.json();
 
-        if (response.ok) {
-            setTraineeList(responseData.result.getAllTraineeOfClassDTOs);
-            setTotalItem(responseData.result.totalCount);
-            setPageNumber(responseData.result.currentPage);
-        } else {
-            setTraineeList([]);
-            setTotalItem(0);
-            setPageNumber(1);
-            console.log("Error fetching trainee");
+            if (response.ok) {
+                setTraineeList(responseData.result.getAllTraineeOfClassDTOs);
+                setTotalItem(responseData.result.totalCount);
+                setPageNumber(responseData.result.currentPage);
+            } else {
+                setTraineeList([]);
+                setTotalItem(0);
+                setPageNumber(1);
+            }
+        } catch (error) {
+            console.error("Error fetching trainee:", error);
+        } finally {
+            setIsLoading(false);
         }
-
-        setIsLoading(false);
     }, [classId, searchValue, pageNumber, rowsPerPage, sortColumn, sortOrder]);
 
     const handleTableChange = (pagination, filters, sorter) => {
@@ -72,7 +75,7 @@ const TraineeList = ({ dataClass }) => {
 
     useEffect(() => {
         fetchAllTrainee();
-    }, [fetchAllTrainee]);
+    }, [classId, pageNumber, rowsPerPage, sortColumn, sortOrder]); 
 
     const handleDetailOpen = (trainee) => {
         setSelectedTrainee(trainee);
@@ -85,7 +88,8 @@ const TraineeList = ({ dataClass }) => {
     };
 
     const handleSearch = () => {
-        fetchAllTrainee();
+        setPageNumber(1); // Reset về trang đầu tiên khi tìm kiếm
+        fetchAllTrainee(); // Gọi API để tìm kiếm
     };
 
     const handleExport = async () => {
@@ -226,7 +230,7 @@ const TraineeList = ({ dataClass }) => {
                                     className={cx('search-input')}
                                     value={searchValue}
                                     onChange={(e) => setSearchValue(e.target.value)}
-                                    onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+                                    onKeyDown={(e) => e.key === "Enter" && handleSearch()} // Nhấn Enter để tìm kiếm
                                 />
                             </div>
                             <button className={cx('search-button')} onClick={handleSearch}>

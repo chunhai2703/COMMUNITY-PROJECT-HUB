@@ -6,11 +6,11 @@ import {
   CircularProgress
 } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
-import { FormOutlined } from '@ant-design/icons';
+
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth';
-import { Button, Tooltip, Typography, Upload } from 'antd';
+import { Button, Typography, Upload } from 'antd';
 import { UploadOutlined } from '@mui/icons-material';
 
 import { submitScoreTrainee } from '../../../services/LecturerApi';
