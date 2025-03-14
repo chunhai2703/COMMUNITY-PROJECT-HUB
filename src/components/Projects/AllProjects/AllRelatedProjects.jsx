@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import classNames from 'classnames/bind';
 import { SearchOutlined } from '@ant-design/icons';
 import { ProjectsList } from './ProjectsList/ProjectsList';
@@ -10,11 +10,17 @@ const cx = classNames.bind(styles);
 export const AllRelatedProjects = () => {
   const [searchValue, setSearchValue] = useState('');
   const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const { user } = useAuth();
+  const debounceRef = useRef(null);
 
-  // Dùng useCallback để tránh re-creation của fetchProjects
+  // Hàm gọi API lấy danh sách dự án liên quan
   const fetchProjects = useCallback(async (query = '') => {
     if (!user?.accountId) return;
+
+    setLoading(true);
+    setError(null);
 
     try {
       const response = await fetch(
@@ -32,28 +38,39 @@ export const AllRelatedProjects = () => {
       setProjects(data.result);
     } catch (error) {
       console.error('Lỗi lấy dự án:', error);
+      setError(error.message || 'Đã có lỗi xảy ra!');
+    } finally {
+      setLoading(false);
     }
-  }, [user?.accountId]); 
+  }, [user?.accountId]);
 
-  // Fetch khi user đã có accountId
+  // Gọi API khi user có accountId
   useEffect(() => {
-    fetchProjects();
-  }, [fetchProjects]); 
+    if (user?.accountId) {
+      fetchProjects();
+    }
+  }, [fetchProjects, user]);
 
-  
+  // Debounce searchValue
   useEffect(() => {
-    if (!searchValue.trim()) return;
-    const timer = setTimeout(() => fetchProjects(searchValue), 500);
-    return () => clearTimeout(timer);
-  }, [searchValue, fetchProjects]); 
+    if (debounceRef.current) clearTimeout(debounceRef.current);
 
+    debounceRef.current = setTimeout(() => {
+      fetchProjects(searchValue);
+    }, 500);
+
+    return () => clearTimeout(debounceRef.current);
+  }, [searchValue, fetchProjects]);
+
+  // Xử lý khi nhấn nút tìm kiếm
   const handleSearch = () => {
-    if (!searchValue.trim()) return;
+    fetchProjects(searchValue);
   };
 
   return (
     <div className={cx('all-related-projects-container')}>
       <h2 className={cx('all-related-projects-title')}>Dự Án Cộng Đồng</h2>
+
       <div className={cx('all-related-projects-search')}>
         <div className={cx('search-box-container')}>
           <div className={cx('search-box')}>
@@ -72,7 +89,10 @@ export const AllRelatedProjects = () => {
           </button>
         </div>
       </div>
-      <ProjectsList projects={projects} />
+
+      {loading && <p className={cx('loading-message')}>Đang tải dữ liệu...</p>}
+      {error && <p className={cx('error-message')}>{error}</p>}
+      {!loading && !error && <ProjectsList projects={projects} />}
     </div>
   );
 };

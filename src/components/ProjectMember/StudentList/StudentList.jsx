@@ -59,20 +59,15 @@ export const StudentList = (props) => {
         setIsLoading(false);
     }, [searchValue, pageNumber, rowsPerPage, projectId]);
 
-    useEffect(() => {
 
-        fetchAllStudent();
-    }, [fetchAllStudent]);
 
     useEffect(() => {
-            const delaySearch = setTimeout(() => {
-                if (searchValue.trim() === "") {
-                    fetchAllStudent();
-                }
-            }, 500);
-    
-            return () => clearTimeout(delaySearch);
-        }, [searchValue, fetchAllStudent]);
+        const delaySearch = setTimeout(() => {
+            fetchAllStudent();
+        }, 500);
+
+        return () => clearTimeout(delaySearch);
+    }, [searchValue, pageNumber, rowsPerPage, fetchAllStudent]);
 
     const handleDetailOpen = (student) => {
         setSelectedStudent(student);
@@ -96,6 +91,7 @@ export const StudentList = (props) => {
     };
 
     const handleSearch = () => {
+        setPageNumber(1);
         fetchAllStudent();
     };
 
@@ -119,34 +115,34 @@ export const StudentList = (props) => {
         {
             key: '1',
             label: (
-                <button style={{ color: "#00879E", fontWeight: "600"}} onClick={() => handleDetailOpen(student)}>
+                <button style={{ color: "#00879E", fontWeight: "600" }} onClick={() => handleDetailOpen(student)}>
                     <InfoCircleOutlined style={{ marginRight: '8px' }} /> Chi tiết
                 </button>
             ),
         },
-       ...(props.project.status === 'Sắp diễn ra'
-                  ? [
-                      {
-                          key: '2',
-                          label: (
-                              <button style={{ color: "#D70654", fontWeight: "600" }} onClick={() => handleDeleteOpen(student)}>
-                                  <DeleteOutlined style={{ marginRight: '8px' }} /> Xóa
-                              </button>
-                          ),
-                      },
-                  ]
-                  : []),
-      
-              ...(props.project.status === 'Đang diễn ra'
-                  ? [
-                      {
-                          key: '3',
-                          label: (
-                              <ChangeClassStudent student={student} refresh={fetchAllStudent} projectId={projectId} />
-                          )
-                      }
-                  ]
-                  : []),
+        ...(props.project.status === 'Sắp diễn ra'
+            ? [
+                {
+                    key: '2',
+                    label: (
+                        <button style={{ color: "#D70654", fontWeight: "600" }} onClick={() => handleDeleteOpen(student)}>
+                            <DeleteOutlined style={{ marginRight: '8px' }} /> Xóa
+                        </button>
+                    ),
+                },
+            ]
+            : []),
+
+        ...(props.project.status === 'Đang diễn ra'
+            ? [
+                {
+                    key: '3',
+                    label: (
+                        <ChangeClassStudent student={student} refresh={fetchAllStudent} projectId={projectId} />
+                    )
+                }
+            ]
+            : []),
     ];
 
     const columns = [
@@ -205,7 +201,7 @@ export const StudentList = (props) => {
     return (
         <div>
             <div className={cx('student-table-container')}>
-            <p className='text-3xl'>Quản lý sinh viên</p>
+                <p className='text-3xl'>Quản lý sinh viên</p>
                 <div className={cx('project-detail-search')}>
                     <div className='flex w-full justify-between items-center'>
                         <div className={cx('search-box-container')}>
@@ -276,20 +272,20 @@ export const StudentList = (props) => {
                     {selectedStudent && (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginTop: 25 }}>
                             <div className='flex'>
-                                <div className='w-1/2' style={{marginRight: 5}}>
+                                <div className='w-1/2' style={{ marginRight: 5 }}>
                                     <img src={selectedStudent.avatar} alt="Avatar" style={{ width: '80px', height: '80px', borderRadius: '50%' }} />
                                 </div>
-                                <div className='w-1/2'  style={{ flex: 1}}>
-                                    <TextField style={{ marginBottom: 18}} label="ID" fullWidth value={selectedStudent.accountCode} variant="outlined" />
+                                <div className='w-1/2' style={{ flex: 1 }}>
+                                    <TextField style={{ marginBottom: 18 }} label="ID" fullWidth value={selectedStudent.accountCode} variant="outlined" />
                                     <TextField label="Họ và tên" fullWidth value={selectedStudent.fullName} variant="outlined" />
                                 </div>
                             </div>
                             <div className='flex mt-2'>
-                                <TextField style={{marginRight: 10}} label="Email" fullWidth value={selectedStudent.email} variant="outlined" />
+                                <TextField style={{ marginRight: 10 }} label="Email" fullWidth value={selectedStudent.email} variant="outlined" />
                                 <TextField label="Số điện thoại" fullWidth value={selectedStudent.phone} variant="outlined" />
                             </div>
                             <div className='flex mt-2'>
-                                <TextField style={{marginRight: 10}} label="Ngày sinh" fullWidth value={formatDate(selectedStudent.birthdate)} variant="outlined" />
+                                <TextField style={{ marginRight: 10 }} label="Ngày sinh" fullWidth value={formatDate(selectedStudent.birthdate)} variant="outlined" />
                                 <TextField label="Giới tính" fullWidth value={selectedStudent.gender} variant="outlined" />
                             </div>
                         </div>

@@ -59,19 +59,13 @@ export const LecturerList = (props) => {
     }, [searchValue, pageNumber, rowsPerPage, projectId]);
 
     useEffect(() => {
-
-        fetchAllLecturer();
-    }, [fetchAllLecturer]);
-
-    useEffect(() => {
         const delaySearch = setTimeout(() => {
-            if (searchValue.trim() === "") {
-                fetchAllLecturer();
-            }
-        }, 500);
+            fetchAllLecturer();
+        }, 1000);
 
         return () => clearTimeout(delaySearch);
-    }, [searchValue, fetchAllLecturer]);
+    }, [searchValue, pageNumber, rowsPerPage, fetchAllLecturer]);
+
 
     const handleDetailOpen = (lecturer) => {
         setSelectedLecturer(lecturer);
@@ -95,6 +89,7 @@ export const LecturerList = (props) => {
     };
 
     const handleSearch = () => {
+        setPageNumber(1);
         fetchAllLecturer();
     };
 

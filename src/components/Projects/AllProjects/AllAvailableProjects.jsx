@@ -1,21 +1,28 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import classes from "./AllAvailableProjects.module.css";
 import classNames from "classnames/bind";
 import { SearchOutlined } from "@ant-design/icons";
 import { ProjectsList } from "./ProjectsList/ProjectsList";
-import useAuth from '../../../hooks/useAuth';
-import { Spinner } from '../../Spinner/Spinner';
-
+import useAuth from "../../../hooks/useAuth";
+import { Spinner } from "../../Spinner/Spinner";
 
 const cx = classNames.bind(classes);
 
 export const AllAvailableProjects = () => {
   const [searchValue, setSearchValue] = useState("");
   const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const { user } = useAuth();
+  const debounceRef = useRef(null);
 
-  // Hàm gọi API để lấy danh sách dự án theo từ khóa tìm kiếm
+  // Hàm fetch dự án từ API
   const fetchProjects = useCallback(async (searchQuery = "") => {
+    if (!user?.accountId) return;
+
+    setLoading(true);
+    setError(null);
+
     try {
       const response = await fetch(
         `http://localhost:5145/api/Project/available-project?userId=${user.accountId}&searchValue=${searchQuery}`,
@@ -30,35 +37,34 @@ export const AllAvailableProjects = () => {
 
       const resData = await response.json();
       if (!response.ok) {
-        throw new Response(
-          JSON.stringify({ message: resData.message }),
-          {
-            status: resData.statusCode,
-          }
-        );
+        throw new Error(resData.message || "Lỗi khi lấy danh sách dự án");
       }
-      setProjects(resData.result);
 
+      setProjects(resData.result);
     } catch (error) {
       console.error("Lỗi khi lấy dự án:", error);
-      throw error; // Ném lỗi để component xử lý
+      setError(error.message || "Đã có lỗi xảy ra!");
+    } finally {
+      setLoading(false);
     }
   }, [user?.accountId]);
 
+  // Gọi API khi component được mount (chỉ khi user đã có accountId)
   useEffect(() => {
-    if (user && user.accountId) {
+    if (user?.accountId) {
       fetchProjects();
     }
   }, [fetchProjects, user]);
 
+  // Debounce khi searchValue thay đổi
   useEffect(() => {
-    const delaySearch = setTimeout(() => {
-      if (searchValue.trim() === "") {
-        fetchProjects();
-      }
-    }, 500); 
+    if (debounceRef.current) clearTimeout(debounceRef.current);
 
-    return () => clearTimeout(delaySearch);
+    debounceRef.current = setTimeout(() => {
+      fetchProjects(searchValue);
+    }, 500);
+
+    return () => clearTimeout(debounceRef.current);
   }, [searchValue, fetchProjects]);
 
   // Xử lý khi nhấn nút tìm kiếm
@@ -70,10 +76,10 @@ export const AllAvailableProjects = () => {
     return <Spinner />;
   }
 
-
   return (
     <div className={cx("all-available-projects-container")}>
       <h2 className={cx("all-available-projects-title")}>Dự Án Cộng Đồng</h2>
+
       <div className={cx("all-available-projects-search")}>
         <div className={cx("search-box-container")}>
           <div className={cx("search-box")}>
@@ -84,7 +90,7 @@ export const AllAvailableProjects = () => {
               className={cx("search-input")}
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSearch()} // Nhấn Enter để tìm kiếm
+              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             />
           </div>
           <button className={cx("search-button")} onClick={handleSearch}>
@@ -93,7 +99,10 @@ export const AllAvailableProjects = () => {
           </button>
         </div>
       </div>
-      <ProjectsList projects={projects} />
+
+      {loading && <p className={cx("loading-message")}>Đang tải dữ liệu...</p>}
+      {error && <p className={cx("error-message")}>{error}</p>}
+      {!loading && !error && <ProjectsList projects={projects} />}
     </div>
   );
-}
+};
