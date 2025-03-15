@@ -9,7 +9,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useAuth from '../../hooks/useAuth';
 import { Spinner } from '../Spinner/Spinner';
-import { ExportTraineeList, GetAllTraineeOfClass } from '../../services/TraineeApi';
+import { ExportTraineeList, GetAllTraineeOfClass, RemoveTrainee } from '../../services/TraineeApi';
 import { AddTrainee } from '../Popup/Class/AddTrainee';
 import { AddNewTrainee } from '../Popup/Class/AddNewTrainee';
 
@@ -29,7 +29,8 @@ const TraineeList = ({ dataClass }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [sortColumn, setSortColumn] = useState("");
     const [sortOrder, setSortOrder] = useState("");
-
+    const [openDelete, setOpenDelete] = useState(false);
+    const [reason, setReason] = useState("");
     const { handleSubmit, control, register, reset, formState: { errors } } = useForm();
 
     const formatDate = (dateString) => {
@@ -63,7 +64,7 @@ const TraineeList = ({ dataClass }) => {
         }
     }, [classId, searchValue, pageNumber, rowsPerPage, sortColumn, sortOrder]);
 
-    const handleTableChange = (pagination, filters, sorter) => {
+    const handleTableChange = (pagination, filters, sorter, event) => {
         if (sorter.order) {
             setSortColumn(sorter.field);
             setSortOrder(sorter.order === 'ascend' ? 'ASC' : 'DESC');
@@ -75,7 +76,7 @@ const TraineeList = ({ dataClass }) => {
 
     useEffect(() => {
         fetchAllTrainee();
-    }, [classId, pageNumber, rowsPerPage, sortColumn, sortOrder]); 
+    }, [classId, pageNumber, rowsPerPage, sortColumn, sortOrder]);
 
     const handleDetailOpen = (trainee) => {
         setSelectedTrainee(trainee);
@@ -112,16 +113,59 @@ const TraineeList = ({ dataClass }) => {
         setIsLoading(false);
     };
 
-    const getMenuItems = (trainee) => [
-        {
-            key: '1',
-            label: (
-                <button style={{ color: "blue" }} onClick={() => handleDetailOpen(trainee)}>
-                    <InfoCircleOutlined style={{ marginRight: '8px' }} /> Chi tiết
-                </button>
-            ),
-        },
-    ];
+    const handleDeleteOpen = (trainee) => {
+        setSelectedTrainee(trainee);
+        setOpenDelete(true);
+    };
+
+    const handleDeleteClose = (trainee) => {
+        setSelectedTrainee(null);
+        setOpenDelete(false);
+    };
+
+    const onConfirmDelete = async () => {
+        setIsLoading(true);
+        const response = await RemoveTrainee(classId, selectedTrainee.traineeId, reason);
+        const responseData = await response.json();
+
+        if (response.ok) {
+            toast.success("Xóa học viên thành công")
+            setOpenDelete(false);
+            setSelectedTrainee(null);
+            fetchAllTrainee();
+        } else {
+            toast.error(responseData.message)
+        }
+        setIsLoading(false);
+    }
+
+    const getMenuItems = (trainee) => {
+        const items = [
+            {
+                key: '1',
+                label: (
+                    <button style={{ color: "blue" }} onClick={() => handleDetailOpen(trainee)}>
+                        <InfoCircleOutlined style={{ marginRight: '8px' }} /> Chi tiết
+                    </button>
+                ),
+            },
+        ]
+
+        if (user?.accountId === dataClass.projectManagerId && dataClass.projectStatus === 'Lên kế hoạch') {
+            items.push(
+                {
+                    key: '2',
+                    label: (
+                        <button style={{ color: "red" }} onClick={() => handleDeleteOpen(trainee)}>
+                            <InfoCircleOutlined style={{ marginRight: '8px' }} /> Xóa
+                        </button>
+                    ),
+                }
+            )
+        }
+
+        return items;
+    };
 
     const getColumn = () => {
         const columns = [
@@ -157,6 +201,7 @@ const TraineeList = ({ dataClass }) => {
                 dataIndex: 'groupNo',
                 key: 'groupNo',
                 align: 'center',
+                sorter: true
             },
             {
                 title: 'Giới tính',
@@ -327,6 +372,25 @@ const TraineeList = ({ dataClass }) => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleDetailClose} sx={{ textTransform: "none" }}>Đóng</Button>
+                </DialogActions>
+            </Dialog>
+
+            <Dialog open={openDelete} onClose={handleDeleteClose}>
+                <DialogTitle style={{ backgroundColor: "#474D57", color: "white" }}>Xóa học viên</DialogTitle>
+                <DialogContent>
+                    <p className='pt-3 pb-3'>Bạn có chắc muốn xóa học viên này ra khỏi lớp?</p>
+                    <TextField
+                        label="Lý do"
+                        multiline
+                        rows={4}
+                        fullWidth
+                        variant="outlined"
+                        onChange={(e) => setReason(e.target.value)}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleDeleteClose} sx={{ textTransform: "none" }}>Hủy</Button>
+                    <Button variant="contained" color="error" sx={{ textTransform: "none" }} onClick={onConfirmDelete}>Xác nhận</Button>
                 </DialogActions>
             </Dialog>
         </div>

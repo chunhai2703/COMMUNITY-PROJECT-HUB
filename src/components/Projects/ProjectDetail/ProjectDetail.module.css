@@ -59,3 +59,13 @@
   border: none;
   cursor: pointer;
 }
+
+.project-detail-export-final-report {
+  background-color: transparent;
+  border: none;
+  font-weight: 600;
+  color: #FF8401;
+  border: none;
+  cursor: pointer;
+}
+

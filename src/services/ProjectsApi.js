@@ -264,6 +264,20 @@ export async function toUpComingProject(projectId) {
     console.error("❌ Lỗi khi chuyển trạng thái dự án:", error.message);
     throw new Error(error.message || "Có lỗi xảy ra khi chuyển trạng thái");
   }
+}
 
-
+export const ExportFinalReportProject = async (projectId) => {
+    try {
+        var url = `${baseUrl}/api/Project/export-final-report-of-project?projectId=${projectId}`;
+        const request = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+        const response = await fetch(url, request);
+        return response;
+    } catch (err) {
+        console.log(err);
+    }
 }
