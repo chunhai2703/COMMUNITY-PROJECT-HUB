@@ -99,6 +99,7 @@ const ClassDetail = () => {
                     {(user.roleId === 4
                         || (user.roleId === 2 && user.accountId === dataClass.projectManagerId)
                         || (user.roleId === 2 && user.accountId === dataClass.lecturerId)
+                        || (user.roleId === 3 && dataClass.getTraineeOfClassDTOs.some(trainee => trainee.accountId === user.accountId))
                         || (user.roleId === 1 && dataClass.getMemberOfClassDTOs.some(member => member.accountId === user.accountId)))
                         && (
                             <button
@@ -106,6 +107,16 @@ const ClassDetail = () => {
                                 onClick={() => setActiveTab("traineeList")}
                             >
                                 Danh sách học viên
+                            </button>
+                        )}
+
+                    {(user.roleId === 3 && dataClass.getTraineeOfClassDTOs.some(trainee => trainee.accountId === user.accountId))
+                        && (
+                            <button
+                                className={`${style.tab} ${activeTab === "changeGroup" ? style.active : ""}`}
+                                onClick={() => setActiveTab("changeGroup")}
+                            >
+                                Chuyển nhóm
                             </button>
                         )}
 
@@ -133,8 +144,14 @@ const ClassDetail = () => {
                         || (user.roleId === 2 && user.accountId === dataClass.projectManagerId)
                         || (user.roleId === 2 && user.accountId === dataClass.lecturerId)
                         || user.roleId === 5
+                        || (user.roleId === 3 && dataClass.getTraineeOfClassDTOs.some(trainee => trainee.accountId === user.accountId))
                         || (user.roleId === 1 && dataClass.getMemberOfClassDTOs.some(member => member.accountId === user.accountId)))
                         && (activeTab === "traineeList" && <TraineeList dataClass={dataClass} />
+                        )}
+
+
+                    {(user.roleId === 3 && dataClass.getTraineeOfClassDTOs.some(trainee => trainee.accountId === user.accountId))
+                        && (activeTab === "changeGroup" && <TraineeList dataClass={dataClass} /> // nhét component của hải zo nha
                         )}
 
                     {(user.roleId === 4

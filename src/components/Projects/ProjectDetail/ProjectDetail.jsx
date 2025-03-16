@@ -1,5 +1,5 @@
-import React from 'react'
-import { EllipsisOutlined, FileTextOutlined } from '@ant-design/icons'
+import React, { useState } from 'react'
+import { EllipsisOutlined, ExportOutlined, FileTextOutlined } from '@ant-design/icons'
 import { Dropdown } from 'antd';
 import classes from './ProjectDetail.module.css'
 import classNames from 'classnames/bind'
@@ -12,12 +12,15 @@ import useAuth from '../../../hooks/useAuth';
 import { Spinner } from '../../Spinner/Spinner';
 import { ProjectChangeStatus } from '../../Popup/Project/ProjectChangeStatus';
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { ExportFinalReportProject } from '../../../services/ProjectsApi';
 
 
 const cx = classNames.bind(classes)
 export const ProjectDetail = (props) => {
   const { user } = useAuth();
   const { projectId } = useParams();
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   console.log(user);
 
@@ -27,6 +30,26 @@ export const ProjectDetail = (props) => {
     } else if (user && (user?.roleId === 4)) {
       navigate(`/home-department-head/project-detail/${projectId}/project-log`);
     }
+  }
+
+  const handleExportFinalReport = async () => {
+    setIsLoading(true);
+    const response = await ExportFinalReportProject(projectId);
+    if (response.ok) {
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "FinalReport.xlsx";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+      toast.success("Export dữ liệu thành công")
+    } else {
+      toast.error("Export dữ liệu thất bại")
+    }
+    setIsLoading(false)
   }
   const items = [
     {
@@ -57,10 +80,28 @@ export const ProjectDetail = (props) => {
         },
       ]
       : []),
+    ...((props.project.status === 'Đang diễn ra' || props.project.status === 'Kết thúc')
+      && (
+        user.roleId === 4
+        || user.roleId === 5
+        || user.roleId === 6
+        || (user.roleId === 2 && user.accountId === props.project.projectManagerId)
+      )
+      ? [
+        {
+          key: '5',
+          label: (
+            <button className={cx('project-detail-export-final-report')} onClick={handleExportFinalReport}>
+              <ExportOutlined style={{ marginRight: '8px' }} /> Export báo cáo dự án
+            </button>
+          ),
+        },
+      ]
+      : []),
   ].filter(Boolean);
 
-  
-  if (!user) {
+
+  if (!user || isLoading) {
     return <Spinner />;
   }
 
