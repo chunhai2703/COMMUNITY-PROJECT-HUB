@@ -88,3 +88,19 @@ export const ExportTraineeList = async (classId) => {
         console.log(err);
     }
 }
+
+export const RemoveTrainee = async (classId, accountId, reason) => {
+    try {
+        var url = `${baseUrl}/api/Trainee/trainee?classId=${classId}&accountId=${accountId}&reason=${reason}`;
+        const request = {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+        const response = await fetch(url, request);
+        return response;
+    } catch (err) {
+        console.log(err);
+    }
+}
