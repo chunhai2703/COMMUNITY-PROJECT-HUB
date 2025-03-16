@@ -57,10 +57,10 @@ export const AddTrainee = (props) => {
         accountId: data.trainee.accountId,
       }
       await addTraineeToClass(sent);
+      setLoading(false);
       toast.success("Học viên đã được thêm vào lớp thành công!");
       handleClose();
       props.refresh();
-      setLoading(false);
       reset();
       if (user && (user?.roleId === 2)) {
         navigate(`/home-lecturer/class-detail/${projectId}/${props.classId}`);
@@ -69,6 +69,7 @@ export const AddTrainee = (props) => {
       }
 
     } catch (error) {
+      setLoading(false);
       console.error("Lỗi khi phân công học viên:", error);
       if (error.result && error.result.length > 0) {
         toast.error(error.result);

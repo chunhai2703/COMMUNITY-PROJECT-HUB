@@ -51,13 +51,14 @@ export const AssignStudent = (props) => {
 
   const onSubmit = async (data) => {
     try {
-
+      setLoading(true);
       const sent = {
         classId: props.classId,
         accountId: data.student.accountId,
         roleId: 1
       }
       await assignLecturerStudentToProject(sent);
+      setLoading(false);
       toast.success("Sinh viên hỗ trợ đã được phân công thành công!");
       handleClose();
       reset();
@@ -80,6 +81,7 @@ export const AssignStudent = (props) => {
       // } else {
       //   toast.error(error.message);
       // }
+      setLoading(false);
       console.error("Lỗi khi phân công sinh viên:", error);
       if (error.result && error.result.length > 0) {
         toast.error(error.result);
@@ -155,8 +157,8 @@ export const AssignStudent = (props) => {
         </DialogContent>
         <DialogActions>
           <button onClick={handleClose} className={cx('cancel-button')}>Hủy</button>
-          <button type="submit" onClick={handleSubmit(onSubmit)} className={cx('create-button')}>
-            Phân công
+          <button type="submit" onClick={handleSubmit(onSubmit)} className={cx('create-button')} disabled={loading}>
+           {loading ? <CircularProgress color="inherit" size={20} /> : 'Phân công'}
           </button>
         </DialogActions>
       </Dialog>

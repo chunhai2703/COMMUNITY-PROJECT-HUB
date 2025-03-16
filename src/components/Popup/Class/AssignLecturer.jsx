@@ -52,13 +52,14 @@ export const AssignLecturer = (props) => {
 
   const onSubmit = async (data) => {
     try {
-
+      setLoading(true);
       const sent = {
         classId: props.classId,
         accountId: data.lecturer.accountId,
         roleId: 2
       }
       await assignLecturerStudentToProject(sent);
+      setLoading(false);
       toast.success("Giảng viên đã được phân công thành công!");
       handleClose();
       reset();
@@ -159,8 +160,8 @@ export const AssignLecturer = (props) => {
         </DialogContent>
         <DialogActions>
           <button onClick={handleClose} className={cx('cancel-button')}>Hủy</button>
-          <button type="submit" onClick={handleSubmit(onSubmit)} className={cx('create-button')}>
-            Phân công
+          <button type="submit" onClick={handleSubmit(onSubmit)} className={cx('create-button')} disabled={loading}>
+           {loading ? <CircularProgress color="inherit" size={20} /> : 'Phân công'}
           </button>
         </DialogActions>
       </Dialog>

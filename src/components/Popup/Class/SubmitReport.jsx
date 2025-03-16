@@ -52,10 +52,10 @@ export const SubmitReport = (props) => {
       }
 
       await submitReportTrainee(user.accountId, props.classId, formData);
+      setLoading(false);
       toast.success("Nộp báo cáo thành công!");
       handleClose();
       reset();
-      setLoading(false);
       props.onRefresh();
       navigate('/home-trainee/my-classes');
 
