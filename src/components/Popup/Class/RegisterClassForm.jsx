@@ -12,10 +12,12 @@ import useAuth from '../../../hooks/useAuth';
 import { createRegistration } from '../../../services/RegistrationApi';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { CircularProgress } from '@mui/material';
 
 const cx = classNames.bind(classes);
 export const RegisterClassForm = (props) => {
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -32,8 +34,9 @@ export const RegisterClassForm = (props) => {
 
   const onSubmit = async (data) => {
     try {
+    
       console.log("Dữ liệu gửi lên:", data);
-
+      setLoading(true);
       // Tạo payload đúng định dạng API yêu cầu
       const payload = {
         accountId: user.accountId,
@@ -41,14 +44,14 @@ export const RegisterClassForm = (props) => {
         description: data.description
       };
       console.log(payload);
-
       await createRegistration(payload);
-
+      setLoading(false);
       toast.success("Đã đăng kí thành công vào dự án!");
       handleClose();
       reset();
       navigate(`/home-lecturer/my-registration`);
     } catch (error) {
+      setLoading(false);
       console.error("Lỗi khi đăng kí dự án :", error);
       toast.error(error.message); // Hiển thị danh sách lỗi từ `result`
     }
@@ -95,7 +98,7 @@ export const RegisterClassForm = (props) => {
         </DialogContent>
         <DialogActions>
           <button onClick={handleClose} className={cx('cancel-button')}>Hủy</button>
-          <button type="submit" className={cx('register-button')} onClick={handleSubmit(onSubmit)}>Đăng ký</button>
+          <button type="submit" className={cx('register-button')} onClick={handleSubmit(onSubmit)} disabled={loading}>  {loading ? <CircularProgress color="inherit" size={20} /> : 'Đăng ký'}</button>
         </DialogActions>
       </Dialog>
     </React.Fragment>

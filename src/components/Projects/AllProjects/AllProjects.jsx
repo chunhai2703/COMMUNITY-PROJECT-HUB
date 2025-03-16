@@ -4,6 +4,7 @@ import classNames from "classnames/bind";
 import { SearchOutlined } from "@ant-design/icons";
 import { ProjectsList } from "./ProjectsList/ProjectsList";
 import { ProjectCreateForm } from "../../Popup/Project/ProjectCreateForm";
+import { Spinner } from "../../Spinner/Spinner";
 
 const cx = classNames.bind(classes);
 
@@ -75,10 +76,10 @@ export const AllProjects = () => {
           </button>
         </div>
 
-        <ProjectCreateForm />
+        <ProjectCreateForm refresh={fetchProjects} />
       </div>
 
-      {loading ? <p>Đang tải dữ liệu...</p> : <ProjectsList projects={projects} />}
+      <ProjectsList projects={projects} />
     </div>
   );
 };

@@ -90,9 +90,7 @@ export const AllRelatedProjects = () => {
         </div>
       </div>
 
-      {loading && <p className={cx('loading-message')}>Đang tải dữ liệu...</p>}
-      {error && <p className={cx('error-message')}>{error}</p>}
-      {!loading && !error && <ProjectsList projects={projects} />}
+      <ProjectsList projects={projects} />
     </div>
   );
 };

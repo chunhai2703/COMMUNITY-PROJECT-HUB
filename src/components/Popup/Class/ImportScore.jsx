@@ -57,10 +57,11 @@ export const ImportScore = (props) => {
       }
 
       await submitScoreTrainee(classId, formData);
+      setLoading(false);
       toast.success("Nộp báo cáo điểm thành công!");
       handleClose();
       reset();
-      setLoading(false);
+     
       props.refresh();
       if (user && (user?.roleId === 2)) {
         navigate(`/home-lecturer/class-detail/${projectId}/${classId}`);
@@ -83,7 +84,7 @@ export const ImportScore = (props) => {
 
   return (
     <React.Fragment>
-      <Button size='large' style={{ backgroundColor: "#2F903F", color: "white" }} onClick={handleClickOpen} color="primary" variant="contained">Import</Button>
+      <Button size='large' style={{ backgroundColor: "#2F903F", color: "white", boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)' }} onClick={handleClickOpen} color="primary" variant="contained">Import</Button>
       <Dialog
         open={open}
         onClose={handleClose}

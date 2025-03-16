@@ -52,7 +52,7 @@ export const ChangeClassStudent = (props) => {
 
   const onSubmit = async (data) => {
     try {
-
+      setLoading(true);
       const sent = {
         removedAccountId: props.student.studentId,
         classId: props.student.classId,
@@ -60,6 +60,7 @@ export const ChangeClassStudent = (props) => {
         roleId: 1
       }
       await ChangeLecturerStudentToClass(sent);
+      setLoading(false);
       props.refresh();
       toast.success("Sinh viên đã được thay đổi thành công!");
       handleClose();
@@ -71,6 +72,7 @@ export const ChangeClassStudent = (props) => {
       }
 
     } catch (error) {
+      setLoading(false);
       console.error("Lỗi khi thay đổi sinh viên:", error);
       if (error.result && error.result.length > 0) {
         toast.error(error.result);
@@ -153,7 +155,7 @@ export const ChangeClassStudent = (props) => {
         <DialogActions>
           <button onClick={handleClose} className={cx('cancel-button')}>Hủy</button>
           <button type="submit" onClick={handleSubmit(onSubmit)} className={cx('create-button')}>
-            Thay đổi
+            {loading ? <CircularProgress color="inherit" size={20} /> : 'Thay đổi'}
           </button>
         </DialogActions>
       </Dialog>

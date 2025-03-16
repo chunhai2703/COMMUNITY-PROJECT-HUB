@@ -73,6 +73,8 @@ export const AddNewTrainee = (props) => {
           </div>
         ),
       });
+    } else {
+      messageApi.destroy();
     }
   }, [errorMessages, messageApi]);
 
@@ -97,13 +99,12 @@ export const AddNewTrainee = (props) => {
         console.log(pair[0] + ": ", pair[1]);
       }
       await addNewTraineeToClass(formData);
-
-      toast.success("Học viên đã được tạo và thêm vào lớp thành công!");
       setLoading(false);
+      toast.success("Học viên đã được tạo và thêm vào lớp thành công!");
       handleClose();
       props.refresh();
       reset();
-      setLoading(false);
+
       // if (user && (user?.roleId === 2)) {
       //   navigate(`/home-lecturer/class-detail/${projectId}/${props.classId}`);
       // } else if (user && (user?.roleId === 4)) {
