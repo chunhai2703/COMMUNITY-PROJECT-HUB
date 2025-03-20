@@ -14,6 +14,7 @@ import { Button, Typography, Upload } from 'antd';
 import { UploadOutlined } from '@mui/icons-material';
 
 import { submitScoreTrainee } from '../../../services/LecturerApi';
+import { ImportOutlined } from '@ant-design/icons';
 
 
 const cx = classNames.bind(classes)
@@ -61,7 +62,7 @@ export const ImportScore = (props) => {
       toast.success("Nộp báo cáo điểm thành công!");
       handleClose();
       reset();
-     
+
       props.refresh();
       if (user && (user?.roleId === 2)) {
         navigate(`/home-lecturer/class-detail/${projectId}/${classId}`);
@@ -84,7 +85,7 @@ export const ImportScore = (props) => {
 
   return (
     <React.Fragment>
-      <Button size='large' style={{ backgroundColor: "#2F903F", color: "white", boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)' }} onClick={handleClickOpen} color="primary" variant="contained">Import</Button>
+      <Button size='large' style={{ backgroundColor: "#2F903F", color: "white", boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)' }} onClick={handleClickOpen} color="primary" variant="contained"><ImportOutlined style={{ marginRight: '5px' }} />Import</Button>
       <Dialog
         open={open}
         onClose={handleClose}

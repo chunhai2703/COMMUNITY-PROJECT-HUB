@@ -104,3 +104,53 @@ export const RemoveTrainee = async (classId, accountId, reason) => {
         console.log(err);
     }
 }
+
+export async function searchClassTrainees(currentClassId, accountId) {
+    try {
+        const response = await fetch(`${baseUrl}/api/Class/all-available-class?accountId=${accountId}&currentClassId=${currentClassId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+            }
+        })
+        const resData = await response.json();
+
+        if (!response.ok) {
+            throw new Error(resData.message);
+        }
+
+        console.log(resData);
+        return resData;
+
+    } catch (error) {
+        console.error(error.message);
+        throw new Error(error.message);
+    }
+
+}
+
+export async function searchGroupTrainees(currentClassId, accountId) {
+    try {
+        const response = await fetch(`${baseUrl}/api/Trainee/available-group-of-class?currentClassId=${currentClassId}&accountId=${accountId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+            }
+        })
+        const resData = await response.json();
+
+        if (!response.ok) {
+            throw new Error(resData.message || resData.result);
+        }
+
+        console.log(resData);
+        return resData;
+
+    } catch (error) {
+        console.error(error.message);
+        throw new Error(error.message);
+    }
+
+}

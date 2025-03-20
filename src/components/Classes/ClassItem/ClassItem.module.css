@@ -53,3 +53,7 @@ a:hover {
   cursor: pointer;
   color: #3987e1;
 }
+.score-value{
+  color: rgb(246, 19, 19);
+  font-weight: 600;
+}

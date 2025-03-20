@@ -131,7 +131,7 @@ export const ProjectCreateForm = (props) => {
     } catch (error) {
       setLoading(false)
       console.error("Lỗi khi tạo dự án:", error);
-      // toast.error(error.message);
+      toast.error(error.message);
 
       console.log(error.result)
       const messages = Array.isArray(error.result)
