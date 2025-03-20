@@ -7,7 +7,7 @@ const cx = classNames.bind(classes)
 export const Footer = () => {
   return (
     <footer className={cx('footer')}>
-      <p>Copyright &copy; 2024 Community Project Hub. All right reserved.</p>
+      <p>Copyright&copy; 2025 Community Project Hub. All right reserved.</p>
     </footer>
   )
 }

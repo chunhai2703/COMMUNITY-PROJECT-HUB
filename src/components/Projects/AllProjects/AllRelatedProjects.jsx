@@ -1,22 +1,25 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import classNames from 'classnames/bind';
-import { SearchOutlined } from '@ant-design/icons';
+import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
 import { ProjectsList } from './ProjectsList/ProjectsList';
 import useAuth from '../../../hooks/useAuth';
 import styles from './AllRelatedProjects.module.css';
+import { Select } from 'antd';
 
 const cx = classNames.bind(styles);
 
 export const AllRelatedProjects = () => {
   const [searchValue, setSearchValue] = useState('');
   const [projects, setProjects] = useState([]);
+   const [filterField, setFilterField] = useState("");
+    const [filterOrder, setFilterOrder] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { user } = useAuth();
   const debounceRef = useRef(null);
 
   // Hàm gọi API lấy danh sách dự án liên quan
-  const fetchProjects = useCallback(async (query = '') => {
+  const fetchProjects = useCallback(async (query = '', filterField = '', filterOrder = '') => {
     if (!user?.accountId) return;
 
     setLoading(true);
@@ -24,7 +27,7 @@ export const AllRelatedProjects = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:5145/api/Project/all-related-project?searchValue=${query}&userId=${user.accountId}`,
+        `http://localhost:5145/api/Project/all-related-project?searchValue=${query}&userId=${user.accountId}&filterField=${filterField}&filterOrder=${filterOrder}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -67,6 +70,20 @@ export const AllRelatedProjects = () => {
     fetchProjects(searchValue);
   };
 
+  const handleFilter = useCallback(() => {
+      if (filterField && filterOrder) {
+        fetchProjects("", filterField, filterOrder);
+      } else {
+        alert("Vui lòng chọn cả trường lọc và thứ tự lọc!");
+      }
+    }, [fetchProjects, filterField, filterOrder]);
+  
+    useEffect(() => {
+      if (filterField && filterOrder) {
+        handleFilter();
+      }
+    }, [filterField, filterOrder, handleFilter]);
+
   return (
     <div className={cx('all-related-projects-container')}>
       <h2 className={cx('all-related-projects-title')}>Dự Án Cộng Đồng</h2>
@@ -87,6 +104,61 @@ export const AllRelatedProjects = () => {
           <button className={cx('search-button')} onClick={handleSearch}>
             <SearchOutlined style={{ color: 'white', marginRight: 5 }} /> Tìm kiếm
           </button>
+        </div>
+        <div style={{ display: "flex", gap: "10px" }}>
+          <Select
+            size="large"
+            variant="outlined"
+            suffixIcon={<FilterOutlined />}
+            style={{
+              width: 150,
+            }}
+            placeholder="Trường muốn lọc"
+            optionFilterProp="label"
+            options={[
+              {
+                value: 'Title',
+                label: 'Tên dự án',
+              },
+              {
+                value: 'StartDate',
+                label: 'Ngày bắt đầu',
+              },
+              {
+                value: 'EndDate',
+                label: 'Ngày kết thúc',
+              },
+              {
+                value: 'CreatedDate',
+                label: 'Ngày tạo',
+              },
+            ]}
+            value={filterField || undefined}
+            onChange={(value) => setFilterField(value)}
+          />
+
+          <Select
+            size="large"
+            variant="outlined"
+            suffixIcon={<FilterOutlined />}
+            style={{
+              width: 150,
+            }}
+            placeholder="Thứ tự lọc"
+            optionFilterProp="label"
+            options={[
+              {
+                value: 'ASC',
+                label: 'Tăng dần',
+              },
+              {
+                value: 'DESC',
+                label: 'Giảm dần',
+              },
+            ]}
+            value={filterOrder || undefined}
+            onChange={(value) => setFilterOrder(value)}
+          />
         </div>
       </div>
 

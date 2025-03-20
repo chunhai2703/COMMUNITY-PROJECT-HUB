@@ -1,18 +1,15 @@
-.all-projects-container {
-  margin-top: 10px;
+.change-class-container {
   display: flex;
   flex-direction: column;
+  gap: 20px;
   padding: 1rem;
-  gap: 2rem;
+  margin-top: 10px;
 }
-.all-projects-title {
-  letter-spacing: 5px;
+.change-class-title {
   font-size: 2rem;
-  word-wrap: break-word; /* Đảm bảo xuống dòng khi nội dung quá dài */
-  overflow-wrap: break-word; /* Đảm bảo xuống dòng khi có từ quá dài */
-  white-space: pre-wrap; /* Giữ nguyên định dạng xuống dòng */
+  letter-spacing: 5px;
 }
-.all-projects-search {
+.change-class-search {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -35,7 +32,7 @@
   border: none;
   outline: none;
   flex: 1;
-  padding: 4px;
+  padding: 5px;
   font-size: 16px;
 }
 .search-button {
@@ -48,6 +45,9 @@
   width: 100px;
   cursor: pointer;
 }
-.search-button:hover {
-  background-color: #8e8f92;
+.action-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
 }

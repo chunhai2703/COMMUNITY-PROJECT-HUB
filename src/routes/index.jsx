@@ -34,10 +34,10 @@ import { ChatLayout } from "../components/Chat/ChatLayout/ChatLayout";
 import { ChatContent } from "../components/Chat/ChatContent/ChatContent";
 import { ProjectLog } from "../pages/ProjectsPage/ProjectLog";
 import { MyClasses } from "../pages/Classes/MyClasses";
-import { ReportPage } from "../pages/Classes/ReportPage";
 import { LayoutTrainee } from "../layout/layout/LayoutTrainee";
 import { ErrorPageTrainee } from "../pages/ErrorPage/ErrorPageTrainee";
 import { HomeTrainee } from "../pages/HomePage/HomeTrainee";
+import { ChangeClassPage } from "../pages/Classes/ChangeClassPage";
 
 
 
@@ -288,6 +288,10 @@ export const router = createBrowserRouter([
       {
         path: "my-classes",
         element: <MyClasses />
+      },
+      {
+        path: "change-class",
+        element: <ChangeClassPage />,
       },
       {
         path: "class-detail/:projectId/:classId",

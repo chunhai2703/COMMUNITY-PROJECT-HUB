@@ -70,6 +70,7 @@
 .export-button {
   color: white;
   background-color: #d45b13;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   padding: 10px 7px;
   border: none;
   border-radius: 5px;

@@ -78,13 +78,13 @@ export const RegistrationTable = () => {
       align: 'center',
     },
     {
-      title: 'Giảng viên',
+      title: 'Thành viên',
       dataIndex: 'fullName',
       key: 'fullName',
       align: 'center',
     },
     {
-      title: 'Mã giảng viên',
+      title: 'Mã thành viên',
       dataIndex: 'accountCode',
       key: 'accountCode',
       align: 'center',
