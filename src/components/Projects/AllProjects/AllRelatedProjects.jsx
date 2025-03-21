@@ -11,8 +11,8 @@ const cx = classNames.bind(styles);
 export const AllRelatedProjects = () => {
   const [searchValue, setSearchValue] = useState('');
   const [projects, setProjects] = useState([]);
-   const [filterField, setFilterField] = useState("");
-    const [filterOrder, setFilterOrder] = useState("");
+  const [filterField, setFilterField] = useState("");
+  const [filterOrder, setFilterOrder] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { user } = useAuth();
@@ -71,18 +71,18 @@ export const AllRelatedProjects = () => {
   };
 
   const handleFilter = useCallback(() => {
-      if (filterField && filterOrder) {
-        fetchProjects("", filterField, filterOrder);
-      } else {
-        alert("Vui lòng chọn cả trường lọc và thứ tự lọc!");
-      }
-    }, [fetchProjects, filterField, filterOrder]);
-  
-    useEffect(() => {
-      if (filterField && filterOrder) {
-        handleFilter();
-      }
-    }, [filterField, filterOrder, handleFilter]);
+    if (filterField && filterOrder) {
+      fetchProjects("", filterField, filterOrder);
+    } else {
+      alert("Vui lòng chọn cả trường lọc và thứ tự lọc!");
+    }
+  }, [fetchProjects, filterField, filterOrder]);
+
+  useEffect(() => {
+    if (filterField && filterOrder) {
+      handleFilter();
+    }
+  }, [filterField, filterOrder, handleFilter]);
 
   return (
     <div className={cx('all-related-projects-container')}>
@@ -91,7 +91,6 @@ export const AllRelatedProjects = () => {
       <div className={cx('all-related-projects-search')}>
         <div className={cx('search-box-container')}>
           <div className={cx('search-box')}>
-            <SearchOutlined style={{ color: '#285D9A', fontSize: 20 }} />
             <input
               type='search'
               placeholder='Tìm kiếm dự án'
@@ -105,7 +104,7 @@ export const AllRelatedProjects = () => {
             <SearchOutlined style={{ color: 'white', marginRight: 5 }} /> Tìm kiếm
           </button>
         </div>
-        <div style={{ display: "flex", gap: "10px" }}>
+        <div className={cx('filter-container')}>
           <Select
             size="large"
             variant="outlined"
@@ -113,7 +112,7 @@ export const AllRelatedProjects = () => {
             style={{
               width: 150,
             }}
-            placeholder="Trường muốn lọc"
+            placeholder="Trường lọc"
             optionFilterProp="label"
             options={[
               {

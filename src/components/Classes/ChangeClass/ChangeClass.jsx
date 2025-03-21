@@ -65,7 +65,8 @@ export const ChangeClass = () => {
       title: 'Giảng viên',
       dataIndex: 'lecturerName',
       key: 'lecturerName',
-      align: 'center'
+      align: 'center',
+      render: (lecturerName) => lecturerName ?? <span style={{ color: 'red', fontWeight: 500 }}>Chưa được cập nhật</span>
     },
     {
       title: 'Chuyển lớp',
@@ -87,7 +88,6 @@ export const ChangeClass = () => {
       <div className={cx('change-class-search')}>
         <div className={cx('search-box-container')}>
           <div className={cx('search-box')}>
-            <SearchOutlined color='#285D9A' size={20} />
             <input
               type="search"
               placeholder="Tìm kiếm lớp"

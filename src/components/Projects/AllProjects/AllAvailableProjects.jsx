@@ -76,18 +76,18 @@ export const AllAvailableProjects = () => {
   };
 
   const handleFilter = useCallback(() => {
-      if (filterField && filterOrder) {
-        fetchProjects("", filterField, filterOrder);
-      } else {
-        alert("Vui lòng chọn cả trường lọc và thứ tự lọc!");
-      }
-    }, [fetchProjects, filterField, filterOrder]);
-  
-    useEffect(() => {
-      if (filterField && filterOrder) {
-        handleFilter();
-      }
-    }, [filterField, filterOrder, handleFilter]);
+    if (filterField && filterOrder) {
+      fetchProjects("", filterField, filterOrder);
+    } else {
+      alert("Vui lòng chọn cả trường lọc và thứ tự lọc!");
+    }
+  }, [fetchProjects, filterField, filterOrder]);
+
+  useEffect(() => {
+    if (filterField && filterOrder) {
+      handleFilter();
+    }
+  }, [filterField, filterOrder, handleFilter]);
 
   if (!user || !user.accountId) {
     return <Spinner />;
@@ -100,7 +100,6 @@ export const AllAvailableProjects = () => {
       <div className={cx("all-available-projects-search")}>
         <div className={cx("search-box-container")}>
           <div className={cx("search-box")}>
-            <SearchOutlined color="#285D9A" size={20} />
             <input
               type="search"
               placeholder="Tìm kiếm dự án"
@@ -115,7 +114,7 @@ export const AllAvailableProjects = () => {
             Tìm kiếm
           </button>
         </div>
-        <div style={{ display: "flex", gap: "10px" }}>
+        <div className={cx("filter-container")}>
           <Select
             size="large"
             variant="outlined"
@@ -123,7 +122,7 @@ export const AllAvailableProjects = () => {
             style={{
               width: 150,
             }}
-            placeholder="Trường muốn lọc"
+            placeholder="Trường lọc"
             optionFilterProp="label"
             options={[
               {

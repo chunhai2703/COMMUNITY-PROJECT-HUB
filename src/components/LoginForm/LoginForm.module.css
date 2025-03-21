@@ -165,3 +165,74 @@
   width: 311px;
   height: 290px;
 }
+@media screen and (max-width: 1024px) {
+  .login-form-container {
+    width: 90%;
+    padding: 2rem;
+  }
+
+  .login-form-image img {
+    width: 250px;
+    height: auto;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .login-form-container {
+    flex-direction: column;
+    width: 95%;
+    height: 90vh;
+    padding: 2rem;
+  }
+
+  .login-form-content {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .login-form {
+    width: 100%;
+  }
+
+  .input-container {
+    width: 100%;
+  }
+
+  .login-form input {
+    width: 100%;
+  }
+
+  .login-form .login-button {
+    width: 100%;
+    text-align: center;
+  }
+
+  .login-form-image img {
+    width: 200px;
+    height: auto;
+    display: none;
+  }
+  .login-img-title {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .login-form-title {
+    font-size: 28px;
+  }
+
+  .login-form-container {
+    padding: 1.5rem;
+    border-radius: 15px;
+  }
+
+  .login-form-image img {
+    width: 180px;
+  }
+
+  .login-form .forgot-password {
+    font-size: 14px;
+  }
+}

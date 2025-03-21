@@ -100,7 +100,7 @@ export const AllProjects = () => {
             style={{
               width: 150,
             }}
-            placeholder="Trường muốn lọc"
+            placeholder="Trường lọc"
             optionFilterProp="label"
             options={[
               {
