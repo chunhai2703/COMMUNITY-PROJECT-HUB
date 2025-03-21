@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { ConfigProvider, Dropdown, Table, Tag, Modal as AntModal, message } from 'antd';
+import { ConfigProvider, Dropdown, Table, Tag, Modal as AntModal, message, Button } from 'antd';
 import { EditOutlined, DeleteOutlined, EllipsisOutlined, SearchOutlined, DownloadOutlined, InfoCircleOutlined, ExportOutlined } from '@ant-design/icons';
-import { Button, CircularProgress, debounce, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import { CircularProgress, debounce, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { useForm, Controller } from "react-hook-form";
 import trainees from './TraineeScoreList.module.css';
 import classNames from 'classnames/bind';
@@ -225,28 +225,30 @@ const TraineeScoreList = ({ dataClass }) => {
                             || user.accountId === dataClass.projectManagerId
                             || user.roleId === 4
                         ) && dataClass.projectStatus === 'Đang diễn ra' && !editing && (
-                                <button className={cx('export-button')} onClick={handleExport}>
+                                <Button size='large' color="primary" variant="contained" style={{ backgroundColor: "#d45b13", color: "white", boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)", marginRight: "8px" }} onClick={handleExport}>
                                     <ExportOutlined color='white' size={20} style={{ marginRight: '5px' }} />
                                     Export
-                                </button>
+                                </Button>
                             )}
 
                         {user.accountId === dataClass.lecturerId && dataClass.projectStatus === "Đang diễn ra" && (
                             editing ? (
                                 <div>
-                                    <Button sx={{ backgroundColor: "#D45B13", color: "white" }} onClick={handleCancelEdit} color="secondary" variant="outlined">Hủy</Button>
-                                    <Button sx={{ backgroundColor: "#2F903F" }} onClick={handleSaveScores} color="primary" variant="contained" style={{ marginLeft: 8 }}>Lưu</Button>
+                                    <Button style={{ backgroundColor: "#D45B13", color: "white", boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)", marginRight: "8px" }} onClick={handleCancelEdit} size='large' color="primary" variant="contained">Hủy</Button>
+                                    <Button style={{ backgroundColor: "#2F903F", color: "white", boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)" }} onClick={handleSaveScores} size='large' color="primary" variant="contained" >Lưu</Button>
                                 </div>
                             ) : (
                                 hasNullScore ? (
                                     <ImportScore classId={classId} refresh={fetchAllTraineeScoreList} />
                                 ) : (
                                     <Button
-                                        sx={{ backgroundColor: "#2F903F" }}
+                                        style={{ backgroundColor: "#2F903F", color: "white", boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)" }}
                                         onClick={handleEditClick}
+                                        size='large'
                                         color="primary"
                                         variant="contained"
                                     >
+                                        <EditOutlined />
                                         Cập nhật
                                     </Button>
                                 )

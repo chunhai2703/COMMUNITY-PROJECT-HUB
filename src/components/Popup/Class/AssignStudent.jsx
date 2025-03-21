@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import classes from './AssignStudent.module.css'
 import classNames from 'classnames/bind'
 import {
@@ -12,12 +12,14 @@ import { assignLecturerStudentToProject, searchStudents } from '../../../service
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth';
+import { message } from 'antd';
 
 
 const cx = classNames.bind(classes)
 export const AssignStudent = (props) => {
   const [open, setOpen] = useState(false);
   const [students, setStudents] = useState([]);
+  const [messageApi, contextHolder] = message.useMessage();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -49,15 +51,17 @@ export const AssignStudent = (props) => {
     reset()
   };
 
+
   const onSubmit = async (data) => {
     try {
-
+      setLoading(true);
       const sent = {
         classId: props.classId,
         accountId: data.student.accountId,
         roleId: 1
       }
       await assignLecturerStudentToProject(sent);
+      setLoading(false);
       toast.success("Sinh viên hỗ trợ đã được phân công thành công!");
       handleClose();
       reset();
@@ -80,11 +84,44 @@ export const AssignStudent = (props) => {
       // } else {
       //   toast.error(error.message);
       // }
+      setLoading(false);
       console.error("Lỗi khi phân công sinh viên:", error);
       if (error.result && error.result.length > 0) {
-        toast.error(error.result);
+
+        // toast.error(<div>
+        //   {errorMessages.split(',').map((msg, index) => (
+        //     <p key={index} style={{ margin: 0 }}>- {msg}</p>
+        //   ))}
+        // </div>);
+        messageApi.open({
+          type: 'error',
+          title: 'Thông báo lỗi',
+          content: (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-start' }}>
+              {error.result.split(',').map((error, index) => (
+                <p key={index} >{error}</p>
+              ))}
+            </div>
+          ),
+        });
       } else {
-        toast.error(error.message);
+        // toast.error(error.message);
+        // toast.error(<div>
+        //   {errorMessages.split(',').map((msg, index) => (
+        //     <p key={index} style={{ margin: 0 }}>{msg}</p>
+        //   ))}
+        // </div>);
+        messageApi.open({
+          type: 'error',
+          title: 'Thông báo lỗi',
+          content: (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-start' }}>
+              {error.message.split(',').map((error, index) => (
+                <p key={index} >{error}</p>
+              ))}
+            </div>
+          ),
+        });
       }
     }
 
@@ -96,6 +133,7 @@ export const AssignStudent = (props) => {
       <button className={cx('class-assign-student')} onClick={handleClickOpen}>
         <UserAddOutlined style={{ marginRight: '8px' }} /> Phân công sinh viên
       </button>
+      {contextHolder}
       <Dialog
         open={open}
         onClose={handleClose}
@@ -155,8 +193,8 @@ export const AssignStudent = (props) => {
         </DialogContent>
         <DialogActions>
           <button onClick={handleClose} className={cx('cancel-button')}>Hủy</button>
-          <button type="submit" onClick={handleSubmit(onSubmit)} className={cx('create-button')}>
-            Phân công
+          <button type="submit" onClick={handleSubmit(onSubmit)} className={cx('create-button')} disabled={loading}>
+            {loading ? <CircularProgress color="inherit" size={20} /> : 'Phân công'}
           </button>
         </DialogActions>
       </Dialog>

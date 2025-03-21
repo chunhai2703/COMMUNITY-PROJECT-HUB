@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 const cx = classNames.bind(classes);
-export const ProjectCreateForm = () => {
+export const ProjectCreateForm = (props) => {
   const [open, setOpen] = useState(false);
   const [managers, setManagers] = useState([]);
   const [messageApi, contextHolder] = message.useMessage();
@@ -125,12 +125,13 @@ export const ProjectCreateForm = () => {
       setLoading(false);
       handleClose();
       reset();
+      props.refresh();
       navigate('/home-department-head/projects');
 
     } catch (error) {
       setLoading(false)
       console.error("Lỗi khi tạo dự án:", error);
-      // toast.error(error.message);
+      toast.error(error.message);
 
       console.log(error.result)
       const messages = Array.isArray(error.result)

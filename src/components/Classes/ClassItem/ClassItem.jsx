@@ -1,10 +1,9 @@
 import React from 'react'
-import { Card, Tag, Tooltip } from 'antd'
+import { Card, Tag } from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
 import classes from './ClassItem.module.css'
 import classNames from 'classnames/bind'
 import useAuth from '../../../hooks/useAuth'
-import { BookOutlined, FormOutlined } from '@ant-design/icons'
 import { SubmitReport } from '../../Popup/Class/SubmitReport'
 
 const cx = classNames.bind(classes)
@@ -59,7 +58,7 @@ export const ClassItem = (props) => {
         {user?.roleId === 3 && (
           <p><span className={cx('label')}>Báo cáo học tập: </span> <Tag color={props.traineeReportContent !== null ? '#87d068' : '#f50'}>{props.traineeReportContent !== null ? 'Đã có' : 'Chưa có'}</Tag> <SubmitReport traineeReportContent={props.traineeReportContent} projectId={props.projectId} classId={props.classId} onRefresh={props.onRefresh} /></p>
         )}
-
+        {props.traineeScore && props.traineeReportContent && <p className={cx('score')}><span className={cx('label')}>Điểm tổng: </span><span className={cx('score-value')}>{props.traineeScore}</span></p>}
       </div>
 
     </Card>

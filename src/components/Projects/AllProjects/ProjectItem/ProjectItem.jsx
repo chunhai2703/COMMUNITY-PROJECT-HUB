@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import classes from './ProjectItem.module.css';
 import classNames from 'classnames/bind';
 import useAuth from '../../../../hooks/useAuth';
+import { ArrowRightOutlined } from '@ant-design/icons';
 
 const cx = classNames.bind(classes);
 
@@ -26,6 +27,19 @@ export const ProjectItem = (props) => {
     month: '2-digit',
     year: 'numeric',
   });
+
+  const startFormatDate = new Date(props.startDate).toLocaleDateString('vi-VN', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  })
+
+  const endFormatDate = new Date(props.endDate).toLocaleDateString('vi-VN', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  })
+
   const applicationStartDate = new Date(props.applicationStartDate).toLocaleDateString('vi-VN', {
     day: '2-digit',
     month: '2-digit',
@@ -78,6 +92,11 @@ export const ProjectItem = (props) => {
           </p>
           <p className={cx('project-item-created-date')}>
             <span style={{ fontWeight: '600' }}>Ngày tạo: </span> <span >{createdDate}</span>
+          </p>
+          <p className={cx('project-item-created-date')}>
+            <span style={{ fontWeight: '600' }}>Ngày bắt đầu: </span> <span >{startFormatDate}</span>
+            <ArrowRightOutlined style={{ marginLeft: '10px', marginRight: '10px' }} />
+            <span style={{ fontWeight: '600' }}>Ngày kết thúc: </span> <span >{endFormatDate}</span>
           </p>
           <p className={cx('project-item-manager')}>
             <span style={{ fontWeight: '600' }}>Quản lý dự án: </span> <span >{props.projectManagerName ? (props.projectManagerName) : (<span style={{ color: 'red', fontWeight: '600' }}>Chưa có</span>)}</span>

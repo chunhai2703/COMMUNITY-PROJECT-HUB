@@ -1,0 +1,25 @@
+.change-class-container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  padding: 1rem;
+}
+.change-class-title {
+  letter-spacing: 5px;
+  font-size: 1.5rem;
+  word-wrap: break-word; /* Đảm bảo xuống dòng khi nội dung quá dài */
+  overflow-wrap: break-word; /* Đảm bảo xuống dòng khi có từ quá dài */
+  white-space: pre-wrap; /* Giữ nguyên định dạng xuống dòng */
+}
+.change-group-description {
+  font-size: 18px;
+  align-self: center;
+  color: rgb(246, 42, 42);
+  font-style: italic;
+  text-align: center;
+  width: 680px;
+  font-weight: 600;
+  word-wrap: break-word; /* Đảm bảo xuống dòng khi nội dung quá dài */
+  overflow-wrap: break-word; /* Đảm bảo xuống dòng khi có từ quá dài */
+  white-space: pre-wrap; /* Giữ nguyên định dạng xuống dòng */
+}
