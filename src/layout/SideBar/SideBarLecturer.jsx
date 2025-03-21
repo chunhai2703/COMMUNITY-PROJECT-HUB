@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { SettingOutlined, HomeOutlined, FolderOutlined, MailOutlined, MenuFoldOutlined, MenuUnfoldOutlined, SolutionOutlined, SnippetsOutlined } from '@ant-design/icons';
+import { SettingOutlined, HomeOutlined, FolderOutlined, MailOutlined, MenuFoldOutlined, MenuUnfoldOutlined, SolutionOutlined, SnippetsOutlined, AreaChartOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
@@ -74,6 +74,12 @@ export const SideBarLecturer = () => {
         <MailOutlined style={{ fontSize: 18 }} />
       ),
       onClick: () => navigate('/home-lecturer/chat'),
+    },
+    {
+      key: 'dashboard-project-manager',
+      label: 'Thống kê',
+      icon: <AreaChartOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
+      onClick: () => navigate('/home-lecturer/dashboard'),
     },
   ];
 
