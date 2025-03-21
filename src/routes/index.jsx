@@ -38,6 +38,8 @@ import { ReportPage } from "../pages/Classes/ReportPage";
 import { LayoutTrainee } from "../layout/layout/LayoutTrainee";
 import { ErrorPageTrainee } from "../pages/ErrorPage/ErrorPageTrainee";
 import { HomeTrainee } from "../pages/HomePage/HomeTrainee";
+import { DashboardPMPage } from "../pages/DashboardPage/DashboardPMPage";
+import { ShedulePage } from "../pages/ShedulePage/ShedulePage";
 
 
 
@@ -182,6 +184,10 @@ export const router = createBrowserRouter([
         path: "change-password",
         element: <ChangePasswordPage />,
         errorElement: <ErrorPage />
+      },
+      {
+        path: "dashboard",
+        element: <DashboardPMPage />
       },
       {
         path: "*", // Bắt tất cả các đường dẫn không xác định 
@@ -362,6 +368,12 @@ export const router = createBrowserRouter([
   {
     path: "/forgot-password",
     element: <ForgotPasswordPage />,
+    errorElement: <ErrorPage />
+  },
+
+  {
+    path: "/shedule",
+    element: <ShedulePage />,
     errorElement: <ErrorPage />
   },
 ]);

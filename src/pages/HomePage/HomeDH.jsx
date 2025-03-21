@@ -1,8 +1,9 @@
 import React from 'react'
+import DashboardDepartmentHead from '../../components/Dashboard/DashboardDepartmentHead';
 export const HomeDH = () => {
   return (
     <>
-      <h1>Home Department Head</h1>
+      <DashboardDepartmentHead />
     </>
   );
 }
