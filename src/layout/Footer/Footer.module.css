@@ -8,3 +8,9 @@
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
 }
+
+@media (max-width: 768px) {
+  .footer p {
+    text-align: center;
+  }
+}

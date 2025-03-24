@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import { InteractionOutlined } from '@ant-design/icons';
-import {changeClassOfTrainee } from '../../../services/AssignApi';
+import { changeClassOfTrainee } from '../../../services/AssignApi';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth';
@@ -20,6 +20,7 @@ const cx = classNames.bind(classes);
 export const TraineeChangeClass = (props) => {
   const [open, setOpen] = useState(false);
   const [classList, setClassList] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
   const [lessons, setLessons] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ export const TraineeChangeClass = (props) => {
       console.log("Danh sách lớp từ API:", data);
       setClassList(data.result);
     } catch (error) {
-      toast.error(error.message);
+      setErrorMessage(error.message);
       console.error(error.message);
     }
     setLoading(false);
@@ -128,8 +129,9 @@ export const TraineeChangeClass = (props) => {
             {/* Select danh sách lớp */}
             {props.projectStatus === 'Lên kế hoạch' && <p className={cx('change-class-description')}>Bạn hiện không thể chuyển nhóm vào lúc này vì chưa đến hạn chuyển nhóm. Vui lòng quay lại sau !</p>}
             {props.projectStatus !== 'Sắp diễn ra' && props.projectStatus !== 'Lên kế hoạch' && <p className={cx('change-class-description')}>Bạn hiện không thể chuyển nhóm vào lúc này vì đã quá hạn chuyển nhóm!</p>}
+            {errorMessage && errorMessage !== 'Dự án này hiện không thể đổi lớp' && <p className={cx('change-class-description')}>{errorMessage}</p>}
             <Controller
-              name="classId" 
+              name="classId"
               control={control}
               defaultValue=""
               rules={{ required: "Vui lòng chọn lớp để chuyển" }}
@@ -139,6 +141,7 @@ export const TraineeChangeClass = (props) => {
                   fullWidth
                   displayEmpty
                   error={!!errors.classId}
+                  helperText={errors.classId?.message}
                   value={field.value || ""}
                   onChange={(event) => {
                     field.onChange(event.target.value);

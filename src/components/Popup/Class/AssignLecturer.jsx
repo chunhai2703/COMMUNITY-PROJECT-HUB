@@ -12,6 +12,7 @@ import { assignLecturerStudentToProject, searchLeturers } from '../../../service
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth';
+import { message } from 'antd';
 
 
 const cx = classNames.bind(classes)
@@ -19,6 +20,7 @@ const cx = classNames.bind(classes)
 export const AssignLecturer = (props) => {
   const [open, setOpen] = useState(false);
   const [lecturers, setLecturers] = useState([]);
+  const [messageApi, contextHolder] = message.useMessage();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -87,9 +89,31 @@ export const AssignLecturer = (props) => {
       // }
       console.error("Lỗi khi phân công giảng viên:", error);
       if (error.result && error.result.length > 0) {
-        toast.error(error.result[0]);
+        // toast.error(error.result[0]);
+        messageApi.open({
+          type: 'error',
+          title: 'Thông báo lỗi',
+          content: (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-start' }}>
+              {error.result.split(',').map((error, index) => (
+                <p key={index} >{error}</p>
+              ))}
+            </div>
+          ),
+        });
       } else {
-        toast.error(error.message);
+        // toast.error(error.message);
+        messageApi.open({
+          type: 'error',
+          title: 'Thông báo lỗi',
+          content: (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-start' }}>
+              {error.result.split(',').map((error, index) => (
+                <p key={index} >{error}</p>
+              ))}
+            </div>
+          ),
+        });
       }
     }
 
@@ -101,6 +125,7 @@ export const AssignLecturer = (props) => {
       <button className={cx('class-assign-lecturer')} onClick={handleClickOpen}>
         <UserAddOutlined style={{ marginRight: '8px' }} /> Phân công giảng viên
       </button>
+      {contextHolder}
       <Dialog
         open={open}
         onClose={handleClose}
@@ -161,7 +186,7 @@ export const AssignLecturer = (props) => {
         <DialogActions>
           <button onClick={handleClose} className={cx('cancel-button')}>Hủy</button>
           <button type="submit" onClick={handleSubmit(onSubmit)} className={cx('create-button')} disabled={loading}>
-           {loading ? <CircularProgress color="inherit" size={20} /> : 'Phân công'}
+            {loading ? <CircularProgress color="inherit" size={20} /> : 'Phân công'}
           </button>
         </DialogActions>
       </Dialog>

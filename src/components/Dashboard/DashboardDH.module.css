@@ -1,0 +1,26 @@
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Pacifico&display=swap");
+
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 1rem;
+}
+.greeting-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.greeting {
+  font-size: 1.5rem;
+}
+.greeting-name {
+  font-size: 1.75rem;
+  color: #f37021;
+  font-style: italic;
+  font-family: "Pacifico", "Dancing Script", cursive; /* Ưu tiên Pacifico, fallback Dancing Script */
+}
+.current-time {
+  font-size: 14px;
+  color: rgb(191, 190, 190);
+}

@@ -10,9 +10,13 @@
   height: 100vh;
 }
 .chat-list-title {
-  font-size: 20px;
-  font-weight: 600;
+  letter-spacing: 5px;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
   padding: 1rem;
+  word-wrap: break-word; /* Đảm bảo xuống dòng khi nội dung quá dài */
+  overflow-wrap: break-word; /* Đảm bảo xuống dòng khi có từ quá dài */
+  white-space: pre-wrap; /* Giữ nguyên định dạng xuống dòng */
 }
 .chat-list-search {
   display: flex;

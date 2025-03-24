@@ -11,6 +11,11 @@ import {
     GetAmountOfTrainee,
     GetAmountProjectWithStatus
 } from "../../services/DashboardApi";
+import { Banner } from "../Banner/Banner";
+import classes from "./DashboardPM.module.css";
+import classNames from "classnames/bind";
+
+const cx = classNames.bind(classes);
 
 // Đăng ký các thành phần của Chart.js
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -72,7 +77,7 @@ const DashboardPM = () => {
     };
 
     return (
-        <div className="p-4">
+        <div className={cx("dashboard-container")}>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Card>

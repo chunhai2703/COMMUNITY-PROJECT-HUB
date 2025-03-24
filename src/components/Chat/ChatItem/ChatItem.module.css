@@ -3,11 +3,25 @@
   padding: 10px;
   border-radius: 10px;
   transition: all 0.2s ease-in-out;
+  text-decoration: none; /* Loại bỏ gạch chân */
+  display: block;
 }
 
 .chat-item-container:hover {
   cursor: pointer;
   transform: scale(1.02);
+  background-color: #ccc;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Ngăn chặn gạch chân trong thẻ <a> */
+.chat-item-container a {
+  text-decoration: none;
+  color: inherit; /* Giữ màu gốc */
+}
+
+.chat-item-container a:hover {
+  text-decoration: none;
 }
 
 .chat-item {
@@ -51,8 +65,10 @@
   font-weight: bold;
 }
 
+/* Xóa hiệu ứng mặc định của NavLink */
 a:hover,
 a:active,
 a.active {
+  text-decoration: none !important;
   background-color: #ccc;
 }
