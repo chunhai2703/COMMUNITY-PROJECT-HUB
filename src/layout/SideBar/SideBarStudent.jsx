@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { SettingOutlined, HomeOutlined, FolderOutlined, MailOutlined, MenuFoldOutlined, MenuUnfoldOutlined, SolutionOutlined, SnippetsOutlined } from '@ant-design/icons';
+import { SettingOutlined, HomeOutlined, FolderOutlined, MailOutlined, MenuFoldOutlined, MenuUnfoldOutlined, SolutionOutlined, SnippetsOutlined, CalendarOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
@@ -46,6 +46,12 @@ export const SideBarStudent = () => {
       label: 'Ứng Tuyển Của Tôi',
       icon: <SolutionOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
       onClick: () => navigate('/home-student/my-registration'),
+    },
+    {
+      key: 'my-schedule',
+      label: 'Thời khóa biểu',
+      icon: <CalendarOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
+      onClick: () => navigate('/home-student/my-schedule'),
     },
     {
       key: 'my-classes',

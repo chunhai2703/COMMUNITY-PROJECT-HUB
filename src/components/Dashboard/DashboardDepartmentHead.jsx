@@ -11,6 +11,22 @@ import {
     GetAmountOfTrainee,
     GetAmountProjectWithStatus
 } from "../../services/DashboardApi";
+import { Banner } from "../Banner/Banner";
+import classes from "./DashboardDH.module.css";
+import classNames from "classnames/bind";
+import dayjs from 'dayjs'; // 🟢 Import dayjs để xử lý ngày giờ
+import 'dayjs/locale/vi'; // 🟢 Dùng tiếng Việt cho định dạng ngày
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import 'animate.css';
+
+
+
+const cx = classNames.bind(classes);
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.locale('vi'); // Đặt ngôn ngữ mặc định là tiếng Việt
 
 // Đăng ký các thành phần của Chart.js
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -23,6 +39,16 @@ const DashboardDepartmentHead = () => {
     const [amountTrainee, setAmountTrainee] = useState(0);
     const [amountProject, setAmountProject] = useState(0);
     const [amountProjectWithStatus, setAmountProjectWithStatus] = useState([]);
+    const [currentTime, setCurrentTime] = useState(dayjs().tz('Asia/Ho_Chi_Minh'));
+
+    useEffect(() => {
+        // 🕒 Cập nhật thời gian mỗi giây
+        const interval = setInterval(() => {
+            setCurrentTime(dayjs().tz('Asia/Ho_Chi_Minh'));
+        }, 1000);
+
+        return () => clearInterval(interval); // 🛑 Dọn dẹp interval khi component unmount
+    }, []);
 
     useEffect(() => {
         if (user) {
@@ -86,6 +112,8 @@ const DashboardDepartmentHead = () => {
         }
     };
 
+
+
     if (!user || isLoading) {
         return <Spinner />;
     }
@@ -108,7 +136,22 @@ const DashboardDepartmentHead = () => {
     };
 
     return (
-        <div className="p-4">
+        <div className={cx("dashboard-container")}>
+            <div className={cx('greeting-container')}>
+                <h2 className={cx('greeting', 'animate__animated animate__lightSpeedInRight')}>
+                    <span className={cx('greeting-text')}>Xin chào, </span>
+                    <span className={cx('greeting-role')}>{user?.roleId === 3
+                        ? 'học viên'
+                        : user?.roleId === 2
+                            ? 'giảng viên'
+                            : user?.roleId === 4 ? 'Trưởng bộ môn' : 'sinh viên'} </span>
+                    <span className={cx('greeting-name')}>{user?.fullName}</span> !
+                </h2>
+
+                {/* 📅 Hiển thị ngày giờ hiện tại */}
+                <p className={cx('current-time', 'animate__animated animate__fadeIn')}>Hôm nay là {currentTime.format('dddd, DD/MM/YYYY HH:mm:ss')}</p>
+            </div>
+            <Banner />
             <Grid container spacing={3}>
                 <Grid item xs={12} sm={6}>
                     <Card>
