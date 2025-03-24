@@ -38,8 +38,8 @@ import { LayoutTrainee } from "../layout/layout/LayoutTrainee";
 import { ErrorPageTrainee } from "../pages/ErrorPage/ErrorPageTrainee";
 import { HomeTrainee } from "../pages/HomePage/HomeTrainee";
 import { DashboardPMPage } from "../pages/DashboardPage/DashboardPMPage";
-import { ShedulePage } from "../pages/ShedulePage/ShedulePage";
 import { ChangeClassPage } from "../pages/Classes/ChangeClassPage";
+import { SchedulePage } from "../pages/SchedulePage/SchedulePage";
 
 
 
@@ -142,6 +142,10 @@ export const router = createBrowserRouter([
         element: <MyClasses />
       },
       {
+        path: "my-schedule",
+        element: <SchedulePage />
+      },
+      {
         path: "class-detail/:projectId/:classId",
         element: <ClassDetailPage />,
         errorElement: <ErrorPage />
@@ -229,6 +233,10 @@ export const router = createBrowserRouter([
         element: <MyRegistrationPage />
       },
       {
+        path: "my-schedule",
+        element: <SchedulePage />
+      },
+      {
         path: "my-classes",
         element: <MyClasses />
       },
@@ -290,6 +298,10 @@ export const router = createBrowserRouter([
         path: "project-detail/:projectId/material",
         element: <MaterialManagementPage />,
         errorElement: <ErrorPage />
+      },
+      {
+        path: "my-schedule",
+        element: <SchedulePage />
       },
       {
         path: "my-classes",
@@ -376,8 +388,8 @@ export const router = createBrowserRouter([
   },
 
   {
-    path: "/shedule",
-    element: <ShedulePage />,
+    path: "/schedule",
+    element: <SchedulePage />,
     errorElement: <ErrorPage />
   },
 ]);

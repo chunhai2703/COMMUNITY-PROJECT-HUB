@@ -277,6 +277,50 @@ export const ProjectUpdateForm = (props) => {
                 />
               )}
             />
+
+            {/* Đối tác */}
+            <Controller
+              name="associate"
+              control={control}
+              defaultValue={null}
+              render={({ field }) => (
+                <Autocomplete
+                  {...field}
+                  // options={managers} // Danh sách từ API
+                  getOptionLabel={(option) => `${option.fullName} - ${option.accountName}` || ""}
+                  isOptionEqualToValue={(option, value) => option.accountId === value?.accountId}
+                  // onInputChange={(event, newInputValue) => handleSearchManager(newInputValue)}
+                  onChange={(event, newValue) => {
+                    console.log("Đối tác được chọn:", newValue);
+                    field.onChange(newValue);
+                  }}
+                  loading={loading}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Bên đối tác"
+                      variant="outlined"
+                      fullWidth
+                      margin="normal"
+                      error={!!errors.associate}
+                      helperText={errors.associate?.message}
+                      slotProps={{
+                        input: {
+                          ...params.InputProps,
+                        },
+                        endAdornment: (
+                          <>
+                            {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                            {params.InputProps.endAdornment}
+                          </>
+                        ),
+                      }}
+                    />
+                  )}
+                />
+              )}
+            />
+
           </form>
 
         </DialogContent>

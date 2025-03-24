@@ -102,8 +102,8 @@ export const ChatContent = () => {
 
   if (!classId) {
     return (
-      <div className='flex justify-center items-center h-full bg-gray-200'>
-        <p className='text-3xl font-bold'>Hãy chọn một nhóm chat để bắt đầu</p>
+      <div className='flex justify-center items-center h-full bg-gray-100'>
+        <p className='text-3xl font-bold' style={{ textAlign: 'center' }}>Hãy chọn một nhóm chat để bắt đầu</p>
       </div>
     );
   }

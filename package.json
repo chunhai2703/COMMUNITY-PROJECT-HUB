@@ -20,6 +20,7 @@
     "chart.js": "^4.4.8",
     "classnames": "^2.5.1",
     "cra-template": "1.2.0",
+    "dayjs": "^1.11.13",
     "jwt-decode": "^4.0.0",
     "lodash": "^4.17.21",
     "react": "^19.0.0",

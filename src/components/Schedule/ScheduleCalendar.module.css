@@ -1,0 +1,44 @@
+.schedule-calendar-container {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 2rem;
+}
+
+.schedule-calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.schedule-calendar-title {
+  letter-spacing: 5px;
+  font-size: 2rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+}
+.schedule-calendar-content {
+  border-radius: 8px;
+  border-top: 5px solid #f37021;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+}
+.custom-event-content {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 10px;
+  white-space: normal !important; /* Cho phép text xuống dòng */
+  overflow: visible !important; /* Hiển thị đầy đủ nội dung */
+  word-wrap: break-word; /* Xuống dòng khi cần */
+  max-width: 100%;
+}
+.event-title {
+  color: #f37021;
+  font-weight: 600;
+  font-size: 16px;
+}
+.event-time {
+  align-self: flex-start;
+}

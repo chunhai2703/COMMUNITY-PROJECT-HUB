@@ -94,7 +94,7 @@ export const ChangeGroup = (props) => {
         <p className={cx('change-group-description')}>
           Bạn hiện không thể chuyển nhóm vào lúc này vì đã quá hạn chuyển nhóm!
         </p>}
-      {errorMessage && <p className={cx('change-group-description')}>
+      {errorMessage && errorMessage !== 'Dự án này hiện không thể đổi nhóm' && <p className={cx('change-group-description')}>
         {errorMessage}
       </p>}
 
@@ -140,6 +140,8 @@ export const ChangeGroup = (props) => {
                   onChange={(value) => setValue("groupNo", value)}
                   loading={loading}
                   options={groupList.length > 0 ? groupList : [{ value: "", label: "Không có nhóm khả dụng", disabled: true }]}
+                  error={!!errors.groupNo}
+                  helperText={errors.groupNo?.message}
                 />
               )}
             />

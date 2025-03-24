@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { SettingOutlined, HomeOutlined, FolderOutlined, MailOutlined, MenuFoldOutlined, MenuUnfoldOutlined, SolutionOutlined, SnippetsOutlined, InteractionOutlined } from '@ant-design/icons';
+import { SettingOutlined, HomeOutlined, FolderOutlined, MailOutlined, MenuFoldOutlined, MenuUnfoldOutlined, SolutionOutlined, SnippetsOutlined, InteractionOutlined, CalendarOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
@@ -32,6 +32,12 @@ export const SideBarTrainee = () => {
     //   icon: <FolderOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
     //   onClick: () => navigate('/home-trainee/all-related-projects'),
     // },
+    {
+      key: 'my-schedule',
+      label: 'Thời khóa biểu',
+      icon: <CalendarOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
+      onClick: () => navigate('/home-trainee/my-schedule'),
+    },
     {
       key: 'my-classes',
       label: 'Lớp Học Của Tôi',

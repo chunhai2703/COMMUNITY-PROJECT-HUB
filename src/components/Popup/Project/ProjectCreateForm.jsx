@@ -69,21 +69,6 @@ export const ProjectCreateForm = (props) => {
     reset()
   };
 
-  useEffect(() => {
-    if (errorMessages.length > 0) {
-      messageApi.open({
-        type: 'error',
-        title: 'Thông báo lỗi',
-        content: (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-start' }}>
-            {errorMessages.map((error, index) => (
-              <p key={index} >{error}</p>
-            ))}
-          </div>
-        ),
-      });
-    }
-  }, [errorMessages, messageApi]);
 
 
   const onSubmit = async (data) => {
@@ -131,19 +116,31 @@ export const ProjectCreateForm = (props) => {
     } catch (error) {
       setLoading(false)
       console.error("Lỗi khi tạo dự án:", error);
-      toast.error(error.message);
-
-      console.log(error.result)
-      const messages = Array.isArray(error.result)
-        ? error.result
-        : error.result
-          ? [error.result]
-          : typeof error.message === "string"
-            ? error.message
-            : [error.message];
-
-      setErrorMessages(messages);
-
+      if (error.result && error.result.length > 0) {
+        messageApi.open({
+          type: 'error',
+          title: 'Thông báo lỗi',
+          content: (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-start' }}>
+              {error.result.split(',').map((error, index) => (
+                <p key={index} >{error}</p>
+              ))}
+            </div>
+          ),
+        });
+      } else {
+        messageApi.open({
+          type: 'error',
+          title: 'Thông báo lỗi',
+          content: (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-start' }}>
+              {error.message.split(',').map((error, index) => (
+                <p key={index} >{error}</p>
+              ))}
+            </div>
+          ),
+        });
+      }
     }
   };
 
@@ -365,6 +362,49 @@ export const ProjectCreateForm = (props) => {
                       margin="normal"
                       error={!!errors.projectManager}
                       helperText={errors.projectManager?.message}
+                      slotProps={{
+                        input: {
+                          ...params.InputProps,
+                        },
+                        endAdornment: (
+                          <>
+                            {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                            {params.InputProps.endAdornment}
+                          </>
+                        ),
+                      }}
+                    />
+                  )}
+                />
+              )}
+            />
+
+            {/* Đối tác */}
+            <Controller
+              name="associate"
+              control={control}
+              defaultValue={null}
+              render={({ field }) => (
+                <Autocomplete
+                  {...field}
+                  options={managers} // Danh sách từ API
+                  getOptionLabel={(option) => `${option.fullName} - ${option.accountName}` || ""}
+                  isOptionEqualToValue={(option, value) => option.accountId === value?.accountId}
+                  onInputChange={(event, newInputValue) => handleSearchManager(newInputValue)}
+                  onChange={(event, newValue) => {
+                    console.log("Đối tác được chọn:", newValue);
+                    field.onChange(newValue);
+                  }}
+                  loading={loading}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Bên đối tác"
+                      variant="outlined"
+                      fullWidth
+                      margin="normal"
+                      error={!!errors.associate}
+                      helperText={errors.associate?.message}
                       slotProps={{
                         input: {
                           ...params.InputProps,
