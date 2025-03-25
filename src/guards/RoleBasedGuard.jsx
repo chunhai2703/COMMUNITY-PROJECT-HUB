@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { Container, Alert, AlertTitle } from '@mui/material';
 import useAuth from '../hooks/useAuth';
 import { Spinner } from '../components/Spinner/Spinner';
+import { Button, Result } from 'antd';
 
 RoleBasedGuard.propTypes = {
   accessibleRoles: PropTypes.array, // Example ['admin', 'leader']
@@ -25,12 +26,12 @@ export default function RoleBasedGuard({ accessibleRoles, children }) {
   // If user is null or does not have the right role, deny access
   if (!user || !accessibleRoles.includes(currentRole)) {
     return (
-      <Container style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '50px' }}>
-        <Alert severity="error" size="large">
-          <AlertTitle>Permission Denied</AlertTitle>
-          You do not have permission to access this page
-        </Alert>
-      </Container>
+      <Result
+      status="403"
+      title="Quyền truy cập bị từ chối"
+      subTitle="Xin lỗi, bạn không có quyền truy cập vào trang này."
+      extra={<Button type="primary" onClick={() => window.location.href = '/'}>Quay lại</Button>}
+    />
     );
   }
 

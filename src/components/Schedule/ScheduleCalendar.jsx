@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -12,6 +12,10 @@ import "dayjs/locale/vi"; // Import ngôn ngữ tiếng Việt cho dayjs
 
 import classes from "./ScheduleCalendar.module.css";
 import classNames from "classnames/bind";
+import useAuth from '../../hooks/useAuth';
+import { getSchedule } from "../../services/ScheduleApi";
+import { toast } from "react-toastify";
+import { Spinner } from "../Spinner/Spinner";
 
 dayjs.locale("vi"); // Cài đặt ngôn ngữ cho dayjs
 
@@ -19,19 +23,53 @@ const cx = classNames.bind(classes);
 
 export default function ScheduleCalendar() {
   const [selectedDate, setSelectedDate] = useState(null); // 🟢 Mặc định là tháng/năm hiện tại
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const { user } = useAuth();
+
+
+
+  const fetchScheduleData = useCallback(async () => {
+    if (!user || !user.accountId) {
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await getSchedule(user.accountId);
+
+      if (response.ok) {
+        setEvents(response.result);
+      }
+    } catch (error) {
+      console.error("Lỗi khi lấy thời khóa biểu:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [user]);
+
+
+  useEffect(() => {
+    fetchScheduleData();
+  }, [fetchScheduleData]);
+
+  if (!user || loading) {
+    return <Spinner />
+  }
 
   // 🟢 Dữ liệu thời khóa biểu
-  const events = [
-    { title: "💻 Hành trình số hóa nhân tạo", start: "2025-03-18T08:00:00", end: "2025-03-18T09:30:00", room: "401" },
-    { title: "💻 Hành trình số hóa nhân tạo", start: "2025-01-10T08:00:00", end: "2025-01-10T09:30:00", room: "401" },
-    { title: "💻 Hành trình số hóa nhân tạo", start: "2025-01-20T08:00:00", end: "2025-01-20T09:30:00", room: "401" },
-    { title: "English", start: "2025-03-18T10:00:00", end: "2025-03-18T11:30:00", room: "401" },
-    { title: "Science", start: "2025-03-19T08:00:00", end: "2025-03-19T09:30:00", room: "401" },
-    { title: "History", start: "2025-03-19T10:00:00", end: "2025-03-19T11:30:00", room: "401" },
-    { title: "Physics", start: "2025-04-05T08:30:00", end: "2025-04-05T09:30:00", room: "401" },
-    { title: "Chemistry", start: "2025-04-10T08:00:00", end: "2025-04-10T09:30:00", room: "401" },
-    { title: "Computer Science", start: "2025-05-15T08:00:00", end: "2025-05-15T09:30:00", room: "401" },
-  ];
+  // const events = [
+  //   { title: "💻 Hành trình số hóa nhân tạo", start: "2025-03-18T08:00:00", end: "2025-03-18T09:30:00", room: "401" },
+  //   { title: "💻 Hành trình số hóa nhân tạo", start: "2025-01-10T08:00:00", end: "2025-01-10T09:30:00", room: "401" },
+  //   { title: "💻 Hành trình số hóa nhân tạo", start: "2025-01-20T08:00:00", end: "2025-01-20T09:30:00", room: "401" },
+  //   { title: "English", start: "2025-03-18T10:00:00", end: "2025-03-18T11:30:00", room: "401" },
+  //   { title: "Science", start: "2025-03-19T08:00:00", end: "2025-03-19T09:30:00", room: "401" },
+  //   { title: "History", start: "2025-03-19T10:00:00", end: "2025-03-19T11:30:00", room: "401" },
+  //   { title: "Physics", start: "2025-04-05T08:30:00", end: "2025-04-05T09:30:00", room: "401" },
+  //   { title: "Chemistry", start: "2025-04-10T08:00:00", end: "2025-04-10T09:30:00", room: "401" },
+  //   { title: "Computer Science", start: "2025-05-15T08:00:00", end: "2025-05-15T09:30:00", room: "401" },
+  // ];
 
   // 🟢 Lọc sự kiện đúng cách
   const filteredEvents = selectedDate
@@ -45,6 +83,8 @@ export default function ScheduleCalendar() {
   const handleDateChange = (date) => {
     setSelectedDate(date ? dayjs(date) : null);
   };
+
+
 
   return (
     <div className={cx("schedule-calendar-container")}>

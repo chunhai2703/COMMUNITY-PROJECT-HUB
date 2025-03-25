@@ -43,20 +43,20 @@ export const SideBarDH = () => {
         },
       ],
     },
-    {
-      key: 'message',
-      label: 'Tin Nhắn',
-      icon: collapsed ? (
+    // {
+    //   key: 'message',
+    //   label: 'Tin Nhắn',
+    //   icon: collapsed ? (
        
           
-            <MailOutlined style={{ fontSize: 20 }} />
+    //         <MailOutlined style={{ fontSize: 20 }} />
         
-      ) : (
+    //   ) : (
        
-          <MailOutlined style={{ fontSize: 18 }} />
-      ),
-      onClick: () => navigate('/home-department-head/chat'),
-    },
+    //       <MailOutlined style={{ fontSize: 18 }} />
+    //   ),
+    //   onClick: () => navigate('/home-department-head/chat'),
+    // },
   ];
 
   return (
