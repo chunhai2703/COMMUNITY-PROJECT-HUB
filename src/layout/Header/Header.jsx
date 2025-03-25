@@ -209,7 +209,7 @@ export const Header = () => {
               </Avatar>
               <div className={cx('user-info')}>
                 <p>{user.fullName}</p>
-                <button onClick={handleClickLogout}>Log out <LogoutIcon style={{ fontSize: "18px", marginLeft: "5px", fontWeight: "600" }} /></button>
+                <button onClick={handleClickLogout}>Đăng xuất <LogoutIcon style={{ fontSize: "18px", marginLeft: "5px", fontWeight: "600" }} /></button>
               </div>
             </div>
           </li>

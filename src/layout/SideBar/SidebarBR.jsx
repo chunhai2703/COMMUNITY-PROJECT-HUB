@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { SettingOutlined, HomeOutlined, FolderOutlined, MailOutlined, TeamOutlined, MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
+import { SettingOutlined, HomeOutlined, FolderOutlined, MailOutlined, MenuFoldOutlined, MenuUnfoldOutlined, SnippetsOutlined, InteractionOutlined, CalendarOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
-export const SideBarAdmin = () => {
+
+export const SideBarBR = () => {
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
 
@@ -22,13 +23,14 @@ export const SideBarAdmin = () => {
       key: 'home',
       label: 'Trang Chủ',
       icon: <HomeOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
-      onClick: () => navigate('/home-admin'),
+      onClick: () => navigate('/home-business-relation'),
+
     },
     {
-      key: 'account',
-      label: 'Tài khoản',
-      icon: <TeamOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
-      onClick: () => navigate('/home-admin/account-management'),
+      key: 'projects',
+      label: 'Dự Án',
+      icon: <FolderOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
+      onClick: () => navigate('/home-business-relation/all-related-projects'),
     },
     {
       key: 'setting',
@@ -38,32 +40,13 @@ export const SideBarAdmin = () => {
         {
           key: 'profile',
           label: 'Hồ Sơ Cá Nhân',
-          onClick: () => navigate('/home-admin/view-profile'),
+          onClick: () => navigate('/home-business-relation/view-profile'),
         },
-
       ],
     },
-    // {
-    //   key: "message",
-    //   label: "Tin Nhắn",
-    //   icon: (
-    //     <MailOutlined style={{ fontSize: 18 }} />
-    //   ),
-    // }
+   
   ];
 
-  // const onClick = (e) => {
-  //   console.log('click ', e);
-  //   if (e.key === 'home') {
-  //     navigate('/home-admin')
-  //   }
-  //   if (e.key === 'profile') {
-  //     navigate('/home-admin/view-profile')
-  //   }
-  //   if (e.key === 'account') {
-  //     navigate('/home-admin/account-management')
-  //   }
-  // };
   return (
     <Menu
       onClick={(e) => {
@@ -85,3 +68,4 @@ export const SideBarAdmin = () => {
     />
   );
 }
+

@@ -8,7 +8,7 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import 'animate.css';
 import { Collapse } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import { DownOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import useAuth from '../../hooks/useAuth';
 import { Spinner } from '../Spinner/Spinner';
 
@@ -29,7 +29,7 @@ const items = [
     ),
     style: { backgroundColor: '#474D57' },
     children: (
-      <ul>
+      <ul style={{ paddingLeft: '1rem', fontSize: '16px' }}>
         <li>Không cần phải có kỹ năng đặc biệt!</li>
         <li>Bạn có thể đóng góp theo sở trường của mình.</li>
         <li>Nếu bạn có kỹ năng về <span style={{ fontWeight: '600' }}>quản lý, truyền thông, thiết kế, lập trình</span>, dự án sẽ tận dụng tốt hơn sự giúp đỡ của bạn.</li>
@@ -45,11 +45,11 @@ const items = [
     ),
     style: { backgroundColor: '#474D57' },
     children: (
-      <ul>
-        <li>✔️ Kỹ năng <span style={{ fontWeight: '600' }}>làm việc nhóm</span> và <b>giao tiếp</b> với nhiều người.</li>
-        <li>✔️  Cách <span style={{ fontWeight: '600' }}>tổ chức và quản lý sự kiện</span>.</li>
-        <li>✔️ <span style={{ fontWeight: '600' }}>Tư duy cộng đồng</span> và cách tạo ra tác động xã hội.</li>
-        <li>✔️  <span style={{ fontWeight: '600' }}>Kết nối</span> với những người cùng chí hướng, mở rộng quan hệ.</li>
+      <ul style={{ paddingLeft: '1rem', fontSize: '16px' }}>
+        <li>✅ Kỹ năng <span style={{ fontWeight: '600' }}>làm việc nhóm</span> và <b>giao tiếp</b> với nhiều người.</li>
+        <li>✅ Cách <span style={{ fontWeight: '600' }}>tổ chức và quản lý sự kiện</span>.</li>
+        <li>✅ <span style={{ fontWeight: '600' }}>Tư duy cộng đồng</span> và cách tạo ra tác động xã hội.</li>
+        <li>✅ <span style={{ fontWeight: '600' }}>Kết nối</span> với những người cùng chí hướng, mở rộng quan hệ.</li>
       </ul>
     ),
   },
@@ -62,7 +62,7 @@ const items = [
     ),
     style: { backgroundColor: '#474D57' },
     children: (
-      <ul>
+      <ul style={{ paddingLeft: '1rem', fontSize: '16px' }}>
         <li>✅ <span style={{ fontWeight: '600' }}>Chia sẻ thông tin</span> trên mạng xã hội để giúp dự án tiếp cận nhiều người hơn.</li>
         <li>✅ <span style={{ fontWeight: '600' }}>Tham gia hỗ trợ từ xa</span>: viết nội dung, thiết kế, hoặc giúp đỡ về công nghệ.</li>
         <li>✅ <span style={{ fontWeight: '600' }}>Góp một khoản nhỏ vào quỹ</span> nếu dự án cần tài trợ.</li>
@@ -100,11 +100,7 @@ export const DashboardTrainee = () => {
       <div className={cx('greeting-container')}>
         <h2 className={cx('greeting', 'animate__animated animate__lightSpeedInRight')}>
           <span className={cx('greeting-text')}>Xin chào, </span>
-          <span className={cx('greeting-role')}>{user?.roleId === 3
-            ? 'học viên'
-            : user?.roleId === 2
-              ? 'giảng viên'
-              : 'sinh viên'} </span>
+          <span className={cx('greeting-role')}>học viên </span>
           <span className={cx('greeting-name')}>{user?.fullName}</span> !
         </h2>
 
@@ -114,7 +110,7 @@ export const DashboardTrainee = () => {
 
       <Banner />
       <div className={cx('collapse-container')}>
-        <h2 className={cx('collapse-title')}>Những câu hỏi thường gặp</h2>
+        <h2 className={cx('collapse-title')}>Những câu hỏi thường gặp <QuestionCircleOutlined /></h2>
         <Collapse items={items} defaultActiveKey={['1']} onChange={onChange} size='large' expandIcon={customExpandIcon} />
       </div>
 
