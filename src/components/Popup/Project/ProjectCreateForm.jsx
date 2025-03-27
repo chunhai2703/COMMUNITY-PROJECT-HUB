@@ -9,7 +9,7 @@ import { PlusCircleOutlined, UploadOutlined } from '@ant-design/icons';
 import { Button, Upload, message } from 'antd';
 import classes from './ProjectCreateForm.module.css'
 import classNames from 'classnames/bind';
-import { searchLeturers } from '../../../services/AssignApi';
+import { searchAssociate, searchLeturers } from '../../../services/AssignApi';
 import { createProject } from '../../../services/ProjectsApi';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
@@ -20,8 +20,9 @@ const cx = classNames.bind(classes);
 export const ProjectCreateForm = (props) => {
   const [open, setOpen] = useState(false);
   const [managers, setManagers] = useState([]);
+  const [associates, setAssociates] = useState([]);
   const [messageApi, contextHolder] = message.useMessage();
-  const [errorMessages, setErrorMessages] = useState([]); // ✅ Lưu lỗi vào state
+  // const [errorMessages, setErrorMessages] = useState([]); // ✅ Lưu lỗi vào state
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -58,6 +59,19 @@ export const ProjectCreateForm = (props) => {
     setLoading(false);
   };
 
+  const handleSearchAssociate = async (searchTerm) => {
+    if (!searchTerm) return;
+    setLoading(true);
+    try {
+      const data = await searchAssociate(searchTerm);
+      console.log("Danh sách đối tác từ API:", data); // Kiểm tra dữ liệu trả về
+      setAssociates(data.result);
+    } catch (error) {
+      console.error("Lỗi tìm kiếm đối tác:", error);
+    }
+    setLoading(false);
+  };
+
 
 
   const handleClickOpen = () => {
@@ -85,11 +99,7 @@ export const ProjectCreateForm = (props) => {
       formData.append("applicationEndDate", data.applicationEndDate);
       formData.append("address", data.address);
 
-      data.lessonList.forEach((lesson) => {
-        if (lesson.value) {
-          formData.append("lessonList", lesson.value);
-        }
-      });
+
 
       formData.append("projectManagerId", data?.projectManager?.accountId ? String(data.projectManager.accountId) : '');
 
@@ -99,6 +109,14 @@ export const ProjectCreateForm = (props) => {
           formData.append("trainees", file);
         }
       }
+
+      formData.append("associateId", data?.associate?.accountId ? String(data.associate.accountId) : '');
+
+      data.lessonList.forEach((lesson) => {
+        if (lesson.value) {
+          formData.append("lessonList", lesson.value);
+        }
+      });
 
       console.log("Dữ liệu formData trước khi gửi:");
       for (let pair of formData.entries()) {
@@ -122,9 +140,11 @@ export const ProjectCreateForm = (props) => {
           title: 'Thông báo lỗi',
           content: (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-start' }}>
-              {error.result.split(',').map((error, index) => (
-                <p key={index} >{error}</p>
-              ))}
+              {Array.isArray(error.result) ? (
+                error.result.map((err, index) => <p key={index}>{err}</p>)
+              ) : (
+                <p>{error.result}</p>
+              )}
             </div>
           ),
         });
@@ -134,7 +154,7 @@ export const ProjectCreateForm = (props) => {
           title: 'Thông báo lỗi',
           content: (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-start' }}>
-              {error.message.split(',').map((error, index) => (
+              {error.message.map((error, index) => (
                 <p key={index} >{error}</p>
               ))}
             </div>
@@ -178,6 +198,7 @@ export const ProjectCreateForm = (props) => {
                   label="Tên dự án"
                   variant="outlined"
                   fullWidth
+                  required
                   margin="normal"
                   type='text'
                   error={!!errors.title}
@@ -200,6 +221,7 @@ export const ProjectCreateForm = (props) => {
                   label="Mô tả dự án"
                   variant="outlined"
                   fullWidth
+                  required
                   margin="normal"
                   type='text'
                   multiline
@@ -224,6 +246,7 @@ export const ProjectCreateForm = (props) => {
                   label="Ngày bắt đầu đăng ký"
                   variant="outlined"
                   fullWidth
+                  required
                   margin="normal"
                   type='date'
                   slotProps={{
@@ -250,6 +273,7 @@ export const ProjectCreateForm = (props) => {
                   label="Ngày kết thúc đăng ký"
                   variant="outlined"
                   fullWidth
+                  required
                   margin="normal"
                   type='date'
                   slotProps={{
@@ -277,6 +301,7 @@ export const ProjectCreateForm = (props) => {
                   label="Ngày bắt đầu"
                   variant="outlined"
                   fullWidth
+                  required
                   margin="normal"
                   type='date'
                   slotProps={{
@@ -303,6 +328,7 @@ export const ProjectCreateForm = (props) => {
                   label="Ngày kết thúc"
                   variant="outlined"
                   fullWidth
+                  required
                   margin="normal"
                   type='date'
                   slotProps={{
@@ -329,6 +355,7 @@ export const ProjectCreateForm = (props) => {
                   label="Địa chỉ"
                   variant="outlined"
                   fullWidth
+                  required
                   margin="normal"
                   type='text'
                   error={!!errors.address}
@@ -387,21 +414,25 @@ export const ProjectCreateForm = (props) => {
               render={({ field }) => (
                 <Autocomplete
                   {...field}
-                  options={managers} // Danh sách từ API
-                  getOptionLabel={(option) => `${option.fullName} - ${option.accountName}` || ""}
+                  options={associates} // Danh sách từ API
+                  getOptionLabel={(option) => `${option.associateName}` || ""}
                   isOptionEqualToValue={(option, value) => option.accountId === value?.accountId}
-                  onInputChange={(event, newInputValue) => handleSearchManager(newInputValue)}
+                  onInputChange={(event, newInputValue) => handleSearchAssociate(newInputValue)}
                   onChange={(event, newValue) => {
                     console.log("Đối tác được chọn:", newValue);
                     field.onChange(newValue);
                   }}
                   loading={loading}
+                  rules={{
+                    required: 'Vui lòng chọn bên đối tác',
+                  }}
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       label="Bên đối tác"
                       variant="outlined"
                       fullWidth
+                      required
                       margin="normal"
                       error={!!errors.associate}
                       helperText={errors.associate?.message}

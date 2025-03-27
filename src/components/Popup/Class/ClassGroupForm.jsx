@@ -13,6 +13,7 @@ import { createRegistration } from '../../../services/RegistrationApi';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { SetGroupClass } from '../../../services/ClassApi';
+import { Tooltip } from 'antd';
 
 const cx = classNames.bind(classes);
 export const ClassGroupForm = ({ classData, fetchAllClassesOfProject }) => {
@@ -43,7 +44,7 @@ export const ClassGroupForm = ({ classData, fetchAllClassesOfProject }) => {
             toast.success("Chia nhóm cho lớp thành công");
             handleClose();
             reset();
-            fetchAllClassesOfProject();
+            // fetchAllClassesOfProject();
         } else {
             toast.error(responseData.message);
         }
@@ -51,9 +52,9 @@ export const ClassGroupForm = ({ classData, fetchAllClassesOfProject }) => {
 
     return (
         <React.Fragment>
-            <button className={cx('class-group-button')} onClick={handleClickOpen}>
-                <UsergroupAddOutlined style={{ marginRight: '8px' }} /> Chia nhóm
-            </button>
+            <Tooltip title='Nhấn vào để chia nhóm'> <UsergroupAddOutlined style={{ fontSize: '18px', verticalAlign: 'middle', cursor: 'pointer', marginLeft: '8px' }} onClick={handleClickOpen} /></Tooltip>
+
+
             <Dialog
                 open={open}
                 onClose={handleClose}

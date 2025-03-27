@@ -8,7 +8,7 @@ import {
 import { } from '@mui/icons-material';
 import { Controller, useForm } from 'react-hook-form';
 import { EditOutlined } from '@ant-design/icons';
-import { searchLeturers } from '../../../services/AssignApi';
+import { searchAssociate, searchLeturers } from '../../../services/AssignApi';
 import { updateProject } from '../../../services/ProjectsApi';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -20,6 +20,8 @@ const cx = classNames.bind(classes)
 export const ProjectUpdateForm = (props) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [associates, setAssociates] = useState([]);
+  const { project } = props
   const { projectId } = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -34,6 +36,19 @@ export const ProjectUpdateForm = (props) => {
   const getTodayDate = () => {
     const today = new Date();
     return today.toISOString().split("T")[0]; // Định dạng YYYY-MM-DD
+  };
+
+  const handleSearchAssociate = async (searchTerm) => {
+    if (!searchTerm) return;
+    setLoading(true);
+    try {
+      const data = await searchAssociate(searchTerm);
+      console.log("Danh sách đối tác từ API:", data); // Kiểm tra dữ liệu trả về
+      setAssociates(data.result);
+    } catch (error) {
+      console.error("Lỗi tìm kiếm đối tác:", error);
+    }
+    setLoading(false);
   };
 
 
@@ -60,6 +75,7 @@ export const ProjectUpdateForm = (props) => {
       formData.append("applicationStartDate", data.applicationStartDate);
       formData.append("applicationEndDate", data.applicationEndDate);
       formData.append("address", data.address);
+      formData.append("associateId", data?.associate?.accountId ? String(data.associate.accountId) : '');
 
 
       console.log("Dữ liệu formData trước khi gửi:");
@@ -282,25 +298,31 @@ export const ProjectUpdateForm = (props) => {
             <Controller
               name="associate"
               control={control}
-              defaultValue={null}
+              defaultValue={project?.associateId && project?.associateName
+                ? { accountId: project.associateId, associateName: project.associateName }
+                : null}
               render={({ field }) => (
                 <Autocomplete
                   {...field}
-                  // options={managers} // Danh sách từ API
-                  getOptionLabel={(option) => `${option.fullName} - ${option.accountName}` || ""}
+                  options={associates} // Danh sách từ API
+                  getOptionLabel={(option) => option.associateName ? `${option.associateName}` : ""}
                   isOptionEqualToValue={(option, value) => option.accountId === value?.accountId}
-                  // onInputChange={(event, newInputValue) => handleSearchManager(newInputValue)}
+                  onInputChange={(event, newInputValue) => handleSearchAssociate(newInputValue)}
                   onChange={(event, newValue) => {
                     console.log("Đối tác được chọn:", newValue);
                     field.onChange(newValue);
                   }}
                   loading={loading}
+                  rules={{
+                    required: 'Vui lòng chọn bên đối tác',
+                  }}
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       label="Bên đối tác"
                       variant="outlined"
                       fullWidth
+                      required
                       margin="normal"
                       error={!!errors.associate}
                       helperText={errors.associate?.message}

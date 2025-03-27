@@ -84,7 +84,7 @@ export const AllClasses = () => {
           </button>
         </div>
       </div>
-      <ClassList classes={allClasses} onRefresh={fetchClasses} />
+      <ClassList classes={allClasses} onRefresh={fetchClasses}  />
     </div>
   );
 };

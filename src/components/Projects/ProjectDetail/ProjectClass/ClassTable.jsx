@@ -95,13 +95,6 @@ export const ClassTable = (props) => {
       });
     }
 
-    if (user?.roleId === 2 && user?.accountId === props.project.projectManagerId && props.project.status === "Lên kế hoạch") {
-      items.push({
-        key: '3',
-        label: <ClassGroupForm classData={classData} fetchAllClassesOfProject={fetchAllClassesOfProject} />,
-      });
-    }
-
     if (
       (user?.roleId === 2 &&
         user?.accountId === props.project.projectManagerId &&
@@ -113,7 +106,7 @@ export const ClassTable = (props) => {
     ) {
       items.push({
         key: '4',
-        label: <AssignLecturer classId={classData.classId} project={props.project}  />
+        label: <AssignLecturer classId={classData.classId} project={props.project} />
       });
     }
 
@@ -128,7 +121,7 @@ export const ClassTable = (props) => {
     ) {
       items.push({
         key: '5',
-        label: <AssignStudent classId={classData.classId} project={props.project}  />
+        label: <AssignStudent classId={classData.classId} project={props.project} />
       });
     }
 
