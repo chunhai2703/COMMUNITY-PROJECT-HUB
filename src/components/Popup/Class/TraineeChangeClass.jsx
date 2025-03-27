@@ -127,8 +127,8 @@ export const TraineeChangeClass = (props) => {
         <DialogContent>
           <form className={cx('change-class-form')}>
             {/* Select danh sách lớp */}
-            {props.projectStatus === 'Lên kế hoạch' && <p className={cx('change-class-description')}>Bạn hiện không thể chuyển nhóm vào lúc này vì chưa đến hạn chuyển nhóm. Vui lòng quay lại sau !</p>}
-            {props.projectStatus !== 'Sắp diễn ra' && props.projectStatus !== 'Lên kế hoạch' && <p className={cx('change-class-description')}>Bạn hiện không thể chuyển nhóm vào lúc này vì đã quá hạn chuyển nhóm!</p>}
+            {props.projectStatus === 'Lên kế hoạch' && <p className={cx('change-class-description')}>Bạn hiện không thể chuyển lớp vào lúc này vì chưa đến hạn chuyển lớp. Vui lòng quay lại sau !</p>}
+            {props.projectStatus !== 'Sắp diễn ra' && props.projectStatus !== 'Lên kế hoạch' && <p className={cx('change-class-description')}>Bạn hiện không thể chuyển lớp vào lúc này vì đã quá hạn chuyển lớp!</p>}
             {errorMessage && errorMessage !== 'Dự án này hiện không thể đổi lớp' && <p className={cx('change-class-description')}>{errorMessage}</p>}
             <Controller
               name="classId"

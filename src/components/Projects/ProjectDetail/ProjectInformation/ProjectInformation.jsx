@@ -78,6 +78,8 @@ export const ProjectInformation = (props) => {
         </p>
       </div>
       <div className={cx('project-information-content')}>
+        <p className={cx('project-associate')}><span className={cx('associate-label', 'label')}>Bên đối tác :</span> <span className={cx('associate-content', 'content')}>{props.project.associateName}</span></p>
+
         <p className={cx('project-address')}><span className={cx('address-label', 'label')}>Địa chỉ :</span> <span className={cx('address-content', 'content')}>{props.project.address}</span></p>
 
         <p className={cx('project-number-lesson')}><span className={cx('number-lesson-label', 'label')}>Tổng số buổi học :</span> <span className={cx('number-lesson-content', 'content')}>{props.project.numberLesson} buổi</span></p>
@@ -111,7 +113,7 @@ export const ProjectInformation = (props) => {
             </p>
           )}
 
-        <p className={cx('project-date')}><span className={cx('start-date-label', 'label')} >Ngày bắt đầu: </span><span className={cx('start-date-content', 'content')}>{startDate}</span> <ArrowRightOutlined style={{ margin: "0 10px" }} /> <span className={cx('end-date-label', 'label')}> Ngày kết thúc:</span> <span className={cx('end-date-content', 'content')}>{endDate}</span></p>
+        <p className={cx('project-date')}><span className={cx('start-date-label', 'label')} >Ngày bắt đầu : </span><span className={cx('start-date-content', 'content')}>{startDate}</span> <ArrowRightOutlined style={{ margin: "0 10px" }} /> <span className={cx('end-date-label', 'label')}>Ngày kết thúc :</span> <span className={cx('end-date-content', 'content')}>{endDate}</span></p>
         <p className={cx('project-manager')}>
           <span className={cx('manager-label', 'label')}>Quản lý dự án :</span>
           <span className={cx('manager-content', 'content')}>

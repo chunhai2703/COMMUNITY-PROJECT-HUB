@@ -97,6 +97,31 @@ export async function searchTrainees(searchTerm) {
 
 }
 
+export async function searchAssociate(searchTerm) {
+  try {
+    const response = await fetch(`${baseUrl}/api/Associate/search-associate-to-add-project?searchValue=${searchTerm}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+      }
+    })
+    const resData = await response.json();
+
+    if (!response.ok) {
+      throw new Error(resData.message);
+    }
+
+    console.log(resData);
+    return resData;
+
+  } catch (error) {
+    console.error(error.message);
+    throw new Error(error.message);
+  }
+
+}
+
 export async function assignPMToProject(projectId, accountId) {
   try {
     const response = await fetch(`${baseUrl}/api/Project/assign-pm-to-project?projectId=${projectId}&accountId=${accountId}`, {
@@ -133,7 +158,7 @@ export async function assignLecturerStudentToProject(data) {
 
     if (!response.ok) {
       const errorData = await response.json(); // Lấy dữ liệu lỗi từ API
-      throw new Error(errorData.result||errorData.message || errorData.error || "Lỗi không xác định từ API");
+      throw new Error(errorData.result || errorData.message || errorData.error || "Lỗi không xác định từ API");
     }
     console.log(response);
     return response;
@@ -157,7 +182,7 @@ export async function addTraineeToClass(data) {
 
     if (!response.ok) {
       const errorData = await response.json(); // Lấy dữ liệu lỗi từ API
-      throw new Error(errorData.result||errorData.message || errorData.error || "Lỗi không xác định từ API");
+      throw new Error(errorData.result || errorData.message || errorData.error || "Lỗi không xác định từ API");
     }
     console.log(response);
     return response;
@@ -181,7 +206,7 @@ export async function addNewTraineeToClass(formData) {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.result||errorData.message || errorData.error || "Lỗi không xác định từ API");
+      throw new Error(errorData.result || errorData.message || errorData.error || "Lỗi không xác định từ API");
     }
     return response;
 
@@ -205,7 +230,7 @@ export async function changeClassOfTrainee(data) {
 
     if (!response.ok) {
       const errorData = await response.json(); // Lấy dữ liệu lỗi từ API
-      throw new Error(errorData.result||errorData.message || errorData.error || "Lỗi không xác định từ API");
+      throw new Error(errorData.result || errorData.message || errorData.error || "Lỗi không xác định từ API");
     }
     console.log(response);
     return response;
@@ -230,7 +255,7 @@ export async function changeGroupOfTrainee(data) {
 
     if (!response.ok) {
       const errorData = await response.json(); // Lấy dữ liệu lỗi từ API
-      throw new Error(errorData.result||errorData.message || errorData.error || "Lỗi không xác định từ API");
+      throw new Error(errorData.result || errorData.message || errorData.error || "Lỗi không xác định từ API");
     }
     console.log(response);
     return response;

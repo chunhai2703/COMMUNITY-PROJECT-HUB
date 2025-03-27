@@ -27,8 +27,6 @@ export default function ScheduleCalendar() {
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
 
-
-
   const fetchScheduleData = useCallback(async () => {
     if (!user || !user.accountId) {
       setLoading(false);
@@ -39,8 +37,19 @@ export default function ScheduleCalendar() {
     try {
       const response = await getSchedule(user.accountId);
 
-      if (response.ok) {
-        setEvents(response.result);
+      if (response.isSuccess) {
+        // Chuyển đổi dữ liệu từ API thành format của FullCalendar
+        const formattedEvents = response.result.map((lesson) => ({
+          title: lesson.projectName, // Tiêu đề sự kiện
+          start: lesson.startTime,   // Thời gian bắt đầu
+          end: lesson.endTime,       // Thời gian kết thúc
+          extendedProps: {
+            room: lesson.room,       // Thông tin phòng học
+          },
+        }));
+
+        console.log("📅 Dữ liệu đã format:", formattedEvents); // 📌 Thêm log kiểm tra
+        setEvents(formattedEvents);
       }
     } catch (error) {
       console.error("Lỗi khi lấy thời khóa biểu:", error);
@@ -78,6 +87,9 @@ export default function ScheduleCalendar() {
       return eventDate.year() === selectedDate.year() && eventDate.month() === selectedDate.month();
     })
     : events;
+
+  console.log("📆 Sự kiện hiển thị:", filteredEvents); // 📌 Kiểm tra danh sách sự kiện được truyền vào FullCalendar
+
 
   // 🟢 Xử lý khi chọn tháng
   const handleDateChange = (date) => {
@@ -145,13 +157,15 @@ export default function ScheduleCalendar() {
 
 // ✅ Hiển thị thông tin sự kiện
 function renderEventContent(eventInfo) {
+  console.log("📌 Thông tin sự kiện:", eventInfo.event); // 📌 Thêm log kiểm tra dữ liệu
+
   return (
-
     <div className={cx("custom-event-content")}>
-      <p className={cx("event-title")}>{eventInfo.event.title}</p>
-      <p className={cx("event-room")}>Phòng học: {eventInfo.event.extendedProps.room}</p>
-      <Tag className={cx("event-time")} color="#108ee9">{eventInfo.timeText} - {eventInfo.event.endStr?.substring(11, 16)}</Tag>
+      <p className={cx("event-title")}>{eventInfo.event.title || "Không có tiêu đề"}</p>
+      <p className={cx("event-room")}>Phòng học: {eventInfo.event.extendedProps?.room || "Chưa có thông tin"}</p>
+      <Tag className={cx("event-time")} color="#108ee9">
+        {eventInfo.event.start ? dayjs(eventInfo.event.start).format("HH:mm") : "??:??"} - {eventInfo.event.end ? dayjs(eventInfo.event.end).format("HH:mm") : "??:??"}
+      </Tag>
     </div>
-
   );
 }

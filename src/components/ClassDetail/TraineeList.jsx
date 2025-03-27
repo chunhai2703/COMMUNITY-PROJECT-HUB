@@ -201,7 +201,9 @@ const TraineeList = ({ dataClass }) => {
                 dataIndex: 'groupNo',
                 key: 'groupNo',
                 align: 'center',
-                sorter: true
+                sorter: true,
+                render: (text, record) => (text === 0 ? "Chưa có" : text),
+
             },
             {
                 title: 'Giới tính',
