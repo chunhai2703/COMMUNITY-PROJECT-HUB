@@ -111,3 +111,19 @@ export const GetAmountOfUserByRole = async () => {
         console.log(err);
     }
 };
+
+export const GetProgressOfAllProject = async (accountId) => {
+    try {
+        const url = `${baseUrl}/api/Dashboard/progress-all-project?accountId=${accountId}`;
+        const request = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        };
+        const response = await fetch(url, request);
+        return response;
+    } catch (err) {
+        console.log(err);
+    }
+};

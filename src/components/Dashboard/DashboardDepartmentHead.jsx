@@ -9,7 +9,8 @@ import {
     GetAmountOfProject,
     GetAmountOfStudent,
     GetAmountOfTrainee,
-    GetAmountProjectWithStatus
+    GetAmountProjectWithStatus,
+    GetProgressOfAllProject
 } from "../../services/DashboardApi";
 import { Banner } from "../Banner/Banner";
 import classes from "./DashboardDH.module.css";
@@ -19,8 +20,7 @@ import 'dayjs/locale/vi'; // 🟢 Dùng tiếng Việt cho định dạng ngày
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import 'animate.css';
-
-
+import { Line } from "rc-progress";
 
 const cx = classNames.bind(classes);
 
@@ -40,6 +40,7 @@ const DashboardDepartmentHead = () => {
     const [amountProject, setAmountProject] = useState(0);
     const [amountProjectWithStatus, setAmountProjectWithStatus] = useState([]);
     const [currentTime, setCurrentTime] = useState(dayjs().tz('Asia/Ho_Chi_Minh'));
+    const [progressProjectList, setProgressProjectList] = useState([]);
 
     useEffect(() => {
         // 🕒 Cập nhật thời gian mỗi giây
@@ -58,6 +59,7 @@ const DashboardDepartmentHead = () => {
             fetchAmountOfTrainee();
             fetchAmountOfProject();
             fetchAmountProjectWithStatus();
+            fetchProgressProjectList();
             setIsLoading(false);
         }
     }, [user]);
@@ -112,7 +114,15 @@ const DashboardDepartmentHead = () => {
         }
     };
 
-
+    const fetchProgressProjectList = async () => {
+        const response = await GetProgressOfAllProject(user.accountId);
+        if (response.ok) {
+            const responseData = await response.json();
+            setProgressProjectList(responseData.result);
+        } else {
+            console.error("Error when getting progress of project");
+        }
+    };
 
     if (!user || isLoading) {
         return <Spinner />;
@@ -211,6 +221,24 @@ const DashboardDepartmentHead = () => {
                                 height: "100%"
                             }}>
                                 <Doughnut data={chartData} options={{ maintainAspectRatio: false }} width={500} height={400} />
+                            </div>
+                        </CardContent>
+                    </Card>
+                </Grid>
+
+                <Grid item xs={12}>
+                    <Card>
+                        <CardContent>
+                            <Typography variant="h6" gutterBottom>
+                                Tiến độ dự án
+                            </Typography>
+                            <div className="mt-6">
+                                {progressProjectList && progressProjectList.map((project) => (
+                                    <div>
+                                        <p className="text-xl mb-3" >{project.projectName} - {project.percentage} %</p>
+                                        <Line percent={project.percentage} strokeWidth={1} strokeColor="#4CAF50" />
+                                    </div>
+                                ))}
                             </div>
                         </CardContent>
                     </Card>
