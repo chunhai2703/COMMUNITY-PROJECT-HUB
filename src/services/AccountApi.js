@@ -69,3 +69,33 @@ export const ImportAccount = (file) => {
             throw err;
         });
 };
+
+export const CreateAssociateAccount = (data) => {
+    const formData = new FormData();
+    formData.append('AccountName', data.accountName);
+    formData.append('FullName', data.fullName);
+    formData.append('Phone', data.phone);
+    formData.append('Address', data.address);
+    formData.append('Email', data.email);
+    formData.append('DateOfBirth', data.dateOfBirth);
+    formData.append('Gender', data.gender);
+    formData.append('AssociateName', data.associateName);
+
+    const url = `${baseUrl}/api/Associate/new-associate`;
+    const request = {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'accept': '*/*',
+        },
+    };
+
+    return fetch(url, request)
+        .then(response => {
+            return response;
+        })
+        .catch(err => {
+            console.error(err);
+            throw err;
+        });
+};

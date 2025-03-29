@@ -5,15 +5,14 @@ import { Card, CardContent, Grid, Typography } from "@mui/material";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import {
-    GetAmountOfLecturer,
     GetAmountOfProject,
-    GetAmountOfStudent,
-    GetAmountOfTrainee,
-    GetAmountProjectWithStatus
+    GetAmountProjectWithStatus,
+    GetProgressOfAllProject
 } from "../../services/DashboardApi";
 import { Banner } from "../Banner/Banner";
 import classes from "./DashboardPM.module.css";
 import classNames from "classnames/bind";
+import { Line } from 'rc-progress';
 
 const cx = classNames.bind(classes);
 
@@ -25,12 +24,13 @@ const DashboardPM = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [amountProject, setAmountProject] = useState(0);
     const [amountProjectWithStatus, setAmountProjectWithStatus] = useState([]);
+    const [progressProjectList, setProgressProjectList] = useState([]);
 
     useEffect(() => {
         setIsLoading(true);
-
         fetchAmountOfProject();
         fetchAmountProjectWithStatus();
+        fetchProgressProjectList();
         setIsLoading(false);
     }, [user]);
 
@@ -52,6 +52,16 @@ const DashboardPM = () => {
             setAmountProjectWithStatus(responseData.result);
         } else {
             console.error("Error when getting amount of project with status");
+        }
+    };
+
+    const fetchProgressProjectList = async () => {
+        const response = await GetProgressOfAllProject(user.accountId);
+        if (response.ok) {
+            const responseData = await response.json();
+            setProgressProjectList(responseData.result);
+        } else {
+            console.error("Error when getting progress of project");
         }
     };
 
@@ -104,6 +114,23 @@ const DashboardPM = () => {
                                 height: "100%"
                             }}>
                                 <Doughnut data={chartData} options={{ maintainAspectRatio: false }} width={500} height={400} />
+                            </div>
+                        </CardContent>
+                    </Card>
+                </Grid>
+                <Grid item xs={12}>
+                    <Card>
+                        <CardContent>
+                            <Typography variant="h6" gutterBottom>
+                                Tiến độ dự án
+                            </Typography>
+                            <div className="mt-6">
+                                {progressProjectList && progressProjectList.map((project) => (
+                                    <div>
+                                        <p className="text-xl mb-3" >{project.projectName} - {project.percentage} %</p>
+                                        <Line percent={project.percentage} strokeWidth={1} strokeColor="#4CAF50" />
+                                    </div>
+                                ))}
                             </div>
                         </CardContent>
                     </Card>

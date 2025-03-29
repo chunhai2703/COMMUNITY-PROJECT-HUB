@@ -194,7 +194,7 @@ export const StudentList = (props) => {
         },
     ];
 
-    if (!user || !projectId || isLoading) {
+    if (!user || !projectId) {
         return <Spinner />
     }
 
@@ -305,7 +305,9 @@ export const StudentList = (props) => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleDeleteClose} sx={{ textTransform: "none" }}>Hủy</Button>
-                    <Button variant="contained" color="error" sx={{ textTransform: "none" }} onClick={onConfirmDelete}>Xác nhận</Button>
+                    <Button variant="contained" color="error" sx={{ textTransform: "none" }} onClick={onConfirmDelete}>
+                        {isLoading ? <CircularProgress size={24} color="inherit" /> : "Xác nhận"}
+                    </Button>
                 </DialogActions>
             </Dialog>
 
