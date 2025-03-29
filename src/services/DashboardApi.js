@@ -79,3 +79,35 @@ export const GetAmountProjectWithStatus = async (accountId) => {
         console.log(err);
     }
 };
+
+export const GetAmountOfUser = async () => {
+    try {
+        const url = `${baseUrl}/api/Dashboard/user-amount`;
+        const request = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        };
+        const response = await fetch(url, request);
+        return response;
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const GetAmountOfUserByRole = async () => {
+    try {
+        const url = `${baseUrl}/api/Dashboard/user-with-role-amount`;
+        const request = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        };
+        const response = await fetch(url, request);
+        return response;
+    } catch (err) {
+        console.log(err);
+    }
+};
