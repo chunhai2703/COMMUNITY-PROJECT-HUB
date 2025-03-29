@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import classes from './DashboardLecturer.module.css';
+import classes from './DashboardBR.module.css';
 import classNames from 'classnames/bind';
 import { Banner } from '../Banner/Banner';
 import dayjs from 'dayjs'; // 🟢 Import dayjs để xử lý ngày giờ
@@ -89,7 +89,7 @@ const items = [
 ];
 
 
-export const DashboardLecturer = () => {
+export const DashboardBR = () => {
   const [currentTime, setCurrentTime] = useState(dayjs().tz('Asia/Ho_Chi_Minh'));
   const { user } = useAuth();
   console.log(user);
@@ -117,7 +117,7 @@ export const DashboardLecturer = () => {
       <div className={cx('greeting-container')}>
         <h2 className={cx('greeting', 'animate__animated animate__lightSpeedInRight')}>
           <span className={cx('greeting-text')}>Xin chào, </span>
-          <span className={cx('greeting-role')}>giảng viên </span>
+          <span className={cx('greeting-role')}>bên Phòng Quan hệ doanh nghiệp </span>
           <span className={cx('greeting-name')}>{user?.fullName}</span> !
         </h2>
 

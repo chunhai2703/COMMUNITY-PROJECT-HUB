@@ -83,20 +83,28 @@ const DashboardPM = () => {
                     <Card>
                         <CardContent>
                             <Typography variant="h6" gutterBottom>
-                                Tổng số dự án
+                                Tổng số dự án quản lý
                             </Typography>
                             <Typography variant="h4">{amountProject}</Typography>
                         </CardContent>
                     </Card>
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                     <Card>
                         <CardContent>
                             <Typography variant="h6" gutterBottom>
                                 Trạng thái dự án
                             </Typography>
-                            <Doughnut data={chartData} />
+                            <div style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                width: "100%",
+                                height: "100%"
+                            }}>
+                                <Doughnut data={chartData} options={{ maintainAspectRatio: false }} width={500} height={400} />
+                            </div>
                         </CardContent>
                     </Card>
                 </Grid>

@@ -8,7 +8,7 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import 'animate.css';
 import { Collapse } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import { DownOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import useAuth from '../../hooks/useAuth';
 import { Spinner } from '../Spinner/Spinner';
 
@@ -24,15 +24,15 @@ const items = [
     key: '1',
     label: (
       <span style={{ color: 'white', fontWeight: '600', fontSize: '18px' }}>
-        Cần kỹ năng gì để tham gia vào dự án?
+        Vai trò của sinh viên trong dự án là gì?
       </span>
     ),
     style: { backgroundColor: '#474D57' },
     children: (
-      <ul>
-        <li>Không cần phải có kỹ năng đặc biệt!</li>
-        <li>Bạn có thể đóng góp theo sở trường của mình.</li>
-        <li>Nếu bạn có kỹ năng về <span style={{ fontWeight: '600' }}>quản lý, truyền thông, thiết kế, lập trình</span>, dự án sẽ tận dụng tốt hơn sự giúp đỡ của bạn.</li>
+      <ul style={{ listStyleType: 'disc', paddingLeft: '1rem', fontSize: '16px' }}>
+        <li><span style={{ fontWeight: 600 }}>Tham gia nghiên cứu</span> và tìm hiểu các giải pháp cho dự án.</li>
+        <li><span style={{ fontWeight: 600 }}>Hỗ trợ phát triển</span> các sản phẩm, giải pháp công nghệ hoặc sáng kiến của dự án.</li>
+        <li><span style={{ fontWeight: 600 }}>Phối hợp làm việc nhóm</span> để hoàn thành các nhiệm vụ theo kế hoạch.</li>
       </ul>
     ),
   },
@@ -40,16 +40,16 @@ const items = [
     key: '2',
     label: (
       <span style={{ color: 'white', fontWeight: '600', fontSize: '18px' }}>
-        Nếu tham gia dự án, có cơ hội học hỏi điều gì không?
+        Sinh viên có thể đóng góp như thế nào?
       </span>
     ),
     style: { backgroundColor: '#474D57' },
     children: (
-      <ul>
-        <li>✔️ Kỹ năng <span style={{ fontWeight: '600' }}>làm việc nhóm</span> và <b>giao tiếp</b> với nhiều người.</li>
-        <li>✔️  Cách <span style={{ fontWeight: '600' }}>tổ chức và quản lý sự kiện</span>.</li>
-        <li>✔️ <span style={{ fontWeight: '600' }}>Tư duy cộng đồng</span> và cách tạo ra tác động xã hội.</li>
-        <li>✔️  <span style={{ fontWeight: '600' }}>Kết nối</span> với những người cùng chí hướng, mở rộng quan hệ.</li>
+      <ul style={{ listStyleType: 'disc', paddingLeft: '1rem', fontSize: '16px' }}>
+        <li><span style={{ fontWeight: 600 }}>Đề xuất ý tưởng</span> và giải pháp sáng tạo để cải thiện dự án.</li>
+        <li><span style={{ fontWeight: 600 }}>Thực hiện các nhiệm vụ</span> được giao như lập trình, thiết kế, nghiên cứu tài liệu.</li>
+        <li><span style={{ fontWeight: 600 }}>Góp ý và phản hồi</span> giúp dự án hoàn thiện hơn.</li>
+        <li><span style={{ fontWeight: 600 }}>Tham gia thuyết trình</span> và báo cáo tiến độ dự án.</li>
       </ul>
     ),
   },
@@ -57,19 +57,37 @@ const items = [
     key: '3',
     label: (
       <span style={{ color: 'white', fontWeight: '600', fontSize: '18px' }}>
-        Nếu không có nhiều thời gian thì có cách nào để tham gia không?
+        Nếu sinh viên có ít thời gian, có thể tham gia bằng cách nào?
       </span>
     ),
     style: { backgroundColor: '#474D57' },
     children: (
-      <ul>
-        <li>✅ <span style={{ fontWeight: '600' }}>Chia sẻ thông tin</span> trên mạng xã hội để giúp dự án tiếp cận nhiều người hơn.</li>
-        <li>✅ <span style={{ fontWeight: '600' }}>Tham gia hỗ trợ từ xa</span>: viết nội dung, thiết kế, hoặc giúp đỡ về công nghệ.</li>
-        <li>✅ <span style={{ fontWeight: '600' }}>Góp một khoản nhỏ vào quỹ</span> nếu dự án cần tài trợ.</li>
+      <ul style={{ listStyleType: 'disc', paddingLeft: '1rem', fontSize: '16px' }}>
+        <li><span style={{ fontWeight: 600 }}>Hỗ trợ từ xa</span> bằng cách làm việc online, nghiên cứu tài liệu hoặc đóng góp ý tưởng.</li>
+        <li>Tham gia vào các giai đoạn cụ thể như <span style={{ fontWeight: 600 }}>thiết kế, kiểm thử</span> hoặc <span style={{ fontWeight: 600 }}>viết báo cáo</span>.</li>
+        <li><span style={{ fontWeight: 600 }}>Hỗ trợ tổ chức</span> các sự kiện, hội thảo hoặc truyền thông về dự án.</li>
+      </ul>
+    ),
+  },
+  {
+    key: '4',
+    label: (
+      <span style={{ color: 'white', fontWeight: '600', fontSize: '18px' }}>
+        Dự án mang lại lợi ích gì cho sinh viên?
+      </span>
+    ),
+    style: { backgroundColor: '#474D57' },
+    children: (
+      <ul style={{ listStyleType: 'disc', paddingLeft: '1rem', fontSize: '16px' }}>
+        <li><span style={{ fontWeight: 600 }}>Phát triển kỹ năng</span> chuyên môn và làm việc nhóm.</li>
+        <li><span style={{ fontWeight: 600 }}>Tích lũy kinh nghiệm</span> thực tế, giúp ích cho công việc sau này.</li>
+        <li><span style={{ fontWeight: 600 }}>Cơ hội kết nối</span> với giảng viên, doanh nghiệp và các chuyên gia trong ngành.</li>
+        <li><span style={{ fontWeight: 600 }}>Chứng nhận tham gia</span> dự án, hỗ trợ trong việc xin việc hoặc học bổng.</li>
       </ul>
     ),
   },
 ];
+
 
 
 export const DashboardStudent = () => {
@@ -100,11 +118,7 @@ export const DashboardStudent = () => {
       <div className={cx('greeting-container')}>
         <h2 className={cx('greeting', 'animate__animated animate__lightSpeedInRight')}>
           <span className={cx('greeting-text')}>Xin chào, </span>
-          <span className={cx('greeting-role')}>{user?.roleId === 3
-            ? 'học viên'
-            : user?.roleId === 2
-              ? 'giảng viên'
-              : 'sinh viên'} </span>
+          <span className={cx('greeting-role')}>sinh viên </span>
           <span className={cx('greeting-name')}>{user?.fullName}</span> !
         </h2>
 
@@ -114,7 +128,7 @@ export const DashboardStudent = () => {
 
       <Banner />
       <div className={cx('collapse-container')}>
-        <h2 className={cx('collapse-title')}>Những câu hỏi thường gặp</h2>
+        <h2 className={cx('collapse-title')}>Những câu hỏi thường gặp <QuestionCircleOutlined /></h2>
         <Collapse items={items} defaultActiveKey={['1']} onChange={onChange} size='large' expandIcon={customExpandIcon} />
       </div>
 

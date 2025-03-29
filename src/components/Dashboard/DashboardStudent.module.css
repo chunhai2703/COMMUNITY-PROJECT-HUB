@@ -13,6 +13,9 @@
 }
 .greeting {
   font-size: 1.5rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
 }
 .greeting-name {
   font-size: 1.75rem;
