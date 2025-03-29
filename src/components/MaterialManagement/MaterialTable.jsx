@@ -231,11 +231,13 @@ export const MaterialTable = () => {
                                 Tìm kiếm
                             </button>
                         </div>
-                        <div>
-                            <Button variant="contained" className='w-max' startIcon={<AddCircleOutlineOutlined />} sx={{ textTransform: "none" }} style={{ backgroundColor: "#474D57", marginLeft: 10 }} onClick={handleCreateOpen}>
-                                Tạo mới
-                            </Button>
-                        </div>
+                        {user.roleId === "4" && (
+                            <div>
+                                <Button variant="contained" className='w-max' startIcon={<AddCircleOutlineOutlined />} sx={{ textTransform: "none" }} style={{ backgroundColor: "#474D57", marginLeft: 10 }} onClick={handleCreateOpen}>
+                                    Tạo mới
+                                </Button>
+                            </div>
+                        )}
                     </div>
                 </div>
                 <ConfigProvider
@@ -403,7 +405,7 @@ export const MaterialTable = () => {
 
             {/* Dialog Xóa */}
             <Dialog open={openDelete} onClose={handleDeleteClose}>
-                <DialogTitle style={{ backgroundColor: "#474D57", color: "white" }}>Vô hiệu hóa tài khoản</DialogTitle>
+                <DialogTitle style={{ backgroundColor: "#474D57", color: "white" }}>Xác nhận xóa tài liệu</DialogTitle>
                 <DialogContent>
                     <p className='pt-3 pb-3'>Bạn có chắc muốn xóa tài liệu này?</p>
                 </DialogContent>
