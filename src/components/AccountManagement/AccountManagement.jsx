@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { TextField, Button, Box, Dialog, DialogTitle, DialogContent, DialogActions, MenuItem, FormControl, InputLabel, FormControlLabel, RadioGroup, Radio, CircularProgress, Pagination, debounce } from '@mui/material';
 import { Search, AddCircleOutlineOutlined, FileUploadOutlined } from '@mui/icons-material';
-import { CreateAccount, GetAllAccount, ImportAccount } from '../../services/AccountApi';
+import { CreateAccount, CreateAssociateAccount, GetAllAccount, ImportAccount } from '../../services/AccountApi';
 import AccountTable from './AccountTable';
 import { toast } from 'react-toastify';
 
@@ -22,6 +22,9 @@ const AccountManagement = () => {
     const [searchValue, setSearchValue] = useState("");
     const [totalItem, setTotalItem] = useState(0);
     const [totalPage, setTotalPage] = useState(0);
+    const [isUpdateAssociateOpen, setIsUpdateAssociateOpen] = useState(false);
+    const [isCreateAssociateOpen, setIsCreateAssociateOpen] = useState(false);
+    const [selectedAssociate, setSelectedAssociate] = useState(null);
 
 
     const { handleSubmit, control, register, reset, formState: { errors } } = useForm();
@@ -35,6 +38,7 @@ const AccountManagement = () => {
         const responseData = await response.json();
         if (response.ok && responseData.statusCode === 200) {
             setAccounts(responseData.result.accountResponseDTOs);
+            console.log(responseData.result.accountResponseDTOs);
             setTotalPage(responseData.result.totalPages);
             setTotalItem(responseData.result.totalCount);
         } else {
@@ -78,6 +82,21 @@ const AccountManagement = () => {
         setIsCreateOpen(true);
     };
 
+    const handleOpenCreateAssociate = () => {
+        reset({
+            accountName: "",
+            pasword: "",
+            fullName: "",
+            phone: "",
+            address: "",
+            email: "",
+            gender: "Nam",
+            dateOfBirth: "",
+            associateName: "",
+        });
+        setIsCreateAssociateOpen(true);
+    };
+
     const handleOpenImport = () => {
         setIsImportOpen(true);
     };
@@ -101,6 +120,25 @@ const AccountManagement = () => {
         setIsUpdateOpen(true);
     };
 
+    const handleOpenUpdateAssociate = (accountId) => {
+        const account = accounts.find(acc => acc.accountCode === accountId);
+        setSelectedAccount(account);
+
+        reset({
+            accountName: account?.accountName || "",
+            pasword: "",
+            fullName: account?.fullName || "",
+            phone: account?.phone || "",
+            address: account?.address || "",
+            email: account?.email || "",
+            gender: account?.gender || "Nam",
+            dateOfBirth: account?.dateOfBirth ? account.dateOfBirth.split("T")[0] : "",
+            associateName: account?.associateName || "",
+        });
+
+        setIsUpdateAssociateOpen(true);
+    };
+
     const handleOpenInactive = (accountId) => {
         setSelectedAccount(accounts.find(acc => acc.accountCode === accountId));
         setIsInactiveOpen(true);
@@ -114,6 +152,9 @@ const AccountManagement = () => {
         setIsImportOpen(false);
         setSelectedFile(null);
         setErrorListImporting([]);
+        setIsCreateAssociateOpen(false);
+        setIsUpdateAssociateOpen(false);
+        setSelectedAssociate(null);
         reset();
     };
 
@@ -132,8 +173,29 @@ const AccountManagement = () => {
         setIsLoadingBtn(false);
     };
 
+    const onSubmitCreateAssociate = async (data) => {
+        setIsLoadingBtn(true);
+        const response = await CreateAssociateAccount(data);
+        const responseData = await response.json();
+        if (response.ok) {
+            toast.success("Tạo mới tài khoản đối tác thành công ");
+            fetchAccountData();
+            handleClosePopup();
+        } else {
+            toast.error(responseData.message);
+            console.log("Error when creating new associate account");
+        }
+        setIsLoadingBtn(false);
+    };
+
     const onSubmitUpdate = (data) => {
         console.log("Updated Data:", data);
+        toast.success("Cập nhật thành công!");
+        handleClosePopup();
+    };
+
+    const onSubmitUpdateAssociate = (data) => {
+        console.log("Updated Data Associate:", data);
         toast.success("Cập nhật thành công!");
         handleClosePopup();
     };
@@ -199,13 +261,16 @@ const AccountManagement = () => {
                     <Button variant="contained" className='w-max' startIcon={<FileUploadOutlined />} style={{ backgroundColor: "#D45B13" }} sx={{ textTransform: "none" }} onClick={handleOpenImport}>
                         Import
                     </Button>
+                    <Button variant="contained" className='w-max' startIcon={<AddCircleOutlineOutlined />} sx={{ textTransform: "none" }} style={{ backgroundColor: "#474D57", marginLeft: 10 }} onClick={handleOpenCreateAssociate}>
+                        Tạo mới đối tác
+                    </Button>
                     <Button variant="contained" className='w-max' startIcon={<AddCircleOutlineOutlined />} sx={{ textTransform: "none" }} style={{ backgroundColor: "#474D57", marginLeft: 10 }} onClick={handleOpenCreate}>
                         Tạo mới
                     </Button>
                 </div>
             </Box>
 
-            <AccountTable accounts={accounts} onUpdate={handleOpenUpdate} onInactive={handleOpenInactive} />
+            <AccountTable accounts={accounts} onUpdate={handleOpenUpdate} onUpdateAssociate={handleOpenUpdateAssociate} onInactive={handleOpenInactive} />
             <div className='flex justify-center mt-5 mb-5'>
                 <Pagination
 
@@ -446,6 +511,202 @@ const AccountManagement = () => {
                 </DialogContent>
             </Dialog>
 
+            <Dialog open={isCreateAssociateOpen} onClose={handleClosePopup}>
+                <DialogTitle style={{ backgroundColor: "#474D57", color: "white" }}>Tạo tài khoản đối tác mới</DialogTitle>
+                <DialogContent className='mt-2'>
+                    <form onSubmit={handleSubmit(onSubmitCreateAssociate)}>
+                        <Controller
+                            name="accountName"
+                            control={control}
+                            defaultValue=""
+                            rules={{
+                                required: 'Vui lòng nhập tên tài khoản',
+                                minLength: {
+                                    value: 5,
+                                    message: 'Tên tài khoản phải có ít nhất 5 ký tự'
+                                }
+                            }}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    label="Tên tài khoản"
+                                    variant="outlined"
+                                    fullWidth
+                                    margin="normal"
+                                    error={!!errors.accountName}
+                                    helperText={errors.accountName?.message}
+                                />
+                            )}
+                        />
+
+                        <Controller
+                            name="fullName"
+                            control={control}
+                            defaultValue=""
+                            rules={{
+                                required: 'Vui lòng nhập họ và tên',
+                                minLength: {
+                                    value: 8,
+                                    message: 'Họ và tên phải có ít nhất 8 ký tự'
+                                },
+                                pattern: {
+                                    value: /^[\p{L}]+([\s\p{L}]+)*$/u,
+                                    message: 'Họ và tên không hợp lệ',
+                                }
+                            }}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    label="Họ và tên"
+                                    variant="outlined"
+                                    fullWidth
+                                    margin="normal"
+                                    error={!!errors.fullName}
+                                    helperText={errors.fullName?.message}
+                                />
+                            )}
+                        />
+                        <Controller
+                            name="phone"
+                            control={control}
+                            defaultValue=""
+                            rules={{
+                                required: 'Vui lòng nhập số điện thoại',
+                                pattern: {
+                                    value: /^0\d{9}$/,
+                                    message: 'Số điện thoại không hợp lệ',
+                                },
+                            }}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    label="Số điện thoại"
+                                    variant="outlined"
+                                    fullWidth
+                                    margin="normal"
+                                    error={!!errors.phone}
+                                    helperText={errors.phone?.message}
+                                />
+                            )}
+                        />
+                        <Controller
+                            name="address"
+                            control={control}
+                            defaultValue=""
+                            rules={{
+                                required: 'Vui lòng nhập địa chỉ'
+                            }}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    label="Địa chỉ"
+                                    variant="outlined"
+                                    fullWidth
+                                    margin="normal"
+                                    error={!!errors.address}
+                                    helperText={errors.address?.message}
+                                />
+                            )}
+                        />
+                        <Controller
+                            name="email"
+                            control={control}
+                            defaultValue=""
+                            rules={{
+                                required: 'Vui lòng nhập email',
+                                pattern: {
+                                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                                    message: 'Email không hợp lệ',
+                                },
+                            }}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    label="Email"
+                                    variant="outlined"
+                                    fullWidth
+                                    margin="normal"
+                                    error={!!errors.email}
+                                    helperText={errors.email?.message}
+                                />
+                            )}
+                        />
+                        <Controller
+                            name="dateOfBirth"
+                            control={control}
+                            defaultValue=""
+                            rules={{
+                                required: 'Vui lòng nhập ngày sinh',
+                            }}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    label="Ngày sinh"
+                                    type="date"
+                                    variant="outlined"
+                                    fullWidth
+                                    margin="normal"
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                    error={!!errors.dateOfBirth}
+                                    helperText={errors.dateOfBirth?.message}
+                                    inputProps={{
+                                        max: maxDate,
+                                    }}
+                                />
+                            )}
+                        />
+                        <Controller
+                            name="associateName"
+                            control={control}
+                            defaultValue=""
+                            rules={{
+                                required: 'Vui lòng nhập tên đối tác'
+                            }}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    label="Tên đối tác"
+                                    variant="outlined"
+                                    fullWidth
+                                    margin="normal"
+                                    error={!!errors.associateName}
+                                    helperText={errors.associateName?.message}
+                                />
+                            )}
+                        />
+                        <FormControl fullWidth margin="normal">
+                            <InputLabel shrink>
+                                Giới tính
+                            </InputLabel>
+                            <Controller
+                                name="gender"
+                                control={control}
+                                defaultValue="Nam"
+                                render={({ field }) => (
+                                    <RadioGroup {...field} row>
+                                        <FormControlLabel value="Nam" control={<Radio />} label="Nam" />
+                                        <FormControlLabel value="Nữ" control={<Radio />} label="Nữ" />
+                                    </RadioGroup>
+                                )}
+                            />
+                        </FormControl>
+                        <DialogActions>
+                            <Button onClick={handleClosePopup} sx={{ textTransform: "none" }}>Hủy</Button>
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                disabled={isLoadingBtn}
+                                sx={{ textTransform: "none" }}>
+                                {isLoadingBtn ? <CircularProgress size={24} color="inherit" /> : "Tạo"}
+                            </Button>
+                        </DialogActions>
+                    </form>
+                </DialogContent>
+            </Dialog>
+
             <Dialog open={isUpdateOpen} onClose={handleClosePopup}>
                 <DialogTitle style={{ backgroundColor: "#474D57", color: "white" }}>Cập nhật tài khoản</DialogTitle>
                 <DialogContent className='mt-2'>
@@ -587,6 +848,202 @@ const AccountManagement = () => {
                         <DialogActions>
                             <Button onClick={handleClosePopup} sx={{ textTransform: "none" }}>Hủy</Button>
                             <Button type="submit" variant="contained" color="primary" sx={{ textTransform: "none" }}>Lưu</Button>
+                        </DialogActions>
+                    </form>
+                </DialogContent>
+            </Dialog>
+
+            <Dialog open={isUpdateAssociateOpen} onClose={handleClosePopup}>
+                <DialogTitle style={{ backgroundColor: "#474D57", color: "white" }}>Tạo tài khoản đối tác mới</DialogTitle>
+                <DialogContent className='mt-2'>
+                    <form onSubmit={handleSubmit(onSubmitUpdateAssociate)}>
+                        <Controller
+                            name="accountName"
+                            control={control}
+                            defaultValue=""
+                            rules={{
+                                required: 'Vui lòng nhập tên tài khoản',
+                                minLength: {
+                                    value: 5,
+                                    message: 'Tên tài khoản phải có ít nhất 5 ký tự'
+                                }
+                            }}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    label="Tên tài khoản"
+                                    variant="outlined"
+                                    fullWidth
+                                    margin="normal"
+                                    error={!!errors.accountName}
+                                    helperText={errors.accountName?.message}
+                                />
+                            )}
+                        />
+
+                        <Controller
+                            name="fullName"
+                            control={control}
+                            defaultValue=""
+                            rules={{
+                                required: 'Vui lòng nhập họ và tên',
+                                minLength: {
+                                    value: 8,
+                                    message: 'Họ và tên phải có ít nhất 8 ký tự'
+                                },
+                                pattern: {
+                                    value: /^[\p{L}]+([\s\p{L}]+)*$/u,
+                                    message: 'Họ và tên không hợp lệ',
+                                }
+                            }}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    label="Họ và tên"
+                                    variant="outlined"
+                                    fullWidth
+                                    margin="normal"
+                                    error={!!errors.fullName}
+                                    helperText={errors.fullName?.message}
+                                />
+                            )}
+                        />
+                        <Controller
+                            name="phone"
+                            control={control}
+                            defaultValue=""
+                            rules={{
+                                required: 'Vui lòng nhập số điện thoại',
+                                pattern: {
+                                    value: /^0\d{9}$/,
+                                    message: 'Số điện thoại không hợp lệ',
+                                },
+                            }}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    label="Số điện thoại"
+                                    variant="outlined"
+                                    fullWidth
+                                    margin="normal"
+                                    error={!!errors.phone}
+                                    helperText={errors.phone?.message}
+                                />
+                            )}
+                        />
+                        <Controller
+                            name="address"
+                            control={control}
+                            defaultValue=""
+                            rules={{
+                                required: 'Vui lòng nhập địa chỉ'
+                            }}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    label="Địa chỉ"
+                                    variant="outlined"
+                                    fullWidth
+                                    margin="normal"
+                                    error={!!errors.address}
+                                    helperText={errors.address?.message}
+                                />
+                            )}
+                        />
+                        <Controller
+                            name="email"
+                            control={control}
+                            defaultValue=""
+                            rules={{
+                                required: 'Vui lòng nhập email',
+                                pattern: {
+                                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                                    message: 'Email không hợp lệ',
+                                },
+                            }}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    label="Email"
+                                    variant="outlined"
+                                    fullWidth
+                                    margin="normal"
+                                    error={!!errors.email}
+                                    helperText={errors.email?.message}
+                                />
+                            )}
+                        />
+                        <Controller
+                            name="dateOfBirth"
+                            control={control}
+                            defaultValue=""
+                            rules={{
+                                required: 'Vui lòng nhập ngày sinh',
+                            }}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    label="Ngày sinh"
+                                    type="date"
+                                    variant="outlined"
+                                    fullWidth
+                                    margin="normal"
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                    error={!!errors.dateOfBirth}
+                                    helperText={errors.dateOfBirth?.message}
+                                    inputProps={{
+                                        max: maxDate,
+                                    }}
+                                />
+                            )}
+                        />
+                        <Controller
+                            name="associateName"
+                            control={control}
+                            defaultValue=""
+                            rules={{
+                                required: 'Vui lòng nhập tên đối tác'
+                            }}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    label="Tên đối tác"
+                                    variant="outlined"
+                                    fullWidth
+                                    margin="normal"
+                                    error={!!errors.associateName}
+                                    helperText={errors.associateName?.message}
+                                />
+                            )}
+                        />
+                        <FormControl fullWidth margin="normal">
+                            <InputLabel shrink>
+                                Giới tính
+                            </InputLabel>
+                            <Controller
+                                name="gender"
+                                control={control}
+                                defaultValue="Nam"
+                                render={({ field }) => (
+                                    <RadioGroup {...field} row>
+                                        <FormControlLabel value="Nam" control={<Radio />} label="Nam" />
+                                        <FormControlLabel value="Nữ" control={<Radio />} label="Nữ" />
+                                    </RadioGroup>
+                                )}
+                            />
+                        </FormControl>
+                        <DialogActions>
+                            <Button onClick={handleClosePopup} sx={{ textTransform: "none" }}>Hủy</Button>
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                disabled={isLoadingBtn}
+                                sx={{ textTransform: "none" }}>
+                                {isLoadingBtn ? <CircularProgress size={24} color="inherit" /> : "Tạo"}
+                            </Button>
                         </DialogActions>
                     </form>
                 </DialogContent>

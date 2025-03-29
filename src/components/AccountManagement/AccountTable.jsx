@@ -24,13 +24,14 @@ const formatDate = (dateString) => {
     }).format(date);
 };
 
-const AccountTable = ({ accounts, onUpdate, onInactive }) => {
+const AccountTable = ({ accounts, onUpdate, onUpdateAssociate, onInactive }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [selectedAccount, setSelectedAccount] = useState(null);
+    const [accountRoleId, setAccountRoleId] = useState(0);
 
-    const handleOpenMenu = (event, accountId) => {
+    const handleOpenMenu = (event, account) => {
         setAnchorEl(event.currentTarget);
-        setSelectedAccount(accountId);
+        setSelectedAccount(account);
     };
 
     const handleCloseMenu = () => {
@@ -63,7 +64,7 @@ const AccountTable = ({ accounts, onUpdate, onInactive }) => {
                             <TableCell>{account.roleName}</TableCell>
                             <TableCell>{account.status ? "Active" : "Inactive"}</TableCell>
                             <TableCell>
-                                <MoreHorizOutlined onClick={(e) => handleOpenMenu(e, account.accountCode)} style={{ cursor: "pointer" }} />
+                                <MoreHorizOutlined onClick={(e) => handleOpenMenu(e, account)} style={{ cursor: "pointer" }} />
                             </TableCell>
                         </TableRow>
                     ))}
@@ -72,8 +73,12 @@ const AccountTable = ({ accounts, onUpdate, onInactive }) => {
 
             {/* Dropdown Menu */}
             <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleCloseMenu}>
-                <MenuItem style={{ color: "blue" }} onClick={() => { onUpdate(selectedAccount); handleCloseMenu(); }}><Edit className="mr-2" />  Cập nhật</MenuItem>
-                <MenuItem style={{ color: "red" }} onClick={() => { onInactive(selectedAccount); handleCloseMenu(); }}><Delete className="mr-2" /> Vô hiệu hóa</MenuItem>
+                {(selectedAccount && selectedAccount.roleId === 5) ? (
+                    <MenuItem style={{ color: "blue" }} onClick={() => { onUpdateAssociate(selectedAccount.accountCode); handleCloseMenu(); }}><Edit className="mr-2" />  Cập nhật đối tác</MenuItem>
+                ) : (
+                    <MenuItem style={{ color: "blue" }} onClick={() => { onUpdate(selectedAccount.accountCode); handleCloseMenu(); }}><Edit className="mr-2" />  Cập nhật</MenuItem>
+                )}
+                <MenuItem style={{ color: "red" }} onClick={() => { onInactive(selectedAccount.accountCode); handleCloseMenu(); }}><Delete className="mr-2" /> Vô hiệu hóa</MenuItem>
             </Menu>
         </TableContainer>
     );
