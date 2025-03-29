@@ -13,6 +13,11 @@ import {
 import { Banner } from "../Banner/Banner";
 import classes from "./DashboardAdmmin.module.css";
 import classNames from "classnames/bind";
+import dayjs from 'dayjs'; // 🟢 Import dayjs để xử lý ngày giờ
+import 'dayjs/locale/vi'; // 🟢 Dùng tiếng Việt cho định dạng ngày
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import 'animate.css';
 
 const cx = classNames.bind(classes);
 
@@ -26,6 +31,16 @@ const DashboardAdmin = () => {
     const [amountUser, setAmountUser] = useState(0);
     const [amountProjectWithStatus, setAmountProjectWithStatus] = useState([]);
     const [amountUserByRole, setAmountUserByRole] = useState([]);
+    const [currentTime, setCurrentTime] = useState(dayjs().tz('Asia/Ho_Chi_Minh'));
+
+    useEffect(() => {
+        // 🕒 Cập nhật thời gian mỗi giây
+        const interval = setInterval(() => {
+            setCurrentTime(dayjs().tz('Asia/Ho_Chi_Minh'));
+        }, 1000);
+
+        return () => clearInterval(interval); // 🛑 Dọn dẹp interval khi component unmount
+    }, []);
 
     useEffect(() => {
         setIsLoading(true);
@@ -114,7 +129,18 @@ const DashboardAdmin = () => {
     };
 
     return (
-        <div className={cx("dashboard-container")}>
+        <div className={cx('dashboard-container')}>
+            <div className={cx('greeting-container')}>
+                <h2 className={cx('greeting', 'animate__animated animate__lightSpeedInRight')}>
+                    <span className={cx('greeting-text')}>Xin chào, </span>
+                    <span className={cx('greeting-role')}>administrator </span>
+                    <span className={cx('greeting-name')}>{user?.fullName}</span> !
+                </h2>
+
+                {/* 📅 Hiển thị ngày giờ hiện tại */}
+                <p className={cx('current-time', 'animate__animated animate__fadeIn')}>Hôm nay là {currentTime.format('dddd, DD/MM/YYYY HH:mm:ss')}</p>
+            </div>
+            <Banner/>
             <Grid container spacing={3}>
                 <Grid item xs={12} sm={6}>
                     <Card>
