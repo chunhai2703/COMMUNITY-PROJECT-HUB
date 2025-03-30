@@ -87,17 +87,7 @@ export const AssignStudent = (props) => {
           ),
         });
       } else {
-        messageApi.open({
-          type: 'error',
-          title: 'Thông báo lỗi',
-          content: (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-start' }}>
-              {error.message.split(',').map((error, index) => (
-                <p key={index} >{error}</p>
-              ))}
-            </div>
-          ),
-        });
+        toast.error(error.message);
       }
     }
 
