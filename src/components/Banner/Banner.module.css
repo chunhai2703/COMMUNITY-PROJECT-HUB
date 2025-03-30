@@ -1,6 +1,6 @@
 .img-banner {
   width: 100%; /* Đảm bảo ảnh rộng bằng Carousel */
-  height: 300px;
+  height: 360px;
   line-height: 300px;
   object-fit: cover;
 }

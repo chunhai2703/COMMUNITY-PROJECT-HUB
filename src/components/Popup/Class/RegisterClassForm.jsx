@@ -21,7 +21,7 @@ export const RegisterClassForm = (props) => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const { handleSubmit, control,reset, formState: { errors } } = useForm();
+  const { handleSubmit, control, reset, formState: { errors } } = useForm();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -34,7 +34,7 @@ export const RegisterClassForm = (props) => {
 
   const onSubmit = async (data) => {
     try {
-    
+
       console.log("Dữ liệu gửi lên:", data);
       setLoading(true);
       // Tạo payload đúng định dạng API yêu cầu
@@ -49,11 +49,18 @@ export const RegisterClassForm = (props) => {
       toast.success("Đã đăng kí thành công vào dự án!");
       handleClose();
       reset();
-      navigate(`/home-lecturer/my-registration`);
+      if (user?.roleId === 2) {
+        navigate('/home-lecturer/my-registration');
+      }
+
+      if (user?.roleId === 1) {
+        navigate('/home-student/my-registration');
+      }
+
     } catch (error) {
       setLoading(false);
       console.error("Lỗi khi đăng kí dự án :", error);
-      toast.error(error.message); // Hiển thị danh sách lỗi từ `result`
+      toast.error(error.message); // Hiển thị danh sách lỗi từ result
     }
   }
 
