@@ -72,24 +72,9 @@ export const AssignLecturer = (props) => {
       }
 
     } catch (error) {
-      // console.error("Lỗi khi phân công giảng viên:", error);
-      // if (error.result) {
-      //   toast.error(
-      //     <div>
-      //       {error.result.map((msg, index) => (
-      //         <>
-      //           <p key={index}>{msg}</p> 
-      //         </>
-
-      //       ))}
-      //     </div>
-      //   );
-      // } else {
-      //   toast.error(error.message);
-      // }
+      setLoading(false);
       console.error("Lỗi khi phân công giảng viên:", error);
       if (error.result && error.result.length > 0) {
-        // toast.error(error.result[0]);
         messageApi.open({
           type: 'error',
           title: 'Thông báo lỗi',
@@ -102,18 +87,7 @@ export const AssignLecturer = (props) => {
           ),
         });
       } else {
-        // toast.error(error.message);
-        messageApi.open({
-          type: 'error',
-          title: 'Thông báo lỗi',
-          content: (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-start' }}>
-              {error.result.split(',').map((error, index) => (
-                <p key={index} >{error}</p>
-              ))}
-            </div>
-          ),
-        });
+        toast.error(error.message);
       }
     }
 
