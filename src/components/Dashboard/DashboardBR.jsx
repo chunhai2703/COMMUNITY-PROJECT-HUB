@@ -20,7 +20,7 @@ import 'dayjs/locale/vi'; // 🟢 Dùng tiếng Việt cho định dạng ngày
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import 'animate.css';
-import { Line } from "rc-progress";
+import { Progress } from "antd";
 
 
 const cx = classNames.bind(classes);
@@ -29,74 +29,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.locale('vi'); // Đặt ngôn ngữ mặc định là tiếng Việt
 
-const items = [
-  {
-    key: '1',
-    label: (
-      <span style={{ color: 'white', fontWeight: '600', fontSize: '18px' }}>
-        Vai trò của giảng viên trong dự án là gì?
-      </span>
-    ),
-    style: { backgroundColor: '#474D57' },
-    children: (
-      <ul style={{ listStyleType: 'disc', paddingLeft: '1rem', fontSize: '16px' }}>
-        <li><span style={{ fontWeight: 600 }}>Hướng dẫn</span> và <span style={{ fontWeight: 600 }}>định hướng chuyên môn</span> cho sinh viên trong dự án.</li>
-        <li>Đóng góp ý kiến để <span style={{ fontWeight: 600 }}>cải thiện quy trình</span> và <span style={{ fontWeight: 600 }}>chất lượng</span> của dự án.</li>
-        <li><span style={{ fontWeight: 600 }}>Kết nối</span> dự án với các <span style={{ fontWeight: 600 }}>tổ chức</span>, <span style={{ fontWeight: 600 }}>doanh nghiệp</span> hoặc <span style={{ fontWeight: 600 }}>các nguồn tài trợ</span> phù hợp.</li>
-      </ul>
-    ),
-  },
-  {
-    key: '2',
-    label: (
-      <span style={{ color: 'white', fontWeight: '600', fontSize: '18px' }}>
-        Giảng viên có thể hỗ trợ học viên như thế nào?
-      </span>
-    ),
-    style: { backgroundColor: '#474D57' },
-    children: (
-      <ul style={{ listStyleType: 'disc', paddingLeft: '1rem', fontSize: '16px' }}>
-        <li><span style={{ fontWeight: 600 }}>Hướng dẫn</span> học viên về <span style={{ fontWeight: 600 }}>chuyên môn</span>, <span style={{ fontWeight: 600 }}>kỹ thuật</span>, và các <span style={{ fontWeight: 600 }}>kỹ năng cần thiết</span>.</li>
-        <li><span style={{ fontWeight: 600 }}>Định hướng chiến lược</span> để giúp dự án phát triển bền vững.</li>
-        <li><span style={{ fontWeight: 600 }}>Hỗ trợ học viên</span> trong việc <span style={{ fontWeight: 600 }}>trình bày</span> và <span style={{ fontWeight: 600 }}>báo cáo kết quả</span> dự án.</li>
-        <li><span style={{ fontWeight: 600 }}>Đánh giá</span> và <span style={{ fontWeight: 600 }}>phản hồi</span> để giúp học viên <span style={{ fontWeight: 600 }}>cải thiện chất lượng</span> công việc.</li>
-      </ul>
-    ),
-  },
-  {
-    key: '3',
-    label: (
-      <span style={{ color: 'white', fontWeight: '600', fontSize: '18px' }}>
-        Nếu giảng viên không có nhiều thời gian, có thể tham gia bằng cách nào?
-      </span>
-    ),
-    style: { backgroundColor: '#474D57' },
-    children: (
-      <ul style={{ listStyleType: 'disc', paddingLeft: '1rem', fontSize: '16px' }}>
-        <li><span style={{ fontWeight: 600 }}>Hỗ trợ từ xa</span> bằng cách <span style={{ fontWeight: 600 }}>tư vấn chuyên môn</span> qua <span style={{ fontWeight: 600 }}>email</span> hoặc <span style={{ fontWeight: 600 }}>cuộc họp trực tuyến</span>.</li>
-        <li>Tham gia trong các giai đoạn quan trọng như <span style={{ fontWeight: 600 }}>đánh giá kế hoạch</span>, <span style={{ fontWeight: 600 }}>kiểm tra tiến độ</span>.</li>
-        <li><span style={{ fontWeight: 600 }}>Giới thiệu học viên</span> đến các <span style={{ fontWeight: 600 }}>chuyên gia</span> hoặc <span style={{ fontWeight: 600 }}>nguồn lực hữu ích</span> cho dự án.</li>
-      </ul>
-    ),
-  },
-  {
-    key: '4',
-    label: (
-      <span style={{ color: 'white', fontWeight: '600', fontSize: '18px' }}>
-        Dự án có mang lại lợi ích gì cho giảng viên không?
-      </span>
-    ),
-    style: { backgroundColor: '#474D57' },
-    children: (
-      <ul style={{ listStyleType: 'disc', paddingLeft: '1rem', fontSize: '16px' }}>
-        <li><span style={{ fontWeight: 600 }}>Mở rộng cơ hội hợp tác</span> với các <span style={{ fontWeight: 600 }}>tổ chức</span>, <span style={{ fontWeight: 600 }}>doanh nghiệp</span> và <span style={{ fontWeight: 600 }}>cộng đồng</span>.</li>
-        <li><span style={{ fontWeight: 600 }}>Góp phần nâng cao chất lượng giảng dạy</span> thông qua thực tiễn.</li>
-        <li>Được công nhận là <span style={{ fontWeight: 600 }}>người hướng dẫn</span>, <span style={{ fontWeight: 600 }}>cố vấn</span> trong các dự án có tác động xã hội.</li>
-        <li><span style={{ fontWeight: 600 }}>Cơ hội tham gia</span> vào các <span style={{ fontWeight: 600 }}>nghiên cứu</span> hoặc <span style={{ fontWeight: 600 }}>xuất bản bài báo</span> liên quan đến dự án.</li>
-      </ul>
-    ),
-  },
-];
+
 
 
 export const DashboardBR = () => {
@@ -217,7 +150,7 @@ export const DashboardBR = () => {
     <div className={cx("dashboard-container")}>
       <div className={cx('greeting-container')}>
         <h2 className={cx('greeting', 'animate__animated animate__lightSpeedInRight')}>
-          <span className={cx('greeting-text')}>Xin chào, </span>
+          <span className={cx('greeting-text')}>Xin chào, Phòng quan hệ doanh nghiệp </span>
           <span className={cx('greeting-name')}>{user?.fullName}</span> !
         </h2>
 
@@ -295,13 +228,18 @@ export const DashboardBR = () => {
               <Typography variant="h6" gutterBottom>
                 Tiến độ dự án
               </Typography>
-              <div className="mt-6">
-                {progressProjectList && progressProjectList.map((project) => (
-                  <div>
-                    <p className="text-xl mb-3" >{project.projectName} - {project.percentage} %</p>
-                    <Line percent={project.percentage} strokeWidth={1} strokeColor="#4CAF50" />
-                  </div>
-                ))}
+              <div className="mt-6 flex flex-col gap-6 md:gap-8">
+                {progressProjectList &&
+                  progressProjectList.map((project) => (
+                    <div key={project.id} className="w-full">
+                      <p className="text-lg md:text-xl mb-2 md:mb-3">{project.projectName}</p>
+                      <Progress
+                        percent={project.percentage}
+                        size={["100%", 20]}
+                        status="active"
+                      />
+                    </div>
+                  ))}
               </div>
             </CardContent>
           </Card>
