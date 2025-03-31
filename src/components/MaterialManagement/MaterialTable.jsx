@@ -231,7 +231,7 @@ export const MaterialTable = () => {
                                 Tìm kiếm
                             </button>
                         </div>
-                        {user.roleId === "4" && (
+                        {user.roleId === 4 && (
                             <div>
                                 <Button variant="contained" className='w-max' startIcon={<AddCircleOutlineOutlined />} sx={{ textTransform: "none" }} style={{ backgroundColor: "#474D57", marginLeft: 10 }} onClick={handleCreateOpen}>
                                     Tạo mới
