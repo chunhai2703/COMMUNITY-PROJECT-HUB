@@ -80,25 +80,24 @@ export function ProjectDetailsLoader({ params }) {
 
 
 // tạo dự án
-export async function createProject(formData) {
-  console.log(formData);
+export async function createProject(payload) {
+  console.log("Dữ liệu gửi lên server:", payload);
 
   const response = await fetch(`${baseUrl}/api/Project/new-project`, {
     method: 'POST',
     headers: {
+      'Content-Type': 'application/json',
       "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
     },
-    body: formData,
+    body: JSON.stringify(payload), // Chuyển object thành JSON
   });
 
   if (!response.ok) {
     const errorData = await response.json();
     console.error("Error details:", errorData);
 
-    // Tạo một đối tượng `Error` với message là JSON.stringify để giữ thông tin lỗi
     const error = new Error(errorData.message || "Không thể tạo dự án");
-    error.result = errorData.result || []; // Thêm `result` vào đối tượng lỗi
-
+    error.result = errorData.result || [];
     throw error;
   }
 
@@ -267,17 +266,17 @@ export async function toUpComingProject(projectId) {
 }
 
 export const ExportFinalReportProject = async (projectId) => {
-    try {
-        var url = `${baseUrl}/api/Project/export-final-report-of-project?projectId=${projectId}`;
-        const request = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        };
-        const response = await fetch(url, request);
-        return response;
-    } catch (err) {
-        console.log(err);
-    }
+  try {
+    var url = `${baseUrl}/api/Project/export-final-report-of-project?projectId=${projectId}`;
+    const request = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await fetch(url, request);
+    return response;
+  } catch (err) {
+    console.log(err);
+  }
 }

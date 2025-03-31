@@ -87,52 +87,37 @@ export const ProjectCreateForm = (props) => {
 
   const onSubmit = async (data) => {
     try {
-      setLoading(true)
+      setLoading(true);
+  
       console.log("Dữ liệu projectManager trước khi gửi:", data.projectManager);
-
-      const formData = new FormData();
-      formData.append("title", data.title);
-      formData.append("description", data.description);
-      formData.append("startDate", data.startDate);
-      formData.append("endDate", data.endDate);
-      formData.append("applicationStartDate", data.applicationStartDate);
-      formData.append("applicationEndDate", data.applicationEndDate);
-      formData.append("address", data.address);
-
-
-
-      formData.append("projectManagerId", data?.projectManager?.accountId ? String(data.projectManager.accountId) : '');
-
-      if (data.trainees?.length > 0) {
-        const file = data.trainees[0]?.originFileObj;
-        if (file) {
-          formData.append("trainees", file);
-        }
-      }
-
-      formData.append("associateId", data?.associate?.accountId ? String(data.associate.accountId) : '');
-
-      data.lessonList.forEach((lesson) => {
-        if (lesson.value) {
-          formData.append("lessonList", lesson.value);
-        }
-      });
-
-      console.log("Dữ liệu formData trước khi gửi:");
-      for (let pair of formData.entries()) {
-        console.log(pair[0] + ": ", pair[1]);
-      }
-      await createProject(formData);
-
+  
+      // Tạo object JSON thay vì FormData
+      const payload = {
+        title: data.title,
+        description: data.description,
+        startDate: data.startDate,
+        endDate: data.endDate,
+        applicationStartDate: data.applicationStartDate,
+        applicationEndDate: data.applicationEndDate,
+        address: data.address,
+        projectManagerId: data?.projectManager?.accountId || null,
+        associateId: data?.associate?.accountId || null,
+        lessonList: data.lessonList.map(lesson => lesson.value).filter(Boolean) // Loại bỏ giá trị rỗng
+      };
+  
+      console.log("Dữ liệu payload trước khi gửi:", payload);
+  
+      await createProject(payload); 
+  
       toast.success("Dự án đã được tạo thành công!");
       setLoading(false);
       handleClose();
       reset();
       props.refresh();
       navigate('/home-department-head/projects');
-
+  
     } catch (error) {
-      setLoading(false)
+      setLoading(false);
       console.error("Lỗi khi tạo dự án:", error);
       if (error.result && error.result.length > 0) {
         messageApi.open({
@@ -149,21 +134,10 @@ export const ProjectCreateForm = (props) => {
           ),
         });
       } else {
-        messageApi.open({
-          type: 'error',
-          title: 'Thông báo lỗi',
-          content: (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-start' }}>
-              {error.message.map((error, index) => (
-                <p key={index} >{error}</p>
-              ))}
-            </div>
-          ),
-        });
+        toast.error(error.message);
       }
     }
   };
-
 
 
   return (
@@ -453,7 +427,7 @@ export const ProjectCreateForm = (props) => {
               )}
             />
 
-            {/* Upload File */}
+            {/* Upload File
             <Typography variant="h6" sx={{ mt: 4, mb: 2 }}>Trainees</Typography>
             <Controller
               name="trainees"
@@ -480,7 +454,7 @@ export const ProjectCreateForm = (props) => {
                   {errors.trainees && <p style={{ color: "red" }}>{errors.trainees.message}</p>}
                 </div>
               )}
-            />
+            /> */}
 
             {/* Danh sách bài học */}
             <Typography variant="h6" sx={{ mt: 4, mb: 2 }}>Danh sách nội dung</Typography>
