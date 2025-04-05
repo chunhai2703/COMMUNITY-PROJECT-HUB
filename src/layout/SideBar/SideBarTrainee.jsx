@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { SettingOutlined, HomeOutlined, FolderOutlined, MailOutlined, MenuFoldOutlined, MenuUnfoldOutlined, SnippetsOutlined, InteractionOutlined, CalendarOutlined } from '@ant-design/icons';
+import { SettingOutlined, HomeOutlined, FolderOutlined, MailOutlined, MenuFoldOutlined, MenuUnfoldOutlined, SnippetsOutlined, InteractionOutlined, CalendarOutlined, MessageOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
@@ -63,12 +63,18 @@ export const SideBarTrainee = () => {
       ],
     },
     {
+      key: 'feedback',
+      label: 'Đánh giá lớp học',
+      icon: <MailOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
+      // onClick: () => navigate('/home-trainee/change-class'),
+    },
+    {
       key: 'message',
       label: 'Tin Nhắn',
       icon: collapsed ? (
-        <MailOutlined style={{ fontSize: 20 }} />
+       <MessageOutlined  style={{ fontSize: 20 }} />
       ) : (
-        <MailOutlined style={{ fontSize: 18 }} />
+       <MessageOutlined  style={{ fontSize: 18 }} />
       ),
       onClick: () => navigate('/home-trainee/chat'),
     },

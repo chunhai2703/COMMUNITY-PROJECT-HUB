@@ -1,13 +1,4 @@
-.report-icon {
-  font-size: 18px;
-  vertical-align: middle;
-}
-.report-icon:hover {
-  cursor: pointer;
-  color: #3987e1;
-}
-
-.import-score-form {
+.standard-project-form {
   margin-top: 20px;
   width: 400px;
 }

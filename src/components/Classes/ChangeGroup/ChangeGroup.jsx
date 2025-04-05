@@ -71,7 +71,6 @@ export const ChangeGroup = (props) => {
       setLoading(false);
       toast.success("Học viên chuyển nhóm thành công!");
       reset();
-      window.location.reload();
     } catch (error) {
       setLoading(false);
       console.error("Lỗi khi chuyển nhóm:", error);

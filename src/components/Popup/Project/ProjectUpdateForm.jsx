@@ -8,11 +8,12 @@ import {
 import { } from '@mui/icons-material';
 import { Controller, useForm } from 'react-hook-form';
 import { EditOutlined } from '@ant-design/icons';
-import { searchAssociate, searchLeturers } from '../../../services/AssignApi';
+import { searchAssociate} from '../../../services/AssignApi';
 import { updateProject } from '../../../services/ProjectsApi';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth';
+import { message } from 'antd';
 
 
 const cx = classNames.bind(classes)
@@ -21,6 +22,7 @@ export const ProjectUpdateForm = (props) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [associates, setAssociates] = useState([]);
+  const [messageApi, contextHolder] = message.useMessage();
   const { project } = props
   const { projectId } = useParams();
   const { user } = useAuth();
@@ -63,6 +65,7 @@ export const ProjectUpdateForm = (props) => {
 
   const onSubmit = async (data) => {
     try {
+      setLoading(true);
       console.log("Dữ liệu projectManager trước khi gửi:", data.projectManager);
 
 
@@ -83,6 +86,7 @@ export const ProjectUpdateForm = (props) => {
         console.log(pair[0] + ": ", pair[1]);
       }
       await updateProject(formData);
+      setLoading(false);
       toast.success("Dự án đã được cập nhật thành công!");
       handleClose();
       reset();
@@ -92,8 +96,25 @@ export const ProjectUpdateForm = (props) => {
         navigate(`/home-department-head/project-detail/${projectId}`);
       }
     } catch (error) {
-      console.error("Lỗi khi tạo dự án:", error);
-      toast.error(error.message); // Hiển thị danh sách lỗi từ `result`
+      setLoading(false);
+      console.error("Lỗi khi cập nhật dự án:", error);
+      if (error.result && error.result.length > 0) {
+        messageApi.open({
+          type: 'error',
+          title: 'Thông báo lỗi',
+          content: (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-start' }}>
+              {Array.isArray(error.result) ? (
+                error.result.map((err, index) => <p key={index}>{err}</p>)
+              ) : (
+                <p>{error.result}</p>
+              )}
+            </div>
+          ),
+        });
+      } else {
+        toast.error(error.message);
+      }
     }
   };
 
@@ -105,6 +126,7 @@ export const ProjectUpdateForm = (props) => {
       <button className={cx('project-detail-update')} onClick={handleClickOpen}>
         <EditOutlined style={{ marginRight: '8px' }} /> Cập nhật
       </button>
+      {contextHolder}
       <Dialog
         open={open}
         onClose={handleClose}

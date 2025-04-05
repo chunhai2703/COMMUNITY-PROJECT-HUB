@@ -22,7 +22,6 @@ export const ProjectCreateForm = (props) => {
   const [managers, setManagers] = useState([]);
   const [associates, setAssociates] = useState([]);
   const [messageApi, contextHolder] = message.useMessage();
-  // const [errorMessages, setErrorMessages] = useState([]); // ✅ Lưu lỗi vào state
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
