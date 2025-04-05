@@ -1,0 +1,42 @@
+.trainee-result-title {
+  font-size: 24px;
+}
+.trainee-result-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.trainee-result-content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding-top: 20px;
+}
+.trainee-result-noti {
+  font-size: 16px;
+  font-weight: 500;
+  color: #e20e0e;
+}
+.trainee-result {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.label {
+  font-size: 16px;
+  font-weight: 500;
+}
+.score-value,
+.attendance-value {
+  font-size: 16px;
+}
+.trainee-result-progress {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 20px;
+}
+.progress-label {
+  font-size: 20px;
+  font-weight: 500;
+}

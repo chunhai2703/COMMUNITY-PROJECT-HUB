@@ -33,32 +33,32 @@ export const RemoveLecturerFromClass = async (lecturerId, classId) => {
 }
 
 export async function ChangeLecturerStudentToClass(data) {
-  console.log(data);
-  try {
-    const response = await fetch(`${baseUrl}/api/Class/remove-update-class`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
-      },
-      body: JSON.stringify(data)
-    })
+    console.log(data);
+    try {
+        const response = await fetch(`${baseUrl}/api/Class/remove-update-class`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+            },
+            body: JSON.stringify(data)
+        })
 
-    if (!response.ok) {
-      const errorData = await response.json(); // Lấy dữ liệu lỗi từ API
-      throw new Error(errorData.result||errorData.message || errorData.error || "Lỗi không xác định từ API");
+        if (!response.ok) {
+            const errorData = await response.json(); // Lấy dữ liệu lỗi từ API
+            throw new Error(errorData.result || errorData.message || errorData.error || "Lỗi không xác định từ API");
+        }
+        console.log(response);
+        return response;
+
+    } catch (error) {
+        console.error(error.message);
+        throw new Error(error.message);
     }
-    console.log(response);
-    return response;
-
-  } catch (error) {
-    console.error(error.message);
-    throw new Error(error.message);
-  }
 }
 
 export async function submitScoreTrainee(classId, formData) {
-    console.log( classId, formData);
+    console.log(classId, formData);
     try {
         const response = await fetch(`${baseUrl}/api/Trainee/import-trainee-score?classId=${classId}`, {
             method: 'POST',
@@ -70,14 +70,17 @@ export async function submitScoreTrainee(classId, formData) {
 
         if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.result || errorData.message || errorData.error || "Lỗi không xác định từ API");
+            const error = new Error(errorData.message || "Lỗi không xác định từ API");
+            error.result = errorData.result; // Gán result để sử dụng trong catch
+            throw error;
         }
+
         console.log(response);
         return response;
 
     } catch (error) {
-        console.error(error.message);
-        throw new Error(error.message);
+        console.error("Lỗi khi gọi API:", error);
+        throw error;
     }
 }
 

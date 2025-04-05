@@ -104,6 +104,33 @@ export async function createProject(payload) {
   return response.json();
 }
 
+export async function importTraineesForProject(projectId, formData) {
+  console.log(formData);
+  try {
+    const response = await fetch(`${baseUrl}/api/Trainee/import-trainee?projectId=${projectId}`, {
+      method: 'POST',
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+      },
+      body: formData
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error = new Error(errorData.message || "Lỗi không xác định từ API");
+      error.result = errorData.result;
+      throw error;
+    }
+
+    console.log(response);
+    return response;
+
+  } catch (error) {
+    console.error("Lỗi khi gọi API:", error);
+    throw error;
+  }
+}
+
 
 
 // cập nhật dự án
@@ -121,12 +148,9 @@ export async function updateProject(formData) {
     const errorData = await response.json();
     console.error("Error details:", errorData);
 
-    // Kiểm tra nếu có mảng `result`
-    if (errorData.result && Array.isArray(errorData.result)) {
-      throw new Error(errorData.result.join("\n")); // Gộp các lỗi thành chuỗi xuống dòng
-    }
-
-    throw new Error("Không thể cập nhật dự án: " + (errorData.message || "Lỗi không xác định"));
+    const error = new Error(errorData.message || "Không thể cập nhật dự án");
+    error.result = errorData.result || [];
+    throw error;
   }
 
   return response.json();
@@ -279,4 +303,28 @@ export const ExportFinalReportProject = async (projectId) => {
   } catch (err) {
     console.log(err);
   }
+}
+
+export async function updateProjectStandard(payload) {
+  console.log(payload);
+  const response = await fetch(`${baseUrl}/api/Project/max-absent-percentage-and-failing-score`, {
+    method: 'PUT',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    console.error("Error details:", errorData);
+
+    const error = new Error(errorData.message || "Không thể cập nhật tiêu chuẩn đánh giá");
+    error.result = errorData.result || [];
+    throw error;
+  }
+
+  return response.json();
+
 }

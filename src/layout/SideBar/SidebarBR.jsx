@@ -30,7 +30,7 @@ export const SideBarBR = () => {
       key: 'projects',
       label: 'Dự Án',
       icon: <FolderOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
-      onClick: () => navigate('/home-business-relation/all-related-projects'),
+      onClick: () => navigate('/home-business-relation/projects'),
     },
     {
       key: 'setting',

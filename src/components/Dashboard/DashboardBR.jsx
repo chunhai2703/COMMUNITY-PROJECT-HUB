@@ -236,7 +236,7 @@ export const DashboardBR = () => {
                       <Progress
                         percent={project.percentage}
                         size={["100%", 20]}
-                        status="active"
+                        status={project.projectStatus === 'Hoàn thành' ? 'success' : project.projectStatus === 'Hủy' ? 'exception' : 'active'}
                       />
                     </div>
                   ))}

@@ -10,11 +10,11 @@ import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth';
-import { Button, Typography, Upload } from 'antd';
-import { UploadOutlined } from '@mui/icons-material';
+import { Button, message, Typography, Upload } from 'antd';
+
 
 import { submitScoreTrainee } from '../../../services/LecturerApi';
-import { ImportOutlined } from '@ant-design/icons';
+import { ImportOutlined, UploadOutlined } from '@ant-design/icons';
 
 
 const cx = classNames.bind(classes)
@@ -23,6 +23,7 @@ const { Title } = Typography;
 export const ImportScore = (props) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
   const { user } = useAuth();
   const { classId, projectId } = useParams();
@@ -64,20 +65,32 @@ export const ImportScore = (props) => {
       reset();
 
       props.refresh();
-      if (user && (user?.roleId === 2)) {
-        navigate(`/home-lecturer/class-detail/${projectId}/${classId}`);
-      } else if (user && (user?.roleId === 4)) {
-        navigate(`/home-department-head/class-detail/${projectId}/${classId}`);
-      }
+      // if (user && (user?.roleId === 2)) {
+      //   navigate(`/home-lecturer/class-detail/${projectId}/${classId}`);
+      // } else if (user && (user?.roleId === 4)) {
+      //   navigate(`/home-department-head/class-detail/${projectId}/${classId}`);
+      // }
 
     } catch (error) {
       setLoading(false);
       console.error("Lỗi khi nộp báo cáo điểm:", error);
       if (error.result && error.result.length > 0) {
-        toast.error(error.result[0]);
-      } else {
-        toast.error(error.message);
-      }
+              messageApi.open({
+                type: 'error',
+                title: 'Thông báo lỗi',
+                content: (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-start' }}>
+                    {Array.isArray(error.result) ? (
+                      error.result.map((err, index) => <p key={index}>{err}</p>)
+                    ) : (
+                      <p>{error.result}</p>
+                    )}
+                  </div>
+                ),
+              });
+            } else {
+              toast.error(error.message);
+            }
     }
 
   };
@@ -86,16 +99,17 @@ export const ImportScore = (props) => {
   return (
     <React.Fragment>
       <Button size='large' style={{ backgroundColor: "#2F903F", color: "white", boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)' }} onClick={handleClickOpen} color="primary" variant="contained"><ImportOutlined style={{ marginRight: '5px' }} />Import</Button>
+      {contextHolder}
       <Dialog
         open={open}
         onClose={handleClose}
       >
-        <DialogTitle style={{ backgroundColor: "#474D57", color: "white" }} >Báo cáo lớp học</DialogTitle>
+        <DialogTitle style={{ backgroundColor: "#474D57", color: "white" }} >Báo cáo kết quả</DialogTitle>
         <DialogContent>
-          <form className={cx('submit-report-form')}>
+          <form className={cx('import-score-form')}>
 
             {/* Upload File */}
-            <Title level={3} style={{ marginTop: "10px", marginBottom: "10px" }}>Báo cáo</Title>
+            <p style={{ marginBottom: "10px", fontSize: 24  }}>Báo cáo điểm</p>
             <Controller
               name="report"
               control={control}
@@ -124,7 +138,7 @@ export const ImportScore = (props) => {
                       "Nhấp vào để upload"
                     )}</Button>
                   </Upload>
-                  {errors.trainees && <p style={{ color: "red" }}>{errors.trainees.message}</p>}
+                  {errors.report && <p style={{ color: "red", fontSize: 14 }}>{errors.report.message}</p>}
                 </div>
               )}
             />

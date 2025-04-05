@@ -12,6 +12,8 @@ import { Spinner } from '../Spinner/Spinner';
 import { ExportTraineeList, GetAllTraineeScoreList, UpdateScoreTraineeList } from '../../services/TraineeApi';
 
 import { ImportScore } from '../Popup/Class/ImportScore';
+import { exportTraineeAttendance } from '../../services/AttendanceApi';
+import { ImportAttendance } from '../Popup/Class/ImportAttendance';
 
 const cx = classNames.bind(trainees);
 
@@ -104,6 +106,26 @@ const TraineeScoreList = ({ dataClass }) => {
         setIsLoading(false);
     };
 
+    const handleExportAttendance = async () => {
+        setIsLoading(true);
+        const response = await exportTraineeAttendance(classId);
+        if (response.ok) {
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "Danhsachdiemdanh.xlsx";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            toast.success("Export dữ liệu thành công")
+        } else {
+            toast.error("Export dữ liệu thất bại")
+        }
+        setIsLoading(false);
+    };
+
     const handleSaveScores = async () => {
         const invalidTrainees = traineeList.filter(
             (trainee) => trainee.score !== null && scores[trainee.traineeId] === null
@@ -157,7 +179,7 @@ const TraineeScoreList = ({ dataClass }) => {
         {
             key: '1',
             label: (
-                <button style={{ color: "blue" }} onClick={() => handleDetailOpen(trainee)}>
+                <button style={{ fontWeight: "600" }} onClick={() => handleDetailOpen(trainee)}>
                     <InfoCircleOutlined style={{ marginRight: '8px' }} /> Chi tiết
                 </button>
             ),
@@ -184,6 +206,13 @@ const TraineeScoreList = ({ dataClass }) => {
             align: 'center',
         },
         {
+            title: 'Số buổi đi học', key: 'attendance', align: 'center',
+            render: (record) => (
+                <p><span style={{ fontStyle: 'italic', fontWeight: '600' }}>{record.totalPresentSlot}</span> / <span>{record.totalSlot}</span></p>
+            )
+        },
+
+        {
             title: 'Điểm', key: 'score', align: 'center',
             render: (record) => (
                 <TextField
@@ -198,6 +227,48 @@ const TraineeScoreList = ({ dataClass }) => {
                     step="0.01"
                 />
             )
+        },
+        {
+            title: 'Kết quả', key: 'result', align: 'center',
+            render: (record) => {
+                if (record.result === null) {
+                    return (
+                        <span style={{ color: 'red', fontWeight: 600 }}> Chưa có kết quả</span>
+                    );
+                }
+                if (record.result === true) {
+                    return (
+                        <ConfigProvider
+                            theme={{
+                                token: {
+                                    fontSize: 16
+                                },
+                            }}
+                        >
+                            <Tag bordered={false} color="green">
+                                Đã đạt
+                            </Tag>
+                        </ConfigProvider >
+                    );
+                }
+                if (record.result === false) {
+                    return (
+                        <ConfigProvider
+                            theme={{
+                                token: {
+                                    fontSize: 16
+                                },
+                            }}
+                        >
+                            <Tag bordered={false} color="volcano">
+                                Chưa đạt
+                            </Tag>
+                        </ConfigProvider >
+                    );
+                }
+
+            }
+
         },
         {
             title: '',
@@ -254,6 +325,16 @@ const TraineeScoreList = ({ dataClass }) => {
                                 )
                             )
                         )}
+                        {user.roleId === 5
+                            && dataClass.projectStatus === 'Đang diễn ra' && (
+                                <Button size='large' color="primary" variant="contained" style={{ backgroundColor: "#d45b13", color: "white", boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)", marginRight: "8px" }} onClick={handleExportAttendance}>
+                                    <ExportOutlined color='white' size={20} style={{ marginRight: '5px' }} />
+                                    Export
+                                </Button>
+                            )}
+                        {user.roleId === 5 && dataClass.projectStatus === 'Đang diễn ra' && (
+                            <ImportAttendance classId={classId} refresh={fetchAllTraineeScoreList} />
+                        )}
                     </div>
 
                 </div>
@@ -280,7 +361,10 @@ const TraineeScoreList = ({ dataClass }) => {
                             gender: trainee.account.gender,
                             birthdate: trainee.account.dateOfBirth,
                             avatar: trainee.account.avatarLink,
-                            score: trainee.score
+                            score: trainee.score,
+                            totalPresentSlot: trainee.totalPresentSlot,
+                            totalSlot: trainee.totalSlot,
+                            result: trainee.result
                         }))}
                     />
                 </ConfigProvider>
@@ -312,7 +396,7 @@ const TraineeScoreList = ({ dataClass }) => {
                     )}
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleDetailClose} sx={{ textTransform: "none" }}>Đóng</Button>
+                    <Button onClick={handleDetailClose} style={{ textTransform: "none" }} type='primary' size='large'>Đóng</Button>
                 </DialogActions>
             </Dialog>
 

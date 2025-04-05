@@ -12,6 +12,7 @@ import useAuth from "../../hooks/useAuth";
 import TraineeScoreList from "./TraineeScoreList";
 import { ChangeGroup } from "../Classes/ChangeGroup/ChangeGroup";
 import { ChangeClass } from "../Classes/ChangeClass/ChangeClass";
+import Attendance from "./Attendance";
 const ClassDetail = () => {
     const [activeTab, setActiveTab] = useState("lesson");
     const { classId } = useParams();
@@ -138,7 +139,7 @@ const ClassDetail = () => {
                             </button>
                         )}
 
-                    {(user.roleId === 4
+                    {/* {(user.roleId === 4
                         || (user.roleId === 2 && user.accountId === dataClass.projectManagerId)
                         || (user.roleId === 2 && user.accountId === dataClass.lecturerId)
                         || user.roleId === 5
@@ -150,7 +151,7 @@ const ClassDetail = () => {
                             >
                                 Điểm danh
                             </button>
-                        )}
+                        )} */}
                 </div>
                 <div style={{ backgroundColor: "#474D57", padding: "10px 30px", color: "white" }}>
                     <p style={{ fontSize: 24 }}>{dataClass.projectTitle}</p>
@@ -172,7 +173,7 @@ const ClassDetail = () => {
 
 
                     {(user.roleId === 3 && dataClass.getTraineeOfClassDTOs.some(trainee => trainee.accountId === user.accountId))
-                        && (activeTab === "changeGroup" && <ChangeGroup dataClass={dataClass} /> // nhét component của hải zo nha
+                        && (activeTab === "changeGroup" && <ChangeGroup dataClass={dataClass} />
                         )}
 
                     {(user.roleId === 4
@@ -183,13 +184,13 @@ const ClassDetail = () => {
                         && (activeTab === "evaluateResult" && <TraineeScoreList dataClass={dataClass} />
                         )}
 
-                    {(user.roleId === 4
+                    {/* {(user.roleId === 4
                         || (user.roleId === 2 && user.accountId === dataClass.projectManagerId)
                         || (user.roleId === 2 && user.accountId === dataClass.lecturerId)
                         || user.roleId === 5
                         || user.roleId === 6)
-                        && (activeTab === "attendance" && <TraineeScoreList dataClass={dataClass} /> // thay component của hải zo nha
-                        )}
+                        && (activeTab === "attendance" && <Attendance dataClass={dataClass} />
+                        )} */}
                 </div>
             </div>
         </div>

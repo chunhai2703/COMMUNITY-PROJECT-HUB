@@ -29,20 +29,23 @@ export const ProjectInformation = (props) => {
   });
 
   const handleClickMaterial = () => {
-    if (user && user?.roleId === 1) {
-      navigate(`/home-student/project-detail/${props.project.projectId}/material`);
-    } else if (user && (user?.roleId === 2)) {
-      navigate(`/home-lecturer/project-detail/${props.project.projectId}/material`);
-    } else if (user && (user?.roleId === 3)) {
-      navigate(`/home-trainee/project-detail/${props.project.projectId}/material`);
-    } else if (user && (user?.roleId === 4)) {
-      navigate(`/home-department-head/project-detail/${props.project.projectId}/material`);
-    } else if (user && (user?.roleId === 5)) {
-      navigate(`/home-asscociat/project-detail/${props.project.projectId}/material`);
-    } else if (user && (user?.roleId === 6)) {
-      navigate(`/home-business-relation/project-detail/${props.project.projectId}/material`);
-    }
-  }
+    if (!user) return;
+
+    const rolePaths = {
+      1: 'home-student',
+      2: 'home-lecturer',
+      3: 'home-trainee',
+      4: 'home-department-head',
+      5: 'home-associate',
+      6: 'home-business-relation'
+    };
+
+    const rolePath = rolePaths[user.roleId] || 'home';
+
+    navigate(`/${rolePath}/project-detail/${props.project.projectId}/material`, {
+      state: { project: props.project }
+    });
+  };
 
   const handleClickViewMember = () => {
     if (user && user?.roleId === 4) {
@@ -140,7 +143,7 @@ export const ProjectInformation = (props) => {
         {user && (props.project.memberIds.includes(user.accountId)
           || props.project.lecturerIds.includes(user.accountId)
           || user.accountId === props.project.projectManagerId
-          || user.roleId === 4) && (
+          || user.roleId === 4 || user.roleId === 5 || user.roleId === 6 || user.roleId === 3) && (
             <button className={cx('project-material-button')} onClick={() => handleClickMaterial()}>
               Xem tài liệu
             </button>

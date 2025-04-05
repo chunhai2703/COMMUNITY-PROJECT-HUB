@@ -1,20 +1,15 @@
 .import-trainee-button {
-  color: white;
-  background-color: #474d57;
-  padding: 10px 7px;
+  background-color: transparent;
   border: none;
-  border-radius: 5px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  font-size: 14px;
-  width: 100px;
+  font-weight: 600;
+  color: #92c51b;
+  border: none;
   cursor: pointer;
 }
-.import-trainee-button:hover {
-  background-color: #8e8f92;
-}
 
-.create-project-form {
+.import-trainee-form {
   margin-top: 10px;
+  width: 400px;
 }
 
 .cancel-button {

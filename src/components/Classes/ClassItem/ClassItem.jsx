@@ -6,6 +6,7 @@ import classNames from 'classnames/bind'
 import useAuth from '../../../hooks/useAuth'
 import { SubmitReport } from '../../Popup/Class/SubmitReport'
 import { ClassGroupForm } from '../../Popup/Class/ClassGroupForm'
+import { TraineeResult } from '../../Popup/Members/TraineeResult'
 
 const cx = classNames.bind(classes)
 
@@ -65,7 +66,7 @@ export const ClassItem = (props) => {
         {user?.roleId === 3 && (
           <p><span className={cx('label')}>Báo cáo học tập: </span> <Tag color={props.traineeReportContent !== null ? '#87d068' : '#f50'}>{props.traineeReportContent !== null ? 'Đã có' : 'Chưa có'}</Tag> <SubmitReport traineeReportContent={props.traineeReportContent} projectId={props.projectId} classId={props.classId} onRefresh={props.onRefresh} /></p>
         )}
-        {user.roleId === 3 && props.traineeScore && props.traineeReportContent && <p className={cx('score')}><span className={cx('label')}>Điểm tổng: </span><span className={cx('score-value')}>{props.traineeScore}</span></p>}
+        {user.roleId === 3 && props.traineeScore && props.traineeResult !== null && <p className={cx('result')}><span className={cx('label')}>Kết quả: </span><span className={cx('result-value')}><TraineeResult traineeScore={props.traineeScore} traineeTotalPresentSlot={props.traineeTotalPresentSlot} traineeTotalSlot={props.traineeTotalSlot} traineeReportContent={props.traineeReportContent} traineeResult={props.traineeResult} /></span></p>}
 
       </div>
 
