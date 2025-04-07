@@ -20,7 +20,6 @@ const cx = classNames.bind(trainees);
 const TraineeScoreList = ({ dataClass }) => {
     const { user } = useAuth();
     const { classId } = useParams();
-
     const [traineeList, setTraineeList] = useState([]);
     const [openDetail, setOpenDetail] = useState(false);
     const [selectedTrainee, setSelectedTrainee] = useState(null);
@@ -114,7 +113,7 @@ const TraineeScoreList = ({ dataClass }) => {
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement("a");
             a.href = url;
-            a.download = "Danhsachdiemdanh.xlsx";
+            a.download = "DanhSachDiemDanh.xlsx";
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -408,7 +407,7 @@ const TraineeScoreList = ({ dataClass }) => {
                     ))}
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleErrorClose} sx={{ textTransform: "none" }}>Đóng</Button>
+                    <Button onClick={handleErrorClose} style={{ textTransform: "none" }} type='primary' size='large'>Đóng</Button>
                 </DialogActions>
             </Dialog>
         </div>

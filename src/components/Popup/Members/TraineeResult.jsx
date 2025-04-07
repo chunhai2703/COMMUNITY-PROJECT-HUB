@@ -27,12 +27,12 @@ export const TraineeResult = (props) => {
       </Button>
       <Modal
         title={<p className={cx('trainee-result-title')}>Báo cáo kết quả</p>}
-        // footer={
-        //   <Button type="primary" size='large' onClick={showLoading}>
-        //     Tải lại
-        //   </Button>
-        // }
-        footer={null}
+        footer={
+          <Button type="primary" size='large' onClick={showLoading}>
+            Tải lại
+          </Button>
+        }
+        // footer={null}
         loading={loading}
         open={open}
         onCancel={() => setOpen(false)}
@@ -58,7 +58,10 @@ export const TraineeResult = (props) => {
           <Divider />
           <div className={cx('trainee-result-progress')}>
             <span className={cx('progress-label')}>Đánh giá: </span>
-            <Progress type="circle" percent={100} status={props.traineeResult ? "success" : "exception"} strokeWidth={9} size={"default"} format={() => props.traineeResult ? "Đã đạt" : "Chưa đạt"} />
+            <Progress type="circle" percent={100} status={props.traineeResult ? "success" : "exception"} strokeWidth={9} size={"default"} format={() => (
+              <span style={{ fontSize: '20px' }}>
+                {props.traineeResult ? "Đã đạt" : "Chưa đạt"}
+              </span>)} />
           </div>
         </div>
       </Modal>
