@@ -429,7 +429,7 @@ export const router = createBrowserRouter([
       },
     ]
   },
-  
+
   //Path for Associate
   {
     path: "/home-associate",
@@ -526,5 +526,9 @@ export const router = createBrowserRouter([
   //   element: <SchedulePage />,
   //   errorElement: <ErrorPage />
   // },
+  {
+    path: "*",
+    element: <ErrorPage />,
+  }
 ]);
 

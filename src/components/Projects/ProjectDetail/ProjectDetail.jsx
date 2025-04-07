@@ -15,6 +15,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { ExportFinalReportProject } from '../../../services/ProjectsApi';
 import { ImportTrainee } from '../../Popup/Members/ImportTrainee';
+import { ProjectChangeProgressStatus } from '../../Popup/Project/ProjectChangeProgressStatus';
 
 
 const cx = classNames.bind(classes)
@@ -53,7 +54,7 @@ export const ProjectDetail = (props) => {
     setIsLoading(false)
   }
   const items = [
-    ...(props.project.status === 'Lên kế hoạch' && (user.roleId === 4 || (user.roleId === 2 && user.accountId === props.project.projectManagerId))
+    ...((props.project.status === 'Lên kế hoạch' || props.project.status === 'Sắp diễn ra') && (user.roleId === 4 || (user.roleId === 2 && user.accountId === props.project.projectManagerId))
       ? [
         {
           key: '1',
@@ -73,14 +74,22 @@ export const ProjectDetail = (props) => {
       ? [
         {
           key: '3',
-          label: <ProjectChangeStatus refreshProject={props.refreshProject}  />,
+          label: <ProjectChangeStatus refreshProject={props.refreshProject} />,
+        },
+      ]
+      : []),
+    ...(props.project.status === 'Sắp diễn ra' && (user.roleId === 4 || (user.roleId === 2 && user.accountId === props.project.projectManagerId))
+      ? [
+        {
+          key: '4',
+          label: <ProjectChangeProgressStatus refreshProject={props.refreshProject} />,
         },
       ]
       : []),
     ...((props.project.status === 'Lên kế hoạch' || props.project.status === 'Sắp diễn ra') && (user.roleId === 4 || (user.roleId === 2 && user.accountId === props.project.projectManagerId))
       ? [
         {
-          key: '4',
+          key: '5',
           label: <ProjectUnactiveForm />,
         },
       ]
@@ -94,7 +103,7 @@ export const ProjectDetail = (props) => {
       )
       ? [
         {
-          key: '5',
+          key: '6',
           label: (
             <button className={cx('project-detail-export-final-report')} onClick={handleExportFinalReport}>
               <ExportOutlined style={{ marginRight: '8px' }} /> Export báo cáo dự án
@@ -108,7 +117,7 @@ export const ProjectDetail = (props) => {
       && user.roleId === 5
       ? [
         {
-          key: '6',
+          key: '7',
           label: (
             <ImportTrainee project={props.project} />
           ),
