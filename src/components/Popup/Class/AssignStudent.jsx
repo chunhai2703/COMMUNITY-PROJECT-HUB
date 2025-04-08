@@ -80,7 +80,7 @@ export const AssignStudent = (props) => {
           title: 'Thông báo lỗi',
           content: (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-start' }}>
-              {error.result.split(',').map((error, index) => (
+              {error.result.map((error, index) => (
                 <p key={index} >{error}</p>
               ))}
             </div>

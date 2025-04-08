@@ -1,6 +1,6 @@
 .add-new-trainee-button {
   color: white;
-  background-color: #474d57;
+  background-color: #2f903f;
   padding: 10px 7px;
   border: none;
   border-radius: 5px;
@@ -10,7 +10,7 @@
   cursor: pointer;
 }
 .add-new-trainee-button:hover {
-  background-color: #8e8f92;
+  background-color: #22712f;
 }
 
 .add-new-trainee-form {

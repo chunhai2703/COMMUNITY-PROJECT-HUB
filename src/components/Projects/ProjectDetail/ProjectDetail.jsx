@@ -42,7 +42,7 @@ export const ProjectDetail = (props) => {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "FinalReport.xlsx";
+      a.download = "BaoCaoTongKet.xlsx";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -54,7 +54,7 @@ export const ProjectDetail = (props) => {
     setIsLoading(false)
   }
   const items = [
-    ...((props.project.status === 'Lên kế hoạch' || props.project.status === 'Sắp diễn ra') && (user.roleId === 4 || (user.roleId === 2 && user.accountId === props.project.projectManagerId))
+    ...((props.project.status === 'Lên kế hoạch') && (user.roleId === 4 || (user.roleId === 2 && user.accountId === props.project.projectManagerId))
       ? [
         {
           key: '1',
@@ -94,7 +94,7 @@ export const ProjectDetail = (props) => {
         },
       ]
       : []),
-    ...((props.project.status === 'Đang diễn ra' || props.project.status === 'Kết thúc')
+    ...(props.project.status === 'Kết thúc'
       && (
         user.roleId === 4
         || user.roleId === 5

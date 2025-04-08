@@ -63,7 +63,7 @@ export const ClassItem = (props) => {
 
         {user?.accountId === props.lecturerId && (<p className={cx('group')}><span className={cx('label')}>Chia nhóm: </span><span className={cx('group-value')}><ClassGroupForm classData={classData} /></span></p>)}
 
-        {user?.roleId === 3 && (
+        {user?.roleId === 3 && props.projectStatus === 'Đang diễn ra' && (
           <p><span className={cx('label')}>Báo cáo học tập: </span> <Tag color={props.traineeReportContent !== null ? '#87d068' : '#f50'}>{props.traineeReportContent !== null ? 'Đã có' : 'Chưa có'}</Tag> <SubmitReport traineeReportContent={props.traineeReportContent} projectId={props.projectId} classId={props.classId} onRefresh={props.onRefresh} /></p>
         )}
         {user.roleId === 3 && props.traineeScore && props.traineeResult !== null && <p className={cx('result')}><span className={cx('label')}>Kết quả: </span><span className={cx('result-value')}><TraineeResult traineeScore={props.traineeScore} traineeTotalPresentSlot={props.traineeTotalPresentSlot} traineeTotalSlot={props.traineeTotalSlot} traineeReportContent={props.traineeReportContent} traineeResult={props.traineeResult} /></span></p>}

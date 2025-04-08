@@ -1,12 +1,15 @@
 .add-trainee-button {
   color: white;
-  background-color: #474d57;
+  background-color: #d45b13;
   padding: 10px 7px;
   border: none;
   border-radius: 5px;
   font-size: 14px;
   width: 150px;
   cursor: pointer;
+}
+.add-trainee-button:hover {
+  background-color: #a74710;
 }
 
 .add-trainee-form {

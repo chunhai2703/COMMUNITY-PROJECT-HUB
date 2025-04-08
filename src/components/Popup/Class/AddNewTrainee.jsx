@@ -9,7 +9,7 @@ import {
   FormControl
 } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
-import { PlusCircleOutlined } from '@ant-design/icons';
+import { UserAddOutlined } from '@ant-design/icons';
 import { message } from 'antd';
 import classes from './AddNewTrainee.module.css'
 import classNames from 'classnames/bind';
@@ -25,7 +25,6 @@ const cx = classNames.bind(classes);
 export const AddNewTrainee = (props) => {
   const [open, setOpen] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
-  const [errorMessages, setErrorMessages] = useState([]); // ✅ Lưu lỗi vào state
   const [loading, setLoading] = useState(false);
   const { projectId, classId } = useParams();
   const navigate = useNavigate();
@@ -59,24 +58,6 @@ export const AddNewTrainee = (props) => {
     setOpen(false);
     reset()
   };
-
-  useEffect(() => {
-    if (errorMessages.length > 0) {
-      messageApi.open({
-        type: 'error',
-        title: 'Thông báo lỗi',
-        content: (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-start' }}>
-            {errorMessages.map((error, index) => (
-              <p key={index} >{error}</p>
-            ))}
-          </div>
-        ),
-      });
-    } else {
-      messageApi.destroy();
-    }
-  }, [errorMessages, messageApi]);
 
 
   const onSubmit = async (data) => {
@@ -114,18 +95,21 @@ export const AddNewTrainee = (props) => {
     } catch (error) {
       setLoading(false)
       console.error("Lỗi tạo học viên:", error);
-      toast.error(error.message);
-
-      console.log(error.result)
-      const messages = Array.isArray(error.result)
-        ? error.result
-        : error.result
-          ? [error.result]
-          : typeof error.message === "string"
-            ? error.message
-            : [error.message];
-
-      setErrorMessages(messages);
+      if (error.result && error.result.length > 0) {
+        messageApi.open({
+          type: 'error',
+          title: 'Thông báo lỗi',
+          content: (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-start' }}>
+              {error.result.split(',').map((error, index) => (
+                <p key={index} >{error}</p>
+              ))}
+            </div>
+          ),
+        });
+      } else {
+        toast.error(error.message);
+      }
 
     }
   };
@@ -135,7 +119,7 @@ export const AddNewTrainee = (props) => {
   return (
     <React.Fragment>
       <button className={cx('add-new-trainee-button')} onClick={handleClickOpen}>
-        <PlusCircleOutlined color='white' size={20} style={{ marginRight: '5px' }} />
+        <UserAddOutlined color='white' size={20} style={{ marginRight: '5px' }} />
         Tạo học viên
       </button>
       {contextHolder}
