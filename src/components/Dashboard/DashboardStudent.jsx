@@ -7,10 +7,11 @@ import 'dayjs/locale/vi'; // 🟢 Dùng tiếng Việt cho định dạng ngày
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import 'animate.css';
-import { Collapse } from 'antd';
-import { DownOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { Card, Collapse } from 'antd';
+import { CalendarFilled, DownOutlined, ProjectFilled, QuestionCircleOutlined, SnippetsFilled } from '@ant-design/icons';
 import useAuth from '../../hooks/useAuth';
 import { Spinner } from '../Spinner/Spinner';
+import { useNavigate } from 'react-router-dom';
 
 
 const cx = classNames.bind(classes);
@@ -92,6 +93,7 @@ const items = [
 
 export const DashboardStudent = () => {
   const [currentTime, setCurrentTime] = useState(dayjs().tz('Asia/Ho_Chi_Minh'));
+  const navigate = useNavigate();
   const { user } = useAuth();
   console.log(user);
 
@@ -127,6 +129,19 @@ export const DashboardStudent = () => {
       </div>
 
       <Banner />
+
+      <div className={cx('shortcut-container')}>
+        <Card className={cx('shortcut-card')} size="default">
+          <p className={cx('shortcut-title')} onClick={() => navigate('/home-student/all-related-projects')}> <ProjectFilled style={{ fontSize: '20px', color: '#60B5FF', marginRight: '10px' }} /> Dự Án Của Tôi</p>
+        </Card>
+        <Card className={cx('shortcut-card')} size="default" >
+          <p className={cx('shortcut-title')} onClick={() => navigate('/home-student/my-classes')}> <SnippetsFilled style={{ fontSize: '20px', color: '#FF9B17', marginRight: '10px' }} /> Lớp học của tôi</p>
+        </Card>
+        <Card className={cx('shortcut-card')} size="default" >
+          <p className={cx('shortcut-title')} onClick={() => navigate('/home-student/my-schedule')}> <CalendarFilled style={{ fontSize: '20px', color: '#AEEA94', marginRight: '10px' }} /> Thời khóa biểu</p>
+        </Card>
+      </div>
+
       <div className={cx('collapse-container')}>
         <h2 className={cx('collapse-title')}>Những câu hỏi thường gặp <QuestionCircleOutlined /></h2>
         <Collapse items={items} defaultActiveKey={['1']} onChange={onChange} size='large' expandIcon={customExpandIcon} />

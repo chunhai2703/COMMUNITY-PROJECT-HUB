@@ -50,6 +50,7 @@ import { ErrorPageAssociate } from "../pages/ErrorPage/ErrorPageAssociate";
 
 
 export const router = createBrowserRouter([
+  
   //Path for Guest
   {
     path: "/",
@@ -522,13 +523,8 @@ export const router = createBrowserRouter([
   },
 
   // {
-  //   path: "/schedule",
-  //   element: <SchedulePage />,
-  //   errorElement: <ErrorPage />
-  // },
-  {
-    path: "*",
-    element: <ErrorPage />,
-  }
+  //   path: "*",
+  //   element: <ErrorPage />,
+  // }
 ]);
 

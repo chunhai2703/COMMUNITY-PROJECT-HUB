@@ -157,15 +157,18 @@ export async function assignLecturerStudentToProject(data) {
     })
 
     if (!response.ok) {
-      const errorData = await response.json(); // Lấy dữ liệu lỗi từ API
-      throw new Error(errorData.result || errorData.message || errorData.error || "Lỗi không xác định từ API");
+      const errorData = await response.json();
+      const error = new Error(errorData.message || "Lỗi không xác định từ API");
+      error.result = errorData.result; // Gán result để sử dụng trong catch
+      throw error;
     }
+
     console.log(response);
     return response;
 
   } catch (error) {
-    console.error(error.message);
-    throw new Error(error.message);
+    console.error("Lỗi khi gọi API:", error);
+    throw error;
   }
 }
 export async function addTraineeToClass(data) {
@@ -181,15 +184,18 @@ export async function addTraineeToClass(data) {
     })
 
     if (!response.ok) {
-      const errorData = await response.json(); // Lấy dữ liệu lỗi từ API
-      throw new Error(errorData.result || errorData.message || errorData.error || "Lỗi không xác định từ API");
+      const errorData = await response.json();
+      const error = new Error(errorData.message || "Lỗi không xác định từ API");
+      error.result = errorData.result; // Gán result để sử dụng trong catch
+      throw error;
     }
+
     console.log(response);
     return response;
 
   } catch (error) {
-    console.error(error.message);
-    throw new Error(error.message);
+    console.error("Lỗi khi gọi API:", error);
+    throw error;
   }
 }
 
@@ -206,13 +212,17 @@ export async function addNewTraineeToClass(formData) {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.result || errorData.message || errorData.error || "Lỗi không xác định từ API");
+      const error = new Error(errorData.message || "Lỗi không xác định từ API");
+      error.result = errorData.result; // Gán result để sử dụng trong catch
+      throw error;
     }
+
+    console.log(response);
     return response;
 
   } catch (error) {
-    console.error(error.message);
-    throw new Error(error.message);
+    console.error("Lỗi khi gọi API:", error);
+    throw error;
   }
 }
 

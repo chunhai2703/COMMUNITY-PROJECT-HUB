@@ -12,10 +12,12 @@ import { addTraineeToClass, searchTrainees } from '../../../services/AssignApi';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth';
+import { message } from 'antd';
 
 const cx = classNames.bind(classes)
 export const AddTrainee = (props) => {
   const [open, setOpen] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
   const [trainees, setTrainees] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -72,12 +74,22 @@ export const AddTrainee = (props) => {
       setLoading(false);
       console.error("Lỗi khi phân công học viên:", error);
       if (error.result && error.result.length > 0) {
-        toast.error(error.result);
+        messageApi.open({
+          type: 'error',
+          title: 'Thông báo lỗi',
+          content: (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-start' }}>
+              {error.result.split(',').map((error, index) => (
+                <p key={index} >{error}</p>
+              ))}
+            </div>
+          ),
+        });
       } else {
         toast.error(error.message);
       }
-    }
 
+    };
   };
 
 
@@ -87,6 +99,7 @@ export const AddTrainee = (props) => {
         <PlusCircleOutlined color='white' size={20} style={{ marginRight: '5px' }} />
         Thêm học viên
       </button>
+      {contextHolder}
       <Dialog
         open={open}
         onClose={handleClose}
@@ -153,4 +166,4 @@ export const AddTrainee = (props) => {
       </Dialog>
     </React.Fragment>
   );
-}
+};

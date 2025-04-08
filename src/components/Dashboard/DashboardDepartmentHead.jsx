@@ -22,6 +22,8 @@ import timezone from 'dayjs/plugin/timezone';
 import 'animate.css';
 import { Line } from "rc-progress";
 import { Progress } from "antd";
+import { CalendarFilled, FolderFilled, ProjectFilled, SnippetsFilled, UserOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 const cx = classNames.bind(classes);
 
@@ -42,6 +44,7 @@ const DashboardDepartmentHead = () => {
     const [amountProjectWithStatus, setAmountProjectWithStatus] = useState([]);
     const [currentTime, setCurrentTime] = useState(dayjs().tz('Asia/Ho_Chi_Minh'));
     const [progressProjectList, setProgressProjectList] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         // 🕒 Cập nhật thời gian mỗi giây
@@ -165,7 +168,26 @@ const DashboardDepartmentHead = () => {
                 <p className={cx('current-time', 'animate__animated animate__fadeIn')}>Hôm nay là {currentTime.format('dddd, DD/MM/YYYY HH:mm:ss')}</p>
             </div>
             <Banner />
+
+
             <Grid container spacing={3}>
+                <Grid item xs={12} md={6}>
+                    <Card className={cx('shortcut-card')} onClick={() => navigate('/home-department-head/projects')}>
+                        <CardContent>
+                            <p className={cx('shortcut-title')} > <FolderFilled style={{ fontSize: '24px', color: '#60B5FF', marginRight: '10px' }} /> Dự Án</p>
+                        </CardContent>
+
+                    </Card>
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                    <Card className={cx('shortcut-card')} size="default" onClick={() => navigate('/home-department-head/view-profile')} >
+                        <CardContent>
+                            <p className={cx('shortcut-title')} > <UserOutlined style={{ fontSize: '20px', color: '#FF9B17', marginRight: '10px' }} /> Hồ sơ cá nhân</p>
+                        </CardContent>
+
+                    </Card>
+                </Grid>
                 <Grid item xs={12} sm={6}>
                     <Card>
                         <CardContent>

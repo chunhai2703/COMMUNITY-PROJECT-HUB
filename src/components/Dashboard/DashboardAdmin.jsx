@@ -11,13 +11,13 @@ import {
     GetAmountProjectWithStatus
 } from "../../services/DashboardApi";
 import { Banner } from "../Banner/Banner";
-import classes from "./DashboardAdmmin.module.css";
+import classes from "./DashboardAdmin.module.css";
 import classNames from "classnames/bind";
 import dayjs from 'dayjs'; // 🟢 Import dayjs để xử lý ngày giờ
 import 'dayjs/locale/vi'; // 🟢 Dùng tiếng Việt cho định dạng ngày
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
 import 'animate.css';
+import { FileTextFilled, UserOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 const cx = classNames.bind(classes);
 
@@ -32,6 +32,7 @@ const DashboardAdmin = () => {
     const [amountProjectWithStatus, setAmountProjectWithStatus] = useState([]);
     const [amountUserByRole, setAmountUserByRole] = useState([]);
     const [currentTime, setCurrentTime] = useState(dayjs().tz('Asia/Ho_Chi_Minh'));
+    const navigate = useNavigate();
 
     useEffect(() => {
         // 🕒 Cập nhật thời gian mỗi giây
@@ -133,15 +134,36 @@ const DashboardAdmin = () => {
             <div className={cx('greeting-container')}>
                 <h2 className={cx('greeting', 'animate__animated animate__lightSpeedInRight')}>
                     <span className={cx('greeting-text')}>Xin chào, </span>
-                    <span className={cx('greeting-role')}>administrator </span>
+                    <span className={cx('greeting-role')}>quản trị viên </span>
                     <span className={cx('greeting-name')}>{user?.fullName}</span> !
                 </h2>
 
                 {/* 📅 Hiển thị ngày giờ hiện tại */}
                 <p className={cx('current-time', 'animate__animated animate__fadeIn')}>Hôm nay là {currentTime.format('dddd, DD/MM/YYYY HH:mm:ss')}</p>
             </div>
-            <Banner/>
+            <Banner />
+
+
             <Grid container spacing={3}>
+
+                <Grid item xs={12} md={6}>
+                    <Card className={cx('shortcut-card')} onClick={() => navigate('/home-admin/account-management')}>
+                        <CardContent>
+                            <p className={cx('shortcut-title')} > <FileTextFilled style={{ fontSize: '24px', color: '#60B5FF', marginRight: '10px' }} />Quản lý tài khoản</p>
+                        </CardContent>
+
+                    </Card>
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                    <Card className={cx('shortcut-card')} onClick={() => navigate('/home-admin/view-profile')}>
+                        <CardContent>
+                            <p className={cx('shortcut-title')}> <UserOutlined style={{ fontSize: '24px', color: '#FF9B17', marginRight: '10px' }} />Hồ sơ cá nhân</p>
+                        </CardContent>
+
+                    </Card>
+                </Grid>
+
                 <Grid item xs={12} sm={6}>
                     <Card>
                         <CardContent>
