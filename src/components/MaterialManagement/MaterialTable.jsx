@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { ConfigProvider, Dropdown, Table, Tag, Modal as AntModal, message } from 'antd';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ConfigProvider, Dropdown, Table, Tag, Modal as AntModal, message, Descriptions } from 'antd';
 import { EditOutlined, DeleteOutlined, EllipsisOutlined, SearchOutlined, DownloadOutlined } from '@ant-design/icons';
 import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { useForm, Controller } from "react-hook-form";
 import materials from './MaterialTable.module.css';
 import classNames from 'classnames/bind';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { debounce } from 'lodash';
 import useAuth from '../../hooks/useAuth';
 import { Spinner } from '../Spinner/Spinner';
@@ -13,13 +13,15 @@ import { CreateMaterial, DeleteMaterial, GetAllMaterial, UpdateMaterial } from '
 import { toast } from 'react-toastify';
 import { AddCircleOutlineOutlined } from '@mui/icons-material';
 import { loadProjectDetails } from '../../services/ProjectsApi';
+import { ProjectStandard } from '../Popup/Project/ProjectStandard';
 
 const cx = classNames.bind(materials);
 
-export const MaterialTable = () => {
+export const MaterialTable = (props) => {
     const { projectId } = useParams();
     const { user } = useAuth();
-
+    const location = useLocation();
+    const project = location.state?.project;
     const [pageNumber, setPageNumber] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [materialList, setMaterialList] = useState([]);
@@ -34,7 +36,7 @@ export const MaterialTable = () => {
 
     const { handleSubmit, control, register, reset, formState: { errors } } = useForm();
 
-    const fetchAllMaterial = async () => {
+    const fetchAllMaterial = useCallback(async () => {
         setIsLoading(true);
         const response = await GetAllMaterial(projectId, searchValue, pageNumber, rowsPerPage);
         const responseData = await response.json();
@@ -50,14 +52,14 @@ export const MaterialTable = () => {
             console.log("Error fetching materials");
         }
         setIsLoading(false);
-    };
+    }, [pageNumber, searchValue, projectId, rowsPerPage]);
 
-    const fetchProjectDetail = async () => {
+    const fetchProjectDetail = useCallback(async () => {
         setIsLoading(true);
         const responseData = await loadProjectDetails(projectId);
         setDataProject(responseData ? responseData : null)
         setIsLoading(false);
-    };
+    }, [projectId]);
 
     const handleInputSearch = debounce((e) => {
         setSearchValue(e.target.value);
@@ -69,7 +71,7 @@ export const MaterialTable = () => {
             fetchAllMaterial();
             fetchProjectDetail();
         }
-    }, [pageNumber, searchValue, projectId]);
+    }, [fetchAllMaterial, fetchProjectDetail, projectId]);
 
     const handleCreateOpen = () => {
         setOpenCreate(true);
@@ -107,7 +109,7 @@ export const MaterialTable = () => {
         const responseData = await response.json();
 
         if (response.ok) {
-            toast.success("Tạo mới thành công!");
+            toast.success("Tạo mới tài liệu thành công!");
             fetchAllMaterial();
             handleCreateClose();
         } else {
@@ -156,7 +158,7 @@ export const MaterialTable = () => {
         {
             key: '1',
             label: (
-                <button style={{ color: "blue" }} onClick={() => handleUpdateOpen(material)}>
+                <button style={{ color: "blue", fontWeight: '600' }} onClick={() => handleUpdateOpen(material)}>
                     <EditOutlined style={{ marginRight: '8px' }} /> Cập nhật
                 </button>
             ),
@@ -164,7 +166,7 @@ export const MaterialTable = () => {
         {
             key: '2',
             label: (
-                <button style={{ color: "red" }} onClick={() => handleDeleteOpen(material)}>
+                <button style={{ color: "red", fontWeight: '600' }} onClick={() => handleDeleteOpen(material)}>
                     <DeleteOutlined style={{ marginRight: '8px' }} /> Xóa
                 </button>
             ),
@@ -195,11 +197,61 @@ export const MaterialTable = () => {
             key: 'action',
             align: 'center',
             render: (record) => (
-                (user.roleId === 4 || (user.roleId == 2 && user.accountId == dataProject?.projectManagerId)) ? (
+                (user.roleId === 4 || (user.roleId === 2 && user.accountId === dataProject?.projectManagerId)) ? (
                     <Dropdown menu={{ items: getMenuItems(record) }} placement="bottomRight" trigger={['click']}>
                         <EllipsisOutlined style={{ fontSize: "18px", color: 'black' }} />
                     </Dropdown>
                 ) : null
+            ),
+        },
+    ];
+
+
+
+    const items = [
+        {
+            key: '1',
+            label: 'Phần điểm danh',
+            children: (
+                <>
+                    {dataProject?.maxAbsentPercentage !== null ? (
+                        <p>
+                            Học viên được nghỉ <span style={{ fontStyle: 'italic', fontWeight: 600 }}>
+                                không quá {dataProject?.maxAbsentPercentage || 0} %
+                            </span> trên tổng các buổi học.
+                        </p>
+                    ) : (
+                        <p style={{ fontWeight: 600, color: 'red' }}>Chưa có cập nhật</p>
+                    )}
+                </>
+            ),
+        },
+
+        {
+            key: '2',
+            label: 'Phần điểm số',
+            children: (
+                <>
+                    {dataProject?.failingScore !== null ? (
+                        <p>
+                            Học viên phải có điểm báo cáo cuối cùng{' '}
+                            <span style={{ fontStyle: 'italic', fontWeight: 600 }}>
+                                lớn hơn hoặc bằng {dataProject?.failingScore || 0} điểm.
+                            </span>
+                        </p>
+                    ) : (
+                        <p style={{ fontWeight: 600, color: 'red' }}>
+                            Chưa có cập nhật
+                        </p>
+                    )}
+                </>
+            ),
+        },
+        {
+            key: '3',
+            label: 'Lưu ý',
+            children: (
+                <p>Bài báo cáo các học viên phải hoàn thành và nộp trước thời gian buổi học cuối cùng bắt đầu. </p>
             ),
         },
     ];
@@ -214,14 +266,34 @@ export const MaterialTable = () => {
                 <p className={cx('project-title')}>{dataProject.title}</p>
             </div>
             <div className={cx('material-table-container')}>
+                <h2 className={cx("material-title")}>Tài liệu cho dự án</h2>
+                <div className={cx('material-standard')}>
+                    <ConfigProvider
+                        theme={{
+                            token: {
+                                fontSize: 16
+                            },
+                        }}
+                    >
+                        <Descriptions
+                            column={1}
+                            title="📋 Tiêu chuẩn đánh giá kết quả"
+                            size="default"
+                            extra={user?.roleId === 6 && dataProject?.status === 'Lên kế hoạch' ? <ProjectStandard project={dataProject} refresh={fetchProjectDetail} refreshMaterial={fetchAllMaterial} /> : null}
+                            items={items}
+                        />
+                    </ConfigProvider>
+
+                </div>
+
                 <div className={cx('project-detail-search')}>
                     <div className='flex w-full justify-between items-center'>
                         <div className={cx('search-box-container')}>
                             <div className={cx('search-box')}>
-                                <SearchOutlined color='#285D9A' size={20} />
+                                {/* <SearchOutlined color='#285D9A' size={20} /> */}
                                 <input
                                     type="search"
-                                    placeholder="Tìm kiếm lớp học"
+                                    placeholder="Tìm kiếm tài liệu"
                                     className={cx('search-input')}
                                     onChange={(e) => handleInputSearch(e)}
                                 />
@@ -231,9 +303,9 @@ export const MaterialTable = () => {
                                 Tìm kiếm
                             </button>
                         </div>
-                        {user.roleId === "4" && (
+                        {user.roleId === 4 && (
                             <div>
-                                <Button variant="contained" className='w-max' startIcon={<AddCircleOutlineOutlined />} sx={{ textTransform: "none" }} style={{ backgroundColor: "#474D57", marginLeft: 10 }} onClick={handleCreateOpen}>
+                                <Button variant="contained" className='w-max' startIcon={<AddCircleOutlineOutlined style={{ color: 'white' }} />} sx={{ textTransform: "none", backgroundColor: "#474D57", padding: '10px', fontSize: '14px', cursor: 'pointer' }} onClick={handleCreateOpen}>
                                     Tạo mới
                                 </Button>
                             </div>
@@ -272,7 +344,7 @@ export const MaterialTable = () => {
                 <DialogTitle style={{ backgroundColor: "#474D57", color: "white" }}>
                     Thêm tài liệu mới
                 </DialogTitle>
-                <form onSubmit={handleSubmit(onSubmitCreate)}>
+                <form style={{ width: '400px' }} onSubmit={handleSubmit(onSubmitCreate)}>
                     <DialogContent>
                         {/* Nhập tiêu đề tài liệu */}
                         <Controller
@@ -287,7 +359,9 @@ export const MaterialTable = () => {
                                     style={{ marginBottom: 10 }}
                                     label="Tiêu đề"
                                     fullWidth
-                                    margin="dense"
+                                    required
+                                    margin="normal"
+                                    type='text'
                                     error={!!errors.title}
                                     helperText={errors.title?.message}
                                 />
@@ -304,12 +378,14 @@ export const MaterialTable = () => {
                             render={({ field: { onChange, ref } }) => (
                                 <div>
                                     <input
+                                        id="file-upload"
                                         type="file"
                                         accept=".pdf,.docx"
+                                        required
                                         ref={ref}
                                         onChange={(e) => onChange(e.target.files)}
                                     />
-                                    {errors.file && <p style={{ color: 'red', marginTop: 5 }}>{errors.file.message}</p>}
+                                    {errors.file && <p style={{ color: "red", fontSize: 14 }}>{errors.file.message}</p>}
                                 </div>
                             )}
                         />
@@ -319,7 +395,10 @@ export const MaterialTable = () => {
                         <Button
                             style={{
                                 backgroundColor: "#d45b13",
-                                color: "white"
+                                color: "white",
+                                border: 'none',
+                                padding: '10px 7px',
+                                marginRight: '5px'
                             }}
                             variant='outlined'
                             onClick={handleCreateClose}>Hủy
@@ -328,7 +407,10 @@ export const MaterialTable = () => {
                             type="submit"
                             variant="contained"
                             style={{
-                                backgroundColor: "#00b300"
+                                backgroundColor: "#00b300",
+                                color: "white",
+                                border: 'none',
+                                padding: '10px 7px',
                             }}
                             disabled={isLoading}>
                             {isLoading ? <CircularProgress size={24} /> : "Tạo mới"}

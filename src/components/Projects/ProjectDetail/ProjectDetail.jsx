@@ -14,6 +14,8 @@ import { ProjectChangeStatus } from '../../Popup/Project/ProjectChangeStatus';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { ExportFinalReportProject } from '../../../services/ProjectsApi';
+import { ImportTrainee } from '../../Popup/Members/ImportTrainee';
+import { ProjectChangeProgressStatus } from '../../Popup/Project/ProjectChangeProgressStatus';
 
 
 const cx = classNames.bind(classes)
@@ -52,10 +54,14 @@ export const ProjectDetail = (props) => {
     setIsLoading(false)
   }
   const items = [
-    {
-      key: '1',
-      label: <ProjectUpdateForm project={props.project} />,
-    },
+    ...((props.project.status === 'Lên kế hoạch' || props.project.status === 'Sắp diễn ra') && (user.roleId === 4 || (user.roleId === 2 && user.accountId === props.project.projectManagerId))
+      ? [
+        {
+          key: '1',
+          label: <ProjectUpdateForm project={props.project} />,
+        },
+      ]
+      : []),
     {
       key: '2',
       label: (
@@ -64,18 +70,26 @@ export const ProjectDetail = (props) => {
         </button>
       ),
     },
-    ...(props.project.status === 'Lên kế hoạch'
+    ...(props.project.status === 'Lên kế hoạch' && (user.roleId === 4 || (user.roleId === 2 && user.accountId === props.project.projectManagerId))
       ? [
         {
           key: '3',
-          label: <ProjectChangeStatus />,
+          label: <ProjectChangeStatus refreshProject={props.refreshProject} />,
         },
       ]
       : []),
-    ...(props.project.status === 'Lên kế hoạch' || props.project.status === 'Sắp diễn ra'
+    ...(props.project.status === 'Sắp diễn ra' && (user.roleId === 4 || (user.roleId === 2 && user.accountId === props.project.projectManagerId))
       ? [
         {
           key: '4',
+          label: <ProjectChangeProgressStatus refreshProject={props.refreshProject} />,
+        },
+      ]
+      : []),
+    ...((props.project.status === 'Lên kế hoạch' || props.project.status === 'Sắp diễn ra') && (user.roleId === 4 || (user.roleId === 2 && user.accountId === props.project.projectManagerId))
+      ? [
+        {
+          key: '5',
           label: <ProjectUnactiveForm />,
         },
       ]
@@ -89,11 +103,23 @@ export const ProjectDetail = (props) => {
       )
       ? [
         {
-          key: '5',
+          key: '6',
           label: (
             <button className={cx('project-detail-export-final-report')} onClick={handleExportFinalReport}>
               <ExportOutlined style={{ marginRight: '8px' }} /> Export báo cáo dự án
             </button>
+          ),
+        },
+      ]
+      : []),
+
+    ...(props.project.status === 'Lên kế hoạch'
+      && user.roleId === 5
+      ? [
+        {
+          key: '7',
+          label: (
+            <ImportTrainee project={props.project} />
           ),
         },
       ]
@@ -114,7 +140,7 @@ export const ProjectDetail = (props) => {
             <h2 className={cx('project-detail-name-title')}>{props.project.title}</h2>
             <span className={cx('project-detail-name-status')}>{props.project.status}</span>
           </div>
-          {user && (user.roleId === 4 || user.accountId === props.project.projectManagerId) ? (
+          {user && (user.roleId === 4 || user.accountId === props.project.projectManagerId || user.roleId === 5 || user.roleId === 6) ? (
             <Dropdown
               menu={{ items }}
               placement="bottomRight"

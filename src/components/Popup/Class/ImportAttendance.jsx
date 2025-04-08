@@ -1,31 +1,34 @@
 import React, { useState } from 'react'
+import classes from './ImportAttendance.module.css'
+import classNames from 'classnames/bind'
 import {
   Dialog, DialogActions, DialogContent, DialogTitle,
-  Typography, CircularProgress
+  CircularProgress
 } from '@mui/material';
-
 import { Controller, useForm } from 'react-hook-form';
-import { UploadOutlined, ImportOutlined } from '@ant-design/icons';
-import { Button, Upload, message } from 'antd';
-import classes from './ImportTrainee.module.css'
-import classNames from 'classnames/bind';
-import { importTraineesForProject } from '../../../services/ProjectsApi';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
+import useAuth from '../../../hooks/useAuth';
+import { Button, message, Typography, Upload } from 'antd';
+import { submitScoreTrainee } from '../../../services/LecturerApi';
+import { ImportOutlined, UploadOutlined } from '@ant-design/icons';
+import { importAttendanceTrainee } from '../../../services/AttendanceApi';
 
+const cx = classNames.bind(classes)
+const { Title } = Typography;
 
-
-const cx = classNames.bind(classes);
-export const ImportTrainee = (props) => {
+export const ImportAttendance = (props) => {
   const [open, setOpen] = useState(false);
-  const [messageApi, contextHolder] = message.useMessage();
-  const { projectId } = useParams();
   const [loading, setLoading] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { classId, projectId } = useParams();
+
+  console.log(classId);
 
 
   const { handleSubmit, control, reset, formState: { errors } } = useForm({});
-
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -36,31 +39,37 @@ export const ImportTrainee = (props) => {
     reset()
   };
 
-
-
   const onSubmit = async (data) => {
     try {
       setLoading(true)
-
       const formData = new FormData();
-      if (data.trainees?.length > 0) {
-        const file = data.trainees[0]?.originFileObj;
+      if (data.report?.length > 0) {
+        const file = data.report[0]?.originFileObj;
         if (file) {
           formData.append("file", file);
         }
       }
 
-      await importTraineesForProject(projectId, formData);
+      console.log("Dữ liệu formData trước khi gửi:");
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ": ", pair[1]);
+      }
 
-      toast.success("Import danh sách học viên thành công!");
+      await importAttendanceTrainee(classId, formData);
       setLoading(false);
+      toast.success("Nộp báo cáo diểm danh thành công!");
       handleClose();
       reset();
-      navigate(`/home-associate/project-detail/${projectId}`);
+      props.refresh();
+      // navigate(`/home-associate/class-detail/${projectId}/${classId}`);
 
     } catch (error) {
-      setLoading(false)
-      console.error("Lỗi khi import danh sách học viên:", error);
+      setLoading(false);
+      console.error("Lỗi khi nộp báo cáo điểm danh:", error);
+      console.log("Lỗi từ API:", error);
+      console.log("Error.result:", error.result);
+      console.log("Error.message:", error.message);
+      console.log("Error.error:", error.error);
       if (error.result && error.result.length > 0) {
         messageApi.open({
           type: 'error',
@@ -79,41 +88,36 @@ export const ImportTrainee = (props) => {
         toast.error(error.message);
       }
     }
-  };
 
+  };
 
 
   return (
     <React.Fragment>
-      <button className={cx('import-trainee-button')} onClick={handleClickOpen}>
-        <ImportOutlined style={{ marginRight: '8px' }} /> Import danh sách học viên
-      </button>
+      <Button size='large' style={{ backgroundColor: "#2F903F", color: "white", boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)' }} onClick={handleClickOpen} color="primary" variant="contained"><ImportOutlined style={{ marginRight: '5px' }} />Import</Button>
       {contextHolder}
       <Dialog
         open={open}
         onClose={handleClose}
       >
-        <DialogTitle style={{ backgroundColor: "#474D57", color: "white" }} >
-          Import danh sách học viên
-        </DialogTitle>
+        <DialogTitle style={{ backgroundColor: "#474D57", color: "white" }} >Báo cảo điểm danh</DialogTitle>
         <DialogContent>
-
-          <form className={cx('import-trainee-form')}>
+          <form className={cx('import-attendance-form')}>
 
             {/* Upload File */}
-            <Typography variant="h6" sx={{ mt: 2, mb: 2 }}>Danh sách học viên</Typography>
+            <Title level={3} style={{ marginTop: "10px", marginBottom: "10px" }}>Báo cáo</Title>
             <Controller
-              name="trainees"
+              name="report"
               control={control}
               defaultValue={[]}
               rules={{
-                required: 'Vui lòng chọn file để import',
+                required: 'Vui lòng chọn file báo cáo điểm danh',
               }}
               render={({ field }) => (
                 <div>
                   <Upload
                     name="file"
-                    accept=".xls,.xlsx"
+                    accept='.xls,.xlsx'
                     action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
                     headers={{ authorization: 'authorization-text' }}
                     fileList={field.value}
@@ -122,13 +126,18 @@ export const ImportTrainee = (props) => {
                     }}
                     beforeUpload={() => false}
                   >
-                    <Button icon={<UploadOutlined />} type='primary'>Nhấn vào để upload</Button>
+                    <Button icon={<UploadOutlined />} type='primary' disabled={loading}>  {loading ? (
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <CircularProgress size={24} sx={{ color: "white" }} />
+                      </div>
+                    ) : (
+                      "Nhấp vào để upload"
+                    )}</Button>
                   </Upload>
-                  {errors.trainees && <p style={{ color: "red", fontSize: 14 }}>{errors.trainees.message}</p>}
+                  {errors.report && <p style={{ color: "red", fontSize: 14 }}>{errors.report.message}</p>}
                 </div>
               )}
             />
-
 
           </form>
 
@@ -141,7 +150,7 @@ export const ImportTrainee = (props) => {
                 <CircularProgress size={24} sx={{ color: "white" }} />
               </div>
             ) : (
-              "Thêm vào"
+              "Nộp"
             )}
           </button>
         </DialogActions>

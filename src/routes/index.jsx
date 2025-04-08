@@ -392,8 +392,9 @@ export const router = createBrowserRouter([
         errorElement: <ErrorPageBR />
       },
       {
-        path: "all-related-projects",
-        element: <RelatedProjects />,
+        path: "projects",
+        element: <ProjectsDH />,
+        loader: projectLoader,
         errorElement: <ErrorPageBR />
       },
       {
@@ -428,7 +429,7 @@ export const router = createBrowserRouter([
       },
     ]
   },
-  
+
   //Path for Associate
   {
     path: "/home-associate",
@@ -454,7 +455,7 @@ export const router = createBrowserRouter([
       {
         path: "project-detail/:projectId/material",
         element: <MaterialManagementPage />,
-        errorElement: <ErrorPageBR />
+        errorElement: <ErrorPageAssociate />
       },
       {
         path: "class-detail/:projectId/:classId",
@@ -525,5 +526,9 @@ export const router = createBrowserRouter([
   //   element: <SchedulePage />,
   //   errorElement: <ErrorPage />
   // },
+  {
+    path: "*",
+    element: <ErrorPage />,
+  }
 ]);
 

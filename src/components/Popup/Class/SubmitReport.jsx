@@ -6,12 +6,12 @@ import {
   CircularProgress
 } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
-import { FormOutlined } from '@ant-design/icons';
+import { FormOutlined, UploadOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth';
 import { Button, Tooltip, Typography, Upload } from 'antd';
-import { UploadOutlined } from '@mui/icons-material';
+
 import { submitReportTrainee } from '../../../services/TraineeApi';
 
 
@@ -84,7 +84,7 @@ export const SubmitReport = (props) => {
           <form className={cx('submit-report-form')}>
 
             {/* Upload File */}
-            <Title level={3} style={{ marginTop: "10px", marginBottom: "10px" }}>Báo cáo</Title>
+            <p style={{ marginBottom: "10px", fontSize: 24 }}>Báo cáo</p>
             <Controller
               name="report"
               control={control}
@@ -113,7 +113,7 @@ export const SubmitReport = (props) => {
                       "Nhấp vào để upload"
                     )}</Button>
                   </Upload>
-                  {errors.trainees && <p style={{ color: "red" }}>{errors.trainees.message}</p>}
+                  {errors.report && <p style={{ color: "red", fontSize: 14 }}>{errors.report.message}</p>}
                 </div>
               )}
             />

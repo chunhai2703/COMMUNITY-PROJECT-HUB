@@ -21,6 +21,7 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import 'animate.css';
 import { Line } from "rc-progress";
+import { Progress } from "antd";
 
 const cx = classNames.bind(classes);
 
@@ -145,6 +146,8 @@ const DashboardDepartmentHead = () => {
         }]
     };
 
+    console.log(progressProjectList);
+
     return (
         <div className={cx("dashboard-container")}>
             <div className={cx('greeting-container')}>
@@ -232,13 +235,18 @@ const DashboardDepartmentHead = () => {
                             <Typography variant="h6" gutterBottom>
                                 Tiến độ dự án
                             </Typography>
-                            <div className="mt-6">
-                                {progressProjectList && progressProjectList.map((project) => (
-                                    <div>
-                                        <p className="text-xl mb-3" >{project.projectName} - {project.percentage} %</p>
-                                        <Line percent={project.percentage} strokeWidth={1} strokeColor="#4CAF50" />
-                                    </div>
-                                ))}
+                            <div className="mt-6 flex flex-col gap-6 md:gap-8">
+                                {progressProjectList &&
+                                    progressProjectList.map((project) => (
+                                        <div key={project.id} className="w-full">
+                                            <p className="text-lg md:text-xl mb-2 md:mb-3">{project.projectName}</p>
+                                            <Progress
+                                                percent={project.percentage}
+                                                size={["100%", 20]}
+                                                status={project.projectStatus === 'Hoàn thành' ? 'success' : project.projectStatus === 'Hủy' ? 'exception' : 'active'}
+                                            />
+                                        </div>
+                                    ))}
                             </div>
                         </CardContent>
                     </Card>

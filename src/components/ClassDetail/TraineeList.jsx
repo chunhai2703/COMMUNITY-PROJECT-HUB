@@ -202,7 +202,7 @@ const TraineeList = ({ dataClass }) => {
                 key: 'groupNo',
                 align: 'center',
                 sorter: true,
-                render: (text, record) => (text === 0 ? "Chưa có" : text),
+                render: (text, record) => (text === 0 ? <span style={{ color: 'red', fontWeight: 500 }}>Chưa có</span> : text),
 
             },
             {

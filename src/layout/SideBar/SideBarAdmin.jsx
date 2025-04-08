@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { SettingOutlined, HomeOutlined, FolderOutlined, MailOutlined, TeamOutlined, MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
+import { SettingOutlined, HomeOutlined, TeamOutlined, MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
@@ -43,27 +43,10 @@ export const SideBarAdmin = () => {
 
       ],
     },
-    // {
-    //   key: "message",
-    //   label: "Tin Nhắn",
-    //   icon: (
-    //     <MailOutlined style={{ fontSize: 18 }} />
-    //   ),
-    // }
+
   ];
 
-  // const onClick = (e) => {
-  //   console.log('click ', e);
-  //   if (e.key === 'home') {
-  //     navigate('/home-admin')
-  //   }
-  //   if (e.key === 'profile') {
-  //     navigate('/home-admin/view-profile')
-  //   }
-  //   if (e.key === 'account') {
-  //     navigate('/home-admin/account-management')
-  //   }
-  // };
+
   return (
     <Menu
       onClick={(e) => {

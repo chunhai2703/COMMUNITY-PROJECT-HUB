@@ -6,6 +6,7 @@ import { ProjectsList } from "./ProjectsList/ProjectsList";
 import { ProjectCreateForm } from "../../Popup/Project/ProjectCreateForm";
 import { Spinner } from "../../Spinner/Spinner";
 import { Select } from "antd";
+import useAuth from "../../../hooks/useAuth";
 
 const cx = classNames.bind(classes);
 
@@ -14,6 +15,7 @@ export const AllProjects = () => {
   const [filterField, setFilterField] = useState("");
   const [filterOrder, setFilterOrder] = useState("");
   const [projects, setProjects] = useState([]);
+  const { user } = useAuth();
   const [loading, setLoading] = useState(false);
 
   const fetchProjects = useCallback(async (searchQuery = "", filterField = "", filterOrder = "") => {
@@ -148,8 +150,7 @@ export const AllProjects = () => {
           />
 
         </div>
-
-        <ProjectCreateForm refresh={fetchProjects} />
+        {user && user?.roleId === 4 && <ProjectCreateForm refresh={fetchProjects} />}
       </div>
 
       <ProjectsList projects={projects} />

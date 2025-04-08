@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { SettingOutlined, HomeOutlined, FolderOutlined, MailOutlined, MenuFoldOutlined, MenuUnfoldOutlined, SolutionOutlined, SnippetsOutlined, CalendarOutlined } from '@ant-design/icons';
+import { SettingOutlined, HomeOutlined, FolderOutlined,MenuFoldOutlined, MenuUnfoldOutlined, SolutionOutlined, SnippetsOutlined, CalendarOutlined, MessageOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
@@ -75,9 +75,9 @@ export const SideBarStudent = () => {
       key: 'message',
       label: 'Tin Nhắn',
       icon: collapsed ? (
-        <MailOutlined style={{ fontSize: 20 }} />
+        <MessageOutlined  style={{ fontSize: 20 }} />
       ) : (
-        <MailOutlined style={{ fontSize: 18 }} />
+        <MessageOutlined  style={{ fontSize: 18 }} />
       ),
       onClick: () => navigate('/home-student/chat'),
     },

@@ -64,7 +64,7 @@ export const ClassTable = (props) => {
     } else if (user && (user?.roleId === 4)) {
       navigate(`/home-department-head/class-detail/${projectId}/${classId}`);
     } else if (user && (user?.roleId === 5)) {
-      navigate(`/home-asscociate/class-detail/${projectId}/${classId}`);
+      navigate(`/home-associate/class-detail/${projectId}/${classId}`);
     } else if (user && (user?.roleId === 6)) {
       navigate(`/home-business-relation/class-detail/${projectId}/${classId}`);
     }

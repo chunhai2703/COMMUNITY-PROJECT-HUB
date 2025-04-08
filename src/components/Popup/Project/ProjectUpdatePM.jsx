@@ -80,7 +80,7 @@ export const ProjectUpdatePM = (props) => {
       }
 
     } catch (error) {
-      console.error("Lỗi khi tạo dự án:", error);
+      console.error("Lỗi khi cập nhật quản lý dự án:", error);
       toast.error(error.message);
     }
   };

@@ -1,17 +1,17 @@
 import React from 'react';
 import { FileSyncOutlined, SyncOutlined } from '@ant-design/icons';
 import { Modal } from 'antd';
-import classes from './ProjectChangeStatus.module.css';
+import classes from './ProjectChangeProgressStatus.module.css';
 import classNames from 'classnames/bind';
 import { useNavigate, useParams } from 'react-router-dom';
-import { toUpComingProject } from '../../../services/ProjectsApi';
+import { toInProgressProject, toUpComingProject } from '../../../services/ProjectsApi';
 import { toast } from 'react-toastify';
 import useAuth from '../../../hooks/useAuth';
 
 
 const cx = classNames.bind(classes);
 
-export const ProjectChangeStatus = (props) => {
+export const ProjectChangeProgressStatus = (props) => {
   const [modal, contextHolder] = Modal.useModal();
   const params = useParams();
   const { user } = useAuth();
@@ -22,14 +22,14 @@ export const ProjectChangeStatus = (props) => {
     modal.confirm({
       title: 'Đổi trạng thái dự án',
       icon: <FileSyncOutlined />,
-      content: 'Bạn chắc chắn muốn đổi trạng thái dự án này sang "Sắp diễn ra" không?',
+      content: 'Bạn chắc chắn muốn đổi trạng thái dự án này sang "Đang diễn ra" không?',
       okText: 'Đồng ý',
       cancelText: 'Hủy',
       centered: true,
       okButtonProps: { style: { backgroundColor: '#034ea2' } },
       onOk: async () => {
         try {
-          await toUpComingProject(params.projectId);
+          await toInProgressProject(params.projectId);
           toast.success('Chuyển trạng thái dự án thành công');
           props.refreshProject();
           if (user && (user?.roleId === 2)) {
@@ -48,8 +48,8 @@ export const ProjectChangeStatus = (props) => {
 
   return (
     <>
-      <button className={cx('project-detail-status-change')} onClick={confirm}>
-        <SyncOutlined style={{ marginRight: '8px' }} /> Chuyển trạng thái
+      <button className={cx('project-detail-progress-status-change')} onClick={confirm}>
+        <SyncOutlined style={{ marginRight: '8px' }} /> Chuyển trạng thái(demo)
       </button>
       {contextHolder}
     </>

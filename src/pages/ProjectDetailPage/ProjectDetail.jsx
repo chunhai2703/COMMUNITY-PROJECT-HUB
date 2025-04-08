@@ -15,7 +15,7 @@ export const ProjectDetailPage = () => {
   return (
     <Suspense fallback={<Spinner />}>
       <Await resolve={currentProject}>
-        {(loadedProject) => <ProjectDetail project={loadedProject} />}
+        {(loadedProject) => <ProjectDetail project={loadedProject} refreshProject={setCurrentProject} />}
       </Await>
     </Suspense>
   );
