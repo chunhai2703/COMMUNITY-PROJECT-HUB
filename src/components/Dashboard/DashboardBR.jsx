@@ -21,7 +21,7 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import 'animate.css';
 import { Progress } from "antd";
-import { FolderFilled, UserOutlined } from "@ant-design/icons";
+import { FolderFilled, InboxOutlined, UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
 
@@ -173,9 +173,9 @@ export const DashboardBR = () => {
         </Grid>
 
         <Grid item xs={12} md={6}>
-          <Card className={cx('shortcut-card')} onClick={() => navigate('/home-business-relation/view-profile')} >
+          <Card className={cx('shortcut-card')} onClick={() => navigate('/home-business-relation/feedback-management')} >
             <CardContent>
-              <p className={cx('shortcut-title')} > <UserOutlined style={{ fontSize: '24px', color: '#FF9B17', marginRight: '10px' }} />Hồ sơ cá nhân</p>
+              <p className={cx('shortcut-title')} > <InboxOutlined style={{ fontSize: '24px', color: '#FF9B17', marginRight: '10px' }} />Quản lý đánh giá</p>
             </CardContent>
 
           </Card>

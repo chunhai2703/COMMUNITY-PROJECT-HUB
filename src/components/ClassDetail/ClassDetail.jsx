@@ -173,7 +173,7 @@ const ClassDetail = () => {
 
 
                     {(user.roleId === 3 && dataClass.getTraineeOfClassDTOs.some(trainee => trainee.accountId === user.accountId))
-                        && (activeTab === "changeGroup" && <ChangeGroup dataClass={dataClass} />
+                        && (activeTab === "changeGroup" && <ChangeGroup dataClass={dataClass} refresh={fetchGetClassDetail} />
                         )}
 
                     {(user.roleId === 4

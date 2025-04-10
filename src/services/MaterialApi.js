@@ -16,7 +16,7 @@ export const GetAllMaterial = async (projectId, searchValue, pageNumber, rowsPer
     }
 }
 
-export const CreateMaterial = async (data, projectId) => {
+export const CreateMaterial = async (data, projectId, accountId) => {
     try {
         var url = `${baseUrl}/api/Material/new-material`;
         const formData = new FormData();
@@ -25,6 +25,7 @@ export const CreateMaterial = async (data, projectId) => {
         if (data.file?.[0]) {
             formData.append("File", data.file[0]);
         }
+        formData.append("UpdatedBy", accountId);
 
         const request = {
             method: "POST",
@@ -40,7 +41,7 @@ export const CreateMaterial = async (data, projectId) => {
     }
 }
 
-export const UpdateMaterial = async (data, materialId, projectId) => {
+export const UpdateMaterial = async (data, materialId, projectId, accountId) => {
     try {
         var url = `${baseUrl}/api/Material/material-of-project`;
         const formData = new FormData();
@@ -50,6 +51,7 @@ export const UpdateMaterial = async (data, materialId, projectId) => {
         if (data.file?.[0]) {
             formData.append("File", data.file[0]);
         }
+        formData.append("UpdatedBy", accountId);
 
         const request = {
             method: "PUT",

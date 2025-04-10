@@ -105,7 +105,7 @@ export const MaterialTable = (props) => {
     const onSubmitCreate = async (data) => {
         setIsLoading(true);
 
-        const response = await CreateMaterial(data, projectId);
+        const response = await CreateMaterial(data, projectId, user?.accountId);
         const responseData = await response.json();
 
         if (response.ok) {
@@ -126,10 +126,10 @@ export const MaterialTable = (props) => {
         console.log(data, selectedMaterial.materialId, projectId)
 
         setIsLoading(true);
-        const response = await UpdateMaterial(data, selectedMaterial.materialId, projectId);
+        const response = await UpdateMaterial(data, selectedMaterial.materialId, projectId, user?.accountId);
         const responseData = await response.json();
         if (response.ok) {
-            toast.success("Cập nhật thành công")
+            toast.success("Cập nhật tài liệu thành công")
             fetchAllMaterial();
             handleUpdateClose();
         } else {
@@ -145,7 +145,7 @@ export const MaterialTable = (props) => {
         const response = await DeleteMaterial(selectedMaterial.materialId);
         const responseData = await response.json();
         if (response.ok) {
-            toast.success("Xóa thành công!");
+            toast.success("Xóa tài liệu thành công!");
             fetchAllMaterial();
             handleDeleteClose();
         } else {
@@ -191,6 +191,12 @@ export const MaterialTable = (props) => {
                     <DownloadOutlined style={{ marginLeft: 2 }} />
                 </a>
             ),
+        },
+        {
+            title: 'Người chỉnh sửa',
+            dataIndex: 'uploadedFullName',
+            key: 'uploadedFullName',
+            align: 'center',
         },
         {
             title: '',

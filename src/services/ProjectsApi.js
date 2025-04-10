@@ -313,6 +313,30 @@ export async function toInProgressProject(projectId) {
   }
 }
 
+export async function toEndProject(projectId) {
+  try {
+    const response = await fetch(`${baseUrl}/api/Project/to-end-status?projectId=${projectId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+      },
+    })
+    const resData = await response.json();
+
+    if (!response.ok) {
+      throw new Error(resData.result || resData.message || "Lỗi không xác định từ API");
+    }
+
+    console.log("Trạng thái dự án cập nhật thành công:", resData);
+    return resData;
+
+  } catch (error) {
+    console.error("❌ Lỗi khi chuyển trạng thái dự án:", error.result || error.message);
+    throw new Error(error.result || error.message || "Có lỗi xảy ra khi chuyển trạng thái");
+  }
+}
+
 export const ExportFinalReportProject = async (projectId) => {
   try {
     var url = `${baseUrl}/api/Project/export-final-report-of-project?projectId=${projectId}`;

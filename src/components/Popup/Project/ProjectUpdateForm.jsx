@@ -8,7 +8,7 @@ import {
 import { } from '@mui/icons-material';
 import { Controller, useForm } from 'react-hook-form';
 import { EditOutlined } from '@ant-design/icons';
-import { searchAssociate} from '../../../services/AssignApi';
+import { searchAssociate } from '../../../services/AssignApi';
 import { updateProject } from '../../../services/ProjectsApi';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -90,6 +90,7 @@ export const ProjectUpdateForm = (props) => {
       toast.success("Dự án đã được cập nhật thành công!");
       handleClose();
       reset();
+      props.refreshProject();
       if (user && (user?.roleId === 2)) {
         navigate(`/home-lecturer/project-detail/${projectId}`);
       } else if (user && (user?.roleId === 4)) {
