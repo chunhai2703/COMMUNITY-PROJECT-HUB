@@ -265,7 +265,7 @@ const DashboardDepartmentHead = () => {
                                             <Progress
                                                 percent={project.percentage}
                                                 size={["100%", 20]}
-                                                status={project.projectStatus === 'Hoàn thành' ? 'success' : project.projectStatus === 'Hủy' ? 'exception' : 'active'}
+                                                status={project.projectStatus === 'Kết thúc' ? 'success' : project.projectStatus === 'Hủy' ? 'exception' : 'active'}
                                             />
                                         </div>
                                     ))}
