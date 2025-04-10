@@ -65,6 +65,7 @@ export const AssignLecturer = (props) => {
       toast.success("Giảng viên đã được phân công thành công!");
       handleClose();
       reset();
+      props.refresh();
       if (user && (user?.roleId === 2)) {
         navigate(`/home-lecturer/project-detail/${props.project.projectId}`);
       } else if (user && (user?.roleId === 4)) {
