@@ -112,14 +112,14 @@ export const DashboardTrainee = () => {
 
       <Banner />
       <div className={cx('shortcut-container')}>
-        <Card className={cx('shortcut-card')} size="default">
-          <p className={cx('shortcut-title')} onClick={() => navigate('/home-trainee/all-related-projects')}> <ProjectFilled style={{ fontSize: '20px', color: '#60B5FF', marginRight: '10px' }} /> Dự Án Của Tôi</p>
+        <Card className={cx('shortcut-card')} size="default" onClick={() => navigate('/home-trainee/all-related-projects')}>
+          <p className={cx('shortcut-title')} > <ProjectFilled style={{ fontSize: '20px', color: '#60B5FF', marginRight: '10px' }} /> Dự Án Của Tôi</p>
         </Card>
-        <Card className={cx('shortcut-card')} size="default" >
-          <p className={cx('shortcut-title')} onClick={() => navigate('/home-trainee/my-classes')}> <SnippetsFilled style={{ fontSize: '20px', color: '#FF9B17', marginRight: '10px' }} /> Lớp học của tôi</p>
+        <Card className={cx('shortcut-card')} size="default" onClick={() => navigate('/home-trainee/my-classes')}>
+          <p className={cx('shortcut-title')} > <SnippetsFilled style={{ fontSize: '20px', color: '#FF9B17', marginRight: '10px' }} /> Lớp học của tôi</p>
         </Card>
-        <Card className={cx('shortcut-card')} size="default" >
-          <p className={cx('shortcut-title')} onClick={() => navigate('/home-trainee/my-schedule')}> <CalendarFilled style={{ fontSize: '20px', color: '#AEEA94', marginRight: '10px' }} /> Thời khóa biểu</p>
+        <Card className={cx('shortcut-card')} size="default" onClick={() => navigate('/home-trainee/my-schedule')}>
+          <p className={cx('shortcut-title')}> <CalendarFilled style={{ fontSize: '20px', color: '#AEEA94', marginRight: '10px' }} /> Thời khóa biểu</p>
         </Card>
       </div>
       <div className={cx('collapse-container')}>

@@ -6,45 +6,32 @@ import {
 } from "@mui/material";
 import { RemoveCircleOutline, AddCircleOutline } from "@mui/icons-material";
 import { Controller, useForm, useFieldArray } from "react-hook-form";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import { Button, message } from "antd";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import classes from "./LessonUpdateForm.module.css";
+import classes from "./FeedbackCreateForm.module.css";
 import classNames from "classnames/bind";
 import { updateLesson } from "../../../services/LessonApi";
 
 const cx = classNames.bind(classes);
 
-export const LessonUpdateForm = (props) => {
+export const FeedbackCreateForm = (props) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-   const [messageApi, contextHolder] = message.useMessage();
+  const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
 
   const { handleSubmit, control, reset, formState: { errors } } = useForm({
     defaultValues: {
-      lessonList: props.project.lessons.map(lesson => ({
-        value: lesson.lessonContent
-      }))
+      answerList: [''] // Khởi tạo một input mặc định
     }
   });
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "lessonList"
+    name: "answerList"
   });
-
-  // Khi props.project.lessons thay đổi, cập nhật lại form
-  useEffect(() => {
-    if (props.project.lessons) {
-      reset({
-        lessonList: props.project.lessons.map(lesson => ({
-          value: lesson.lessonContent,  // Chỉ lấy lessonContent để hiển thị
-        }))
-      });
-    }
-  }, [props.project.lessons, reset]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -56,78 +43,102 @@ export const LessonUpdateForm = (props) => {
 
   const onSubmit = async (data) => {
     try {
-      setLoading(true);
       console.log("Dữ liệu gửi lên:", data);
 
       // Tạo payload đúng định dạng API yêu cầu
       const payload = {
         projectId: props.project.projectId,
-        lessonOfProject: data.lessonList.map(lesson => lesson.value)
+        lessonOfProject: data.answerList.map(lesson => lesson.value)
       };
 
       console.log("Payload trước khi gửi:", JSON.stringify(payload, null, 2));
 
       await updateLesson(payload);
-      setLoading(false);
+
       toast.success("Nội dung dự án đã được cập nhật!");
       handleClose();
       reset();
       navigate(`/home-department-head/project-detail/${props.project.projectId}`);
     } catch (error) {
-      setLoading(false);
       console.error("Lỗi khi cập nhật nội dung dự án :", error);
-     if (error.result && error.result.length > 0) {
-             messageApi.open({
-               type: 'error',
-               title: 'Thông báo lỗi',
-               content: (
-                 <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-start' }}>
-                   {Array.isArray(error.result) ? (
-                     error.result.map((err, index) => <p key={index}>{err}</p>)
-                   ) : (
-                     <p>{error.result}</p>
-                   )}
-                 </div>
-               ),
-             });
-           } else {
-             toast.error(error.message);
-           }
+      if (error.result && error.result.length > 0) {
+        messageApi.open({
+          type: 'error',
+          title: 'Thông báo lỗi',
+          content: (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-start' }}>
+              {Array.isArray(error.result) ? (
+                error.result.map((err, index) => <p key={index}>{err}</p>)
+              ) : (
+                <p>{error.result}</p>
+              )}
+            </div>
+          ),
+        });
+      } else {
+        toast.error(error.message);
+      }
     }
   };
 
 
   return (
     <React.Fragment>
-      <button className={cx("update-lesson-button")} onClick={handleClickOpen}>
-        <EditOutlined color="white" size={20} style={{ marginRight: "5px" }} />
-        Chỉnh sửa
+      <button className={cx('create-feedback-button')} onClick={handleClickOpen}>
+        <PlusCircleOutlined color='white' size={20} style={{ marginRight: '5px' }} />
+        Tạo câu hỏi
       </button>
       {contextHolder}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle style={{ backgroundColor: "#474D57", color: "white" }}>
-          Cập nhật nội dung dự án
+          Tạo câu hỏi
         </DialogTitle>
         <DialogContent>
-          <form className={cx("update-lesson-form")}>
-            {/* Danh sách nội dung */}
-            <Typography variant="h6" sx={{ mt: 4, mb: 2 }}>
-              Danh sách nội dung
-            </Typography>
+          <form className={cx("create-feedback-form")}>
+
+            {/* Câu hỏi */}
+            <Controller
+              name="question"
+              id="question"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: 'Vui lòng nhập câu hỏi',
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Câu hỏi"
+                  variant="outlined"
+                  fullWidth
+                  required
+                  margin="normal"
+                  type='text'
+                  multiline
+                  rows={2}
+                  error={!!errors.question}
+                  helperText={errors.question?.message}
+                />
+              )}
+            />
+            {/* Danh sách đáp án */}
+            <Typography variant="h6" sx={{ mt: 4, mb: 2 }}>Các đáp án</Typography>
 
             {fields.map((field, index) => (
               <Box key={field.id} sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
                 <Controller
-                  name={`lessonList.${index}.value`}
+                  name={`answerList.${index}.value`}
+                  value={field.value || ""}
                   control={control}
-                  defaultValue={field.value} // ✅ Gán giá trị mặc định
+                  defaultValue=""  // ✅ Đảm bảo giá trị mặc định là chuỗi rỗng
+                  rules={{ required: "Vui lòng nhập đáp án" }}
                   render={({ field }) => (
                     <TextField
                       {...field}
-                      label={`Nội dung ${index + 1}`}
+                      label={`Đáp án ${index + 1}`}
                       fullWidth
-                      error={!!errors.lessonList?.[index]}
-                      helperText={errors.lessonList?.[index]?.message}
+                      error={!!errors.answerList?.[index]}
+                      helperText={errors.answerList?.[index]?.message}
                     />
                   )}
                 />
@@ -142,8 +153,9 @@ export const LessonUpdateForm = (props) => {
               icon={<AddCircleOutline />}
               onClick={() => append({ value: "" })}
             >
-              Thêm nội dung
+              Thêm đáp án
             </Button>
+
           </form>
         </DialogContent>
         <DialogActions>
@@ -156,7 +168,7 @@ export const LessonUpdateForm = (props) => {
                 <CircularProgress size={24} sx={{ color: "white" }} />
               </div>
             ) : (
-              "Cập nhật"
+              "Tạo mới"
             )}
           </button>
         </DialogActions>

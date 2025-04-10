@@ -425,36 +425,6 @@ export const ProjectCreateForm = (props) => {
                 />
               )}
             />
-
-            {/* Upload File
-            <Typography variant="h6" sx={{ mt: 4, mb: 2 }}>Trainees</Typography>
-            <Controller
-              name="trainees"
-              control={control}
-              defaultValue={[]}
-              rules={{
-                required: 'Vui lòng chọn file để import',
-              }}
-              render={({ field }) => (
-                <div>
-                  <Upload
-                    name="file"
-                    accept=".xls,.xlsx"
-                    action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
-                    headers={{ authorization: 'authorization-text' }}
-                    fileList={field.value}
-                    onChange={(info) => {
-                      field.onChange(info.fileList);
-                    }}
-                    beforeUpload={() => false}
-                  >
-                    <Button icon={<UploadOutlined />} type='primary'>Nhấn vào để upload</Button>
-                  </Upload>
-                  {errors.trainees && <p style={{ color: "red" }}>{errors.trainees.message}</p>}
-                </div>
-              )}
-            /> */}
-
             {/* Danh sách bài học */}
             <Typography variant="h6" sx={{ mt: 4, mb: 2 }}>Danh sách nội dung</Typography>
 

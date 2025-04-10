@@ -46,11 +46,12 @@ import { ErrorPageBR } from "../pages/ErrorPage/ErrorPageBR";
 import { LayoutAssociate } from "../layout/layout/LayoutAssociate";
 import { HomeAssociate } from "../pages/HomePage/HomeAssociate";
 import { ErrorPageAssociate } from "../pages/ErrorPage/ErrorPageAssociate";
+import { FeedbackBR } from "../pages/FeedbackPage/FeedbackBR";
 
 
 
 export const router = createBrowserRouter([
-  
+
   //Path for Guest
   {
     path: "/",
@@ -412,6 +413,11 @@ export const router = createBrowserRouter([
       {
         path: "class-detail/:projectId/:classId",
         element: <ClassDetailPage />,
+        errorElement: <ErrorPageBR />
+      },
+      {
+        path: "feedback-management",
+        element: <FeedbackBR />,
         errorElement: <ErrorPageBR />
       },
       {

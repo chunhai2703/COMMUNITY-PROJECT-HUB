@@ -47,7 +47,7 @@ export const ProjectStandard = (props) => {
     reset()
   };
 
-  
+
   useEffect(() => {
     reset({
       maxAbsent: props.project?.maxAbsentPercentage,
@@ -66,16 +66,9 @@ export const ProjectStandard = (props) => {
       setLoading(false);
       toast.success("Tiêu chuẩn đánh giá kết quả đã được cập nhật thành công!");
       handleClose();
+      reset();
       props.refresh();
       props.refreshMaterial();
-      reset();
-      // if (user && (user?.roleId === 2)) {
-      //   navigate(`/home-lecturer/project-detail/${projectId}/material`);
-      // } else if (user && (user?.roleId === 4)) {
-      //   navigate(`/home-department-head/project-detail/${projectId}/material`);
-      // } else if (user && (user?.roleId === 6)) {
-      //   navigate(`/home-business-relation/project-detail/${projectId}/material`);
-      // }
       navigate(`/home-business-relation/project-detail/${projectId}/material`)
     } catch (error) {
       setLoading(false);

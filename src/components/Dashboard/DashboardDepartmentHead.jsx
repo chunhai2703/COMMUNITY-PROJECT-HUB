@@ -260,8 +260,8 @@ const DashboardDepartmentHead = () => {
                             <div className="mt-6 flex flex-col gap-6 md:gap-8">
                                 {progressProjectList &&
                                     progressProjectList.map((project) => (
-                                        <div key={project.id} className="w-full">
-                                            <p className="text-lg md:text-xl mb-2 md:mb-3">{project.projectName}</p>
+                                        <div key={project.projectId} className="w-full">
+                                            <p className="text-lg md:text-xl mb-2 md:mb-3" >{project.projectName}</p>
                                             <Progress
                                                 percent={project.percentage}
                                                 size={["100%", 20]}

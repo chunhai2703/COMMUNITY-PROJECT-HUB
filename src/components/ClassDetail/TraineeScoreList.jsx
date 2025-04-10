@@ -325,13 +325,13 @@ const TraineeScoreList = ({ dataClass }) => {
                             )
                         )}
                         {user.roleId === 5
-                            && dataClass.projectStatus === 'Kết thúc' && (
+                            && dataClass.projectStatus === 'Đang diễn ra' && (
                                 <Button size='large' color="primary" variant="contained" style={{ backgroundColor: "#d45b13", color: "white", boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)", marginRight: "8px" }} onClick={handleExportAttendance}>
                                     <ExportOutlined color='white' size={20} style={{ marginRight: '5px' }} />
                                     Export
                                 </Button>
                             )}
-                        {user.roleId === 5 && dataClass.projectStatus === 'Kết thúc' && (
+                        {user.roleId === 5 && dataClass.projectStatus === 'Đang diễn ra' && (
                             <ImportAttendance classId={classId} refresh={fetchAllTraineeScoreList} />
                         )}
                     </div>

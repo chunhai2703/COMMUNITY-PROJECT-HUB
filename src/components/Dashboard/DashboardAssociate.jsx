@@ -127,7 +127,7 @@ export const DashboardAssociate = () => {
         <h2 className={cx('greeting', 'animate__animated animate__lightSpeedInRight')}>
           <span className={cx('greeting-text')}>Xin chào, </span>
           <span className={cx('greeting-role')}>bên đối tác </span>
-          <span className={cx('greeting-name')}>{user?.fullName}</span> !
+          <span className={cx('greeting-name')}>{user?.associateName}</span> !
         </h2>
 
         {/* 📅 Hiển thị ngày giờ hiện tại */}
