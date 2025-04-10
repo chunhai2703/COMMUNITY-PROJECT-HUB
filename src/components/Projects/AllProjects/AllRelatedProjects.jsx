@@ -27,7 +27,7 @@ export const AllRelatedProjects = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:5145/api/Project/all-related-project?searchValue=${query}&userId=${user.accountId}&filterField=${filterField}&filterOrder=${filterOrder}`,
+        `https://communityprojecthubdemo.azurewebsites.net/api/Project/all-related-project?searchValue=${query}&userId=${user.accountId}&filterField=${filterField}&filterOrder=${filterOrder}`,
         {
           headers: {
             'Content-Type': 'application/json',
