@@ -131,7 +131,7 @@ const DashboardPM = () => {
                                             <Progress
                                                 percent={project.percentage}
                                                 size={["100%", 20]} // Đảm bảo thanh progress co giãn theo màn hình 
-                                                status={project.projectStatus === 'Hoàn thành' ? 'success' : project.projectStatus === 'Hủy' ? 'exception' : 'active'}
+                                                status={project.projectStatus === 'Kết thúc' ? 'success' : project.projectStatus === 'Hủy' ? 'exception' : 'active'}
                                             />
                                         </div>
                                     ))}
