@@ -19,7 +19,7 @@ export const MyRegistration = (props) => {
 
     try {
       const response = await fetch(
-        `http://localhost:5145/api/Registration/registrations?accountId=${user.accountId}&search=${query}`,
+        `https://communityprojecthubdemo.azurewebsites.net/api/Registration/registrations?accountId=${user.accountId}&search=${query}`,
         {
           headers: {
             'Content-Type': 'application/json',

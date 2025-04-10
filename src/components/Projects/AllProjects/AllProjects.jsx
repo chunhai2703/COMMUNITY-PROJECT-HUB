@@ -22,7 +22,7 @@ export const AllProjects = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:5145/api/Project/all-project?searchValue=${searchQuery}&filterField=${filterField}&filterOrder=${filterOrder}`,
+        `https://communityprojecthubdemo.azurewebsites.net/api/Project/all-project?searchValue=${searchQuery}&filterField=${filterField}&filterOrder=${filterOrder}`,
         {
           method: "GET",
           headers: {

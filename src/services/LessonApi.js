@@ -1,7 +1,7 @@
 export async function updateLesson(payload) {
   console.log("Gửi request:", JSON.stringify(payload, null, 2));
 
-  const response = await fetch('http://localhost:5145/api/Lesson', {
+  const response = await fetch('https://communityprojecthubdemo.azurewebsites.net/api/Lesson', {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
