@@ -113,7 +113,7 @@ export const FeedbackUpdateForm = (props) => {
       {contextHolder}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle style={{ backgroundColor: "#474D57", color: "white" }}>
-          Tạo câu hỏi
+          Cập nhật câu hỏi
         </DialogTitle>
         <DialogContent>
           <form className={cx("update-feedback-form")}>
