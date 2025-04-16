@@ -6,7 +6,7 @@ import {
 import { RemoveCircleOutline, AddCircleOutline } from '@mui/icons-material';
 import { Controller, useForm, useFieldArray } from 'react-hook-form';
 import { PlusCircleOutlined, UploadOutlined } from '@ant-design/icons';
-import { Button, Upload, message } from 'antd';
+import { Button, Slider, Upload, message } from 'antd';
 import classes from './ProjectCreateForm.module.css'
 import classNames from 'classnames/bind';
 import { searchAssociate, searchLeturers } from '../../../services/AssignApi';
@@ -87,9 +87,9 @@ export const ProjectCreateForm = (props) => {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-  
+
       console.log("Dữ liệu projectManager trước khi gửi:", data.projectManager);
-  
+
       // Tạo object JSON thay vì FormData
       const payload = {
         title: data.title,
@@ -101,20 +101,22 @@ export const ProjectCreateForm = (props) => {
         address: data.address,
         projectManagerId: data?.projectManager?.accountId || null,
         associateId: data?.associate?.accountId || null,
+        minLessonTime: data?.minLessonTime,
+        maxLessonTime: data?.maxLessonTime,
         lessonList: data.lessonList.map(lesson => lesson.value).filter(Boolean) // Loại bỏ giá trị rỗng
       };
-  
+
       console.log("Dữ liệu payload trước khi gửi:", payload);
-  
-      await createProject(payload); 
-  
+
+      await createProject(payload);
+
       toast.success("Dự án đã được tạo thành công!");
       setLoading(false);
       handleClose();
       reset();
       props.refresh();
       navigate('/home-department-head/projects');
-  
+
     } catch (error) {
       setLoading(false);
       console.error("Lỗi khi tạo dự án:", error);
@@ -425,6 +427,77 @@ export const ProjectCreateForm = (props) => {
                 />
               )}
             />
+
+            {/* Thời lượng tối thiểu cho từng nội dung */}
+            <Controller
+              name="minLessonTime"
+              id="minLessonTime"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: 'Vui lòng nhập thời lượng tối thiểu cho từng nội dung',
+                validate: value => {
+                  if (value <= 0) {
+                    return 'Thời lượng tối thiểu phải lớn hơn 0';
+                  }
+                  if (value >= 1000) {
+                    return 'Thời lượng tối thiểu phải nhỏ hơn 1000';
+                  }
+                  return true; // Nếu tất cả các điều kiện đều đúng
+                },
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Thời lượng tối thiểu"
+                  placeholder='phút/nội dung'
+                  variant="outlined"
+                  fullWidth
+                  required
+                  margin="normal"
+                  type='number'
+                  error={!!errors.minLessonTime}
+                  helperText={errors.minLessonTime?.message}
+                />
+              )}
+            />
+
+
+
+            {/* Thời lượng tối đa cho từng nội dung  */}
+            <Controller
+              name="maxLessonTime"
+              id="maxLessonTime"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: 'Vui lòng nhập thời lượng tối đa cho từng nội dung',
+                validate: value => {
+                  if (value <= 0) {
+                    return 'Thời lượng tối đa phải lớn hơn 0';
+                  }
+                  if (value >= 1000) {
+                    return 'Thời lượng tối đa phải nhỏ hơn 1000';
+                  }
+                  return true; // Nếu tất cả các điều kiện đều đúng
+                },
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Thời lượng tối đa"
+                  placeholder='phút/nội dung'
+                  variant="outlined"
+                  fullWidth
+                  required
+                  margin="normal"
+                  type='number'
+                  error={!!errors.maxLessonTime}
+                  helperText={errors.maxLessonTime?.message}
+                />
+              )}
+            />
+
             {/* Danh sách bài học */}
             <Typography variant="h6" sx={{ mt: 4, mb: 2 }}>Danh sách nội dung</Typography>
 

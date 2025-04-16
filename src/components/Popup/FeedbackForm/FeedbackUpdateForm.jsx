@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import classes from "./FeedbackUpdateForm.module.css";
 import classNames from "classnames/bind";
 import { updateLesson } from "../../../services/LessonApi";
+import { updateQuestionOfProject } from "../../../services/FeedbackApi";
 
 const cx = classNames.bind(classes);
 
@@ -22,9 +23,15 @@ export const FeedbackUpdateForm = (props) => {
   const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
 
+  console.log(props.question);
+
+
   const { handleSubmit, control, reset, formState: { errors } } = useForm({
     defaultValues: {
-      answerList: [''] // Khởi tạo một input mặc định
+      answerList: props.question?.anwserList?.map(answer => ({
+        answerId: answer.answerId,
+        value: answer.answerContent
+      }))
     }
   });
 
@@ -33,34 +40,49 @@ export const FeedbackUpdateForm = (props) => {
     name: "answerList"
   });
 
+
   const handleClickOpen = () => {
     setOpen(true);
+    if (props.question.answerList) {
+      reset({
+        question: props.question.questionContent,
+        answerList: props.question.anwserList.map(answer => ({
+          answerId: answer.answerId,
+          value: answer.answerContent
+        }))
+      });
+    }
   };
-
   const handleClose = () => {
     setOpen(false);
+    if (props.question.answerList) {
+      reset({
+        question: props.question.questionContent,
+        answerList: props.question.anwserList.map(answer => ({
+          answerId: answer.answerId,
+          value: answer.answerContent
+        }))
+      });
+    }
   };
 
   const onSubmit = async (data) => {
     try {
+      setLoading(true);
       console.log("Dữ liệu gửi lên:", data);
 
-      // Tạo payload đúng định dạng API yêu cầu
-      const payload = {
-        projectId: props.project.projectId,
-        lessonOfProject: data.answerList.map(lesson => lesson.value)
-      };
-
-      console.log("Payload trước khi gửi:", JSON.stringify(payload, null, 2));
-
-      await updateLesson(payload);
-
-      toast.success("Nội dung dự án đã được cập nhật!");
+      await updateQuestionOfProject(props.question.questionId, data.question, data.answerList.map(answer =>
+        answer.value
+      ));
+      setLoading(false);
+      toast.success("Nội dung câu hỏi đã được cập nhật!");
       handleClose();
       reset();
-      navigate(`/home-department-head/project-detail/${props.project.projectId}`);
+      props.refresh()
+      navigate(`/home-business-relation/feedback-management`);
     } catch (error) {
-      console.error("Lỗi khi cập nhật nội dung dự án :", error);
+      setLoading(false);
+      console.error("Lỗi khi cập nhật nội dung câu hỏi :", error);
       if (error.result && error.result.length > 0) {
         messageApi.open({
           type: 'error',
@@ -101,7 +123,7 @@ export const FeedbackUpdateForm = (props) => {
               name="question"
               id="question"
               control={control}
-              defaultValue=""
+              defaultValue={props.question.questionContent}
               rules={{
                 required: 'Vui lòng nhập câu hỏi',
               }}
@@ -125,12 +147,10 @@ export const FeedbackUpdateForm = (props) => {
             <Typography variant="h6" sx={{ mt: 3, mb: 2 }}>Các đáp án</Typography>
 
             {fields.map((field, index) => (
-              <Box key={field.id} sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
+              <Box key={field.answerId} sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
                 <Controller
                   name={`answerList.${index}.value`}
-                  value={field.value || ""}
                   control={control}
-                  defaultValue=""  // ✅ Đảm bảo giá trị mặc định là chuỗi rỗng
                   rules={{ required: "Vui lòng nhập đáp án" }}
                   render={({ field }) => (
                     <TextField

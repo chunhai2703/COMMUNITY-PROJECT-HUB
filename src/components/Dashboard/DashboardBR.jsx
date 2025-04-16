@@ -252,7 +252,7 @@ export const DashboardBR = () => {
               <div className="mt-6 flex flex-col gap-6 md:gap-8">
                 {progressProjectList &&
                   progressProjectList.map((project) => (
-                    <div key={project.id} className="w-full">
+                    <div key={project.projectId} className="w-full" onClick={() => navigate(`/home-business-relation/project-detail/${project.projectId}`)}>
                       <p className="text-lg md:text-xl mb-2 md:mb-3">{project.projectName}</p>
                       <Progress
                         percent={project.percentage}

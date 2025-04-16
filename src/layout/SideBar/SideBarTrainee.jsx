@@ -51,6 +51,12 @@ export const SideBarTrainee = () => {
       onClick: () => navigate('/home-trainee/change-class'),
     },
     {
+      key: 'feedback',
+      label: 'Đánh giá lớp học',
+      icon: <MailOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
+      onClick: () => navigate('/home-trainee/project-feedback'),
+    },
+    {
       key: 'setting',
       label: 'Cài Đặt',
       icon: <SettingOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
@@ -63,18 +69,12 @@ export const SideBarTrainee = () => {
       ],
     },
     {
-      key: 'feedback',
-      label: 'Đánh giá lớp học',
-      icon: <MailOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
-      // onClick: () => navigate('/home-trainee/change-class'),
-    },
-    {
       key: 'message',
       label: 'Tin Nhắn',
       icon: collapsed ? (
-       <MessageOutlined  style={{ fontSize: 20 }} />
+        <MessageOutlined style={{ fontSize: 20 }} />
       ) : (
-       <MessageOutlined  style={{ fontSize: 18 }} />
+        <MessageOutlined style={{ fontSize: 18 }} />
       ),
       onClick: () => navigate('/home-trainee/chat'),
     },

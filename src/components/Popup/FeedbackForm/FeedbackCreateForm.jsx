@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import classes from "./FeedbackCreateForm.module.css";
 import classNames from "classnames/bind";
 import { updateLesson } from "../../../services/LessonApi";
+import { createQuestionOfProject } from "../../../services/FeedbackApi";
 
 const cx = classNames.bind(classes);
 
@@ -43,23 +44,18 @@ export const FeedbackCreateForm = (props) => {
 
   const onSubmit = async (data) => {
     try {
+      setLoading(true);
       console.log("Dữ liệu gửi lên:", data);
 
-      // Tạo payload đúng định dạng API yêu cầu
-      const payload = {
-        projectId: props.project.projectId,
-        lessonOfProject: data.answerList.map(lesson => lesson.value)
-      };
-
-      console.log("Payload trước khi gửi:", JSON.stringify(payload, null, 2));
-
-      await updateLesson(payload);
-
-      toast.success("Nội dung dự án đã được cập nhật!");
+      await createQuestionOfProject(data.question, data.answerList.map(lesson => lesson.value));
+      setLoading(false);
+      toast.success("Câu hỏi đã được tạo thành công!");
       handleClose();
       reset();
-      navigate(`/home-department-head/project-detail/${props.project.projectId}`);
+      props.refresh()
+      navigate(`/home-business-relation/feedback-management`);
     } catch (error) {
+      setLoading(false);
       console.error("Lỗi khi cập nhật nội dung dự án :", error);
       if (error.result && error.result.length > 0) {
         messageApi.open({

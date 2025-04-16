@@ -47,6 +47,7 @@ import { LayoutAssociate } from "../layout/layout/LayoutAssociate";
 import { HomeAssociate } from "../pages/HomePage/HomeAssociate";
 import { ErrorPageAssociate } from "../pages/ErrorPage/ErrorPageAssociate";
 import { FeedbackBR } from "../pages/FeedbackPage/FeedbackBR";
+import { FeedbackTrainee } from "../pages/FeedbackPage/FeedbackTrainee";
 
 
 
@@ -348,6 +349,11 @@ export const router = createBrowserRouter([
       {
         path: "class-detail/:projectId/:classId",
         element: <ClassDetailPage />,
+        errorElement: <ErrorPageTrainee />
+      },
+      {
+        path: 'project-feedback',
+        element: <FeedbackTrainee />,
         errorElement: <ErrorPageTrainee />
       },
       {

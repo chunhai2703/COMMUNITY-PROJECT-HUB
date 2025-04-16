@@ -79,6 +79,8 @@ export const ProjectUpdateForm = (props) => {
       formData.append("applicationEndDate", data.applicationEndDate);
       formData.append("address", data.address);
       formData.append("associateId", data?.associate?.accountId ? String(data.associate.accountId) : '');
+      formData.append('minLessonTime', data.minLessonTime);
+      formData.append('maxLessonTime', data.maxLessonTime);
 
 
       console.log("Dữ liệu formData trước khi gửi:");
@@ -362,6 +364,74 @@ export const ProjectUpdateForm = (props) => {
                       }}
                     />
                   )}
+                />
+              )}
+            />
+
+            {/* Thời lượng tối thiểu cho từng nội dung */}
+            <Controller
+              name="minLessonTime"
+              id="minLessonTime"
+              control={control}
+              defaultValue={props.project.minLessonTime}
+              rules={{
+                required: 'Vui lòng nhập thời lượng tối thiểu cho từng nội dung',
+                validate: value => {
+                  if (value <= 0) {
+                    return 'Thời lượng tối thiểu phải lớn hơn 0';
+                  }
+                  if (value >= 1000) {
+                    return 'Thời lượng tối thiểu phải nhỏ hơn 1000';
+                  }
+                  return true; // Nếu tất cả các điều kiện đều đúng
+                },
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Thời lượng tối thiểu"
+                  placeholder='phút/nội dung'
+                  variant="outlined"
+                  fullWidth
+                  required
+                  margin="normal"
+                  type='number'
+                  error={!!errors.minLessonTime}
+                  helperText={errors.minLessonTime?.message}
+                />
+              )}
+            />
+
+            {/* Thời lượng tối đa cho từng nội dung  */}
+            <Controller
+              name="maxLessonTime"
+              id="maxLessonTime"
+              control={control}
+              defaultValue={props.project.maxLessonTime}
+              rules={{
+                required: 'Vui lòng nhập thời lượng tối đa cho từng nội dung',
+                validate: value => {
+                  if (value <= 0) {
+                    return 'Thời lượng tối đa phải lớn hơn 0';
+                  }
+                  if (value >= 1000) {
+                    return 'Thời lượng tối đa phải nhỏ hơn 1000';
+                  }
+                  return true; // Nếu tất cả các điều kiện đều đúng
+                },
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Thời lượng tối đa"
+                  placeholder='phút/nội dung'
+                  variant="outlined"
+                  fullWidth
+                  required
+                  margin="normal"
+                  type='number'
+                  error={!!errors.maxLessonTime}
+                  helperText={errors.maxLessonTime?.message}
                 />
               )}
             />
