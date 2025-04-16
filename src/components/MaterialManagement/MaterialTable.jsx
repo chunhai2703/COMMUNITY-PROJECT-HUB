@@ -285,7 +285,7 @@ export const MaterialTable = (props) => {
                             column={1}
                             title="📋 Tiêu chuẩn đánh giá kết quả"
                             size="default"
-                            extra={user?.roleId === 6 && dataProject?.status === 'Lên kế hoạch' ? <ProjectStandard project={dataProject} refresh={fetchProjectDetail} refreshMaterial={fetchAllMaterial} /> : null}
+                            extra={user?.roleId === 4 && dataProject?.status === 'Lên kế hoạch' ? <ProjectStandard project={dataProject} refresh={fetchProjectDetail} refreshMaterial={fetchAllMaterial} /> : null}
                             items={items}
                         />
                     </ConfigProvider>

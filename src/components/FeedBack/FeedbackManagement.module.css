@@ -1,15 +1,15 @@
-.change-class-container {
+.feedback-management-container {
   display: flex;
   flex-direction: column;
   gap: 20px;
   padding: 1rem;
   margin-top: 10px;
 }
-.change-class-title {
+.feedback-management-title {
   font-size: 2rem;
   letter-spacing: 5px;
 }
-.change-class-search {
+.feedback-management-search {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -45,6 +45,12 @@
   width: 100px;
   cursor: pointer;
 }
+
+.answer-list {
+  list-style: upper-latin;
+  text-align: left;
+}
+
 .action-icon {
   display: flex;
   align-items: center;

@@ -8,6 +8,7 @@ import { Spinner } from "../../Spinner/Spinner";
 import { Select } from "antd";
 
 const cx = classNames.bind(classes);
+const baseUrl = process.env.REACT_APP_API_URL;
 
 export const AllAvailableProjects = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -28,7 +29,7 @@ export const AllAvailableProjects = () => {
 
     try {
       const response = await fetch(
-        `https://communityprojecthubdemo.azurewebsites.net/api/Project/available-project?userId=${user.accountId}&searchValue=${searchQuery}&filterField=${filterField}&filterOrder=${filterOrder}`,
+        `${baseUrl}/api/Project/available-project?userId=${user.accountId}&searchValue=${searchQuery}&filterField=${filterField}&filterOrder=${filterOrder}`,
         {
           method: "GET",
           headers: {

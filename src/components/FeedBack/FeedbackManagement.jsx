@@ -7,9 +7,9 @@ import classNames from 'classnames/bind'
 import { FeedbackUpdateForm } from '../Popup/FeedbackForm/FeedbackUpdateForm';
 import { FeedbackDeleteForm } from '../Popup/FeedbackForm/FeedbackDeleteForm';
 import useAuth from '../../hooks/useAuth';
-import { getAllClassesOfTrainee } from '../../services/ClassApi';
 import { Spinner } from '../Spinner/Spinner';
 import { FeedbackCreateForm } from '../Popup/FeedbackForm/FeedbackCreateForm';
+import { getAllQuestionOfProject } from '../../services/FeedbackApi';
 
 const cx = classNames.bind(classes)
 
@@ -17,42 +17,63 @@ export const FeedbackManage = () => {
   const { user } = useAuth();
   const ITEMS_PER_PAGE = 3;
   const [pageNumber, setPageNumber] = useState(1);
-  const [classList, setClassList] = useState([]);
-  const [searchValue, setSearchValue] = useState("")
+  const [questionList, setQuestionList] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
 
 
-  const fetchAllClassesOfTrainee = useCallback(async () => {
-    const response = await getAllClassesOfTrainee(user.accountId, searchValue);
-    if (response.isSuccess) {
-      setClassList(response.result);
-    } else {
-      setClassList([]);
-      console.error("Lỗi khi lấy các lớp của học viên:", response.message);
+  const fetchAllQuestionOfProject = useCallback(async (search = '') => {
+    try {
+      setLoading(true);
+      const response = await getAllQuestionOfProject(search);
+
+      if (response.isSuccess) {
+        setQuestionList(response.result || []);
+      } else {
+        setQuestionList([]);
+      }
+
+    } catch (error) {
+      console.error("Lỗi khi lấy các câu hỏi:", error);
+      setQuestionList([]);
+    } finally {
+      setLoading(false);
     }
-  }, [user.accountId, searchValue]);
+  }, []);
 
-  const handleInputSearch = debounce((e) => {
-    setSearchValue(e.target.value);
-    setPageNumber(1);
-  }, 500);
 
   useEffect(() => {
-    if (user) {
-      fetchAllClassesOfTrainee();
-    }
-  }, [fetchAllClassesOfTrainee, user]);
 
-  const getMenuItems = () => [
+    fetchAllQuestionOfProject();
+
+  }, [fetchAllQuestionOfProject]);
+
+  useEffect(() => {
+    const delaySearch = setTimeout(() => {
+      fetchAllQuestionOfProject(searchValue);
+    }, 500);
+
+    return () => clearTimeout(delaySearch);
+  }, [searchValue, fetchAllQuestionOfProject]);
+
+  // Xử lý khi nhấn nút tìm kiếm
+  const handleSearch = () => {
+    fetchAllQuestionOfProject(searchValue);
+  };
+
+
+
+  const getMenuItems = (record) => [
     {
       key: '1',
       label: (
-        <FeedbackUpdateForm />
+        <FeedbackUpdateForm question={record} refresh={fetchAllQuestionOfProject} />
       ),
     },
     {
       key: '2',
       label: (
-        <FeedbackDeleteForm />
+        <FeedbackDeleteForm question={record} refresh={fetchAllQuestionOfProject} />
       ),
     },
   ];
@@ -61,29 +82,29 @@ export const FeedbackManage = () => {
   const columns = [
     {
       title: "STT",
-      dataIndex: "classId",
-      key: "classId",
+      dataIndex: "questionId",
+      key: "questionId",
       align: "center",
       render: (_, __, index) => index + 1 + (pageNumber - 1) * ITEMS_PER_PAGE,
     },
     {
-      title: 'Lớp',
-      dataIndex: 'classCode',
-      key: 'classCode',
+      title: 'Câu hỏi',
+      dataIndex: 'questionContent',
+      key: 'questionContent',
       align: 'center',
     },
     {
-      title: 'Dự án',
-      dataIndex: 'projectTitle',
-      key: 'projectTitle',
+      title: 'Đáp án',
+      key: 'anwserList',
+      dataIndex: 'anwserList',
       align: 'center',
-    },
-    {
-      title: 'Giảng viên',
-      dataIndex: 'lecturerName',
-      key: 'lecturerName',
-      align: 'center',
-      render: (lecturerName) => lecturerName ?? <span style={{ color: 'red', fontWeight: 500 }}>Chưa được cập nhật</span>
+      render: (_, record) => (
+        <ol className={cx('answer-list')}>
+          {record.anwserList.map(answer => (
+            <li className={cx('answer-item')} key={answer.answerId}>{answer.answerContent}</li>
+          ))}
+        </ol>
+      )
     },
     {
       title: '',
@@ -97,21 +118,23 @@ export const FeedbackManage = () => {
     },
   ];
 
-  if (!user) {
+  if (!user || loading) {
     return <Spinner />
   }
 
   return (
-    <div className={cx('change-class-container')}>
-      <h2 className={cx("change-class-title")}>Danh sách câu hỏi</h2>
-      <div className={cx('change-class-search')}>
+    <div className={cx('feedback-management-container')}>
+      <h2 className={cx("feedback-management-title")}>Danh sách câu hỏi đánh giá</h2>
+      <div className={cx('feedback-management-search')}>
         <div className={cx('search-box-container')}>
           <div className={cx('search-box')}>
             <input
               type="search"
               placeholder="Tìm kiếm câu hỏi"
               className={cx('search-input')}
-              onChange={(e) => handleInputSearch(e)}
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
             />
           </div>
           <button className={cx('search-button')}>
@@ -119,7 +142,7 @@ export const FeedbackManage = () => {
             Tìm kiếm
           </button>
         </div>
-        <FeedbackCreateForm />
+        <FeedbackCreateForm refresh={fetchAllQuestionOfProject} />
       </div>
 
       <ConfigProvider
@@ -135,14 +158,14 @@ export const FeedbackManage = () => {
         <Table
           size='large'
           columns={columns}
-          rowKey={record => record.classId}
-          dataSource={classList}
+          rowKey={record => record.questionId}
+          dataSource={questionList}
           pagination={{
             position: ['bottomCenter'],
-            current: pageNumber, // Dùng pageNumber thay vì fix cứng current: 1
+            current: pageNumber,
             pageSize: ITEMS_PER_PAGE,
-            total: classList.length,
-            onChange: (page) => setPageNumber(page), // Cập nhật pageNumber khi người dùng bấm chuyển trang
+            total: questionList.length,
+            onChange: (page) => setPageNumber(page),
           }}
         />
       </ConfigProvider>

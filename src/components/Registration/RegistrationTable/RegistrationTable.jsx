@@ -38,7 +38,7 @@ export const RegistrationTable = () => {
 
   const fetchAllClassesOfProject = useCallback(async () => {
     const response = await GetAllRegistrationOfProject(projectId, searchValue, pageNumber, rowsPerPage);
-    const responseData = await response.json();
+    const responseData = await response.json(); 
 
     if (response.ok) {
       setRegistrationList(responseData.result.registrations);

@@ -1,7 +1,10 @@
 import React from 'react'
 import { Button, Result } from 'antd';
 import { useNavigate, useRouteError } from 'react-router-dom';
+import classNames from 'classnames/bind';
+import classes from './ErrorPage.module.css'
 
+const cx = classNames.bind(classes);
 export const ErrorPageStudent = () => {
   const error = useRouteError();
   const navigate = useNavigate();
@@ -16,12 +19,16 @@ export const ErrorPageStudent = () => {
     message = "Không tìm thấy tài nguyên hoặc trang bạn yêu cầu.";
   }
   return (
-    <Result
-      status={error.status || "404"}
-      title={error.status || "404"}
-      subTitle={message}
-      extra={<Button type="primary" onClick={() => navigate('/home-student')}>Trở về</Button>}
-    />
+    <div className={cx('error-page')}>
+      <Result
+        status={error.status || "404"}
+        title={error.status || "404"}
+        subTitle={message}
+        extra={<Button type="primary" onClick={() => navigate('/home-student')}>Trở về</Button>}
+      />
+
+    </div>
+
   )
 
 }

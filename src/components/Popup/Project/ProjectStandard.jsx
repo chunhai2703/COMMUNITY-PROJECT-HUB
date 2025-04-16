@@ -69,7 +69,7 @@ export const ProjectStandard = (props) => {
       reset();
       props.refresh();
       props.refreshMaterial();
-      navigate(`/home-business-relation/project-detail/${projectId}/material`)
+      navigate(`/home-department-head/project-detail/${projectId}/material`)
     } catch (error) {
       setLoading(false);
       console.error("Lỗi khi cập nhật tiêu chuẩn đánh giá kết quả:", error);
