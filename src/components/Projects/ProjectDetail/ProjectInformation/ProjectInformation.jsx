@@ -87,6 +87,10 @@ export const ProjectInformation = (props) => {
 
         <p className={cx('project-number-lesson')}><span className={cx('number-lesson-label', 'label')}>Tổng số buổi học :</span> <span className={cx('number-lesson-content', 'content')}>{props.project.numberLesson} buổi</span></p>
 
+        <p className={cx('project-min-lesson-time')}><span className={cx('min-lesson-time-label', 'label')}>Thời gian tối thiểu :</span> <span className={cx('min-lesson-time-content', 'content')}>{props.project.minLessonTime} phút/buổi</span></p>
+
+        <p className={cx('project-max-lesson-time')}><span className={cx('max-lesson-time-label', 'label')}>Thời gian tối đa :</span> <span className={cx('max-lesson-time-content', 'content')}>{props.project.maxLessonTime} phút/buổi</span></p>
+
         <p className={cx('project-number-trainee')}><span className={cx('number-trainee-label', 'label')}>Tổng số học viên :</span> <span className={cx('number-trainee-content', 'content')}>{props.project.totalNumberTrainee} người</span></p>
 
         <p className={cx('project-number-teacher')}><span className={cx('number-teacher-label', 'label')}>Tổng số giáo viên :</span> <span className={cx('number-teacher-content', 'content')}>{props.project.totalNumberLecturer} người</span></p>
