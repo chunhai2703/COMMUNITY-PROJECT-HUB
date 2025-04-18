@@ -16,7 +16,10 @@ import AccountManagementPage from "../pages/AccountManagementPage/AccountManagem
 import { ErrorPageDH } from "../pages/ErrorPage/ErrorPageDH";
 import { ErrorPageAdmin } from "../pages/ErrorPage/ErrorPageAdmin";
 import { ErrorPageLogin } from "../pages/ErrorPage/ErrorPageLogin";
-import { Projectsloader as projectLoader, ProjectDetailsLoader as projectDetailLoader } from "../services/ProjectsApi";
+import {
+  Projectsloader as projectLoader,
+  ProjectDetailsLoader as projectDetailLoader,
+} from "../services/ProjectsApi";
 import ClassDetailPage from "../pages/ClassDetailPage/ClassDetailPage";
 import MaterialManagementPage from "../pages/MaterialManagementPage/MaterialManagementPage";
 import MemberManagementPage from "../pages/MemberManagementPage/MemberManagementPage";
@@ -47,141 +50,149 @@ import { LayoutAssociate } from "../layout/layout/LayoutAssociate";
 import { HomeAssociate } from "../pages/HomePage/HomeAssociate";
 import { ErrorPageAssociate } from "../pages/ErrorPage/ErrorPageAssociate";
 import { FeedbackBR } from "../pages/FeedbackPage/FeedbackBR";
-import { FeedbackTrainee } from "../pages/FeedbackPage/FeedbackTrainee";
-
-
+import { FeedbackTraineePage } from "../pages/FeedbackPage/FeedbackTrainee";
+import { ProjectFeedbackTrainee } from "../pages/FeedbackPage/ProjectFeedbackTrainee";
 
 export const router = createBrowserRouter([
-
   //Path for Guest
   {
     path: "/",
-    element: <GuestAuth><LoginPage /></GuestAuth>,
-    errorElement: <ErrorPageLogin />
+    element: (
+      <GuestAuth>
+        <LoginPage />
+      </GuestAuth>
+    ),
+    errorElement: <ErrorPageLogin />,
   },
-
 
   //Path for Department Head
   {
     path: "/home-department-head",
-    element: <RoleBasedGuard accessibleRoles={['Department Head']} status="active"><LayoutDH /></RoleBasedGuard>,
+    element: (
+      <RoleBasedGuard accessibleRoles={["Department Head"]} status="active">
+        <LayoutDH />
+      </RoleBasedGuard>
+    ),
     errorElement: <ErrorPageDH />,
     children: [
       {
         index: true,
-        element: <HomeDH />
+        element: <HomeDH />,
       },
       {
         path: "projects",
         element: <ProjectsDH />,
         loader: projectLoader,
-        errorElement: <ErrorPageDH />
+        errorElement: <ErrorPageDH />,
       },
       {
         path: "project-detail/:projectId",
         element: <ProjectDetailPage />,
         loader: projectDetailLoader,
-        errorElement: <ErrorPageDH />
+        errorElement: <ErrorPageDH />,
       },
       {
         path: "view-profile",
         element: <ViewProfilePage />,
-        errorElement: <ErrorPageDH />
+        errorElement: <ErrorPageDH />,
       },
       {
         path: "class-detail/:projectId/:classId",
         element: <ClassDetailPage />,
-        errorElement: <ErrorPageDH />
+        errorElement: <ErrorPageDH />,
       },
       {
         path: "project-detail/:projectId/material",
         element: <MaterialManagementPage />,
-        errorElement: <ErrorPageDH />
+        errorElement: <ErrorPageDH />,
       },
       {
         path: "project-detail/:projectId/member-list",
         element: <MemberManagementPage />,
-        errorElement: <ErrorPageDH />
+        errorElement: <ErrorPageDH />,
       },
       {
         path: "project-detail/:projectId/project-log",
         element: <ProjectLog />,
-        errorElement: <ErrorPageDH />
+        errorElement: <ErrorPageDH />,
       },
       {
-        path: "*", // Bắt tất cả các đường dẫn không xác định trong 
+        path: "*", // Bắt tất cả các đường dẫn không xác định trong
         element: <ErrorPageDH />,
-      }
-    ]
+      },
+    ],
   },
-
 
   //Path for Lecturer
   {
     path: "/home-lecturer",
-    element: <RoleBasedGuard accessibleRoles={['Lecturer']} status="active"><LayoutLecturer /></RoleBasedGuard>,
+    element: (
+      <RoleBasedGuard accessibleRoles={["Lecturer"]} status="active">
+        <LayoutLecturer />
+      </RoleBasedGuard>
+    ),
     errorElement: <ErrorPageLecturer />,
     children: [
       {
         index: true,
         element: <HomeLecturer />,
-        errorElement: <ErrorPageLecturer />
+        errorElement: <ErrorPageLecturer />,
       },
       {
         path: "all-related-projects",
         element: <RelatedProjects />,
-        errorElement: <ErrorPageLecturer />
+        errorElement: <ErrorPageLecturer />,
       },
       {
         path: "all-available-projects",
         element: <AvailableProjects />,
-        errorElement: <ErrorPageLecturer />
+        errorElement: <ErrorPageLecturer />,
       },
       {
         path: "project-detail/:projectId",
         element: <ProjectDetailPage />,
         loader: projectDetailLoader,
-        errorElement: <ErrorPageLecturer />
+        errorElement: <ErrorPageLecturer />,
       },
       {
-        path: 'project-registration/:projectId',
+        path: "project-registration/:projectId",
         element: <ProjectRegistrationPage />,
-        errorElement: <ErrorPageLecturer />
+        errorElement: <ErrorPageLecturer />,
       },
       {
         path: "my-registration",
         element: <MyRegistrationPage />,
-        errorElement: <ErrorPageLecturer />
+        errorElement: <ErrorPageLecturer />,
       },
       {
         path: "my-classes",
         element: <MyClasses />,
-        errorElement: <ErrorPageLecturer />
+        errorElement: <ErrorPageLecturer />,
       },
       {
         path: "my-schedule",
         element: <SchedulePage />,
-        errorElement: <ErrorPageLecturer />
+        errorElement: <ErrorPageLecturer />,
       },
       {
         path: "class-detail/:projectId/:classId",
         element: <ClassDetailPage />,
-        errorElement: <ErrorPageLecturer />
+        errorElement: <ErrorPageLecturer />,
       },
       {
         path: "project-detail/:projectId/material",
         element: <MaterialManagementPage />,
-        errorElement: <ErrorPageLecturer />
+        errorElement: <ErrorPageLecturer />,
       },
       {
         path: "project-detail/:projectId/member-list",
         element: <MemberManagementPage />,
-        errorElement: <ErrorPageLecturer />
+        errorElement: <ErrorPageLecturer />,
       },
       {
         path: "project-detail/:projectId/project-log",
         element: <ProjectLog />,
-        errorElement: <ErrorPageLecturer />
+        errorElement: <ErrorPageLecturer />,
       },
       {
         path: "chat",
@@ -195,82 +206,86 @@ export const router = createBrowserRouter([
           {
             path: ":classId",
             element: <ChatContent />,
-          }
-        ]
+          },
+        ],
       },
       {
         path: "view-profile",
         element: <ViewProfilePage />,
-        errorElement: <ErrorPageLecturer />
+        errorElement: <ErrorPageLecturer />,
       },
       {
         path: "change-password",
         element: <ChangePasswordPage />,
-        errorElement: <ErrorPageLecturer />
+        errorElement: <ErrorPageLecturer />,
       },
       {
         path: "dashboard",
         element: <DashboardPMPage />,
-        errorElement: <ErrorPageLecturer />
+        errorElement: <ErrorPageLecturer />,
       },
       {
-        path: "*", // Bắt tất cả các đường dẫn không xác định 
-        element: <ErrorPageLecturer />
+        path: "*", // Bắt tất cả các đường dẫn không xác định
+        element: <ErrorPageLecturer />,
       },
-    ]
+    ],
   },
 
   //Path for Student
   {
     path: "/home-student",
-    element: <RoleBasedGuard accessibleRoles={['Student']} status="active"><LayoutStudent /></RoleBasedGuard>,
+    element: (
+      <RoleBasedGuard accessibleRoles={["Student"]} status="active">
+        <LayoutStudent />
+      </RoleBasedGuard>
+    ),
     errorElement: <ErrorPageStudent />,
     children: [
       {
         index: true,
         element: <HomeStudent />,
-        errorElement: <ErrorPageStudent />
+        errorElement: <ErrorPageStudent />,
       },
       {
         path: "all-related-projects",
         element: <RelatedProjects />,
-        errorElement: <ErrorPageStudent />
+        errorElement: <ErrorPageStudent />,
       },
       {
         path: "all-available-projects",
         element: <AvailableProjects />,
-        errorElement: <ErrorPageStudent />
+        errorElement: <ErrorPageStudent />,
       },
       {
         path: "project-detail/:projectId",
         element: <ProjectDetailPage />,
         loader: projectDetailLoader,
-        errorElement: <ErrorPageStudent />
+        errorElement: <ErrorPageStudent />,
       },
       {
         path: "project-detail/:projectId/material",
         element: <MaterialManagementPage />,
-        errorElement: <ErrorPageStudent />
+        errorElement: <ErrorPageStudent />,
       },
       {
         path: "my-registration",
         element: <MyRegistrationPage />,
-        errorElement: <ErrorPageStudent />
+        errorElement: <ErrorPageStudent />,
       },
       {
         path: "my-schedule",
         element: <SchedulePage />,
-        errorElement: <ErrorPageStudent />
+        errorElement: <ErrorPageStudent />,
       },
       {
         path: "my-classes",
         element: <MyClasses />,
-        errorElement: <ErrorPageStudent />
+        errorElement: <ErrorPageStudent />,
       },
       {
         path: "class-detail/:projectId/:classId",
         element: <ClassDetailPage />,
-        errorElement: <ErrorPageStudent />
+        errorElement: <ErrorPageStudent />,
       },
       {
         path: "chat",
@@ -284,77 +299,90 @@ export const router = createBrowserRouter([
           {
             path: ":classId",
             element: <ChatContent />,
-          }
-        ]
+          },
+        ],
       },
       {
         path: "view-profile",
         element: <ViewProfilePage />,
-        errorElement: <ErrorPageStudent />
+        errorElement: <ErrorPageStudent />,
       },
       {
         path: "change-password",
         element: <ChangePasswordPage />,
-        errorElement: <ErrorPageStudent />
+        errorElement: <ErrorPageStudent />,
       },
       {
-        path: "*", // Bắt tất cả các đường dẫn không xác định 
-        element: <ErrorPageStudent />
+        path: "*", // Bắt tất cả các đường dẫn không xác định
+        element: <ErrorPageStudent />,
       },
-    ]
+    ],
   },
 
   //Path for Trainee
   {
     path: "/home-trainee",
-    element: <RoleBasedGuard accessibleRoles={['Trainee']} status="active"><LayoutTrainee /></RoleBasedGuard>,
+    element: (
+      <RoleBasedGuard accessibleRoles={["Trainee"]} status="active">
+        <LayoutTrainee />
+      </RoleBasedGuard>
+    ),
     errorElement: <ErrorPageTrainee />,
     children: [
       {
         index: true,
         element: <HomeTrainee />,
-        errorElement: <ErrorPageTrainee />
+        errorElement: <ErrorPageTrainee />,
       },
       {
         path: "all-related-projects",
         element: <RelatedProjects />,
-        errorElement: <ErrorPageTrainee />
+        errorElement: <ErrorPageTrainee />,
       },
       {
         path: "project-detail/:projectId",
         element: <ProjectDetailPage />,
         loader: projectDetailLoader,
-        errorElement: <ErrorPageTrainee />
+        errorElement: <ErrorPageTrainee />,
       },
       {
         path: "project-detail/:projectId/material",
         element: <MaterialManagementPage />,
-        errorElement: <ErrorPageTrainee />
+        errorElement: <ErrorPageTrainee />,
       },
       {
         path: "my-schedule",
         element: <SchedulePage />,
-        errorElement: <ErrorPageTrainee />
+        errorElement: <ErrorPageTrainee />,
       },
       {
         path: "my-classes",
         element: <MyClasses />,
-        errorElement: <ErrorPageTrainee />
+        errorElement: <ErrorPageTrainee />,
       },
       {
         path: "change-class",
         element: <ChangeClassPage />,
-        errorElement: <ErrorPageTrainee />
+        errorElement: <ErrorPageTrainee />,
       },
       {
         path: "class-detail/:projectId/:classId",
         element: <ClassDetailPage />,
-        errorElement: <ErrorPageTrainee />
+        errorElement: <ErrorPageTrainee />,
       },
       {
-        path: 'project-feedback',
-        element: <FeedbackTrainee />,
-        errorElement: <ErrorPageTrainee />
+        path: "project-feedback",
+        errorElement: <ErrorPageTrainee />,
+        children: [
+          {
+            index: true,
+            element: <FeedbackTraineePage />,
+          },
+          {
+            path: ":projectId",
+            element: <ProjectFeedbackTrainee />,
+          },
+        ],
       },
       {
         path: "chat",
@@ -368,170 +396,181 @@ export const router = createBrowserRouter([
           {
             path: ":classId",
             element: <ChatContent />,
-          }
-        ]
+          },
+        ],
       },
       {
         path: "view-profile",
         element: <ViewProfilePage />,
-        errorElement: <ErrorPageTrainee />
+        errorElement: <ErrorPageTrainee />,
       },
       {
         path: "change-password",
         element: <ChangePasswordPage />,
-        errorElement: <ErrorPageTrainee />
+        errorElement: <ErrorPageTrainee />,
       },
       {
-        path: "*", // Bắt tất cả các đường dẫn không xác định 
-        element: <ErrorPageTrainee />
+        path: "*", // Bắt tất cả các đường dẫn không xác định
+        element: <ErrorPageTrainee />,
       },
-    ]
+    ],
   },
 
   //Path for Business Relation
   {
     path: "/home-business-relation",
-    element: <RoleBasedGuard accessibleRoles={['Business Relation']} status="active"><LayoutBR /></RoleBasedGuard>,
+    element: (
+      <RoleBasedGuard accessibleRoles={["Business Relation"]} status="active">
+        <LayoutBR />
+      </RoleBasedGuard>
+    ),
     errorElement: <ErrorPageBR />,
     children: [
       {
         index: true,
         element: <HomeBR />,
-        errorElement: <ErrorPageBR />
+        errorElement: <ErrorPageBR />,
       },
       {
         path: "projects",
         element: <ProjectsDH />,
         loader: projectLoader,
-        errorElement: <ErrorPageBR />
+        errorElement: <ErrorPageBR />,
       },
       {
         path: "project-detail/:projectId",
         element: <ProjectDetailPage />,
         loader: projectDetailLoader,
-        errorElement: <ErrorPageBR />
+        errorElement: <ErrorPageBR />,
       },
       {
         path: "project-detail/:projectId/material",
         element: <MaterialManagementPage />,
-        errorElement: <ErrorPageBR />
+        errorElement: <ErrorPageBR />,
       },
       {
         path: "class-detail/:projectId/:classId",
         element: <ClassDetailPage />,
-        errorElement: <ErrorPageBR />
+        errorElement: <ErrorPageBR />,
       },
       {
         path: "feedback-management",
         element: <FeedbackBR />,
-        errorElement: <ErrorPageBR />
+        errorElement: <ErrorPageBR />,
       },
       {
         path: "view-profile",
         element: <ViewProfilePage />,
-        errorElement: <ErrorPageBR />
+        errorElement: <ErrorPageBR />,
       },
       {
         path: "change-password",
         element: <ChangePasswordPage />,
-        errorElement: <ErrorPageBR />
+        errorElement: <ErrorPageBR />,
       },
       {
-        path: "*", // Bắt tất cả các đường dẫn không xác định 
-        element: <ErrorPageBR />
+        path: "*", // Bắt tất cả các đường dẫn không xác định
+        element: <ErrorPageBR />,
       },
-    ]
+    ],
   },
 
   //Path for Associate
   {
     path: "/home-associate",
-    element: <RoleBasedGuard accessibleRoles={['Associate']} status="active"><LayoutAssociate /></RoleBasedGuard>,
+    element: (
+      <RoleBasedGuard accessibleRoles={["Associate"]} status="active">
+        <LayoutAssociate />
+      </RoleBasedGuard>
+    ),
     errorElement: <ErrorPageAssociate />,
     children: [
       {
         index: true,
         element: <HomeAssociate />,
-        errorElement: <ErrorPageAssociate />
+        errorElement: <ErrorPageAssociate />,
       },
       {
         path: "all-related-projects",
         element: <RelatedProjects />,
-        errorElement: <ErrorPageAssociate />
+        errorElement: <ErrorPageAssociate />,
       },
       {
         path: "project-detail/:projectId",
         element: <ProjectDetailPage />,
         loader: projectDetailLoader,
-        errorElement: <ErrorPageAssociate />
+        errorElement: <ErrorPageAssociate />,
       },
       {
         path: "project-detail/:projectId/material",
         element: <MaterialManagementPage />,
-        errorElement: <ErrorPageAssociate />
+        errorElement: <ErrorPageAssociate />,
       },
       {
         path: "class-detail/:projectId/:classId",
         element: <ClassDetailPage />,
-        errorElement: <ErrorPageAssociate />
+        errorElement: <ErrorPageAssociate />,
       },
       {
         path: "view-profile",
         element: <ViewProfilePage />,
-        errorElement: <ErrorPageAssociate />
+        errorElement: <ErrorPageAssociate />,
       },
       {
         path: "change-password",
         element: <ChangePasswordPage />,
-        errorElement: <ErrorPageAssociate />
+        errorElement: <ErrorPageAssociate />,
       },
       {
-        path: "*", // Bắt tất cả các đường dẫn không xác định 
-        element: <ErrorPageAssociate />
+        path: "*", // Bắt tất cả các đường dẫn không xác định
+        element: <ErrorPageAssociate />,
       },
-    ]
+    ],
   },
-
 
   //Path for Admin
   {
     path: "/home-admin",
-    element: <RoleBasedGuard accessibleRoles={['Admin']} status="active" > <LayoutAdmin /></RoleBasedGuard>,
+    element: (
+      <RoleBasedGuard accessibleRoles={["Admin"]} status="active">
+        {" "}
+        <LayoutAdmin />
+      </RoleBasedGuard>
+    ),
     errorElement: <ErrorPageAdmin />,
     children: [
       {
         index: true,
         element: <HomeAdmin />,
-        errorElement: <ErrorPageAdmin />
+        errorElement: <ErrorPageAdmin />,
       },
       {
         path: "view-profile",
         element: <ViewProfilePage />,
-        errorElement: <ErrorPageAdmin />
+        errorElement: <ErrorPageAdmin />,
       },
       {
         path: "change-password",
         element: <ChangePasswordPage />,
-        errorElement: <ErrorPageAdmin />
+        errorElement: <ErrorPageAdmin />,
       },
       {
         path: "account-management",
         element: <AccountManagementPage />,
-        errorElement: <ErrorPageAdmin />
+        errorElement: <ErrorPageAdmin />,
       },
       {
-        path: "*", // Bắt tất cả các đường dẫn không xác định 
-        element: <ErrorPageAdmin />
-      }
-    ]
+        path: "*", // Bắt tất cả các đường dẫn không xác định
+        element: <ErrorPageAdmin />,
+      },
+    ],
   },
-
 
   //Path for forgot password
   {
     path: "/forgot-password",
     element: <ForgotPasswordPage />,
-    errorElement: <ErrorPage />
+    errorElement: <ErrorPage />,
   },
 
   // {
@@ -539,4 +578,3 @@ export const router = createBrowserRouter([
   //   element: <ErrorPage />,
   // }
 ]);
-
