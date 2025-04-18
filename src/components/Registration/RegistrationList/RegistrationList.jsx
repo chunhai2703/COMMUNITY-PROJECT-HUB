@@ -25,7 +25,6 @@ export const RegistrationList = (props) => {
                 Result: {
                   iconFontSize: "40px",
                   colorInfo: "grey",
-                  align: "center",
                 },
               },
             }}
