@@ -5,20 +5,24 @@
   padding: 1rem;
   margin-top: 10px;
 }
+
 .project-log-title {
   letter-spacing: 5px;
   font-size: 2rem;
 }
+
 .project-log-search {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
+
 .search-box-container {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
 }
+
 .search-box {
   display: flex;
   align-items: center;
@@ -28,6 +32,7 @@
   padding: 5px 10px;
   width: 300px;
 }
+
 .search-box input {
   border: none;
   outline: none;
@@ -35,6 +40,7 @@
   padding: 5px;
   font-size: 16px;
 }
+
 .search-button {
   color: white;
   background-color: #474d57;
@@ -45,6 +51,7 @@
   width: 100px;
   cursor: pointer;
 }
+
 .action-icon {
   display: flex;
   align-items: center;
