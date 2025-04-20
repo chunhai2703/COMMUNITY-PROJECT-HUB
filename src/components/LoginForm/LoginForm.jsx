@@ -58,9 +58,19 @@ export const LoginForm = () => {
             <Link to="/forgot-password" className={cx("forgot-password")}>
               Quên Mật Khẩu ?
             </Link>
-            <button className={cx("login-button")} type="submit" disabled={isLoading}>
+            <button
+              className={cx("login-button")}
+              type="submit"
+              disabled={isLoading}
+            >
               {isLoading ? (
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
                   <CircularProgress size={24} sx={{ color: "white" }} />
                 </div>
               ) : (
@@ -70,7 +80,12 @@ export const LoginForm = () => {
           </form>
           <div className={cx("login-form-image")}>
             <img src={loginImg} alt="Login" className={cx("login-img")} />
-            <h2 style={{ color: "#4e9bbb", fontSize: "20px", fontWeight: "600" }} className={cx("login-img-title")}>Community Project Hub</h2>
+            <h2
+              style={{ color: "#4e9bbb", fontSize: "20px", fontWeight: "600" }}
+              className={cx("login-img-title")}
+            >
+              Community Project Hub
+            </h2>
           </div>
         </div>
       </div>

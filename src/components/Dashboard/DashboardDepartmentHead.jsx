@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import { Spinner } from "../Spinner/Spinner";
 import { Card, CardContent, Grid, Typography } from "@mui/material";
@@ -22,6 +22,8 @@ import timezone from 'dayjs/plugin/timezone';
 import 'animate.css';
 import { Line } from "rc-progress";
 import { Progress } from "antd";
+import { CalendarFilled, FolderFilled, ProjectFilled, SnippetsFilled, UserOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 const cx = classNames.bind(classes);
 
@@ -42,6 +44,7 @@ const DashboardDepartmentHead = () => {
     const [amountProjectWithStatus, setAmountProjectWithStatus] = useState([]);
     const [currentTime, setCurrentTime] = useState(dayjs().tz('Asia/Ho_Chi_Minh'));
     const [progressProjectList, setProgressProjectList] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         // 🕒 Cập nhật thời gian mỗi giây
@@ -51,6 +54,66 @@ const DashboardDepartmentHead = () => {
 
         return () => clearInterval(interval); // 🛑 Dọn dẹp interval khi component unmount
     }, []);
+
+    const fetchAmountOfLecturer = useCallback(async () => {
+        const response = await GetAmountOfLecturer();
+        if (response.ok) {
+            const responseData = await response.json();
+            setAmountLecturer(responseData.result);
+        } else {
+            console.error("Error when getting amount of lecturer");
+        }
+    }, []);
+
+    const fetchAmountOfStudent = useCallback(async () => {
+        const response = await GetAmountOfStudent();
+        if (response.ok) {
+            const responseData = await response.json();
+            setAmountStudent(responseData.result);
+        } else {
+            console.error("Error when getting amount of student");
+        }
+    }, []);
+
+    const fetchAmountOfTrainee = useCallback(async () => {
+        const response = await GetAmountOfTrainee(user.accountId);
+        if (response.ok) {
+            const responseData = await response.json();
+            setAmountTrainee(responseData.result);
+        } else {
+            console.error("Error when getting amount of trainee");
+        }
+    }, [user]);
+
+    const fetchAmountOfProject = useCallback(async () => {
+        const response = await GetAmountOfProject(user.accountId);
+        if (response.ok) {
+            const responseData = await response.json();
+            setAmountProject(responseData.result);
+        } else {
+            console.error("Error when getting amount of project");
+        }
+    }, [user]);
+
+    const fetchAmountProjectWithStatus = useCallback(async () => {
+        const response = await GetAmountProjectWithStatus(user.accountId);
+        if (response.ok) {
+            const responseData = await response.json();
+            setAmountProjectWithStatus(responseData.result);
+        } else {
+            console.error("Error when getting amount of project with status");
+        }
+    }, [user]);
+
+    const fetchProgressProjectList = useCallback(async () => {
+        const response = await GetProgressOfAllProject(user.accountId);
+        if (response.ok) {
+            const responseData = await response.json();
+            setProgressProjectList(responseData.result);
+        } else {
+            console.error("Error when getting progress of project");
+        }
+    }, [user]);
 
     useEffect(() => {
         if (user) {
@@ -63,67 +126,9 @@ const DashboardDepartmentHead = () => {
             fetchProgressProjectList();
             setIsLoading(false);
         }
-    }, [user]);
+    }, [user, fetchAmountOfLecturer, fetchAmountOfStudent, fetchAmountOfTrainee, fetchAmountOfProject, fetchAmountProjectWithStatus, fetchProgressProjectList]);
 
-    const fetchAmountOfLecturer = async () => {
-        const response = await GetAmountOfLecturer();
-        if (response.ok) {
-            const responseData = await response.json();
-            setAmountLecturer(responseData.result);
-        } else {
-            console.error("Error when getting amount of lecturer");
-        }
-    };
 
-    const fetchAmountOfStudent = async () => {
-        const response = await GetAmountOfStudent();
-        if (response.ok) {
-            const responseData = await response.json();
-            setAmountStudent(responseData.result);
-        } else {
-            console.error("Error when getting amount of student");
-        }
-    };
-
-    const fetchAmountOfTrainee = async () => {
-        const response = await GetAmountOfTrainee(user.accountId);
-        if (response.ok) {
-            const responseData = await response.json();
-            setAmountTrainee(responseData.result);
-        } else {
-            console.error("Error when getting amount of trainee");
-        }
-    };
-
-    const fetchAmountOfProject = async () => {
-        const response = await GetAmountOfProject(user.accountId);
-        if (response.ok) {
-            const responseData = await response.json();
-            setAmountProject(responseData.result);
-        } else {
-            console.error("Error when getting amount of project");
-        }
-    };
-
-    const fetchAmountProjectWithStatus = async () => {
-        const response = await GetAmountProjectWithStatus(user.accountId);
-        if (response.ok) {
-            const responseData = await response.json();
-            setAmountProjectWithStatus(responseData.result);
-        } else {
-            console.error("Error when getting amount of project with status");
-        }
-    };
-
-    const fetchProgressProjectList = async () => {
-        const response = await GetProgressOfAllProject(user.accountId);
-        if (response.ok) {
-            const responseData = await response.json();
-            setProgressProjectList(responseData.result);
-        } else {
-            console.error("Error when getting progress of project");
-        }
-    };
 
     if (!user || isLoading) {
         return <Spinner />;
@@ -165,7 +170,26 @@ const DashboardDepartmentHead = () => {
                 <p className={cx('current-time', 'animate__animated animate__fadeIn')}>Hôm nay là {currentTime.format('dddd, DD/MM/YYYY HH:mm:ss')}</p>
             </div>
             <Banner />
+
+
             <Grid container spacing={3}>
+                <Grid item xs={12} md={6}>
+                    <Card className={cx('shortcut-card')} onClick={() => navigate('/home-department-head/projects')}>
+                        <CardContent>
+                            <p className={cx('shortcut-title')} > <FolderFilled style={{ fontSize: '24px', color: '#60B5FF', marginRight: '10px' }} /> Dự Án</p>
+                        </CardContent>
+
+                    </Card>
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                    <Card className={cx('shortcut-card')} size="default" onClick={() => navigate('/home-department-head/view-profile')} >
+                        <CardContent>
+                            <p className={cx('shortcut-title')} > <UserOutlined style={{ fontSize: '20px', color: '#FF9B17', marginRight: '10px' }} /> Hồ sơ cá nhân</p>
+                        </CardContent>
+
+                    </Card>
+                </Grid>
                 <Grid item xs={12} sm={6}>
                     <Card>
                         <CardContent>
@@ -238,12 +262,12 @@ const DashboardDepartmentHead = () => {
                             <div className="mt-6 flex flex-col gap-6 md:gap-8">
                                 {progressProjectList &&
                                     progressProjectList.map((project) => (
-                                        <div key={project.id} className="w-full">
-                                            <p className="text-lg md:text-xl mb-2 md:mb-3">{project.projectName}</p>
+                                        <div key={project.projectId} className="w-full" onClick={() => navigate(`/home-department-head/project-detail/${project.projectId}`)}>
+                                            <p className="text-lg md:text-xl mb-2 md:mb-3" >{project.projectName}</p>
                                             <Progress
-                                                percent={project.percentage}
+                                                percent={Math.round(project.percentage)}
                                                 size={["100%", 20]}
-                                                status={project.projectStatus === 'Hoàn thành' ? 'success' : project.projectStatus === 'Hủy' ? 'exception' : 'active'}
+                                                status={project.projectStatus === 'Kết thúc' ? 'success' : project.projectStatus === 'Hủy' ? 'exception' : 'active'}
                                             />
                                         </div>
                                     ))}

@@ -100,12 +100,12 @@ export const ImportAttendance = (props) => {
         open={open}
         onClose={handleClose}
       >
-        <DialogTitle style={{ backgroundColor: "#474D57", color: "white" }} >Báo cảo điểm danh</DialogTitle>
+        <DialogTitle style={{ backgroundColor: "#474D57", color: "white" }} >Báo cáo điểm danh</DialogTitle>
         <DialogContent>
           <form className={cx('import-attendance-form')}>
 
             {/* Upload File */}
-            <Title level={3} style={{ marginTop: "10px", marginBottom: "10px" }}>Báo cáo</Title>
+            <p style={{ marginBottom: "10px", fontSize: 24 }}>Điểm danh</p>
             <Controller
               name="report"
               control={control}

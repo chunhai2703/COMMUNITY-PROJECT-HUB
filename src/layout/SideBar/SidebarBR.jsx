@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { SettingOutlined, HomeOutlined, FolderOutlined, MailOutlined, MenuFoldOutlined, MenuUnfoldOutlined, SnippetsOutlined, InteractionOutlined, CalendarOutlined } from '@ant-design/icons';
+import { SettingOutlined, HomeOutlined, FolderOutlined, MailOutlined, MenuFoldOutlined, MenuUnfoldOutlined, SnippetsOutlined, InteractionOutlined, CalendarOutlined, InboxOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
@@ -33,6 +33,12 @@ export const SideBarBR = () => {
       onClick: () => navigate('/home-business-relation/projects'),
     },
     {
+      key: 'feeback-management',
+      label: 'Quản lý đánh giá',
+      icon: <InboxOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
+      onClick: () => navigate('/home-business-relation/feedback-management'),
+    },
+    {
       key: 'setting',
       label: 'Cài Đặt',
       icon: <SettingOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
@@ -44,7 +50,7 @@ export const SideBarBR = () => {
         },
       ],
     },
-   
+
   ];
 
   return (

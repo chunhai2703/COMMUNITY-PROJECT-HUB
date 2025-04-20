@@ -7,6 +7,7 @@ import styles from './AllRelatedProjects.module.css';
 import { Select } from 'antd';
 
 const cx = classNames.bind(styles);
+const baseUrl = process.env.REACT_APP_API_URL;
 
 export const AllRelatedProjects = () => {
   const [searchValue, setSearchValue] = useState('');
@@ -27,7 +28,7 @@ export const AllRelatedProjects = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:5145/api/Project/all-related-project?searchValue=${query}&userId=${user.accountId}&filterField=${filterField}&filterOrder=${filterOrder}`,
+        `${baseUrl}/api/Project/all-related-project?searchValue=${query}&userId=${user.accountId}&filterField=${filterField}&filterOrder=${filterOrder}`,
         {
           headers: {
             'Content-Type': 'application/json',

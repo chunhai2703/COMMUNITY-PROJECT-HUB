@@ -80,7 +80,7 @@ export const ProjectItem = (props) => {
             'ongoing-status': props.status === 'Sắp diễn ra',
             'active-status': props.status === 'Đang diễn ra',
             'inactive-status': props.status === 'Hủy',
-            'completed-status': props.status === 'Hoàn thành',
+            'completed-status': props.status === 'Kết thúc',
           })}>
             {props.status}
           </span>

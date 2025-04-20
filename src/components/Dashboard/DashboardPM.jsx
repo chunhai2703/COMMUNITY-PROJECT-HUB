@@ -12,6 +12,7 @@ import {
 import classes from "./DashboardPM.module.css";
 import classNames from "classnames/bind";
 import { Progress } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const cx = classNames.bind(classes);
 
@@ -24,6 +25,7 @@ const DashboardPM = () => {
     const [amountProject, setAmountProject] = useState(0);
     const [amountProjectWithStatus, setAmountProjectWithStatus] = useState([]);
     const [progressProjectList, setProgressProjectList] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         setIsLoading(true);
@@ -126,12 +128,12 @@ const DashboardPM = () => {
                             <div className="mt-6 flex flex-col gap-6 md:gap-8">
                                 {progressProjectList &&
                                     progressProjectList.map((project) => (
-                                        <div key={project.id} className="w-full">
+                                        <div key={project.projectId} className="w-full" onClick={() => navigate(`/home-lecturer/project-detail/${project.projectId}`)}>
                                             <p className="text-lg md:text-xl mb-2 md:mb-3">{project.projectName}</p>
                                             <Progress
                                                 percent={project.percentage}
                                                 size={["100%", 20]} // Đảm bảo thanh progress co giãn theo màn hình 
-                                                status={project.projectStatus === 'Hoàn thành' ? 'success' : project.projectStatus === 'Hủy' ? 'exception' : 'active'}
+                                                status={project.projectStatus === 'Kết thúc' ? 'success' : project.projectStatus === 'Hủy' ? 'exception' : 'active'}
                                             />
                                         </div>
                                     ))}

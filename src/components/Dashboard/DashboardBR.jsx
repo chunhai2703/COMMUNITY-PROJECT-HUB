@@ -21,6 +21,8 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import 'animate.css';
 import { Progress } from "antd";
+import { FolderFilled, InboxOutlined, UserOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 
 const cx = classNames.bind(classes);
@@ -43,6 +45,7 @@ export const DashboardBR = () => {
   const [amountProjectWithStatus, setAmountProjectWithStatus] = useState([]);
   const [currentTime, setCurrentTime] = useState(dayjs().tz('Asia/Ho_Chi_Minh'));
   const [progressProjectList, setProgressProjectList] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // 🕒 Cập nhật thời gian mỗi giây
@@ -158,7 +161,25 @@ export const DashboardBR = () => {
         <p className={cx('current-time', 'animate__animated animate__fadeIn')}>Hôm nay là {currentTime.format('dddd, DD/MM/YYYY HH:mm:ss')}</p>
       </div>
       <Banner />
+
       <Grid container spacing={3}>
+        <Grid item xs={12} md={6}>
+          <Card className={cx('shortcut-card')} onClick={() => navigate('/home-business-relation/projects')}>
+            <CardContent>
+              <p className={cx('shortcut-title')} > <FolderFilled style={{ fontSize: '24px', color: '#60B5FF', marginRight: '10px' }} />Dự Án</p>
+            </CardContent>
+
+          </Card>
+        </Grid>
+
+        <Grid item xs={12} md={6}>
+          <Card className={cx('shortcut-card')} onClick={() => navigate('/home-business-relation/feedback-management')} >
+            <CardContent>
+              <p className={cx('shortcut-title')} > <InboxOutlined style={{ fontSize: '24px', color: '#FF9B17', marginRight: '10px' }} />Quản lý đánh giá</p>
+            </CardContent>
+
+          </Card>
+        </Grid>
         <Grid item xs={12} sm={6}>
           <Card>
             <CardContent>
@@ -231,12 +252,12 @@ export const DashboardBR = () => {
               <div className="mt-6 flex flex-col gap-6 md:gap-8">
                 {progressProjectList &&
                   progressProjectList.map((project) => (
-                    <div key={project.id} className="w-full">
+                    <div key={project.projectId} className="w-full" onClick={() => navigate(`/home-business-relation/project-detail/${project.projectId}`)}>
                       <p className="text-lg md:text-xl mb-2 md:mb-3">{project.projectName}</p>
                       <Progress
                         percent={project.percentage}
                         size={["100%", 20]}
-                        status={project.projectStatus === 'Hoàn thành' ? 'success' : project.projectStatus === 'Hủy' ? 'exception' : 'active'}
+                        status={project.projectStatus === 'Kết thúc' ? 'success' : project.projectStatus === 'Hủy' ? 'exception' : 'active'}
                       />
                     </div>
                   ))}

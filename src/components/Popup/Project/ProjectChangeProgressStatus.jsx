@@ -4,7 +4,7 @@ import { Modal } from 'antd';
 import classes from './ProjectChangeProgressStatus.module.css';
 import classNames from 'classnames/bind';
 import { useNavigate, useParams } from 'react-router-dom';
-import { toInProgressProject, toUpComingProject } from '../../../services/ProjectsApi';
+import { toInProgressProject } from '../../../services/ProjectsApi';
 import { toast } from 'react-toastify';
 import useAuth from '../../../hooks/useAuth';
 
@@ -49,7 +49,7 @@ export const ProjectChangeProgressStatus = (props) => {
   return (
     <>
       <button className={cx('project-detail-progress-status-change')} onClick={confirm}>
-        <SyncOutlined style={{ marginRight: '8px' }} /> Chuyển trạng thái(demo)
+        <SyncOutlined style={{ marginRight: '8px' }} /> Chuyển trạng thái (demo)
       </button>
       {contextHolder}
     </>

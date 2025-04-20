@@ -1,7 +1,8 @@
+const baseUrl = process.env.REACT_APP_API_URL;
 export async function updateLesson(payload) {
   console.log("Gửi request:", JSON.stringify(payload, null, 2));
 
-  const response = await fetch('http://localhost:5145/api/Lesson', {
+  const response = await fetch(`${baseUrl}/api/Lesson`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',

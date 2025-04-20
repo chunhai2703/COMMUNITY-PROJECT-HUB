@@ -9,6 +9,7 @@ import { Select } from "antd";
 import useAuth from "../../../hooks/useAuth";
 
 const cx = classNames.bind(classes);
+const baseUrl = process.env.REACT_APP_API_URL;
 
 export const AllProjects = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -22,7 +23,7 @@ export const AllProjects = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:5145/api/Project/all-project?searchValue=${searchQuery}&filterField=${filterField}&filterOrder=${filterOrder}`,
+        `${baseUrl}/api/Project/all-project?searchValue=${searchQuery}&filterField=${filterField}&filterOrder=${filterOrder}`,
         {
           method: "GET",
           headers: {

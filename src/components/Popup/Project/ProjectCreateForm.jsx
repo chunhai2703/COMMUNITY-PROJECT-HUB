@@ -1,20 +1,26 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import {
-  TextField, Dialog, DialogActions, DialogContent, DialogTitle,
-  IconButton, Box, Typography, Autocomplete, CircularProgress
-} from '@mui/material';
-import { RemoveCircleOutline, AddCircleOutline } from '@mui/icons-material';
-import { Controller, useForm, useFieldArray } from 'react-hook-form';
-import { PlusCircleOutlined, UploadOutlined } from '@ant-design/icons';
-import { Button, Upload, message } from 'antd';
-import classes from './ProjectCreateForm.module.css'
-import classNames from 'classnames/bind';
-import { searchAssociate, searchLeturers } from '../../../services/AssignApi';
-import { createProject } from '../../../services/ProjectsApi';
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
-
-
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  Box,
+  Typography,
+  Autocomplete,
+  CircularProgress,
+} from "@mui/material";
+import { RemoveCircleOutline, AddCircleOutline } from "@mui/icons-material";
+import { Controller, useForm, useFieldArray } from "react-hook-form";
+import { PlusCircleOutlined, UploadOutlined } from "@ant-design/icons";
+import { Button, Slider, Upload, message } from "antd";
+import classes from "./ProjectCreateForm.module.css";
+import classNames from "classnames/bind";
+import { searchAssociate, searchLeturers } from "../../../services/AssignApi";
+import { createProject } from "../../../services/ProjectsApi";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const cx = classNames.bind(classes);
 export const ProjectCreateForm = (props) => {
@@ -25,25 +31,26 @@ export const ProjectCreateForm = (props) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-
-  const { handleSubmit, control, reset, formState: { errors } } = useForm({
+  const {
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
-      lessonList: [''] // Khởi tạo một input mặc định
-    }
+      lessonList: [""], // Khởi tạo một input mặc định
+    },
   });
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "lessonList"
+    name: "lessonList",
   });
-
-
 
   const getTodayDate = () => {
     const today = new Date();
     return today.toISOString().split("T")[0]; // Định dạng YYYY-MM-DD
   };
-
 
   const handleSearchManager = async (searchTerm) => {
     if (!searchTerm) return;
@@ -71,25 +78,21 @@ export const ProjectCreateForm = (props) => {
     setLoading(false);
   };
 
-
-
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
-    reset()
+    reset();
   };
-
-
 
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-  
+
       console.log("Dữ liệu projectManager trước khi gửi:", data.projectManager);
-  
+
       // Tạo object JSON thay vì FormData
       const payload = {
         title: data.title,
@@ -101,29 +104,39 @@ export const ProjectCreateForm = (props) => {
         address: data.address,
         projectManagerId: data?.projectManager?.accountId || null,
         associateId: data?.associate?.accountId || null,
-        lessonList: data.lessonList.map(lesson => lesson.value).filter(Boolean) // Loại bỏ giá trị rỗng
+        minLessonTime: data?.minLessonTime,
+        maxLessonTime: data?.maxLessonTime,
+        lessonList: data.lessonList
+          .map((lesson) => lesson.value)
+          .filter(Boolean), // Loại bỏ giá trị rỗng
       };
-  
+
       console.log("Dữ liệu payload trước khi gửi:", payload);
-  
-      await createProject(payload); 
-  
+
+      await createProject(payload);
+
       toast.success("Dự án đã được tạo thành công!");
       setLoading(false);
       handleClose();
       reset();
       props.refresh();
-      navigate('/home-department-head/projects');
-  
+      navigate("/home-department-head/projects");
     } catch (error) {
       setLoading(false);
       console.error("Lỗi khi tạo dự án:", error);
       if (error.result && error.result.length > 0) {
         messageApi.open({
-          type: 'error',
-          title: 'Thông báo lỗi',
+          type: "error",
+          title: "Thông báo lỗi",
           content: (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-start' }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "5px",
+                alignItems: "flex-start",
+              }}
+            >
               {Array.isArray(error.result) ? (
                 error.result.map((err, index) => <p key={index}>{err}</p>)
               ) : (
@@ -138,24 +151,23 @@ export const ProjectCreateForm = (props) => {
     }
   };
 
-
   return (
     <React.Fragment>
-      <button className={cx('create-project-button')} onClick={handleClickOpen}>
-        <PlusCircleOutlined color='white' size={20} style={{ marginRight: '5px' }} />
+      <button className={cx("create-project-button")} onClick={handleClickOpen}>
+        <PlusCircleOutlined
+          color="white"
+          size={20}
+          style={{ marginRight: "5px" }}
+        />
         Tạo dự án
       </button>
       {contextHolder}
-      <Dialog
-        open={open}
-        onClose={handleClose}
-      >
-        <DialogTitle style={{ backgroundColor: "#474D57", color: "white" }} >
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle style={{ backgroundColor: "#474D57", color: "white" }}>
           Tạo mới dự án
         </DialogTitle>
         <DialogContent>
-
-          <form className={cx('create-project-form')}>
+          <form className={cx("create-project-form")}>
             {/* Tên dự án */}
             <Controller
               name="title"
@@ -163,7 +175,7 @@ export const ProjectCreateForm = (props) => {
               control={control}
               defaultValue=""
               rules={{
-                required: 'Vui lòng nhập tên dự án',
+                required: "Vui lòng nhập tên dự án",
               }}
               render={({ field }) => (
                 <TextField
@@ -173,7 +185,7 @@ export const ProjectCreateForm = (props) => {
                   fullWidth
                   required
                   margin="normal"
-                  type='text'
+                  type="text"
                   error={!!errors.title}
                   helperText={errors.title?.message}
                 />
@@ -186,7 +198,7 @@ export const ProjectCreateForm = (props) => {
               control={control}
               defaultValue=""
               rules={{
-                required: 'Vui lòng nhập mô tả dự án',
+                required: "Vui lòng nhập mô tả dự án",
               }}
               render={({ field }) => (
                 <TextField
@@ -196,7 +208,7 @@ export const ProjectCreateForm = (props) => {
                   fullWidth
                   required
                   margin="normal"
-                  type='text'
+                  type="text"
                   multiline
                   rows={4}
                   error={!!errors.description}
@@ -211,7 +223,7 @@ export const ProjectCreateForm = (props) => {
               control={control}
               defaultValue=""
               rules={{
-                required: 'Vui lòng chọn ngày bắt đầu đăng ký'
+                required: "Vui lòng chọn ngày bắt đầu đăng ký",
               }}
               render={({ field }) => (
                 <TextField
@@ -221,7 +233,7 @@ export const ProjectCreateForm = (props) => {
                   fullWidth
                   required
                   margin="normal"
-                  type='date'
+                  type="date"
                   slotProps={{
                     inputLabel: { shrink: true }, // Thay thế InputLabelProps
                   }}
@@ -238,7 +250,7 @@ export const ProjectCreateForm = (props) => {
               control={control}
               defaultValue=""
               rules={{
-                required: 'Vui lòng chọn ngày kết thúc đăng ký'
+                required: "Vui lòng chọn ngày kết thúc đăng ký",
               }}
               render={({ field }) => (
                 <TextField
@@ -248,7 +260,7 @@ export const ProjectCreateForm = (props) => {
                   fullWidth
                   required
                   margin="normal"
-                  type='date'
+                  type="date"
                   slotProps={{
                     inputLabel: { shrink: true }, // Thay thế InputLabelProps
                   }}
@@ -266,7 +278,7 @@ export const ProjectCreateForm = (props) => {
               control={control}
               defaultValue=""
               rules={{
-                required: 'Vui lòng chọn ngày bắt đầu dự án'
+                required: "Vui lòng chọn ngày bắt đầu dự án",
               }}
               render={({ field }) => (
                 <TextField
@@ -276,7 +288,7 @@ export const ProjectCreateForm = (props) => {
                   fullWidth
                   required
                   margin="normal"
-                  type='date'
+                  type="date"
                   slotProps={{
                     inputLabel: { shrink: true }, // Thay thế InputLabelProps
                   }}
@@ -293,7 +305,7 @@ export const ProjectCreateForm = (props) => {
               control={control}
               defaultValue=""
               rules={{
-                required: 'Vui lòng chọn ngày kết thúc dự án'
+                required: "Vui lòng chọn ngày kết thúc dự án",
               }}
               render={({ field }) => (
                 <TextField
@@ -303,7 +315,7 @@ export const ProjectCreateForm = (props) => {
                   fullWidth
                   required
                   margin="normal"
-                  type='date'
+                  type="date"
                   slotProps={{
                     inputLabel: { shrink: true }, // Thay thế InputLabelProps
                   }}
@@ -320,7 +332,7 @@ export const ProjectCreateForm = (props) => {
               control={control}
               defaultValue=""
               rules={{
-                required: 'Vui lòng nhập địa chỉ',
+                required: "Vui lòng nhập địa chỉ",
               }}
               render={({ field }) => (
                 <TextField
@@ -330,7 +342,7 @@ export const ProjectCreateForm = (props) => {
                   fullWidth
                   required
                   margin="normal"
-                  type='text'
+                  type="text"
                   error={!!errors.address}
                   helperText={errors.address?.message}
                 />
@@ -345,9 +357,15 @@ export const ProjectCreateForm = (props) => {
                 <Autocomplete
                   {...field}
                   options={managers} // Danh sách từ API
-                  getOptionLabel={(option) => `${option.fullName} - ${option.accountName}` || ""}
-                  isOptionEqualToValue={(option, value) => option.accountId === value?.accountId}
-                  onInputChange={(event, newInputValue) => handleSearchManager(newInputValue)}
+                  getOptionLabel={(option) =>
+                    `${option.fullName} - ${option.accountName}` || ""
+                  }
+                  isOptionEqualToValue={(option, value) =>
+                    option.accountId === value?.accountId
+                  }
+                  onInputChange={(event, newInputValue) =>
+                    handleSearchManager(newInputValue)
+                  }
                   onChange={(event, newValue) => {
                     console.log("Người quản lý được chọn:", newValue);
                     field.onChange(newValue);
@@ -368,7 +386,9 @@ export const ProjectCreateForm = (props) => {
                         },
                         endAdornment: (
                           <>
-                            {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                            {loading ? (
+                              <CircularProgress color="inherit" size={20} />
+                            ) : null}
                             {params.InputProps.endAdornment}
                           </>
                         ),
@@ -384,21 +404,25 @@ export const ProjectCreateForm = (props) => {
               name="associate"
               control={control}
               defaultValue={null}
+              rules={{
+                required: "Vui lòng chọn bên đối tác",
+              }}
               render={({ field }) => (
                 <Autocomplete
                   {...field}
                   options={associates} // Danh sách từ API
                   getOptionLabel={(option) => `${option.associateName}` || ""}
-                  isOptionEqualToValue={(option, value) => option.accountId === value?.accountId}
-                  onInputChange={(event, newInputValue) => handleSearchAssociate(newInputValue)}
+                  isOptionEqualToValue={(option, value) =>
+                    option.accountId === value?.accountId
+                  }
+                  onInputChange={(event, newInputValue) =>
+                    handleSearchAssociate(newInputValue)
+                  }
                   onChange={(event, newValue) => {
                     console.log("Đối tác được chọn:", newValue);
                     field.onChange(newValue);
                   }}
                   loading={loading}
-                  rules={{
-                    required: 'Vui lòng chọn bên đối tác',
-                  }}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -415,7 +439,9 @@ export const ProjectCreateForm = (props) => {
                         },
                         endAdornment: (
                           <>
-                            {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                            {loading ? (
+                              <CircularProgress color="inherit" size={20} />
+                            ) : null}
                             {params.InputProps.endAdornment}
                           </>
                         ),
@@ -426,45 +452,90 @@ export const ProjectCreateForm = (props) => {
               )}
             />
 
-            {/* Upload File
-            <Typography variant="h6" sx={{ mt: 4, mb: 2 }}>Trainees</Typography>
+            {/* Thời lượng tối thiểu cho từng nội dung */}
             <Controller
-              name="trainees"
+              name="minLessonTime"
+              id="minLessonTime"
               control={control}
-              defaultValue={[]}
+              defaultValue=""
               rules={{
-                required: 'Vui lòng chọn file để import',
+                required:
+                  "Vui lòng nhập thời lượng tối thiểu cho từng nội dung",
+                validate: (value) => {
+                  if (value <= 0) {
+                    return "Thời lượng tối thiểu phải lớn hơn 0";
+                  }
+                  if (value >= 1000) {
+                    return "Thời lượng tối thiểu phải nhỏ hơn 1000";
+                  }
+                  return true; // Nếu tất cả các điều kiện đều đúng
+                },
               }}
               render={({ field }) => (
-                <div>
-                  <Upload
-                    name="file"
-                    accept=".xls,.xlsx"
-                    action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
-                    headers={{ authorization: 'authorization-text' }}
-                    fileList={field.value}
-                    onChange={(info) => {
-                      field.onChange(info.fileList);
-                    }}
-                    beforeUpload={() => false}
-                  >
-                    <Button icon={<UploadOutlined />} type='primary'>Nhấn vào để upload</Button>
-                  </Upload>
-                  {errors.trainees && <p style={{ color: "red" }}>{errors.trainees.message}</p>}
-                </div>
+                <TextField
+                  {...field}
+                  label="Thời lượng tối thiểu"
+                  placeholder="phút/nội dung"
+                  variant="outlined"
+                  fullWidth
+                  required
+                  margin="normal"
+                  type="number"
+                  error={!!errors.minLessonTime}
+                  helperText={errors.minLessonTime?.message}
+                />
               )}
-            /> */}
+            />
+
+            {/* Thời lượng tối đa cho từng nội dung  */}
+            <Controller
+              name="maxLessonTime"
+              id="maxLessonTime"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: "Vui lòng nhập thời lượng tối đa cho từng nội dung",
+                validate: (value) => {
+                  if (value <= 0) {
+                    return "Thời lượng tối đa phải lớn hơn 0";
+                  }
+                  if (value >= 1000) {
+                    return "Thời lượng tối đa phải nhỏ hơn 1000";
+                  }
+                  return true; // Nếu tất cả các điều kiện đều đúng
+                },
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Thời lượng tối đa"
+                  placeholder="phút/nội dung"
+                  variant="outlined"
+                  fullWidth
+                  required
+                  margin="normal"
+                  type="number"
+                  error={!!errors.maxLessonTime}
+                  helperText={errors.maxLessonTime?.message}
+                />
+              )}
+            />
 
             {/* Danh sách bài học */}
-            <Typography variant="h6" sx={{ mt: 4, mb: 2 }}>Danh sách nội dung</Typography>
+            <Typography variant="h6" sx={{ mt: 4, mb: 2 }}>
+              Danh sách nội dung
+            </Typography>
 
             {fields.map((field, index) => (
-              <Box key={field.id} sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
+              <Box
+                key={field.id}
+                sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
+              >
                 <Controller
                   name={`lessonList.${index}.value`}
                   value={field.value || ""}
                   control={control}
-                  defaultValue=""  // ✅ Đảm bảo giá trị mặc định là chuỗi rỗng
+                  defaultValue="" // ✅ Đảm bảo giá trị mặc định là chuỗi rỗng
                   rules={{ required: "Vui lòng nhập nội dung dự án" }}
                   render={({ field }) => (
                     <TextField
@@ -489,16 +560,26 @@ export const ProjectCreateForm = (props) => {
             >
               Thêm nội dung
             </Button>
-
-
           </form>
-
         </DialogContent>
         <DialogActions>
-          <button onClick={handleClose} className={cx('cancel-button')}>Hủy</button>
-          <button type="submit" onClick={handleSubmit(onSubmit)} className={cx('create-button')} disabled={loading}>
+          <button onClick={handleClose} className={cx("cancel-button")}>
+            Hủy
+          </button>
+          <button
+            type="submit"
+            onClick={handleSubmit(onSubmit)}
+            className={cx("create-button")}
+            disabled={loading}
+          >
             {loading ? (
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
                 <CircularProgress size={24} sx={{ color: "white" }} />
               </div>
             ) : (
@@ -509,4 +590,4 @@ export const ProjectCreateForm = (props) => {
       </Dialog>
     </React.Fragment>
   );
-}
+};

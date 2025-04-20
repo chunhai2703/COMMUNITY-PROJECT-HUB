@@ -16,6 +16,7 @@ import { toast } from 'react-toastify';
 import { ExportFinalReportProject } from '../../../services/ProjectsApi';
 import { ImportTrainee } from '../../Popup/Members/ImportTrainee';
 import { ProjectChangeProgressStatus } from '../../Popup/Project/ProjectChangeProgressStatus';
+import { ProjectChangeEndStatus } from '../../Popup/Project/ProjectChangeEndStatus';
 
 
 const cx = classNames.bind(classes)
@@ -42,7 +43,7 @@ export const ProjectDetail = (props) => {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "FinalReport.xlsx";
+      a.download = "BaoCaoTongKet.xlsx";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -54,11 +55,11 @@ export const ProjectDetail = (props) => {
     setIsLoading(false)
   }
   const items = [
-    ...((props.project.status === 'Lên kế hoạch' || props.project.status === 'Sắp diễn ra') && (user.roleId === 4 || (user.roleId === 2 && user.accountId === props.project.projectManagerId))
+    ...((props.project.status === 'Lên kế hoạch') && (user.roleId === 4 || (user.roleId === 2 && user.accountId === props.project.projectManagerId))
       ? [
         {
           key: '1',
-          label: <ProjectUpdateForm project={props.project} />,
+          label: <ProjectUpdateForm project={props.project} refreshProject={props.refreshProject} />,
         },
       ]
       : []),
@@ -86,15 +87,24 @@ export const ProjectDetail = (props) => {
         },
       ]
       : []),
-    ...((props.project.status === 'Lên kế hoạch' || props.project.status === 'Sắp diễn ra') && (user.roleId === 4 || (user.roleId === 2 && user.accountId === props.project.projectManagerId))
+
+    ...(props.project.status === 'Đang diễn ra' && (user.roleId === 4 || (user.roleId === 2 && user.accountId === props.project.projectManagerId))
       ? [
         {
           key: '5',
+          label: <ProjectChangeEndStatus refreshProject={props.refreshProject} />,
+        },
+      ]
+      : []),
+    ...((props.project.status === 'Lên kế hoạch' || props.project.status === 'Sắp diễn ra') && (user.roleId === 4 || (user.roleId === 2 && user.accountId === props.project.projectManagerId))
+      ? [
+        {
+          key: '6',
           label: <ProjectUnactiveForm />,
         },
       ]
       : []),
-    ...((props.project.status === 'Đang diễn ra' || props.project.status === 'Kết thúc')
+    ...(props.project.status === 'Kết thúc'
       && (
         user.roleId === 4
         || user.roleId === 5
@@ -103,7 +113,7 @@ export const ProjectDetail = (props) => {
       )
       ? [
         {
-          key: '6',
+          key: '7',
           label: (
             <button className={cx('project-detail-export-final-report')} onClick={handleExportFinalReport}>
               <ExportOutlined style={{ marginRight: '8px' }} /> Export báo cáo dự án
@@ -117,7 +127,7 @@ export const ProjectDetail = (props) => {
       && user.roleId === 5
       ? [
         {
-          key: '7',
+          key: '8',
           label: (
             <ImportTrainee project={props.project} />
           ),

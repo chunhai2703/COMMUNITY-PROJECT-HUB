@@ -7,11 +7,13 @@ import useAuth from '../../hooks/useAuth';
 
 
 const cx = classNames.bind(classes)
+const baseUrl = process.env.REACT_APP_API_URL;
 
 export const MyRegistration = (props) => {
   const [searchValue, setSearchValue] = useState("");
   const [registrations, setRegistrations] = useState([]);
   const { user } = useAuth();
+
 
   // Dùng useCallback để tránh re-creation của fetchProjects
   const fetchMyRegistrations = useCallback(async (query = '') => {
@@ -19,7 +21,7 @@ export const MyRegistration = (props) => {
 
     try {
       const response = await fetch(
-        `http://localhost:5145/api/Registration/registrations?accountId=${user.accountId}&search=${query}`,
+        `${baseUrl}/api/Registration/registrations?accountId=${user.accountId}&search=${query}`,
         {
           headers: {
             'Content-Type': 'application/json',

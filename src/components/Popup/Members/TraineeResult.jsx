@@ -27,12 +27,7 @@ export const TraineeResult = (props) => {
       </Button>
       <Modal
         title={<p className={cx('trainee-result-title')}>Báo cáo kết quả</p>}
-        footer={
-          <Button type="primary" size='large' onClick={showLoading}>
-            Tải lại
-          </Button>
-        }
-        // footer={null}
+        footer={null}
         loading={loading}
         open={open}
         onCancel={() => setOpen(false)}

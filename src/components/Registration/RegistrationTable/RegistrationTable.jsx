@@ -1,17 +1,24 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { ConfigProvider, Table, Tag } from 'antd';
-import { SearchOutlined, CheckCircleOutlined, CloseCircleOutlined, SyncOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
-import { useParams } from 'react-router-dom';
-import { debounce } from 'lodash';
-import useAuth from '../../../hooks/useAuth';
-import classes from './RegistrationTable.module.css'
-import classNames from 'classnames/bind'
-import { Spinner } from '../../Spinner/Spinner';
-import { RegistApproveForm } from '../../Popup/Registration/RegistApproveForm';
-import { RegistRejectForm } from '../../Popup/Registration/RegistRejectForm';
-import { GetAllRegistrationOfProject } from '../../../services/RegistrationApi';
+import React, { useCallback, useEffect, useState } from "react";
+import { ConfigProvider, Table, Tag } from "antd";
+import {
+  SearchOutlined,
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  SyncOutlined,
+  EyeInvisibleOutlined,
+} from "@ant-design/icons";
+import { useParams } from "react-router-dom";
+import { debounce } from "lodash";
+import useAuth from "../../../hooks/useAuth";
+import classes from "./RegistrationTable.module.css";
+import classNames from "classnames/bind";
+import { Spinner } from "../../Spinner/Spinner";
+import { RegistApproveForm } from "../../Popup/Registration/RegistApproveForm";
+import { RegistRejectForm } from "../../Popup/Registration/RegistRejectForm";
+import { GetAllRegistrationOfProject } from "../../../services/RegistrationApi";
+import { render } from "@fullcalendar/core/preact.js";
 
-const cx = classNames.bind(classes)
+const cx = classNames.bind(classes);
 
 export const RegistrationTable = () => {
   const { projectId } = useParams();
@@ -37,7 +44,12 @@ export const RegistrationTable = () => {
   };
 
   const fetchAllClassesOfProject = useCallback(async () => {
-    const response = await GetAllRegistrationOfProject(projectId, searchValue, pageNumber, rowsPerPage);
+    const response = await GetAllRegistrationOfProject(
+      projectId,
+      searchValue,
+      pageNumber,
+      rowsPerPage
+    );
     const responseData = await response.json();
 
     if (response.ok) {
@@ -63,7 +75,6 @@ export const RegistrationTable = () => {
     }
   }, [fetchAllClassesOfProject, projectId]);
 
-
   const columns = [
     {
       title: "STT",
@@ -72,28 +83,28 @@ export const RegistrationTable = () => {
       render: (_, __, index) => index + 1 + (pageNumber - 1) * rowsPerPage,
     },
     {
-      title: 'Lớp',
-      dataIndex: 'classCode',
-      key: 'classCode',
-      align: 'center',
+      title: "Lớp",
+      dataIndex: "classCode",
+      key: "classCode",
+      align: "center",
     },
     {
-      title: 'Thành viên',
-      dataIndex: 'fullName',
-      key: 'fullName',
-      align: 'center',
+      title: "Thành viên",
+      dataIndex: "fullName",
+      key: "fullName",
+      align: "center",
     },
     {
-      title: 'Mã thành viên',
-      dataIndex: 'accountCode',
-      key: 'accountCode',
-      align: 'center',
+      title: "Mã thành viên",
+      dataIndex: "accountCode",
+      key: "accountCode",
+      align: "center",
     },
     {
-      title: 'Email',
-      dataIndex: 'email',
-      key: 'email',
-      align: 'center',
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+      align: "center",
     },
     {
       title: "Nội dung",
@@ -101,9 +112,14 @@ export const RegistrationTable = () => {
       key: "description",
       align: "center",
       render: (text, record) => (
-        <div style={{ cursor: "pointer" }} onClick={() => toggleExpand(record.registrationId)}>
+        <div
+          style={{ cursor: "pointer" }}
+          onClick={() => toggleExpand(record.registrationId)}
+        >
           {!expandedRows.has(record.registrationId) ? (
-            <EyeInvisibleOutlined style={{ fontSize: "16px", fontWeight: "bold" }} />
+            <EyeInvisibleOutlined
+              style={{ fontSize: "16px", fontWeight: "bold" }}
+            />
           ) : (
             <p style={{ textAlign: "left" }}>
               {text.split("\n").map((line, index) => (
@@ -118,81 +134,120 @@ export const RegistrationTable = () => {
       ),
     },
     {
-      title: 'Tình trạng',
-      key: 'status',
-      dataIndex: 'status',
-      align: 'center',
-      render: (text) => (
-        text === 'Đã duyệt' ? (
-          <Tag icon={<CheckCircleOutlined style={{ verticalAlign: 'middle' }} />} color="success">
+      title: "Tình trạng",
+      key: "status",
+      dataIndex: "status",
+      align: "center",
+      render: (text) =>
+        text === "Đã duyệt" ? (
+          <Tag
+            icon={<CheckCircleOutlined style={{ verticalAlign: "middle" }} />}
+            color="success"
+          >
             {text}
           </Tag>
-        ) : text === 'Đang chờ duyệt' ? (
-          <Tag icon={<SyncOutlined spin style={{ verticalAlign: 'middle' }} />} color="processing">
+        ) : text === "Đang chờ duyệt" ? (
+          <Tag
+            icon={<SyncOutlined spin style={{ verticalAlign: "middle" }} />}
+            color="processing"
+          >
             {text}
           </Tag>
         ) : (
-          <Tag icon={<CloseCircleOutlined style={{ verticalAlign: 'middle' }} />} color="error">
+          <Tag
+            icon={<CloseCircleOutlined style={{ verticalAlign: "middle" }} />}
+            color="error"
+          >
             {text}
           </Tag>
-        )
-      ),
+        ),
     },
     {
-      title: '',
-      key: 'action',
-      render: (record) => (
-        (record.status === 'Đang chờ duyệt') ?
-          <div className={cx('action-icon')}>
-            <RegistApproveForm registrationId={record.registrationId} refreshTable={fetchAllClassesOfProject} />
-            <RegistRejectForm registrationId={record.registrationId} refreshTable={fetchAllClassesOfProject}  />
+      title: "Lý do từ chối",
+      dataIndex: "deniedReason",
+      key: "deniedReason",
+      align: "center",
+      render: (text, record) =>
+        record.status === "Từ chối" ? (
+          <p style={{ textAlign: "left" }}>{text}</p>
+        ) : (
+          <span>-</span>
+        ),
+    },
+    {
+      title: "",
+      key: "action",
+      render: (record) =>
+        record.status === "Đang chờ duyệt" ? (
+          <div className={cx("action-icon")}>
+            <RegistApproveForm
+              registrationId={record.registrationId}
+              refreshTable={fetchAllClassesOfProject}
+            />
+            <RegistRejectForm
+              registrationId={record.registrationId}
+              refreshTable={fetchAllClassesOfProject}
+            />
           </div>
-          : (<p style={{ textAlign: 'center', fontStyle: 'italic', fontWeight: '400', color: '#368aea' }}>Đơn đăng kí đã được xử lý</p>)
-      ),
+        ) : (
+          <p
+            style={{
+              textAlign: "center",
+              fontStyle: "italic",
+              fontWeight: "400",
+              color: "#368aea",
+            }}
+          >
+            Đơn đăng kí đã được xử lý
+          </p>
+        ),
     },
   ];
 
   if (!user || !projectId) {
-    return <Spinner />
+    return <Spinner />;
   }
 
   return (
-    <div className={cx('project-registration-table-container')}>
-      <div className={cx('project-registration-search')}>
-        <div className={cx('search-box-container')}>
-          <div className={cx('search-box')}>
-            <SearchOutlined color='#285D9A' size={20} />
+    <div className={cx("project-registration-table-container")}>
+      <div className={cx("project-registration-search")}>
+        <div className={cx("search-box-container")}>
+          <div className={cx("search-box")}>
+            <SearchOutlined color="#285D9A" size={20} />
             <input
               type="search"
               placeholder="Tìm kiếm đơn đăng ký"
-              className={cx('search-input')}
+              className={cx("search-input")}
               onChange={(e) => handleInputSearch(e)}
             />
           </div>
-          <button className={cx('search-button')}>
-            <SearchOutlined color='white' size={20} style={{ marginRight: '5px' }} />
+          <button className={cx("search-button")}>
+            <SearchOutlined
+              color="white"
+              size={20}
+              style={{ marginRight: "5px" }}
+            />
             Tìm kiếm
           </button>
         </div>
-
       </div>
       <ConfigProvider
         theme={{
           components: {
             Table: {
-              headerBg: '#474D57',
-              headerColor: 'white',
+              headerBg: "#474D57",
+              headerColor: "white",
             },
           },
         }}
       >
         <Table
-          size='large'
+          size="large"
           columns={columns}
-          rowKey={record => record.registrationId}
+          rowKey={(record) => record.registrationId}
           dataSource={registrationList}
           pagination={{
-            position: ['bottomCenter'],
+            position: ["bottomCenter"],
             current: pageNumber,
             pageSize: rowsPerPage,
             total: totalItem,
@@ -205,4 +260,4 @@ export const RegistrationTable = () => {
       </ConfigProvider>
     </div>
   );
-}
+};

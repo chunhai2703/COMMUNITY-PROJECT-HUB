@@ -1,0 +1,16 @@
+.delete-feedback-button {
+  background-color: transparent;
+  border: none;
+  font-weight: 600;
+  color: #ea3d2a;
+  border: none;
+  cursor: pointer;
+}
+
+.ok-button {
+  background-color: #034ea2;
+  color: white;
+}
+.ok-button:hover {
+  background-color: #054186;
+}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import classes from './AssignStudent.module.css'
 import classNames from 'classnames/bind'
 import {
@@ -65,6 +65,7 @@ export const AssignStudent = (props) => {
       toast.success("Sinh viên hỗ trợ đã được phân công thành công!");
       handleClose();
       reset();
+      props.refresh();
       if (user && (user?.roleId === 2)) {
         navigate(`/home-lecturer/project-detail/${props.project.projectId}`);
       } else if (user && (user?.roleId === 4)) {
@@ -80,7 +81,7 @@ export const AssignStudent = (props) => {
           title: 'Thông báo lỗi',
           content: (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-start' }}>
-              {error.result.split(',').map((error, index) => (
+              {error.result.map((error, index) => (
                 <p key={index} >{error}</p>
               ))}
             </div>

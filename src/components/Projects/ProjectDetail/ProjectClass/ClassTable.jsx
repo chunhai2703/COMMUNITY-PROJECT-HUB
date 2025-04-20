@@ -106,7 +106,7 @@ export const ClassTable = (props) => {
     ) {
       items.push({
         key: '4',
-        label: <AssignLecturer classId={classData.classId} project={props.project} />
+        label: <AssignLecturer classId={classData.classId} project={props.project} refresh={fetchAllClassesOfProject} />
       });
     }
 
@@ -121,7 +121,7 @@ export const ClassTable = (props) => {
     ) {
       items.push({
         key: '5',
-        label: <AssignStudent classId={classData.classId} project={props.project} />
+        label: <AssignStudent classId={classData.classId} project={props.project} refresh={fetchAllClassesOfProject} />
       });
     }
 
