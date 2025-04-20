@@ -6,58 +6,68 @@
   gap: 30px;
   padding: 1.5rem;
 }
+
 .greeting-container {
   display: flex;
   flex-direction: column;
   gap: 5px;
 }
+
 .greeting {
   font-size: 1.5rem;
   word-wrap: break-word;
   overflow-wrap: break-word;
   white-space: pre-wrap;
 }
+
 .greeting-name {
   font-size: 1.75rem;
   color: #f37021;
   font-style: italic;
-  font-family: "Pacifico", "Dancing Script", cursive; /* Ưu tiên Pacifico, fallback Dancing Script */
+  font-family: "Pacifico", "Dancing Script", cursive;
+  /* Ưu tiên Pacifico, fallback Dancing Script */
 }
+
 .current-time {
   font-size: 14px;
   color: rgb(191, 190, 190);
 }
+
 .collapse-container {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+
 .collapse-title {
   font-size: 24px;
   font-weight: 600;
 }
+
 .shortcut-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  gap: 35px;
   border-radius: 8px;
   border: 1px solid transparent;
 }
+
 .shortcut-card {
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  width: 300px;
+  width: 350px;
   height: 100px;
   display: flex;
   align-items: center;
 }
+
 .shortcut-card:hover {
   scale: 1.02;
   transition: all 0.2s ease-in-out;
 }
+
 .shortcut-title {
   font-size: 18px;
   font-weight: 500;

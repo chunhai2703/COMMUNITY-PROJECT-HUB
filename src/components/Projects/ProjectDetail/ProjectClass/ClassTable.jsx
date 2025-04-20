@@ -221,6 +221,15 @@ export const ClassTable = (props) => {
     },
   ];
 
+  const userIsProjectManager =
+    user?.accountId === props.project.projectManagerId;
+  const userIsLecturerOfAnyClass = classList.some(
+    (cls) => cls.lecturerId === user?.accountId
+  );
+  const userIsStudentOfAnyClass = classList.some((cls) =>
+    cls.studentIds?.includes(user?.accountId)
+  );
+
   if (!user || !projectId) {
     return <Spinner />;
   }
@@ -264,18 +273,28 @@ export const ClassTable = (props) => {
           rowKey="classId"
           dataSource={classList
             .filter((classData) => {
-              if (
-                user?.roleId === 2 &&
-                user?.accountId === props.project.projectManagerId
-              ) {
+              if (userIsProjectManager) {
                 return true;
               }
+
               if (user?.roleId === 2) {
-                return classData.lecturerId === user.accountId;
-              } else if (user?.roleId === 1) {
-                return classData.studentIds?.includes(user.accountId);
+                if (userIsLecturerOfAnyClass) {
+                  return classData.lecturerId === user.accountId;
+                } else {
+                  return true; // Không là giảng viên lớp nào → xem tất
+                }
               }
-              return true; // Các role khác không lọc
+
+              if (user?.roleId === 1) {
+                if (userIsStudentOfAnyClass) {
+                  return classData.studentIds?.includes(user.accountId);
+                } else {
+                  return true; // Không là sinh viên lớp nào → xem tất
+                }
+              }
+
+              // Các role khác → xem tất
+              return true;
             })
             .map((classData) => ({
               classId: classData.classId,
