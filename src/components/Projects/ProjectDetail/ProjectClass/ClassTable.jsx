@@ -264,6 +264,12 @@ export const ClassTable = (props) => {
           rowKey="classId"
           dataSource={classList
             .filter((classData) => {
+              if (
+                user?.roleId === 2 &&
+                user?.accountId === props.project.projectManagerId
+              ) {
+                return true;
+              }
               if (user?.roleId === 2) {
                 return classData.lecturerId === user.accountId;
               } else if (user?.roleId === 1) {
