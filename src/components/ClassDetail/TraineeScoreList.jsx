@@ -35,12 +35,16 @@ import useAuth from "../../hooks/useAuth";
 import { Spinner } from "../Spinner/Spinner";
 import {
   ExportTraineeList,
+  ExportTraineeListTemplate,
   GetAllTraineeScoreList,
   UpdateScoreTraineeList,
 } from "../../services/TraineeApi";
 
 import { ImportScore } from "../Popup/Class/ImportScore";
-import { exportTraineeAttendance } from "../../services/AttendanceApi";
+import {
+  exportTraineeAttendance,
+  exportTraineeAttendanceTemplate,
+} from "../../services/AttendanceApi";
 import { ImportAttendance } from "../Popup/Class/ImportAttendance";
 
 const cx = classNames.bind(trainees);
@@ -119,9 +123,9 @@ const TraineeScoreList = ({ dataClass }) => {
     setEditing(false);
   };
 
-  const handleExport = async () => {
+  const handleExportScoreTemplate = async () => {
     setIsLoading(true);
-    const response = await ExportTraineeList(classId);
+    const response = await ExportTraineeListTemplate(classId);
     if (response.ok) {
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
@@ -132,9 +136,48 @@ const TraineeScoreList = ({ dataClass }) => {
       a.click();
       document.body.removeChild(a);
       window.URL.revokeObjectURL(url);
+      toast.success("Tải mẫu điểm thành công!");
+    } else {
+      toast.error("Tải mẫu điểm thất bại!");
+    }
+    setIsLoading(false);
+  };
+  const handleExportScore = async () => {
+    setIsLoading(true);
+    const response = await ExportTraineeList(classId);
+    if (response.ok) {
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "DiemCuaLop.xlsx";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
       toast.success("Export dữ liệu thành công");
     } else {
       toast.error("Export dữ liệu thất bại");
+    }
+    setIsLoading(false);
+  };
+
+  const handleExportAttendanceTemplate = async () => {
+    setIsLoading(true);
+    const response = await exportTraineeAttendanceTemplate(classId);
+    if (response.ok) {
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "DanhSachDiemDanh.xlsx";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+      toast.success("Tải mẫu điểm danh thành công!");
+    } else {
+      toast.error("Tải mẫu điểm danh thất bại!");
     }
     setIsLoading(false);
   };
@@ -147,7 +190,7 @@ const TraineeScoreList = ({ dataClass }) => {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "DanhSachDiemDanh.xlsx";
+      a.download = "DiemDanhCuaLop.xlsx";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -249,14 +292,17 @@ const TraineeScoreList = ({ dataClass }) => {
       title: "Số buổi đi học",
       key: "attendance",
       align: "center",
-      render: (record) => (
-        <p>
-          <span style={{ fontStyle: "italic", fontWeight: "600" }}>
-            {record.totalPresentSlot}
-          </span>{" "}
-          / <span>{record.totalSlot}</span>
-        </p>
-      ),
+      render: (record) =>
+        record.totalPresentSlot === null ? (
+          <span style={{ color: "red", fontWeight: 600 }}> Chưa có</span>
+        ) : (
+          <p>
+            <span style={{ fontStyle: "italic", fontWeight: "600" }}>
+              {record.totalPresentSlot}
+            </span>{" "}
+            / <span>{record.totalSlot}</span>
+          </p>
+        ),
     },
 
     {
@@ -369,19 +415,19 @@ const TraineeScoreList = ({ dataClass }) => {
                   color="primary"
                   variant="contained"
                   style={{
-                    backgroundColor: "#d45b13",
+                    backgroundColor: "#034ea2",
                     color: "white",
                     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
                     marginRight: "8px",
                   }}
-                  onClick={handleExport}
+                  onClick={handleExportScoreTemplate}
                 >
-                  <ExportOutlined
+                  <DownloadOutlined
                     color="white"
                     size={20}
                     style={{ marginRight: "5px" }}
                   />
-                  Export
+                  Tải mẫu
                 </Button>
               )}
 
@@ -425,7 +471,7 @@ const TraineeScoreList = ({ dataClass }) => {
               ) : (
                 <Button
                   style={{
-                    backgroundColor: "#2F903F",
+                    backgroundColor: "#D45B13",
                     color: "white",
                     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
                   }}
@@ -438,6 +484,33 @@ const TraineeScoreList = ({ dataClass }) => {
                   Cập nhật
                 </Button>
               ))}
+
+            {(user.accountId === dataClass.lecturerId ||
+              user.accountId === dataClass.projectManagerId ||
+              user.roleId === 4) &&
+              dataClass.projectStatus === "Đang diễn ra" &&
+              !editing && (
+                <Button
+                  size="large"
+                  color="primary"
+                  variant="contained"
+                  style={{
+                    backgroundColor: "#2F903F",
+                    color: "white",
+                    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+                    marginLeft: "8px",
+                  }}
+                  onClick={handleExportScore}
+                >
+                  <ExportOutlined
+                    color="white"
+                    size={20}
+                    style={{ marginRight: "5px" }}
+                  />
+                  Export
+                </Button>
+              )}
+
             {user.roleId === 5 &&
               dataClass.projectStatus === "Đang diễn ra" && (
                 <Button
@@ -445,10 +518,40 @@ const TraineeScoreList = ({ dataClass }) => {
                   color="primary"
                   variant="contained"
                   style={{
-                    backgroundColor: "#d45b13",
+                    backgroundColor: "#034ea2",
                     color: "white",
                     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
                     marginRight: "8px",
+                  }}
+                  onClick={handleExportAttendanceTemplate}
+                >
+                  <DownloadOutlined
+                    color="white"
+                    size={20}
+                    style={{ marginRight: "5px" }}
+                  />
+                  Tải mẫu
+                </Button>
+              )}
+            {user.roleId === 5 &&
+              dataClass.projectStatus === "Đang diễn ra" && (
+                <ImportAttendance
+                  classId={classId}
+                  refresh={fetchAllTraineeScoreList}
+                />
+              )}
+
+            {user.roleId === 5 &&
+              dataClass.projectStatus === "Đang diễn ra" && (
+                <Button
+                  size="large"
+                  color="primary"
+                  variant="contained"
+                  style={{
+                    backgroundColor: "#2f903f",
+                    color: "white",
+                    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+                    marginLeft: "8px",
                   }}
                   onClick={handleExportAttendance}
                 >
@@ -459,13 +562,6 @@ const TraineeScoreList = ({ dataClass }) => {
                   />
                   Export
                 </Button>
-              )}
-            {user.roleId === 5 &&
-              dataClass.projectStatus === "Đang diễn ra" && (
-                <ImportAttendance
-                  classId={classId}
-                  refresh={fetchAllTraineeScoreList}
-                />
               )}
           </div>
         </div>

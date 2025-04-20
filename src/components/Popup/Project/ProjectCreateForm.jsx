@@ -278,12 +278,12 @@ export const ProjectCreateForm = (props) => {
               control={control}
               defaultValue=""
               rules={{
-                required: "Vui lòng chọn ngày bắt đầu dự án",
+                required: "Vui lòng chọn ngày bắt đầu lớp học",
               }}
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="Ngày bắt đầu"
+                  label="Ngày bắt đầu lớp học"
                   variant="outlined"
                   fullWidth
                   required
@@ -305,12 +305,12 @@ export const ProjectCreateForm = (props) => {
               control={control}
               defaultValue=""
               rules={{
-                required: "Vui lòng chọn ngày kết thúc dự án",
+                required: "Vui lòng chọn ngày kết thúc lớp học",
               }}
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="Ngày kết thúc"
+                  label="Ngày kết thúc lớp học"
                   variant="outlined"
                   fullWidth
                   required

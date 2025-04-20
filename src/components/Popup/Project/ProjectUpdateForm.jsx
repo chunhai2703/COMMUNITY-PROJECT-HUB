@@ -1,38 +1,47 @@
-import React, { useState } from 'react'
-import classes from './ProjectUpdateForm.module.css'
-import classNames from 'classnames/bind'
+import React, { useState } from "react";
+import classes from "./ProjectUpdateForm.module.css";
+import classNames from "classnames/bind";
 import {
-  TextField, Dialog, DialogActions, DialogContent, DialogTitle,
-  Autocomplete, CircularProgress
-} from '@mui/material';
-import { } from '@mui/icons-material';
-import { Controller, useForm } from 'react-hook-form';
-import { EditOutlined } from '@ant-design/icons';
-import { searchAssociate } from '../../../services/AssignApi';
-import { updateProject } from '../../../services/ProjectsApi';
-import { toast } from 'react-toastify';
-import { useNavigate, useParams } from 'react-router-dom';
-import useAuth from '../../../hooks/useAuth';
-import { message } from 'antd';
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Autocomplete,
+  CircularProgress,
+} from "@mui/material";
+import {} from "@mui/icons-material";
+import { Controller, useForm } from "react-hook-form";
+import { EditOutlined } from "@ant-design/icons";
+import { searchAssociate } from "../../../services/AssignApi";
+import { updateProject } from "../../../services/ProjectsApi";
+import { toast } from "react-toastify";
+import { useNavigate, useParams } from "react-router-dom";
+import useAuth from "../../../hooks/useAuth";
+import { message } from "antd";
 
-
-const cx = classNames.bind(classes)
+const cx = classNames.bind(classes);
 
 export const ProjectUpdateForm = (props) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [associates, setAssociates] = useState([]);
   const [messageApi, contextHolder] = message.useMessage();
-  const { project } = props
+  const { project } = props;
   const { projectId } = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();
   console.log(props.project);
 
-  const { handleSubmit, control, reset, formState: { errors } } = useForm({
+  const {
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
-      lessonList: [''] // Khởi tạo một input mặc định
-    }
+      lessonList: [""], // Khởi tạo một input mặc định
+    },
   });
 
   const getTodayDate = () => {
@@ -53,14 +62,13 @@ export const ProjectUpdateForm = (props) => {
     setLoading(false);
   };
 
-
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
-    reset()
+    reset();
   };
 
   const onSubmit = async (data) => {
@@ -68,9 +76,8 @@ export const ProjectUpdateForm = (props) => {
       setLoading(true);
       console.log("Dữ liệu projectManager trước khi gửi:", data.projectManager);
 
-
       const formData = new FormData();
-      formData.append('projectId', props.project.projectId);
+      formData.append("projectId", props.project.projectId);
       formData.append("title", data.title);
       formData.append("description", data.description);
       formData.append("startDate", data.startDate);
@@ -78,10 +85,12 @@ export const ProjectUpdateForm = (props) => {
       formData.append("applicationStartDate", data.applicationStartDate);
       formData.append("applicationEndDate", data.applicationEndDate);
       formData.append("address", data.address);
-      formData.append("associateId", data?.associate?.accountId ? String(data.associate.accountId) : '');
-      formData.append('minLessonTime', data.minLessonTime);
-      formData.append('maxLessonTime', data.maxLessonTime);
-
+      formData.append(
+        "associateId",
+        data?.associate?.accountId ? String(data.associate.accountId) : ""
+      );
+      formData.append("minLessonTime", data.minLessonTime);
+      formData.append("maxLessonTime", data.maxLessonTime);
 
       console.log("Dữ liệu formData trước khi gửi:");
       for (let pair of formData.entries()) {
@@ -93,9 +102,9 @@ export const ProjectUpdateForm = (props) => {
       handleClose();
       reset();
       props.refreshProject();
-      if (user && (user?.roleId === 2)) {
+      if (user && user?.roleId === 2) {
         navigate(`/home-lecturer/project-detail/${projectId}`);
-      } else if (user && (user?.roleId === 4)) {
+      } else if (user && user?.roleId === 4) {
         navigate(`/home-department-head/project-detail/${projectId}`);
       }
     } catch (error) {
@@ -103,10 +112,17 @@ export const ProjectUpdateForm = (props) => {
       console.error("Lỗi khi cập nhật dự án:", error);
       if (error.result && error.result.length > 0) {
         messageApi.open({
-          type: 'error',
-          title: 'Thông báo lỗi',
+          type: "error",
+          title: "Thông báo lỗi",
           content: (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-start' }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "5px",
+                alignItems: "flex-start",
+              }}
+            >
               {Array.isArray(error.result) ? (
                 error.result.map((err, index) => <p key={index}>{err}</p>)
               ) : (
@@ -121,23 +137,18 @@ export const ProjectUpdateForm = (props) => {
     }
   };
 
-
-
-
   return (
     <React.Fragment>
-      <button className={cx('project-detail-update')} onClick={handleClickOpen}>
-        <EditOutlined style={{ marginRight: '8px' }} /> Cập nhật
+      <button className={cx("project-detail-update")} onClick={handleClickOpen}>
+        <EditOutlined style={{ marginRight: "8px" }} /> Cập nhật
       </button>
       {contextHolder}
-      <Dialog
-        open={open}
-        onClose={handleClose}
-      >
-        <DialogTitle style={{ backgroundColor: "#474D57", color: "white" }} >Cập nhật dự án</DialogTitle>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle style={{ backgroundColor: "#474D57", color: "white" }}>
+          Cập nhật dự án
+        </DialogTitle>
         <DialogContent>
-          <form className={cx('update-project-form')}>
-
+          <form className={cx("update-project-form")}>
             {/* Tên dự án */}
             <Controller
               name="title"
@@ -145,7 +156,7 @@ export const ProjectUpdateForm = (props) => {
               control={control}
               defaultValue={props.project.title}
               rules={{
-                required: 'Vui lòng nhập tên dự án',
+                required: "Vui lòng nhập tên dự án",
               }}
               render={({ field }) => (
                 <TextField
@@ -154,7 +165,7 @@ export const ProjectUpdateForm = (props) => {
                   variant="outlined"
                   fullWidth
                   margin="normal"
-                  type='text'
+                  type="text"
                   error={!!errors.title}
                   helperText={errors.title?.message}
                 />
@@ -168,7 +179,7 @@ export const ProjectUpdateForm = (props) => {
               control={control}
               defaultValue={props.project.description}
               rules={{
-                required: 'Vui lòng nhập mô tả dự án',
+                required: "Vui lòng nhập mô tả dự án",
               }}
               render={({ field }) => (
                 <TextField
@@ -177,7 +188,7 @@ export const ProjectUpdateForm = (props) => {
                   variant="outlined"
                   fullWidth
                   margin="normal"
-                  type='text'
+                  type="text"
                   multiline
                   rows={4}
                   error={!!errors.description}
@@ -186,15 +197,18 @@ export const ProjectUpdateForm = (props) => {
               )}
             />
 
-
             {/* Ngày bắt đầu đăng ký */}
             <Controller
               name="applicationStartDate"
               id="applicationStartDate"
               control={control}
-              defaultValue={props.project.applicationStartDate ? props.project.applicationStartDate.split('T')[0] : ''}
+              defaultValue={
+                props.project.applicationStartDate
+                  ? props.project.applicationStartDate.split("T")[0]
+                  : ""
+              }
               rules={{
-                required: 'Vui lòng chọn ngày bắt đầu đăng ký'
+                required: "Vui lòng chọn ngày bắt đầu đăng ký",
               }}
               render={({ field }) => (
                 <TextField
@@ -203,7 +217,7 @@ export const ProjectUpdateForm = (props) => {
                   variant="outlined"
                   fullWidth
                   margin="normal"
-                  type='date'
+                  type="date"
                   slotProps={{
                     inputLabel: { shrink: true }, // Thay thế InputLabelProps
                   }}
@@ -219,9 +233,13 @@ export const ProjectUpdateForm = (props) => {
               name="applicationEndDate"
               id="applicationEndDate"
               control={control}
-              defaultValue={props.project.applicationEndDate ? props.project.applicationEndDate.split('T')[0] : ''}
+              defaultValue={
+                props.project.applicationEndDate
+                  ? props.project.applicationEndDate.split("T")[0]
+                  : ""
+              }
               rules={{
-                required: 'Vui lòng chọn ngày kết thúc đăng ký'
+                required: "Vui lòng chọn ngày kết thúc đăng ký",
               }}
               render={({ field }) => (
                 <TextField
@@ -230,7 +248,7 @@ export const ProjectUpdateForm = (props) => {
                   variant="outlined"
                   fullWidth
                   margin="normal"
-                  type='date'
+                  type="date"
                   slotProps={{
                     inputLabel: { shrink: true }, // Thay thế InputLabelProps
                   }}
@@ -246,18 +264,22 @@ export const ProjectUpdateForm = (props) => {
               name="startDate"
               id="startDate"
               control={control}
-              defaultValue={props.project.startDate ? props.project.startDate.split('T')[0] : ''}
+              defaultValue={
+                props.project.startDate
+                  ? props.project.startDate.split("T")[0]
+                  : ""
+              }
               rules={{
-                required: 'Vui lòng chọn ngày bắt đầu dự án'
+                required: "Vui lòng chọn ngày bắt đầu lớp học",
               }}
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="Ngày bắt đầu"
+                  label="Ngày bắt đầu lớp học"
                   variant="outlined"
                   fullWidth
                   margin="normal"
-                  type='date'
+                  type="date"
                   slotProps={{
                     inputLabel: { shrink: true }, // Thay thế InputLabelProps
                   }}
@@ -273,18 +295,20 @@ export const ProjectUpdateForm = (props) => {
               name="endDate"
               id="endDate"
               control={control}
-              defaultValue={props.project.endDate ? props.project.endDate.split('T')[0] : ''}
+              defaultValue={
+                props.project.endDate ? props.project.endDate.split("T")[0] : ""
+              }
               rules={{
-                required: 'Vui lòng chọn ngày kết thúc dự án'
+                required: "Vui lòng chọn ngày kết thúc lớp học",
               }}
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="Ngày kết thúc"
+                  label="Ngày kết thúc lớp học"
                   variant="outlined"
                   fullWidth
                   margin="normal"
-                  type='date'
+                  type="date"
                   slotProps={{
                     inputLabel: { shrink: true }, // Thay thế InputLabelProps
                   }}
@@ -295,7 +319,6 @@ export const ProjectUpdateForm = (props) => {
               )}
             />
 
-
             {/* Địa chi dự án */}
             <Controller
               name="address"
@@ -303,7 +326,7 @@ export const ProjectUpdateForm = (props) => {
               control={control}
               defaultValue={props.project.address}
               rules={{
-                required: 'Vui lòng nhập địa chỉ',
+                required: "Vui lòng nhập địa chỉ",
               }}
               render={({ field }) => (
                 <TextField
@@ -312,7 +335,7 @@ export const ProjectUpdateForm = (props) => {
                   variant="outlined"
                   fullWidth
                   margin="normal"
-                  type='text'
+                  type="text"
                   error={!!errors.address}
                   helperText={errors.address?.message}
                 />
@@ -323,23 +346,34 @@ export const ProjectUpdateForm = (props) => {
             <Controller
               name="associate"
               control={control}
-              defaultValue={project?.associateId && project?.associateName
-                ? { accountId: project.associateId, associateName: project.associateName }
-                : null}
+              defaultValue={
+                project?.associateId && project?.associateName
+                  ? {
+                      accountId: project.associateId,
+                      associateName: project.associateName,
+                    }
+                  : null
+              }
               render={({ field }) => (
                 <Autocomplete
                   {...field}
                   options={associates} // Danh sách từ API
-                  getOptionLabel={(option) => option.associateName ? `${option.associateName}` : ""}
-                  isOptionEqualToValue={(option, value) => option.accountId === value?.accountId}
-                  onInputChange={(event, newInputValue) => handleSearchAssociate(newInputValue)}
+                  getOptionLabel={(option) =>
+                    option.associateName ? `${option.associateName}` : ""
+                  }
+                  isOptionEqualToValue={(option, value) =>
+                    option.accountId === value?.accountId
+                  }
+                  onInputChange={(event, newInputValue) =>
+                    handleSearchAssociate(newInputValue)
+                  }
                   onChange={(event, newValue) => {
                     console.log("Đối tác được chọn:", newValue);
                     field.onChange(newValue);
                   }}
                   loading={loading}
                   rules={{
-                    required: 'Vui lòng chọn bên đối tác',
+                    required: "Vui lòng chọn bên đối tác",
                   }}
                   renderInput={(params) => (
                     <TextField
@@ -357,7 +391,9 @@ export const ProjectUpdateForm = (props) => {
                         },
                         endAdornment: (
                           <>
-                            {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                            {loading ? (
+                              <CircularProgress color="inherit" size={20} />
+                            ) : null}
                             {params.InputProps.endAdornment}
                           </>
                         ),
@@ -375,13 +411,14 @@ export const ProjectUpdateForm = (props) => {
               control={control}
               defaultValue={props.project.minLessonTime}
               rules={{
-                required: 'Vui lòng nhập thời lượng tối thiểu cho từng nội dung',
-                validate: value => {
+                required:
+                  "Vui lòng nhập thời lượng tối thiểu cho từng nội dung",
+                validate: (value) => {
                   if (value <= 0) {
-                    return 'Thời lượng tối thiểu phải lớn hơn 0';
+                    return "Thời lượng tối thiểu phải lớn hơn 0";
                   }
                   if (value >= 1000) {
-                    return 'Thời lượng tối thiểu phải nhỏ hơn 1000';
+                    return "Thời lượng tối thiểu phải nhỏ hơn 1000";
                   }
                   return true; // Nếu tất cả các điều kiện đều đúng
                 },
@@ -390,12 +427,12 @@ export const ProjectUpdateForm = (props) => {
                 <TextField
                   {...field}
                   label="Thời lượng tối thiểu"
-                  placeholder='phút/nội dung'
+                  placeholder="phút/nội dung"
                   variant="outlined"
                   fullWidth
                   required
                   margin="normal"
-                  type='number'
+                  type="number"
                   error={!!errors.minLessonTime}
                   helperText={errors.minLessonTime?.message}
                 />
@@ -409,13 +446,13 @@ export const ProjectUpdateForm = (props) => {
               control={control}
               defaultValue={props.project.maxLessonTime}
               rules={{
-                required: 'Vui lòng nhập thời lượng tối đa cho từng nội dung',
-                validate: value => {
+                required: "Vui lòng nhập thời lượng tối đa cho từng nội dung",
+                validate: (value) => {
                   if (value <= 0) {
-                    return 'Thời lượng tối đa phải lớn hơn 0';
+                    return "Thời lượng tối đa phải lớn hơn 0";
                   }
                   if (value >= 1000) {
-                    return 'Thời lượng tối đa phải nhỏ hơn 1000';
+                    return "Thời lượng tối đa phải nhỏ hơn 1000";
                   }
                   return true; // Nếu tất cả các điều kiện đều đúng
                 },
@@ -424,26 +461,37 @@ export const ProjectUpdateForm = (props) => {
                 <TextField
                   {...field}
                   label="Thời lượng tối đa"
-                  placeholder='phút/nội dung'
+                  placeholder="phút/nội dung"
                   variant="outlined"
                   fullWidth
                   required
                   margin="normal"
-                  type='number'
+                  type="number"
                   error={!!errors.maxLessonTime}
                   helperText={errors.maxLessonTime?.message}
                 />
               )}
             />
-
           </form>
-
         </DialogContent>
         <DialogActions>
-          <button onClick={handleClose} className={cx('cancel-button')}>Hủy</button>
-          <button type="submit" onClick={handleSubmit(onSubmit)} className={cx('create-button')} disabled={loading}>
+          <button onClick={handleClose} className={cx("cancel-button")}>
+            Hủy
+          </button>
+          <button
+            type="submit"
+            onClick={handleSubmit(onSubmit)}
+            className={cx("create-button")}
+            disabled={loading}
+          >
             {loading ? (
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
                 <CircularProgress size={24} sx={{ color: "white" }} />
               </div>
             ) : (
@@ -454,4 +502,4 @@ export const ProjectUpdateForm = (props) => {
       </Dialog>
     </React.Fragment>
   );
-}
+};
