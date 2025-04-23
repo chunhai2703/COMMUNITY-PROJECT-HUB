@@ -1,8 +1,19 @@
-import React, { useState } from 'react'
-import { SettingOutlined, HomeOutlined, FolderOutlined, MailOutlined, MenuFoldOutlined, MenuUnfoldOutlined, SnippetsOutlined, InteractionOutlined, CalendarOutlined, InboxOutlined } from '@ant-design/icons';
-import { Menu } from 'antd';
-import { useNavigate } from 'react-router-dom';
-
+import React, { useState } from "react";
+import {
+  SettingOutlined,
+  HomeOutlined,
+  FolderOutlined,
+  MailOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  SnippetsOutlined,
+  InteractionOutlined,
+  CalendarOutlined,
+  InboxOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
+import { Menu } from "antd";
+import { useNavigate } from "react-router-dom";
 
 export const SideBarBR = () => {
   const navigate = useNavigate();
@@ -14,43 +25,39 @@ export const SideBarBR = () => {
 
   const items = [
     {
-      key: 'toggle',
+      key: "toggle",
       label: "",
-      icon: collapsed ? <MenuUnfoldOutlined style={{ fontSize: collapsed ? 20 : 18 }} /> : <MenuFoldOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
+      icon: collapsed ? (
+        <MenuUnfoldOutlined style={{ fontSize: collapsed ? 20 : 18 }} />
+      ) : (
+        <MenuFoldOutlined style={{ fontSize: collapsed ? 20 : 18 }} />
+      ),
       onClick: toggleCollapse,
     },
     {
-      key: 'home',
-      label: 'Trang Chủ',
+      key: "home",
+      label: "Trang chủ",
       icon: <HomeOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
-      onClick: () => navigate('/home-business-relation'),
-
+      onClick: () => navigate("/home-business-relation"),
     },
     {
-      key: 'projects',
-      label: 'Dự Án',
+      key: "projects",
+      label: "Dự án",
       icon: <FolderOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
-      onClick: () => navigate('/home-business-relation/projects'),
+      onClick: () => navigate("/home-business-relation/projects"),
     },
     {
-      key: 'feeback-management',
-      label: 'Quản lý đánh giá',
+      key: "feeback-management",
+      label: "Quản lý đánh giá",
       icon: <InboxOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
-      onClick: () => navigate('/home-business-relation/feedback-management'),
+      onClick: () => navigate("/home-business-relation/feedback-management"),
     },
     {
-      key: 'setting',
-      label: 'Cài Đặt',
-      icon: <SettingOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
-      children: [
-        {
-          key: 'profile',
-          label: 'Hồ Sơ Cá Nhân',
-          onClick: () => navigate('/home-business-relation/view-profile'),
-        },
-      ],
+      key: "profile",
+      label: "Hồ sơ cá nhân",
+      icon: <UserOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
+      onClick: () => navigate("/home-business-relation/view-profile"),
     },
-
   ];
 
   return (
@@ -63,15 +70,14 @@ export const SideBarBR = () => {
         width: collapsed ? 90 : 256,
         fontSize: 18,
         backgroundColor: "#F3F4F7",
-        color: 'black',
-        transition: 'width 0.3s',
+        color: "black",
+        transition: "width 0.3s",
       }}
-      defaultSelectedKeys={['home']}
+      defaultSelectedKeys={["home"]}
       inlineCollapsed={collapsed}
-      theme='light'
+      theme="light"
       mode="inline"
       items={items}
     />
   );
-}
-
+};

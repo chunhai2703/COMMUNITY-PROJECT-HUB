@@ -19,32 +19,35 @@ export const AllProjects = () => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
 
-  const fetchProjects = useCallback(async (searchQuery = "", filterField = "", filterOrder = "") => {
-    setLoading(true);
-    try {
-      const response = await fetch(
-        `${baseUrl}/api/Project/all-project?searchValue=${searchQuery}&filterField=${filterField}&filterOrder=${filterOrder}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
+  const fetchProjects = useCallback(
+    async (searchQuery = "", filterField = "", filterOrder = "") => {
+      setLoading(true);
+      try {
+        const response = await fetch(
+          `${baseUrl}/api/Project/all-project?searchValue=${searchQuery}&filterField=${filterField}&filterOrder=${filterOrder}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
+
+        const resData = await response.json();
+        if (!response.ok) {
+          throw new Error(resData.message || "Lỗi khi lấy danh sách dự án");
         }
-      );
 
-      const resData = await response.json();
-      if (!response.ok) {
-        throw new Error(resData.message || "Lỗi khi lấy danh sách dự án");
+        setProjects(resData.result);
+      } catch (error) {
+        console.error("Lỗi khi lấy dự án:", error);
+      } finally {
+        setLoading(false);
       }
-
-      setProjects(resData.result);
-    } catch (error) {
-      console.error("Lỗi khi lấy dự án:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+    },
+    []
+  );
 
   // Gọi API khi component được mount
   useEffect(() => {
@@ -74,7 +77,6 @@ export const AllProjects = () => {
     }
   }, [filterField, filterOrder, handleFilter]);
 
-
   return (
     <div className={cx("all-projects-container")}>
       <h2 className={cx("all-projects-title")}>Dự Án Cộng Đồng</h2>
@@ -101,26 +103,26 @@ export const AllProjects = () => {
             variant="outlined"
             suffixIcon={<FilterOutlined />}
             style={{
-              width: 150,
+              width: 250,
             }}
             placeholder="Trường lọc"
             optionFilterProp="label"
             options={[
               {
-                value: 'Title',
-                label: 'Tên dự án',
+                value: "Title",
+                label: "Tên dự án",
               },
               {
-                value: 'StartDate',
-                label: 'Ngày bắt đầu',
+                value: "StartDate",
+                label: "Ngày bắt đầu lớp học",
               },
               {
-                value: 'EndDate',
-                label: 'Ngày kết thúc',
+                value: "EndDate",
+                label: "Ngày kết thúc lớp học",
               },
               {
-                value: 'CreatedDate',
-                label: 'Ngày tạo',
+                value: "CreatedDate",
+                label: "Ngày tạo",
               },
             ]}
             value={filterField || undefined}
@@ -138,20 +140,21 @@ export const AllProjects = () => {
             optionFilterProp="label"
             options={[
               {
-                value: 'ASC',
-                label: 'Tăng dần',
+                value: "ASC",
+                label: "Tăng dần",
               },
               {
-                value: 'DESC',
-                label: 'Giảm dần',
+                value: "DESC",
+                label: "Giảm dần",
               },
             ]}
             value={filterOrder || undefined}
             onChange={(value) => setFilterOrder(value)}
           />
-
         </div>
-        {user && user?.roleId === 4 && <ProjectCreateForm refresh={fetchProjects} />}
+        {user && user?.roleId === 4 && (
+          <ProjectCreateForm refresh={fetchProjects} />
+        )}
       </div>
 
       <ProjectsList projects={projects} />

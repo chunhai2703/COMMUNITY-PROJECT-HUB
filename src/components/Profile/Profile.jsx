@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, TextField } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import styles from "./Profile.module.css";
@@ -8,6 +8,7 @@ import { Spinner } from "../Spinner/Spinner";
 import { updateAccountAvatar } from "../../services/AccountApi";
 import { toast } from "react-toastify";
 import { set } from "lodash";
+import { Avatar } from "antd";
 
 const Profile = () => {
   const {
@@ -20,6 +21,29 @@ const Profile = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const [avatarBackground, setAvatarBackground] = useState("");
+
+  // Hàm lấy màu random cho avatar
+  const getRandomColor = () => {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+
+  // Fetch danh sách thông báo khi component mount
+  useEffect(() => {
+    if (user && !user.avatarLink) {
+      let storedColor = sessionStorage.getItem("avatarBackground");
+      if (!storedColor) {
+        storedColor = getRandomColor();
+        sessionStorage.setItem("avatarBackground", storedColor);
+      }
+      setAvatarBackground(storedColor);
+    }
+  }, [user]);
 
   const getTodayDate = () => {
     const today = new Date();
@@ -199,15 +223,22 @@ const Profile = () => {
 
         <div className={styles.rightSection}>
           <div className={styles.avatarContainer}>
-            <img
+            <Avatar
               src={
-                user.avatarLink
-                  ? user.avatarLink
-                  : "https://static.vecteezy.com/system/resources/previews/013/042/571/large_2x/default-avatar-profile-icon-social-media-user-photo-in-flat-style-vector.jpg"
+                user.avatarLink ? (
+                  <img src={user.avatarLink} alt="avatar" />
+                ) : null
               }
-              alt="Avatar"
-              className={styles.avatar}
-            />
+              style={{
+                backgroundColor: avatarBackground,
+                color: avatarBackground ? "#fff" : "",
+                marginBottom: 10,
+                fontSize: 100,
+              }}
+              size={200}
+            >
+              {!user.avatarLink ? user.fullName.charAt(0) : ""}
+            </Avatar>
             <Button
               variant="contained"
               component="label"

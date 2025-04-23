@@ -7,6 +7,7 @@ import {
   Modal as AntModal,
   message,
   Button,
+  Avatar,
 } from "antd";
 import {
   EditOutlined,
@@ -68,6 +69,23 @@ const TraineeScoreList = ({ dataClass }) => {
     reset,
     formState: { errors },
   } = useForm();
+  const [avatarBackground, setAvatarBackground] = useState("");
+
+  // Hàm lấy màu random cho avatar
+  const getRandomColor = () => {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+
+  // Fetch danh sách thông báo khi component mount
+  useEffect(() => {
+    const storedColor = getRandomColor();
+    setAvatarBackground(storedColor);
+  }, [selectedTrainee]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -618,15 +636,23 @@ const TraineeScoreList = ({ dataClass }) => {
             >
               <div className="flex">
                 <div className="w-1/2" style={{ marginRight: 5 }}>
-                  <img
-                    src={selectedTrainee.avatar}
-                    alt="Avatar"
+                  <Avatar
+                    src={
+                      selectedTrainee.avatarLink ? (
+                        <img src={selectedTrainee.avatarLink} alt="avatar" />
+                      ) : null
+                    }
                     style={{
-                      width: "80px",
-                      height: "80px",
-                      borderRadius: "50%",
+                      backgroundColor: avatarBackground,
+                      color: avatarBackground ? "#fff" : "",
+                      fontSize: 100,
                     }}
-                  />
+                    size={200}
+                  >
+                    {!selectedTrainee.avatarLink
+                      ? selectedTrainee.fullName.charAt(0)
+                      : ""}
+                  </Avatar>
                 </div>
                 <div className="w-1/2" style={{ flex: 1 }}>
                   <TextField

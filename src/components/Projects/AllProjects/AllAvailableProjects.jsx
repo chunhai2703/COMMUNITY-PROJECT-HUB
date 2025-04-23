@@ -121,7 +121,7 @@ export const AllAvailableProjects = () => {
             variant="outlined"
             suffixIcon={<FilterOutlined />}
             style={{
-              width: 150,
+              width: 250,
             }}
             placeholder="Trường lọc"
             optionFilterProp="label"
@@ -132,11 +132,11 @@ export const AllAvailableProjects = () => {
               },
               {
                 value: 'StartDate',
-                label: 'Ngày bắt đầu',
+                label: 'Ngày bắt đầu lớp học',
               },
               {
                 value: 'EndDate',
-                label: 'Ngày kết thúc',
+                label: 'Ngày kết thúc lớp học',
               },
               {
                 value: 'CreatedDate',
