@@ -265,7 +265,7 @@ const DashboardDepartmentHead = () => {
                                         <div key={project.projectId} className="w-full" onClick={() => navigate(`/home-department-head/project-detail/${project.projectId}`)}>
                                             <p className="text-lg md:text-xl mb-2 md:mb-3" >{project.projectName}</p>
                                             <Progress
-                                                percent={Math.round(project.percentage)}
+                                                percent={project.percentage}
                                                 size={["100%", 20]}
                                                 status={project.projectStatus === 'Kết thúc' ? 'success' : project.projectStatus === 'Hủy' ? 'exception' : 'active'}
                                             />
