@@ -22,8 +22,8 @@ export const CreateMaterial = async (data, projectId, accountId) => {
         const formData = new FormData();
         formData.append("Title", data.title);
         formData.append("ProjectId", projectId);
-        if (data.file?.[0]) {
-            formData.append("File", data.file[0]);
+        if (data.file) {
+            formData.append("File", data.file);
         }
         formData.append("UpdatedBy", accountId);
 
@@ -48,8 +48,8 @@ export const UpdateMaterial = async (data, materialId, projectId, accountId) => 
         formData.append("Title", data.title);
         formData.append("MaterialId", materialId);
         formData.append("ProjectId", projectId);
-        if (data.file?.[0]) {
-            formData.append("File", data.file[0]);
+        if (data.file) {
+            formData.append("File", data.file);
         }
         formData.append("UpdatedBy", accountId);
 
