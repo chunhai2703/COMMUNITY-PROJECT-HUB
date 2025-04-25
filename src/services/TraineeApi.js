@@ -186,3 +186,19 @@ export async function searchGroupTrainees(currentClassId, accountId) {
     throw new Error(error.message);
   }
 }
+
+export const ExportClassListTemplate = async () => {
+  try {
+    var url = `${baseUrl}/api/Trainee/export-trainee-class-template`;
+    const request = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await fetch(url, request);
+    return response;
+  } catch (err) {
+    console.log(err);
+  }
+};

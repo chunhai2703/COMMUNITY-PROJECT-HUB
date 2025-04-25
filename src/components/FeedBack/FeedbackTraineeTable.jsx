@@ -6,19 +6,16 @@ import {
   SmileOutlined,
   SmileTwoTone,
 } from "@ant-design/icons";
-import { debounce } from "lodash";
+
 import classes from "./FeedbackTraineeTable.module.css";
 import classNames from "classnames/bind";
-import { FeedbackUpdateForm } from "../Popup/FeedbackForm/FeedbackUpdateForm";
-import { FeedbackDeleteForm } from "../Popup/FeedbackForm/FeedbackDeleteForm";
+
 import useAuth from "../../hooks/useAuth";
 import { Spinner } from "../Spinner/Spinner";
-import { FeedbackCreateForm } from "../Popup/FeedbackForm/FeedbackCreateForm";
-import {
-  getAllQuestionOfProject,
-  getAllUnfeedbackProject,
-} from "../../services/FeedbackApi";
+
+import { getAllUnfeedbackProject } from "../../services/FeedbackApi";
 import { useNavigate } from "react-router-dom";
+import { debounce, set } from "lodash";
 
 const cx = classNames.bind(classes);
 
@@ -31,68 +28,33 @@ export const FeedbackTraineeTable = () => {
   const [searchValue, setSearchValue] = useState("");
   const navigate = useNavigate();
 
-  const fetchUnfeedbackProject = useCallback(
-    async (search = "") => {
-      try {
-        setLoading(true);
-        const response = await getAllUnfeedbackProject(user?.accountId, search);
+  const fetchUnfeedbackProject = useCallback(async () => {
+    setLoading(true);
+    const response = await getAllUnfeedbackProject(user.accountId, searchValue);
+    if (response.isSuccess) {
+      setUnfeedbackProject(response.result);
+      setLoading(false);
+    } else {
+      setUnfeedbackProject([]);
+      setLoading(false);
+      console.error("Lỗi khi lấy các dự án cần đánh giá:", response.message);
+    }
+  }, [user.accountId, searchValue]);
 
-        if (response.isSuccess) {
-          setUnfeedbackProject(response.result || []);
-        } else {
-          setUnfeedbackProject([]);
-        }
-      } catch (error) {
-        console.error("Lỗi khi lấy các câu hỏi:", error);
-        setUnfeedbackProject([]);
-      } finally {
-        setLoading(false);
-      }
-    },
-    [user]
-  );
+  const handleInputSearch = debounce((e) => {
+    setSearchValue(e.target.value);
+    setPageNumber(1);
+  }, 500);
 
   useEffect(() => {
-    fetchUnfeedbackProject();
-  }, [fetchUnfeedbackProject]);
-
-  useEffect(() => {
-    const delaySearch = setTimeout(() => {
-      fetchUnfeedbackProject(searchValue);
-    }, 500);
-
-    return () => clearTimeout(delaySearch);
-  }, [searchValue, fetchUnfeedbackProject]);
-
-  // Xử lý khi nhấn nút tìm kiếm
-  const handleSearch = () => {
-    fetchUnfeedbackProject(searchValue);
-  };
+    if (user) {
+      fetchUnfeedbackProject();
+    }
+  }, [fetchUnfeedbackProject, user]);
 
   const moveToFeedbackPage = (record) => {
     navigate(`/home-trainee/project-feedback/${record.projectId}`);
   };
-
-  //   const getMenuItems = (record) => [
-  //     {
-  //       key: "1",
-  //       label: (
-  //         <FeedbackUpdateForm
-  //           question={record}
-  //           refresh={fetchUnfeedbackProject}
-  //         />
-  //       ),
-  //     },
-  //     {
-  //       key: "2",
-  //       label: (
-  //         <FeedbackDeleteForm
-  //           question={record}
-  //           refresh={fetchUnfeedbackProject}
-  //         />
-  //       ),
-  //     },
-  //   ];
 
   const columns = [
     {
@@ -120,21 +82,6 @@ export const FeedbackTraineeTable = () => {
       key: "lecturerName",
       align: "center",
     },
-    // {
-    //   title: "Đáp án",
-    //   key: "anwserList",
-    //   dataIndex: "anwserList",
-    //   align: "center",
-    //   render: (_, record) => (
-    //     <ol className={cx("answer-list")}>
-    //       {record.anwserList.map((answer) => (
-    //         <li className={cx("answer-item")} key={answer.answerId}>
-    //           {answer.answerContent}
-    //         </li>
-    //       ))}
-    //     </ol>
-    //   ),
-    // },
     {
       title: "",
       key: "action",
@@ -151,7 +98,7 @@ export const FeedbackTraineeTable = () => {
     },
   ];
 
-  if (!user || loading) {
+  if (!user || loading || !unfeedbackProject) {
     return <Spinner />;
   }
 
@@ -167,9 +114,7 @@ export const FeedbackTraineeTable = () => {
               type="search"
               placeholder="Tìm kiếm câu hỏi"
               className={cx("search-input")}
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+              onChange={(e) => handleInputSearch(e)}
             />
           </div>
           <button className={cx("search-button")}>
@@ -196,7 +141,7 @@ export const FeedbackTraineeTable = () => {
         <Table
           size="large"
           columns={columns}
-          rowKey={(record) => record.questionId}
+          rowKey={(record) => record.projectId}
           dataSource={unfeedbackProject.map((item) => ({
             projectId: item.projectId,
             title: item.title,

@@ -1,25 +1,30 @@
-import React, { useState } from 'react'
-import { EllipsisOutlined, ExportOutlined, FileTextOutlined } from '@ant-design/icons'
-import { Dropdown } from 'antd';
-import classes from './ProjectDetail.module.css'
-import classNames from 'classnames/bind'
-import { ProjectInformation } from './ProjectInformation/ProjectInformation';
-import { ProjectLesson } from './ProjectLesson/ProjectLesson';
-import { ProjectClass } from './ProjectClass/ProjectClass';
-import { ProjectUnactiveForm } from '../../Popup/Project/ProjectUnactiveForm';
-import { ProjectUpdateForm } from '../../Popup/Project/ProjectUpdateForm';
-import useAuth from '../../../hooks/useAuth';
-import { Spinner } from '../../Spinner/Spinner';
-import { ProjectChangeStatus } from '../../Popup/Project/ProjectChangeStatus';
-import { useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { ExportFinalReportProject } from '../../../services/ProjectsApi';
-import { ImportTrainee } from '../../Popup/Members/ImportTrainee';
-import { ProjectChangeProgressStatus } from '../../Popup/Project/ProjectChangeProgressStatus';
-import { ProjectChangeEndStatus } from '../../Popup/Project/ProjectChangeEndStatus';
+import React, { useState } from "react";
+import {
+  DownloadOutlined,
+  EllipsisOutlined,
+  ExportOutlined,
+  FileTextOutlined,
+} from "@ant-design/icons";
+import { Dropdown } from "antd";
+import classes from "./ProjectDetail.module.css";
+import classNames from "classnames/bind";
+import { ProjectInformation } from "./ProjectInformation/ProjectInformation";
+import { ProjectLesson } from "./ProjectLesson/ProjectLesson";
+import { ProjectClass } from "./ProjectClass/ProjectClass";
+import { ProjectUnactiveForm } from "../../Popup/Project/ProjectUnactiveForm";
+import { ProjectUpdateForm } from "../../Popup/Project/ProjectUpdateForm";
+import useAuth from "../../../hooks/useAuth";
+import { Spinner } from "../../Spinner/Spinner";
+import { ProjectChangeStatus } from "../../Popup/Project/ProjectChangeStatus";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { ExportFinalReportProject } from "../../../services/ProjectsApi";
+import { ImportTrainee } from "../../Popup/Members/ImportTrainee";
+import { ProjectChangeProgressStatus } from "../../Popup/Project/ProjectChangeProgressStatus";
+import { ProjectChangeEndStatus } from "../../Popup/Project/ProjectChangeEndStatus";
+import { ExportClassListTemplate } from "../../../services/TraineeApi";
 
-
-const cx = classNames.bind(classes)
+const cx = classNames.bind(classes);
 export const ProjectDetail = (props) => {
   const { user } = useAuth();
   const { projectId } = useParams();
@@ -28,12 +33,12 @@ export const ProjectDetail = (props) => {
   console.log(user);
 
   const moveToProjectLog = () => {
-    if (user && (user?.roleId === 2)) {
+    if (user && user?.roleId === 2) {
       navigate(`/home-lecturer/project-detail/${projectId}/project-log`);
-    } else if (user && (user?.roleId === 4)) {
+    } else if (user && user?.roleId === 4) {
       navigate(`/home-department-head/project-detail/${projectId}/project-log`);
     }
-  }
+  };
 
   const handleExportFinalReport = async () => {
     setIsLoading(true);
@@ -48,109 +53,178 @@ export const ProjectDetail = (props) => {
       a.click();
       document.body.removeChild(a);
       window.URL.revokeObjectURL(url);
-      toast.success("Export dữ liệu thành công")
+      toast.success("Export dữ liệu thành công");
     } else {
-      toast.error("Export dữ liệu thất bại")
+      toast.error("Export dữ liệu thất bại");
     }
-    setIsLoading(false)
-  }
+    setIsLoading(false);
+  };
+
+  const handleClassListTemplate = async () => {
+    setIsLoading(true);
+    const response = await ExportClassListTemplate();
+    if (response.ok) {
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "MauDanhSachLop.xlsx";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+      toast.success("Tải mẫu danh sách lớp thành công!");
+    } else {
+      toast.error("Tải mẫu danh sách lớp thất bại!");
+    }
+    setIsLoading(false);
+  };
   const items = [
-    ...((props.project.status === 'Lên kế hoạch') && (user.roleId === 4 || (user.roleId === 2 && user.accountId === props.project.projectManagerId))
+    ...(props.project.status === "Lên kế hoạch" &&
+    (user.roleId === 4 ||
+      (user.roleId === 2 && user.accountId === props.project.projectManagerId))
       ? [
-        {
-          key: '1',
-          label: <ProjectUpdateForm project={props.project} refreshProject={props.refreshProject} />,
-        },
-      ]
+          {
+            key: "1",
+            label: (
+              <ProjectUpdateForm
+                project={props.project}
+                refreshProject={props.refreshProject}
+              />
+            ),
+          },
+        ]
       : []),
     {
-      key: '2',
+      key: "2",
       label: (
-        <button className={cx('project-detail-backlog')} onClick={moveToProjectLog}>
-          <FileTextOutlined style={{ marginRight: '8px' }} /> Xem log
+        <button
+          className={cx("project-detail-backlog")}
+          onClick={moveToProjectLog}
+        >
+          <FileTextOutlined style={{ marginRight: "8px" }} /> Xem log
         </button>
       ),
     },
-    ...(props.project.status === 'Lên kế hoạch' && (user.roleId === 4 || (user.roleId === 2 && user.accountId === props.project.projectManagerId))
+    ...(props.project.status === "Lên kế hoạch" &&
+    (user.roleId === 4 ||
+      (user.roleId === 2 && user.accountId === props.project.projectManagerId))
       ? [
-        {
-          key: '3',
-          label: <ProjectChangeStatus refreshProject={props.refreshProject} />,
-        },
-      ]
+          {
+            key: "3",
+            label: (
+              <ProjectChangeStatus refreshProject={props.refreshProject} />
+            ),
+          },
+        ]
       : []),
-    ...(props.project.status === 'Sắp diễn ra' && (user.roleId === 4 || (user.roleId === 2 && user.accountId === props.project.projectManagerId))
+    ...(props.project.status === "Sắp diễn ra" &&
+    (user.roleId === 4 ||
+      (user.roleId === 2 && user.accountId === props.project.projectManagerId))
       ? [
-        {
-          key: '4',
-          label: <ProjectChangeProgressStatus refreshProject={props.refreshProject} />,
-        },
-      ]
-      : []),
-
-    ...(props.project.status === 'Đang diễn ra' && (user.roleId === 4 || (user.roleId === 2 && user.accountId === props.project.projectManagerId))
-      ? [
-        {
-          key: '5',
-          label: <ProjectChangeEndStatus refreshProject={props.refreshProject} />,
-        },
-      ]
-      : []),
-    ...((props.project.status === 'Lên kế hoạch' || props.project.status === 'Sắp diễn ra') && (user.roleId === 4 || (user.roleId === 2 && user.accountId === props.project.projectManagerId))
-      ? [
-        {
-          key: '6',
-          label: <ProjectUnactiveForm />,
-        },
-      ]
-      : []),
-    ...(props.project.status === 'Kết thúc'
-      && (
-        user.roleId === 4
-        || user.roleId === 5
-        || user.roleId === 6
-        || (user.roleId === 2 && user.accountId === props.project.projectManagerId)
-      )
-      ? [
-        {
-          key: '7',
-          label: (
-            <button className={cx('project-detail-export-final-report')} onClick={handleExportFinalReport}>
-              <ExportOutlined style={{ marginRight: '8px' }} /> Export báo cáo dự án
-            </button>
-          ),
-        },
-      ]
+          {
+            key: "4",
+            label: (
+              <ProjectChangeProgressStatus
+                refreshProject={props.refreshProject}
+              />
+            ),
+          },
+        ]
       : []),
 
-    ...(props.project.status === 'Lên kế hoạch'
-      && user.roleId === 5
+    ...(props.project.status === "Đang diễn ra" &&
+    (user.roleId === 4 ||
+      (user.roleId === 2 && user.accountId === props.project.projectManagerId))
       ? [
-        {
-          key: '8',
-          label: (
-            <ImportTrainee project={props.project} />
-          ),
-        },
-      ]
+          {
+            key: "5",
+            label: (
+              <ProjectChangeEndStatus refreshProject={props.refreshProject} />
+            ),
+          },
+        ]
+      : []),
+    ...((props.project.status === "Lên kế hoạch" ||
+      props.project.status === "Sắp diễn ra") &&
+    (user.roleId === 4 ||
+      (user.roleId === 2 && user.accountId === props.project.projectManagerId))
+      ? [
+          {
+            key: "6",
+            label: <ProjectUnactiveForm />,
+          },
+        ]
+      : []),
+    ...(props.project.status === "Kết thúc" &&
+    (user.roleId === 4 ||
+      user.roleId === 5 ||
+      user.roleId === 6 ||
+      (user.roleId === 2 && user.accountId === props.project.projectManagerId))
+      ? [
+          {
+            key: "7",
+            label: (
+              <button
+                className={cx("project-detail-export-final-report")}
+                onClick={handleExportFinalReport}
+              >
+                <ExportOutlined style={{ marginRight: "8px" }} /> Export báo cáo
+                dự án
+              </button>
+            ),
+          },
+        ]
+      : []),
+
+    ...(props.project.status === "Lên kế hoạch" && user.roleId === 5
+      ? [
+          {
+            key: "8",
+            label: (
+              <button
+                className={cx("project-detail-download-class-template")}
+                onClick={handleClassListTemplate}
+              >
+                <DownloadOutlined style={{ marginRight: "8px" }} /> Tải mẫu danh sách học viên
+              </button>
+            ),
+          },
+        ]
+      : []),
+
+    ...(props.project.status === "Lên kế hoạch" && user.roleId === 5
+      ? [
+          {
+            key: "8",
+            label: <ImportTrainee project={props.project} />,
+          },
+        ]
       : []),
   ].filter(Boolean);
-
 
   if (!user || isLoading) {
     return <Spinner />;
   }
 
   return (
-    <div className={cx('project-detail-container')}>
-      <header className={cx('project-detail-header')}>
-        <p className={cx('project-detail-title')}>Chi tiết dự án</p>
-        <div className={cx('project-detail-name-container')}>
-          <div className={cx('project-detail-name')}>
-            <h2 className={cx('project-detail-name-title')}>{props.project.title}</h2>
-            <span className={cx('project-detail-name-status')}>{props.project.status}</span>
+    <div className={cx("project-detail-container")}>
+      <header className={cx("project-detail-header")}>
+        <p className={cx("project-detail-title")}>Chi tiết dự án</p>
+        <div className={cx("project-detail-name-container")}>
+          <div className={cx("project-detail-name")}>
+            <h2 className={cx("project-detail-name-title")}>
+              {props.project.title}
+            </h2>
+            <span className={cx("project-detail-name-status")}>
+              {props.project.status}
+            </span>
           </div>
-          {user && (user.roleId === 4 || user.accountId === props.project.projectManagerId || user.roleId === 5 || user.roleId === 6) ? (
+          {user &&
+          (user.roleId === 4 ||
+            user.accountId === props.project.projectManagerId ||
+            user.roleId === 5 ||
+            user.roleId === 6) ? (
             <Dropdown
               menu={{ items }}
               placement="bottomRight"
@@ -159,13 +233,11 @@ export const ProjectDetail = (props) => {
               <EllipsisOutlined style={{ fontSize: "36px", color: "white" }} />
             </Dropdown>
           ) : null}
-
-
         </div>
       </header>
       <ProjectInformation project={props.project} />
       <ProjectLesson project={props.project} />
       <ProjectClass project={props.project} />
     </div>
-  )
-}
+  );
+};

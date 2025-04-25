@@ -17,6 +17,7 @@ export const RegistRejectForm = (props) => {
   const [modal, contextHolder] = Modal.useModal();
   const navigate = useNavigate();
   const { projectId } = useParams();
+  const [shouldRenderContent, setShouldRenderContent] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const {
@@ -27,14 +28,15 @@ export const RegistRejectForm = (props) => {
   } = useForm({});
   const showModal = () => {
     setIsModalOpen(true);
+    setTimeout(() => setShouldRenderContent(true), 50); // delay một chút
   };
   const handleOk = () => {
     setIsModalOpen(false);
   };
   const handleCancel = () => {
     setIsModalOpen(false);
+    setShouldRenderContent(false);
   };
-
   const onSubmit = async (data) => {
     const payload = {
       registrationId: props.registrationId,
@@ -81,30 +83,32 @@ export const RegistRejectForm = (props) => {
         cancelButtonProps={{ className: cx("cancel-button") }}
         centered
       >
-        <Controller
-          name="reason"
-          id="reason"
-          control={control}
-          defaultValue=""
-          rules={{
-            required: "Vui lòng nhập lý do từ chối",
-          }}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label="Lý do từ chối"
-              variant="outlined"
-              fullWidth
-              required
-              margin="normal"
-              type="text"
-              multiline
-              rows={4}
-              error={!!errors.reason}
-              helperText={errors.reason?.message}
-            />
-          )}
-        />
+        {shouldRenderContent && (
+          <Controller
+            name="reason"
+            id="reason"
+            control={control}
+            defaultValue=""
+            rules={{
+              required: "Vui lòng nhập lý do từ chối",
+            }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Lý do từ chối"
+                variant="outlined"
+                fullWidth
+                required
+                margin="normal"
+                type="text"
+                multiline
+                rows={4}
+                error={!!errors.reason}
+                helperText={errors.reason?.message}
+              />
+            )}
+          />
+        )}
       </Modal>
     </>
   );
