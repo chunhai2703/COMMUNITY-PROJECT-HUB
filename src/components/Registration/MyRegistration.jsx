@@ -59,7 +59,7 @@ export const MyRegistration = (props) => {
       <div className={cx("my-registration-search")}>
         <div className={cx("search-box-container")}>
           <div className={cx("search-box")}>
-            <SearchOutlined color="#285D9A" size={20} />
+            {/* <SearchOutlined color="#285D9A" size={20} /> */}
             <input
               type="search"
               placeholder="Tìm kiếm đơn đăng ký"

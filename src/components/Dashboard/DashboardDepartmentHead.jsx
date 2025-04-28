@@ -162,7 +162,7 @@ const DashboardDepartmentHead = () => {
                         ? 'học viên'
                         : user?.roleId === 2
                             ? 'giảng viên'
-                            : user?.roleId === 4 ? 'Trưởng bộ môn' : 'sinh viên'} </span>
+                            : user?.roleId === 4 ? 'Chủ nhiệm bộ môn' : 'sinh viên'} </span>
                     <span className={cx('greeting-name')}>{user?.fullName}</span> !
                 </h2>
 

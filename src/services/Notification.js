@@ -7,6 +7,7 @@ export const GetAllNotification = async (accountId) => {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
             }
         };
         const response = await fetch(url, request);
@@ -23,6 +24,7 @@ export const UpdateIsReadNotification = async (notificationIds) => {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
             },
             body: JSON.stringify({ notificationIds: notificationIds }), 
         };

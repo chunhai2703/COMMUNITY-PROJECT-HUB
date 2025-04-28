@@ -7,6 +7,7 @@ export const GetAmountOfLecturer = async () => {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
             }
         };
         const response = await fetch(url, request);
@@ -23,6 +24,7 @@ export const GetAmountOfStudent = async () => {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
             }
         };
         const response = await fetch(url, request);
@@ -39,6 +41,7 @@ export const GetAmountOfTrainee = async (accountId) => {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
             }
         };
         const response = await fetch(url, request);
@@ -55,6 +58,7 @@ export const GetAmountOfProject = async (accountId) => {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
             }
         };
         const response = await fetch(url, request);
@@ -71,6 +75,7 @@ export const GetAmountProjectWithStatus = async (accountId) => {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
             }
         };
         const response = await fetch(url, request);
@@ -87,6 +92,7 @@ export const GetAmountOfUser = async () => {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
             }
         };
         const response = await fetch(url, request);
@@ -103,6 +109,7 @@ export const GetAmountOfUserByRole = async () => {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
             }
         };
         const response = await fetch(url, request);
@@ -119,6 +126,7 @@ export const GetProgressOfAllProject = async (accountId) => {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
             }
         };
         const response = await fetch(url, request);

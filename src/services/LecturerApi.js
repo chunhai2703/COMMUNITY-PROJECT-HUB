@@ -7,6 +7,7 @@ export const GetAllLecturerOfProject = async (projectId, searchValue, pageNumber
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
             }
         };
         const response = await fetch(url, request);
@@ -23,6 +24,7 @@ export const RemoveLecturerFromClass = async (lecturerId, classId) => {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
             }
         };
         const response = await fetch(url, request);
