@@ -36,6 +36,7 @@ export const exportTraineeAttendanceTemplate = async (classId) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
       },
     };
     const response = await fetch(url, request);
@@ -52,6 +53,7 @@ export const exportTraineeAttendance = async (classId) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
       },
     };
     const response = await fetch(url, request);

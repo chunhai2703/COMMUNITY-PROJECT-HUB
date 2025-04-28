@@ -7,6 +7,7 @@ export const GetAllAccount = async (pageNumber, rowsPerPage, searchValue) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
     };
     const response = await fetch(url, request);
@@ -32,6 +33,7 @@ export const CreateAccount = (data) => {
     method: "POST",
     body: formData,
     headers: {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       accept: "*/*",
     },
   };
@@ -56,6 +58,7 @@ export const ImportAccount = (file) => {
     method: "POST",
     body: formData,
     headers: {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       accept: "*/*",
     },
   };
@@ -86,6 +89,7 @@ export const CreateAssociateAccount = (data) => {
     method: "POST",
     body: formData,
     headers: {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       accept: "*/*",
     },
   };

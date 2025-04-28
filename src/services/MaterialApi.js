@@ -7,6 +7,7 @@ export const GetAllMaterial = async (projectId, searchValue, pageNumber, rowsPer
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
             }
         };
         const response = await fetch(url, request);
@@ -31,6 +32,7 @@ export const CreateMaterial = async (data, projectId, accountId) => {
             method: "POST",
             headers: {
                 'accept': '*/*',
+                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
             },
             body: formData
         };

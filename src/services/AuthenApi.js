@@ -108,6 +108,7 @@ export const CheckOtp = async (email, otp) => {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
             }
         };
         const response = await fetch(url, request);
@@ -129,6 +130,7 @@ export const ChangePassword = async (password, confirmedPassword, email) => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
             },
             body: JSON.stringify(bodyJson)
         };
@@ -150,6 +152,7 @@ export const CheckOldPassword = async (oldPassword, email) => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
             },
             body: JSON.stringify(bodyJson)
         };

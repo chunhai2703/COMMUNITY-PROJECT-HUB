@@ -14,6 +14,7 @@ export const GetAllTraineeOfClass = async (
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
       },
     };
     const response = await fetch(url, request);
@@ -30,6 +31,7 @@ export const GetAllTraineeScoreList = async (classId) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
       },
     };
     const response = await fetch(url, request);
@@ -46,6 +48,7 @@ export const UpdateScoreTraineeList = async (data) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
       },
       body: JSON.stringify(data),
     };
@@ -94,6 +97,7 @@ export const ExportTraineeListTemplate = async (classId) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
       },
     };
     const response = await fetch(url, request);
@@ -110,6 +114,7 @@ export const ExportTraineeList = async (classId) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
       },
     };
     const response = await fetch(url, request);
@@ -126,6 +131,7 @@ export const RemoveTrainee = async (classId, accountId, reason) => {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
       },
     };
     const response = await fetch(url, request);
@@ -194,6 +200,7 @@ export const ExportClassListTemplate = async () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
       },
     };
     const response = await fetch(url, request);
