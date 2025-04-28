@@ -344,6 +344,7 @@ export const ExportFinalReportProject = async (projectId) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
       },
     };
     const response = await fetch(url, request);
