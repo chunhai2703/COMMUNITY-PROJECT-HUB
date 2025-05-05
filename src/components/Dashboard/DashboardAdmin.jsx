@@ -117,7 +117,7 @@ const DashboardAdmin = () => {
     const chartDataAmountUserByRole = {
         labels: amountUserByRole.map(item => item.type),
         datasets: [{
-            label: 'Số lượng dự án',
+            label: 'Số lượng người dùng',
             data: amountUserByRole.map(item => item.amount),
             backgroundColor: [
                 '#9966FF',   // Tím - Sinh viên
