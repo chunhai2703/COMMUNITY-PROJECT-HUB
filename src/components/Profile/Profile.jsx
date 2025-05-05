@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Button, TextField } from "@mui/material";
+import { Button, FormControlLabel, Radio, RadioGroup, TextField } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import styles from "./Profile.module.css";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { Spinner } from "../Spinner/Spinner";
-import { updateAccountAvatar } from "../../services/AccountApi";
+import { updateAccountAvatar, UpdateProfile } from "../../services/AccountApi";
 import { toast } from "react-toastify";
 import { set } from "lodash";
 import { Avatar } from "antd";
@@ -15,7 +15,7 @@ const Profile = () => {
     control,
     handleSubmit,
     setValue,
-    formState: { isDirty },
+    formState: { errors },
   } = useForm();
   const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
@@ -43,6 +43,7 @@ const Profile = () => {
       }
       setAvatarBackground(storedColor);
     }
+    console.log(formatToMMDDYYYY(user.dateOfBirth))
   }, [user]);
 
   const getTodayDate = () => {
@@ -64,9 +65,37 @@ const Profile = () => {
     }).format(date);
   };
 
-  const onSubmit = (data) => {
-    console.log("Dữ liệu sau khi chỉnh sửa:", data);
-    setIsEditing(false);
+  const formatToMMDDYYYY = (dateString) => {
+    const date = new Date(dateString);
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${year}-${month}-${day}`;
+  };
+
+  const onSubmit = async (data) => {
+    const dataJson = {
+      accountId: user.accountId,
+      fullName: data.fullName,
+      phone: data.phone,
+      email: data.email,
+      address: data.address,
+      gender: data.gender,
+      dateOfBirth: data.birthDate
+    }
+    setIsLoading(true);
+    const response = await UpdateProfile(dataJson);
+    const responseData = await response.json();
+    console.log(responseData)
+    if (response.ok) {
+      setIsLoading(false);
+      setIsEditing(false);
+      window.location.reload();
+    }
+    else {
+      toast.error(responseData.message);
+      setIsLoading(false);
+    }
   };
 
   const handleEditToggle = () => {
@@ -133,9 +162,25 @@ const Profile = () => {
                 value: isEditing ? (
                   <Controller
                     name="fullName"
+                    rules={{
+                      required: "Vui lòng nhập họ và tên",
+                      minLength: {
+                        value: 8,
+                        message: "Họ và tên phải có ít nhất 8 ký tự",
+                      },
+                      pattern: {
+                        value: /^[\p{L}]+([\s\p{L}]+)*$/u,
+                        message: "Họ và tên không hợp lệ",
+                      },
+                    }}
                     control={control}
                     defaultValue={user.fullName}
-                    render={({ field }) => <TextField {...field} fullWidth />}
+                    render={({ field }) => <TextField
+                      {...field}
+                      fullWidth
+                      error={!!errors.fullName}
+                      helperText={errors.fullName?.message}
+                    />}
                   />
                 ) : (
                   user.fullName
@@ -146,9 +191,21 @@ const Profile = () => {
                 value: isEditing ? (
                   <Controller
                     name="phone"
+                    rules={{
+                      required: "Vui lòng nhập số điện thoại",
+                      pattern: {
+                        value: /^0\d{9}$/,
+                        message: "Số điện thoại không hợp lệ",
+                      },
+                    }}
                     control={control}
                     defaultValue={user.phone}
-                    render={({ field }) => <TextField {...field} fullWidth />}
+                    render={({ field }) => <TextField
+                      {...field}
+                      fullWidth
+                      error={!!errors.phone}
+                      helperText={errors.phone?.message}
+                    />}
                   />
                 ) : (
                   user.phone
@@ -159,9 +216,17 @@ const Profile = () => {
                 value: isEditing ? (
                   <Controller
                     name="address"
+                    rules={{
+                      required: "Vui lòng nhập địa chỉ",
+                    }}
                     control={control}
                     defaultValue={user.address}
-                    render={({ field }) => <TextField {...field} fullWidth />}
+                    render={({ field }) => <TextField
+                      {...field}
+                      fullWidth
+                      error={!!errors.address}
+                      helperText={errors.address?.message}
+                    />}
                   />
                 ) : (
                   user.address
@@ -172,12 +237,44 @@ const Profile = () => {
                 value: isEditing ? (
                   <Controller
                     name="birthDate"
+                    rules={{
+                      required: "Vui lòng nhập ngày sinh",
+                    }}
                     control={control}
-                    defaultValue={formatDate(user.dateOfBirth)}
-                    render={({ field }) => <TextField {...field} fullWidth />}
+                    defaultValue={formatToMMDDYYYY(user.dateOfBirth)}
+                    render={({ field }) => <TextField {...field} fullWidth
+                      type="date"
+                      error={!!errors.birthDate}
+                      helperText={errors.birthDate?.message}
+                    />}
                   />
                 ) : (
                   formatDate(user.dateOfBirth)
+                ),
+              },
+              {
+                label: "Email:",
+                value: isEditing ? (
+                  <Controller
+                    name="email"
+                    rules={{
+                      required: "Vui lòng nhập email",
+                      pattern: {
+                        value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                        message: "Email không hợp lệ",
+                      },
+                    }}
+                    control={control}
+                    defaultValue={user.email}
+                    render={({ field }) => <TextField
+                      {...field}
+                      fullWidth
+                      error={!!errors.email}
+                      helperText={errors.email?.message}
+                    />}
+                  />
+                ) : (
+                  user.email
                 ),
               },
               {
@@ -187,13 +284,25 @@ const Profile = () => {
                     name="gender"
                     control={control}
                     defaultValue={user.gender}
-                    render={({ field }) => <TextField {...field} fullWidth />}
+                    render={({ field }) => (
+                      <RadioGroup row {...field}>
+                        <FormControlLabel
+                          value="Nam"
+                          control={<Radio />}
+                          label="Nam"
+                        />
+                        <FormControlLabel
+                          value="Nữ"
+                          control={<Radio />}
+                          label="Nữ"
+                        />
+                      </RadioGroup>
+                    )}
                   />
                 ) : (
                   user.gender
                 ),
               },
-              { label: "Email:", value: user.email },
               { label: "Mật khẩu:", value: "********" },
             ].map((item, index) => (
               <div key={index} className={styles.infoRow}>
@@ -201,11 +310,6 @@ const Profile = () => {
                 <div className={styles.info}>
                   {item.value}
                   {/* Nút chỉnh sửa ngay sau Email và Mật khẩu */}
-                  {item.label === "Email:" && (
-                    <Button variant="text" className={styles.editButton}>
-                      Chỉnh sửa
-                    </Button>
-                  )}
                   {item.label === "Mật khẩu:" && (
                     <Button
                       variant="text"
