@@ -50,7 +50,6 @@ export const CreateAccount = (data) => {
 
 export const ImportAccount = (file) => {
   const formData = new FormData();
-  console.log(file);
   formData.append("file", file);
 
   const url = `${baseUrl}/api/Account/import-account`;
@@ -127,3 +126,21 @@ export async function updateAccountAvatar(accountId, formData) {
 
   return response.json();
 }
+
+export const UpdateProfile = async (data) => {
+  try {
+    const url = `${baseUrl}/api/Account/profile`;
+    const request = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      body: JSON.stringify(data),
+    };
+    const response = await fetch(url, request);
+    return response;
+  } catch (err) {
+    console.log(err);
+  }
+};
