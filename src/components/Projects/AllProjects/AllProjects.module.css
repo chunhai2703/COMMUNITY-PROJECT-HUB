@@ -59,6 +59,7 @@
   }
   .all-projects-title {
     text-align: center;
+    font-size: 1.5rem;
   }
   .all-projects-search {
     flex-direction: column;

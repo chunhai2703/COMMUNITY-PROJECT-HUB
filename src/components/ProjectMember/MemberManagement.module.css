@@ -24,3 +24,43 @@
   border: 1px solid white;
   background-color: transparent;
 }
+
+@media (max-width: 768px) {
+  .project-title {
+    font-size: 18px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .project-status {
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 12px;
+  }
+
+  .header {
+    padding: 15px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .project-title {
+    font-size: 16px;
+    text-align: center;
+  }
+
+  .project-status {
+    font-size: 11px;
+    padding: 5px 8px;
+    text-align: center;
+  }
+
+  .header {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+}

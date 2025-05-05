@@ -193,7 +193,7 @@ export const LecturerList = (props) => {
     return (
         <div>
             <div className={cx('lecturer-table-container')}>
-                <p className='text-3xl'>Quản lý giảng viên</p>
+                <p className={cx('lecturer-table-title')}>Quản lý giảng viên</p>
                 <div className={cx('project-detail-search')}>
                     <div className='flex w-full justify-between items-center'>
                         <div className={cx('search-box-container')}>
@@ -252,6 +252,7 @@ export const LecturerList = (props) => {
                                 setRowsPerPage(pageSize);
                             },
                         }}
+                        scroll={{ x: "max-content" }}
                     />
                 </ConfigProvider>
             </div>

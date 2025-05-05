@@ -3,10 +3,14 @@
   flex-direction: column;
   gap: 2.5rem;
   margin: 0 3.5rem;
-  max-height: 700px; /* Giới hạn chiều cao */
-  overflow-y: auto; /* Hiển thị thanh cuộn khi nội dung vượt quá */
-  padding-right: 10px; /* Tạo khoảng cách để tránh che nội dung */
+  max-height: 700px;
+  /* Giới hạn chiều cao */
+  overflow-y: auto;
+  /* Hiển thị thanh cuộn khi nội dung vượt quá */
+  padding-right: 10px;
+  /* Tạo khoảng cách để tránh che nội dung */
 }
+
 /* Tùy chỉnh thanh cuộn */
 .project-lesson-content::-webkit-scrollbar {
   width: 8px;
@@ -20,15 +24,18 @@
 .project-lesson-content::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
 .project-lesson-title {
   font-size: 24px;
   font-weight: 600;
 }
+
 .project-lesson-content {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+
 .project-lesson-edit {
   align-self: flex-end;
   color: white;
@@ -41,11 +48,79 @@
   width: 150px;
   cursor: pointer;
 }
+
 .project-lesson-edit:hover {
   background-color: #3a3f46;
 }
+
 .lesson-content {
   font-size: 24px;
   font-weight: 600;
   letter-spacing: 3px;
+}
+
+@media (max-width: 1024px) {
+  .project-lesson-container {
+    margin: 0 2rem;
+    max-height: 600px;
+  }
+
+  .project-lesson-title {
+    font-size: 20px;
+  }
+
+  .lesson-content {
+    font-size: 20px;
+    letter-spacing: 2px;
+  }
+}
+
+@media (max-width: 768px) {
+  .project-lesson-container {
+    margin: 0 1rem;
+    max-height: 500px;
+    padding-right: 6px;
+  }
+
+  .project-lesson-title {
+    font-size: 18px;
+    text-align: center;
+  }
+
+  .lesson-content {
+    font-size: 18px;
+    letter-spacing: 1px;
+    line-height: 1.6;
+  }
+
+  .project-lesson-edit {
+    font-size: 14px;
+    padding: 8px 6px;
+    width: 130px;
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .project-lesson-container {
+    max-height: unset;
+    overflow-y: visible;
+  }
+
+  .project-lesson-title {
+    font-size: 16px;
+    margin-bottom: 0.5rem;
+  }
+
+  .lesson-content {
+    font-size: 16px;
+    letter-spacing: 0.5px;
+  }
+
+  .project-lesson-edit {
+    width: 100%;
+    font-size: 13px;
+    padding: 7px;
+    text-align: center;
+  }
 }

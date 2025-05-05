@@ -21,7 +21,8 @@
   flex-direction: column;
   padding: 2.5rem;
   z-index: 20;
-  overflow: hidden; /* Đảm bảo hiệu ứng không bị tràn */
+  overflow: hidden;
+  /* Đảm bảo hiệu ứng không bị tràn */
 }
 
 /* Viền động */
@@ -32,12 +33,10 @@
   left: -5px;
   right: -5px;
   bottom: -5px;
-  background-image: linear-gradient(
-    109.6deg,
-    rgba(255, 204, 153, 0.6) 11.2%,
-    rgba(173, 255, 47, 0.6) 50%,
-    rgba(135, 206, 250, 0.6) 90%
-  );
+  background-image: linear-gradient(109.6deg,
+      rgba(255, 204, 153, 0.6) 11.2%,
+      rgba(173, 255, 47, 0.6) 50%,
+      rgba(135, 206, 250, 0.6) 90%);
   background-size: 300% 300%;
   border-radius: 30px;
   z-index: -2;
@@ -49,9 +48,11 @@
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
@@ -90,11 +91,13 @@
   flex-direction: column;
   gap: 2rem;
 }
+
 .login-form .input-group {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
+
 .input-container {
   display: flex;
   align-items: center;
@@ -103,6 +106,7 @@
   padding: 10px;
   font-size: 18px;
 }
+
 .login-form input {
   flex: 1;
   border: none;
@@ -111,12 +115,14 @@
   color: #333;
   padding: 10px;
 }
+
 .login-form input:hover,
 .login-form input:focus,
 .login-form input:active {
   border: 1px solid transparent;
   background-color: transparent;
 }
+
 .login-form .toggle-password-button {
   border: none;
   background-color: transparent;
@@ -165,6 +171,7 @@
   width: 311px;
   height: 290px;
 }
+
 @media screen and (max-width: 1024px) {
   .login-form-container {
     width: 90%;
@@ -180,6 +187,7 @@
 @media screen and (max-width: 768px) {
   .login-form-container {
     flex-direction: column;
+    justify-content: center;
     width: 95%;
     height: 90vh;
     padding: 2rem;
@@ -188,7 +196,12 @@
   .login-form-content {
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 1rem;
+  }
+
+  .login-form-title {
+    text-align: center;
   }
 
   .login-form {
@@ -208,14 +221,19 @@
     text-align: center;
   }
 
-  .login-form-image img {
+  .login-form-image {
+    display: none;
+  }
+
+  /* .login-form-image img {
     width: 200px;
     height: auto;
     display: none;
   }
+
   .login-img-title {
     display: none;
-  }
+  } */
 }
 
 @media screen and (max-width: 480px) {

@@ -13,6 +13,7 @@ const cx = classNames.bind(classes);
 
 export const Banner = () => {
   return (
+    <div className={cx('banner-container')}>
     <Carousel autoplay>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <img src={logo2} alt="" className={cx('img-banner')}></img>
@@ -27,6 +28,7 @@ export const Banner = () => {
         <img src={students2} alt="" className={cx('img-banner')}></img>
       </div>
     </Carousel>
+    </div>
   )
 
 }

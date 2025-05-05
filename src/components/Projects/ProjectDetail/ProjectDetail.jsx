@@ -4,6 +4,7 @@ import {
   EllipsisOutlined,
   ExportOutlined,
   FileTextOutlined,
+  InboxOutlined,
 } from "@ant-design/icons";
 import { Dropdown } from "antd";
 import classes from "./ProjectDetail.module.css";
@@ -37,6 +38,21 @@ export const ProjectDetail = (props) => {
       navigate(`/home-lecturer/project-detail/${projectId}/project-log`);
     } else if (user && user?.roleId === 4) {
       navigate(`/home-department-head/project-detail/${projectId}/project-log`);
+    }
+  };
+  const moveToProjectFeeback = () => {
+    if (user && user?.roleId === 2) {
+      navigate(`/home-lecturer/project-detail/${projectId}/all-feedback`);
+    } else if (user && user?.roleId === 4) {
+      navigate(
+        `/home-department-head/project-detail/${projectId}/all-feedback`
+      );
+    } else if (user && user?.roleId === 5) {
+      navigate(
+        `/home-business-relation/project-detail/${projectId}/all-feedback`
+      );
+    } else if (user && user?.roleId === 6) {
+      navigate(`/home-associate/project-detail/${projectId}/all-feedback`);
     }
   };
 
@@ -95,23 +111,13 @@ export const ProjectDetail = (props) => {
           },
         ]
       : []),
-    {
-      key: "2",
-      label: (
-        <button
-          className={cx("project-detail-backlog")}
-          onClick={moveToProjectLog}
-        >
-          <FileTextOutlined style={{ marginRight: "8px" }} /> Xem log
-        </button>
-      ),
-    },
+
     ...(props.project.status === "Lên kế hoạch" &&
     (user.roleId === 4 ||
       (user.roleId === 2 && user.accountId === props.project.projectManagerId))
       ? [
           {
-            key: "3",
+            key: "2",
             label: (
               <ProjectChangeStatus refreshProject={props.refreshProject} />
             ),
@@ -123,7 +129,7 @@ export const ProjectDetail = (props) => {
       (user.roleId === 2 && user.accountId === props.project.projectManagerId))
       ? [
           {
-            key: "4",
+            key: "3",
             label: (
               <ProjectChangeProgressStatus
                 refreshProject={props.refreshProject}
@@ -138,7 +144,7 @@ export const ProjectDetail = (props) => {
       (user.roleId === 2 && user.accountId === props.project.projectManagerId))
       ? [
           {
-            key: "5",
+            key: "4",
             label: (
               <ProjectChangeEndStatus refreshProject={props.refreshProject} />
             ),
@@ -151,7 +157,7 @@ export const ProjectDetail = (props) => {
       (user.roleId === 2 && user.accountId === props.project.projectManagerId))
       ? [
           {
-            key: "6",
+            key: "5",
             label: <ProjectUnactiveForm />,
           },
         ]
@@ -163,7 +169,7 @@ export const ProjectDetail = (props) => {
       (user.roleId === 2 && user.accountId === props.project.projectManagerId))
       ? [
           {
-            key: "7",
+            key: "6",
             label: (
               <button
                 className={cx("project-detail-export-final-report")}
@@ -180,13 +186,14 @@ export const ProjectDetail = (props) => {
     ...(props.project.status === "Lên kế hoạch" && user.roleId === 5
       ? [
           {
-            key: "8",
+            key: "7",
             label: (
               <button
                 className={cx("project-detail-download-class-template")}
                 onClick={handleClassListTemplate}
               >
-                <DownloadOutlined style={{ marginRight: "8px" }} /> Tải mẫu danh sách học viên
+                <DownloadOutlined style={{ marginRight: "8px" }} /> Tải mẫu danh
+                sách học viên
               </button>
             ),
           },
@@ -197,7 +204,45 @@ export const ProjectDetail = (props) => {
       ? [
           {
             key: "8",
-            label: <ImportTrainee project={props.project} />,
+            label: (
+              <ImportTrainee
+                project={props.project}
+                refresh={props.refreshProject}
+              />
+            ),
+          },
+        ]
+      : []),
+    {
+      key: "9",
+      label: (
+        <button
+          className={cx("project-detail-backlog")}
+          onClick={moveToProjectLog}
+        >
+          <FileTextOutlined style={{ marginRight: "8px" }} /> Xem log
+        </button>
+      ),
+    },
+    ...(props.project.status === "Kết thúc" &&
+    (user.roleId === 4 ||
+      user.roleId === 5 ||
+      user.roleId === 6 ||
+      (user.roleId === 2 && user.accountId === props.project.projectManagerId))
+      ? [
+          {
+            key: "10",
+            label: (
+              <button
+                className={cx("project-detail-all-feedback")}
+                onClick={moveToProjectFeeback}
+              >
+                <InboxOutlined
+                  style={{ marginRight: "8px", fontSize: `16px` }}
+                />{" "}
+                Xem đánh giá
+              </button>
+            ),
           },
         ]
       : []),
@@ -230,7 +275,7 @@ export const ProjectDetail = (props) => {
               placement="bottomRight"
               disabled={!props.project.status}
             >
-              <EllipsisOutlined style={{ fontSize: "36px", color: "white" }} />
+              <EllipsisOutlined className={cx("project-detail-action-icon")} />
             </Dropdown>
           ) : null}
         </div>

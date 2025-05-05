@@ -441,6 +441,7 @@ const TraineeList = ({ dataClass }) => {
               },
             }}
             onChange={handleTableChange}
+            scroll={{ x: "max-content" }}
           />
         </ConfigProvider>
       </div>

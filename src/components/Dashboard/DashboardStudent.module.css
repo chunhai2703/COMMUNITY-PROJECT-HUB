@@ -73,3 +73,69 @@
   font-weight: 500;
   text-align: center;
 }
+
+@media screen and (max-width: 768px) {
+  .dashboard-container {
+    padding: 1rem;
+    gap: 20px;
+  }
+}
+
+/* --- Greeting --- */
+.greeting {
+  font-size: 1.5rem;
+  line-height: 1.4;
+}
+
+.greeting-name {
+  font-size: 1.75rem;
+}
+
+@media screen and (max-width: 480px) {
+  .greeting {
+    font-size: 1.25rem;
+  }
+
+  .greeting-name {
+    font-size: 1.5rem;
+  }
+}
+
+/* --- Shortcut cards responsive --- */
+.shortcut-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  /* tốt hơn trên mobile */
+  gap: 15px;
+}
+
+.shortcut-card {
+  width: 100%;
+  max-width: 350px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- Collapse (FAQ) responsive --- */
+.collapse-title {
+  font-size: 24px;
+}
+
+@media screen and (max-width: 480px) {
+  .collapse-title {
+    font-size: 20px;
+  }
+
+  .shortcut-title {
+    font-size: 16px;
+  }
+
+  .shortcut-card {
+    height: auto;
+    padding: 10px;
+    text-align: center;
+  }
+}

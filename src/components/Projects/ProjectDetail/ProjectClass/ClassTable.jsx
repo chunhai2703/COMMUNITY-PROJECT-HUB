@@ -318,6 +318,7 @@ export const ClassTable = (props) => {
               setRowsPerPage(pageSize);
             },
           }}
+          scroll={{ x: "max-content" }}
         />
       </ConfigProvider>
     </div>

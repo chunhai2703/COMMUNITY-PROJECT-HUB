@@ -134,7 +134,7 @@ const DashboardAdmin = () => {
             <div className={cx('greeting-container')}>
                 <h2 className={cx('greeting', 'animate__animated animate__lightSpeedInRight')}>
                     <span className={cx('greeting-text')}>Xin chào, </span>
-                    <span className={cx('greeting-role')}>quản trị viên </span>
+                    <span className={cx('greeting-role')}>Quản trị viên </span>
                     <span className={cx('greeting-name')}>{user?.fullName}</span> !
                 </h2>
 

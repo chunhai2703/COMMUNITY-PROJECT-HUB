@@ -157,6 +157,7 @@ export const FeedbackTraineeTable = () => {
             total: unfeedbackProject.length,
             onChange: (page) => setPageNumber(page),
           }}
+          scroll={{ x: "max-content" }}
         />
       </ConfigProvider>
     </div>

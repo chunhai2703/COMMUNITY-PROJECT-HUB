@@ -56,13 +56,20 @@ const AccountTable = ({
   };
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} sx={{ overflowX: "auto" }}>
       <Table>
-        <TableHead style={{ backgroundColor: "#474D57" }}>
+        <TableHead sx={{ backgroundColor: "#474D57" }}>
           <TableRow>
             {columns.map((column) => (
               <TableCell
-                style={{ color: "white", fontWeight: "600" }}
+                align="center"
+                sx={{
+                  color: "white",
+                  fontWeight: 600,
+                  fontSize: { xs: "14px", sm: "14px" },
+                  padding: { xs: "6px", sm: "12px" },
+                  whiteSpace: "nowrap",
+                }}
                 key={column.key}
               >
                 {column.title}
@@ -73,16 +80,40 @@ const AccountTable = ({
         <TableBody>
           {accounts.map((account) => (
             <TableRow key={account.accountCode}>
-              <TableCell>{account.accountCode}</TableCell>
-              <TableCell>{account.fullName}</TableCell>
-              <TableCell>{account.phone}</TableCell>
-              <TableCell>{account.address}</TableCell>
-              <TableCell>{account.email}</TableCell>
-              <TableCell>{formatDate(account.dateOfBirth)}</TableCell>
-              <TableCell style={{ textAlign: "center" }}>
+              <TableCell sx={{ fontSize: { xs: "14px", sm: "14px" } }}>
+                {account.accountCode}
+              </TableCell>
+              <TableCell sx={{ fontSize: { xs: "14px", sm: "14px" } }}>
+                {account.fullName}
+              </TableCell>
+              <TableCell sx={{ fontSize: { xs: "14px", sm: "14px" } }}>
+                {account.phone}
+              </TableCell>
+              <TableCell
+                sx={{
+                  fontSize: { xs: "14px", sm: "14px" },
+                }}
+              >
+                {account.address}
+              </TableCell>
+              <TableCell sx={{ fontSize: { xs: "14px", sm: "14px" } }}>
+                {account.email}
+              </TableCell>
+              <TableCell sx={{ fontSize: { xs: "14px", sm: "14px" } }}>
+                {formatDate(account.dateOfBirth)}
+              </TableCell>
+              <TableCell
+                sx={{
+                  fontSize: { xs: "14px", sm: "14px" },
+                  textAlign: "center",
+                }}
+              >
                 {account.gender === "Nam" ? "Nam" : "Nữ"}
               </TableCell>
-              <TableCell>
+              <TableCell
+                align="center"
+                sx={{ fontSize: { xs: "14px", sm: "14px" } }}
+              >
                 {account.roleId === 1 ? (
                   <Tag color="geekblue">Sinh viên</Tag>
                 ) : account.roleId === 2 ? (
@@ -99,15 +130,28 @@ const AccountTable = ({
                   <Tag color="red">Học viên</Tag>
                 )}
               </TableCell>
-              <TableCell>
+              <TableCell
+                align="center"
+                sx={{ fontSize: { xs: "14px", sm: "14px" } }}
+              >
                 {" "}
                 {account.status === "Active" ? (
-                  <Person style={{ color: "#474D57" }} />
+                  <Person
+                    style={{
+                      fontSize: { xs: "14px", sm: "20px" },
+                      color: "#474D57",
+                    }}
+                  />
                 ) : (
-                  <Person style={{ color: "#E74A3B" }} />
+                  <Person
+                    style={{
+                      fontSize: { xs: "14px", sm: "20px" },
+                      color: "#E74A3B",
+                    }}
+                  />
                 )}
               </TableCell>
-              <TableCell>
+              <TableCell sx={{ fontSize: { xs: "14px", sm: "14px" } }}>
                 <MoreHorizOutlined
                   onClick={(e) => handleOpenMenu(e, account)}
                   style={{ cursor: "pointer" }}

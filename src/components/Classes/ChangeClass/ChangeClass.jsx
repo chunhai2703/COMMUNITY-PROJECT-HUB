@@ -138,6 +138,7 @@ export const ChangeClass = () => {
             total: classList.length,
             onChange: (page) => setPageNumber(page), // Cập nhật pageNumber khi người dùng bấm chuyển trang
           }}
+          scroll={{ x: "max-content" }}
         />
       </ConfigProvider>
     </div>

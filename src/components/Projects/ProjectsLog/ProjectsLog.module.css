@@ -58,3 +58,51 @@
   justify-content: center;
   gap: 1.5rem;
 }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .project-log-title {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .project-log-search {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .search-box-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .search-box {
+    width: 100%;
+  }
+
+  .search-button {
+    width: 100%;
+  }
+
+  .ant-picker {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .project-log-title {
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+  }
+
+  .search-box input {
+    font-size: 14px;
+  }
+
+  .search-button {
+    font-size: 13px;
+    padding: 8px 5px;
+  }
+}

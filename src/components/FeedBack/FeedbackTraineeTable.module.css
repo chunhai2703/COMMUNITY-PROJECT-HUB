@@ -63,3 +63,41 @@
     cursor: pointer;
     font-style: italic;
 }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .unfeedback-project-title {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+
+    .unfeedback-project-search {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .search-box-container {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .search-box {
+        width: 100%;
+    }
+
+    .search-button {
+        display: none;
+    }
+
+    /* xử lý bảng tràn ngang */
+    .ant-table-wrapper {
+        overflow-x: auto;
+    }
+
+    .ant-table {
+        min-width: 600px;
+        /* Đảm bảo bảng không bị co nhỏ */
+    }
+}

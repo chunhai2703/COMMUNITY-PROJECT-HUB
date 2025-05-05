@@ -48,7 +48,7 @@ export const SideBarBR = () => {
     },
     {
       key: "feeback-management",
-      label: "Quản lý đánh giá",
+      label: "Quản lý câu hỏi",
       icon: <InboxOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
       onClick: () => navigate("/home-business-relation/feedback-management"),
     },

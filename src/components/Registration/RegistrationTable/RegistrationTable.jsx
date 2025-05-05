@@ -256,6 +256,7 @@ export const RegistrationTable = () => {
               setRowsPerPage(pageSize);
             },
           }}
+          scroll={{ x: "max-content" }}
         />
       </ConfigProvider>
     </div>

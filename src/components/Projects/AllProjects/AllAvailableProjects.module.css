@@ -63,6 +63,7 @@
   }
   .all-available-projects-title {
     text-align: center;
+    font-size: 1.5rem;
   }
   .all-available-projects-search {
     flex-direction: column;

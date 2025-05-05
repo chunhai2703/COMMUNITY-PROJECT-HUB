@@ -460,6 +460,7 @@ export const MaterialTable = (props) => {
                 setRowsPerPage(pageSize);
               },
             }}
+            scroll={{ x: "max-content" }}
           />
         </ConfigProvider>
       </div>
