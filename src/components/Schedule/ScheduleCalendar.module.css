@@ -11,6 +11,7 @@
   align-items: center;
   justify-content: space-between;
 }
+
 .schedule-calendar-title {
   letter-spacing: 5px;
   font-size: 2rem;
@@ -18,27 +19,80 @@
   overflow-wrap: break-word;
   white-space: pre-wrap;
 }
+
 .schedule-calendar-content {
   border-radius: 8px;
   border-top: 5px solid #f37021;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   padding: 1rem;
 }
+
 .custom-event-content {
   display: flex;
   flex-direction: column;
   gap: 5px;
   margin-bottom: 10px;
-  white-space: normal !important; /* Cho phép text xuống dòng */
-  overflow: visible !important; /* Hiển thị đầy đủ nội dung */
-  word-wrap: break-word; /* Xuống dòng khi cần */
+  white-space: normal !important;
+  /* Cho phép text xuống dòng */
+  overflow: visible !important;
+  /* Hiển thị đầy đủ nội dung */
+  word-wrap: break-word;
+  /* Xuống dòng khi cần */
   max-width: 100%;
 }
+
 .event-title {
   color: #f37021;
   font-weight: 600;
   font-size: 16px;
 }
+
 .event-time {
   align-self: flex-start;
+}
+
+@media (max-width: 768px) {
+  .schedule-calendar-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .schedule-calendar-title {
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    text-align: left;
+  }
+
+  .custom-event-content {
+    font-size: 14px;
+  }
+
+  .event-title {
+    font-size: 14px;
+  }
+
+  .event-time {
+    font-size: 12px;
+    padding: 2px 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .schedule-calendar-container {
+    padding: 0.5rem;
+  }
+
+  .schedule-calendar-content {
+    padding: 0.5rem;
+  }
+
+  .schedule-calendar-title {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .custom-event-content {
+    gap: 3px;
+  }
 }

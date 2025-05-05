@@ -84,8 +84,8 @@ export const ChangeGroup = (props) => {
   }
 
   return (
-    <div className={cx('change-class-container')}>
-      <h2 className={cx('change-class-title')}>Đơn Xin Chuyển Nhóm</h2>
+    <div className={cx('change-group-container')}>
+      <h2 className={cx('change-group-title')}>Đơn Xin Chuyển Nhóm</h2>
       {props.dataClass.projectStatus === 'Lên kế hoạch' &&
         <p className={cx('change-group-description')}>
           Bạn hiện không thể chuyển nhóm vào lúc này vì chưa đến hạn chuyển nhóm. Vui lòng quay lại sau!

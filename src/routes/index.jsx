@@ -52,6 +52,8 @@ import { ErrorPageAssociate } from "../pages/ErrorPage/ErrorPageAssociate";
 import { FeedbackBR } from "../pages/FeedbackPage/FeedbackBR";
 import { FeedbackTraineePage } from "../pages/FeedbackPage/FeedbackTrainee";
 import { ProjectFeedbackTrainee } from "../pages/FeedbackPage/ProjectFeedbackTrainee";
+import { AllFeedbackPage } from "../pages/FeedbackPage/AllFeedback";
+import { FeedbackTimePage } from "../pages/FeedbackPage/FeedbackTime";
 
 export const router = createBrowserRouter([
   //Path for Guest
@@ -114,6 +116,11 @@ export const router = createBrowserRouter([
       {
         path: "project-detail/:projectId/project-log",
         element: <ProjectLog />,
+        errorElement: <ErrorPageDH />,
+      },
+      {
+        path: "project-detail/:projectId/all-feedback",
+        element: <AllFeedbackPage />,
         errorElement: <ErrorPageDH />,
       },
       {
@@ -192,6 +199,11 @@ export const router = createBrowserRouter([
       {
         path: "project-detail/:projectId/project-log",
         element: <ProjectLog />,
+        errorElement: <ErrorPageLecturer />,
+      },
+      {
+        path: "project-detail/:projectId/all-feedback",
+        element: <AllFeedbackPage />,
         errorElement: <ErrorPageLecturer />,
       },
       {
@@ -377,10 +389,12 @@ export const router = createBrowserRouter([
           {
             index: true,
             element: <FeedbackTraineePage />,
+            errorElement: <ErrorPageTrainee />,
           },
           {
             path: ":projectId",
             element: <ProjectFeedbackTrainee />,
+            errorElement: <ErrorPageTrainee />,
           },
         ],
       },
@@ -459,6 +473,11 @@ export const router = createBrowserRouter([
         errorElement: <ErrorPageBR />,
       },
       {
+        path: "project-detail/:projectId/all-feedback",
+        element: <AllFeedbackPage />,
+        errorElement: <ErrorPageBR />,
+      },
+      {
         path: "view-profile",
         element: <ViewProfilePage />,
         errorElement: <ErrorPageBR />,
@@ -504,6 +523,11 @@ export const router = createBrowserRouter([
       {
         path: "project-detail/:projectId/material",
         element: <MaterialManagementPage />,
+        errorElement: <ErrorPageAssociate />,
+      },
+      {
+        path: "project-detail/:projectId/all-feedback",
+        element: <AllFeedbackPage />,
         errorElement: <ErrorPageAssociate />,
       },
       {
@@ -557,6 +581,11 @@ export const router = createBrowserRouter([
       {
         path: "account-management",
         element: <AccountManagementPage />,
+        errorElement: <ErrorPageAdmin />,
+      },
+      {
+        path: "feedback-time",
+        element: <FeedbackTimePage />,
         errorElement: <ErrorPageAdmin />,
       },
       {

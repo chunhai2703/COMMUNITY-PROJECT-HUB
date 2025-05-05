@@ -611,6 +611,7 @@ const TraineeScoreList = ({ dataClass }) => {
               totalSlot: trainee.totalSlot,
               result: trainee.result,
             }))}
+            scroll={{ x: "max-content" }}
           />
         </ConfigProvider>
       </div>

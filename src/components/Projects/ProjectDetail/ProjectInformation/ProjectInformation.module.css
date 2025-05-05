@@ -8,16 +8,19 @@
   padding: 2rem;
   margin: 0 3.5rem;
 }
+
 .project-information-title {
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-bottom: 10px;
 }
+
 .project-title {
   font-size: 24px;
   font-weight: 600;
 }
+
 .project-description {
   font-size: 13px;
   align-self: center;
@@ -25,6 +28,7 @@
   font-weight: 500;
   line-height: 2;
 }
+
 .project-application-date {
   color: rgb(238, 33, 33);
   font-weight: 600;
@@ -36,18 +40,22 @@
   gap: 1rem;
   font-size: 14px;
 }
+
 .label {
   font-weight: 800;
 }
+
 .content {
   margin-left: 5px;
 }
+
 .project-material-buttons {
   align-self: flex-end;
   display: flex;
   align-items: center;
   gap: 2rem;
 }
+
 .project-material-button {
   color: white;
   background-color: #ff8400;
@@ -59,9 +67,11 @@
   width: 180px;
   cursor: pointer;
 }
+
 .project-material-button:hover {
   background-color: #ce6d05;
 }
+
 .project-register-button {
   color: white;
   background-color: #57c94c;
@@ -73,6 +83,7 @@
   width: 180px;
   cursor: pointer;
 }
+
 .project-register-button:hover {
   background-color: #41903a;
 }
@@ -80,10 +91,124 @@
 .number-member-icon {
   font-size: 24px;
 }
+
 .number-member-icon:hover {
   color: rgb(102, 101, 101);
 }
+
 .number-member-content:hover {
   text-decoration: underline;
   color: #034ea2;
+}
+
+@media (max-width: 1024px) {
+  .project-information-container {
+    margin: 0 2rem;
+    padding: 1.5rem;
+  }
+
+  .project-title {
+    font-size: 20px;
+  }
+
+  .project-description {
+    padding-left: 2rem;
+    font-size: 12px;
+  }
+
+  .project-material-buttons {
+    align-self: center;
+    gap: 0.5rem;
+  }
+
+  .project-material-button,
+  .project-register-button {
+    width: 150px;
+    font-size: 13px;
+    padding: 8px 6px;
+  }
+}
+
+@media (max-width: 768px) {
+  .project-information-container {
+    margin: 0 1rem;
+    padding: 1rem;
+  }
+
+  .project-description {
+    padding-left: 1rem;
+    font-size: 12px;
+    text-align: left;
+  }
+
+  .project-information-content {
+    font-size: 13px;
+    gap: 0.75rem;
+  }
+
+  .project-material-buttons {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    margin-top: 1rem;
+    align-self: center;
+  }
+
+  .project-material-button,
+  .project-register-button {
+    width: 130%;
+  }
+
+  .project-date {
+    flex-direction: column;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .project-associate,
+  .project-address,
+  .project-number-lesson,
+  .project-min-lesson-time,
+  .project-max-lesson-time,
+  .project-number-trainee,
+  .project-number-teacher,
+  .project-number-member,
+  .project-date,
+  .project-manager,
+  .project-application-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem
+  }
+}
+
+@media (max-width: 480px) {
+  .project-title {
+    font-size: 18px;
+  }
+
+  .project-description {
+    font-size: 11px;
+    line-height: 1.8;
+  }
+
+  .project-material-button,
+  .project-register-button {
+    font-size: 12px;
+    padding: 7px 5px;
+  }
+
+  .label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  .content {
+    display: block;
+    margin-left: 0;
+    margin-bottom: 10px;
+  }
 }

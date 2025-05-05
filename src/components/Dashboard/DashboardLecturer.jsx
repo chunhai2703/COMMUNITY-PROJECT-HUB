@@ -89,7 +89,6 @@ const items = [
   },
 ];
 
-
 export const DashboardLecturer = () => {
   const [currentTime, setCurrentTime] = useState(dayjs().tz('Asia/Ho_Chi_Minh'));
   const navigate = useNavigate();
@@ -119,7 +118,7 @@ export const DashboardLecturer = () => {
       <div className={cx('greeting-container')}>
         <h2 className={cx('greeting', 'animate__animated animate__lightSpeedInRight')}>
           <span className={cx('greeting-text')}>Xin chào, </span>
-          <span className={cx('greeting-role')}>giảng viên </span>
+          <span className={cx('greeting-role')}>Giảng viên </span>
           <span className={cx('greeting-name')}>{user?.fullName}</span> !
         </h2>
 

@@ -6,6 +6,7 @@ import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   UserOutlined,
+  ClockCircleOutlined,
 } from "@ant-design/icons";
 import { Menu } from "antd";
 import { useNavigate } from "react-router-dom";
@@ -40,6 +41,12 @@ export const SideBarAdmin = () => {
       label: "Quản lý tài khoản",
       icon: <TeamOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
       onClick: () => navigate("/home-admin/account-management"),
+    },
+    {
+      key: "feedback-time",
+      label: "Thời gian đánh giá",
+      icon: <ClockCircleOutlined style={{ fontSize: collapsed ? 20 : 18 }} />,
+      onClick: () => navigate("/home-admin/feedback-time"),
     },
     {
       key: "profile",

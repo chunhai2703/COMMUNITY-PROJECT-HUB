@@ -11,16 +11,19 @@
   flex-direction: column;
   gap: 20px;
 }
+
 .project-detail-search {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
+
 .search-box-container {
   display: flex;
   align-items: center;
   gap: 10px;
 }
+
 .search-box {
   display: flex;
   align-items: center;
@@ -30,6 +33,7 @@
   padding: 5px 10px;
   width: 300px;
 }
+
 .search-box input {
   border: none;
   outline: none;
@@ -37,6 +41,7 @@
   padding: 5px;
   font-size: 16px;
 }
+
 .search-button {
   color: white;
   background-color: #474d57;
@@ -46,4 +51,59 @@
   font-size: 14px;
   width: 100px;
   cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+  .search-box {
+    width: 250px;
+  }
+
+  .search-box input {
+    font-size: 14px;
+  }
+
+  .search-button {
+    font-size: 13px;
+    padding: 8px;
+    width: 90px;
+  }
+
+  .ant-table-thead>tr>th {
+    font-size: 14px !important;
+  }
+
+  .ant-table-tbody>tr>td {
+    font-size: 13px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .project-detail-search {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .search-box-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-box {
+    width: 100%;
+  }
+
+  .search-button {
+    width: 100%;
+    display: none;
+  }
+
+  .ant-table-wrapper {
+    overflow-x: auto;
+  }
+
+  .ant-table {
+    min-width: 700px;
+    /* Tạo cuộn ngang nếu bảng quá rộng */
+  }
 }

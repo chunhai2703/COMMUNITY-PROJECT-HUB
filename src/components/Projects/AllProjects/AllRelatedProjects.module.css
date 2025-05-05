@@ -5,23 +5,30 @@
   padding: 1rem;
   gap: 2rem;
 }
+
 .all-related-projects-title {
   letter-spacing: 5px;
   font-size: 2rem;
-  word-wrap: break-word; /* Đảm bảo xuống dòng khi nội dung quá dài */
-  overflow-wrap: break-word; /* Đảm bảo xuống dòng khi có từ quá dài */
-  white-space: pre-wrap; /* Giữ nguyên định dạng xuống dòng */
+  word-wrap: break-word;
+  /* Đảm bảo xuống dòng khi nội dung quá dài */
+  overflow-wrap: break-word;
+  /* Đảm bảo xuống dòng khi có từ quá dài */
+  white-space: pre-wrap;
+  /* Giữ nguyên định dạng xuống dòng */
 }
+
 .all-related-projects-search {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
+
 .search-box-container {
   display: flex;
   align-items: center;
   gap: 10px;
 }
+
 .search-box {
   display: flex;
   align-items: center;
@@ -31,6 +38,7 @@
   padding: 5px 10px;
   width: 300px;
 }
+
 .search-box input {
   border: none;
   outline: none;
@@ -38,6 +46,7 @@
   padding: 5px;
   font-size: 16px;
 }
+
 .search-button {
   color: white;
   background-color: #474d57;
@@ -48,33 +57,42 @@
   width: 100px;
   cursor: pointer;
 }
+
 .search-button:hover {
   background-color: #8e8f92;
 }
+
 .filter-container {
   display: flex;
   gap: 10px;
 }
+
 @media (max-width: 768px) {
   .all-related-projects-container {
     align-items: center;
   }
+
   .all-related-projects-title {
     text-align: center;
+    font-size: 1.5rem;
   }
+
   .all-related-projects-search {
     flex-direction: column;
     align-items: center;
     gap: 10px;
   }
+
   .search-box-container {
     flex-direction: column;
     align-items: center;
   }
+
   .filter-container {
     flex-direction: column;
     align-items: center;
   }
+
   .search-box {
     display: flex;
     align-items: center;
@@ -82,6 +100,7 @@
     padding: 5px 5px;
     width: 200px;
   }
+
   .search-box input {
     border: none;
     outline: none;

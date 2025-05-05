@@ -120,7 +120,7 @@ export const DashboardStudent = () => {
       <div className={cx('greeting-container')}>
         <h2 className={cx('greeting', 'animate__animated animate__lightSpeedInRight')}>
           <span className={cx('greeting-text')}>Xin chào, </span>
-          <span className={cx('greeting-role')}>sinh viên </span>
+          <span className={cx('greeting-role')}>Sinh viên </span>
           <span className={cx('greeting-name')}>{user?.fullName}</span> !
         </h2>
 

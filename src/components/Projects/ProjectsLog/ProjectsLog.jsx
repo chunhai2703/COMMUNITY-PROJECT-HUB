@@ -266,6 +266,7 @@ export const ProjectsLog = () => {
               setRowsPerPage(pageSize);
             },
           }}
+          scroll={{ x: "max-content" }}
         />
       </ConfigProvider>
     </div>
