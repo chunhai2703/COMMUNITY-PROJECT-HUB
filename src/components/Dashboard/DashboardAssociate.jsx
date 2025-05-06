@@ -7,31 +7,30 @@ import {
   GetAmountOfProject,
   GetAmountOfTrainee,
   GetAmountProjectWithStatus,
-  GetProgressOfAllProject
+  GetProgressOfAllProject,
 } from "../../services/DashboardApi";
 import { Banner } from "../Banner/Banner";
 import classes from "./DashboardAssociate.module.css";
 import classNames from "classnames/bind";
-import dayjs from 'dayjs'; // 🟢 Import dayjs để xử lý ngày giờ
-import 'dayjs/locale/vi'; // 🟢 Dùng tiếng Việt cho định dạng ngày
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
-import 'animate.css';
+import dayjs from "dayjs"; // 🟢 Import dayjs để xử lý ngày giờ
+import "dayjs/locale/vi"; // 🟢 Dùng tiếng Việt cho định dạng ngày
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+import "animate.css";
 import { Progress } from "antd";
 import { FolderFilled, UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-
 
 const cx = classNames.bind(classes);
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
-dayjs.locale('vi'); // Đặt ngôn ngữ mặc định là tiếng Việt
-
-
+dayjs.locale("vi"); // Đặt ngôn ngữ mặc định là tiếng Việt
 
 export const DashboardAssociate = () => {
-  const [currentTime, setCurrentTime] = useState(dayjs().tz('Asia/Ho_Chi_Minh'));
+  const [currentTime, setCurrentTime] = useState(
+    dayjs().tz("Asia/Ho_Chi_Minh")
+  );
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [amountTrainee, setAmountTrainee] = useState(0);
@@ -43,13 +42,11 @@ export const DashboardAssociate = () => {
   useEffect(() => {
     // 🕒 Cập nhật thời gian mỗi giây
     const interval = setInterval(() => {
-      setCurrentTime(dayjs().tz('Asia/Ho_Chi_Minh'));
+      setCurrentTime(dayjs().tz("Asia/Ho_Chi_Minh"));
     }, 1000);
 
     return () => clearInterval(interval); // 🛑 Dọn dẹp interval khi component unmount
   }, []);
-
-
 
   useEffect(() => {
     if (user) {
@@ -103,56 +100,86 @@ export const DashboardAssociate = () => {
   };
 
   const chartData = {
-    labels: amountProjectWithStatus.map(item => item.type),
-    datasets: [{
-      label: 'Số lượng dự án',
-      data: amountProjectWithStatus.map(item => item.amount),
-      backgroundColor: [
-        '#9966FF',   // Tím - Lên kế hoạch
-        '#36A2EB',  // Xanh dương - Sắp diễn ra
-        '#FFCE56',  // Vàng - Đang diễn ra
-        '#4BC0C0',  // Xanh lục - Kết thúc
-        '#FF6384',  // Đỏ - Hủy
-
-      ],
-      hoverOffset: 4
-    }]
+    labels: amountProjectWithStatus.map((item) => item.type),
+    datasets: [
+      {
+        label: "Số lượng dự án",
+        data: amountProjectWithStatus.map((item) => item.amount),
+        backgroundColor: [
+          "#9966FF", // Tím - Lên kế hoạch
+          "#36A2EB", // Xanh dương - Sắp diễn ra
+          "#FFCE56", // Vàng - Đang diễn ra
+          "#4BC0C0", // Xanh lục - Kết thúc
+          "#FF6384", // Đỏ - Hủy
+        ],
+        hoverOffset: 4,
+      },
+    ],
   };
 
-  if (!user) return <Spinner />
+  if (!user) return <Spinner />;
 
   return (
-    <div className={cx('dashboard-container')}>
-      <div className={cx('greeting-container')}>
-        <h2 className={cx('greeting', 'animate__animated animate__lightSpeedInRight')}>
-          <span className={cx('greeting-text')}>Xin chào, </span>
-          <span className={cx('greeting-role')}>bên đối tác </span>
-          <span className={cx('greeting-name')}>{user?.associateName}</span> !
+    <div className={cx("dashboard-container")}>
+      <div className={cx("greeting-container")}>
+        <h2
+          className={cx(
+            "greeting",
+            "animate__animated animate__lightSpeedInRight"
+          )}
+        >
+          <span className={cx("greeting-text")}>Xin chào, </span>
+          <span className={cx("greeting-role")}>Bên đối tác </span>
+          <span className={cx("greeting-name")}>{user?.associateName}</span> !
         </h2>
 
         {/* 📅 Hiển thị ngày giờ hiện tại */}
-        <p className={cx('current-time', 'animate__animated animate__fadeIn')}>Hôm nay là {currentTime.format('dddd, DD/MM/YYYY HH:mm:ss')}</p>
+        <p className={cx("current-time", "animate__animated animate__fadeIn")}>
+          Hôm nay là {currentTime.format("dddd, DD/MM/YYYY HH:mm:ss")}
+        </p>
       </div>
       <Banner />
 
-
       <Grid container spacing={3}>
-
         <Grid item xs={12} md={6}>
-          <Card className={cx('shortcut-card')} onClick={() => navigate('/home-associate/all-related-projects')}>
+          <Card
+            className={cx("shortcut-card")}
+            onClick={() => navigate("/home-associate/all-related-projects")}
+          >
             <CardContent>
-              <p className={cx('shortcut-title')}> <FolderFilled style={{ fontSize: '24px', color: '#60B5FF', marginRight: '10px' }} /> Dự Án</p>
+              <p className={cx("shortcut-title")}>
+                {" "}
+                <FolderFilled
+                  style={{
+                    fontSize: "24px",
+                    color: "#60B5FF",
+                    marginRight: "10px",
+                  }}
+                />{" "}
+                Dự Án
+              </p>
             </CardContent>
-
           </Card>
         </Grid>
 
         <Grid item xs={12} md={6}>
-          <Card className={cx('shortcut-card')} onClick={() => navigate('/home-associate/view-profile')}>
+          <Card
+            className={cx("shortcut-card")}
+            onClick={() => navigate("/home-associate/view-profile")}
+          >
             <CardContent>
-              <p className={cx('shortcut-title')} > <UserOutlined style={{ fontSize: '24px', color: '#FF9B17', marginRight: '10px' }} /> Hồ sơ cá nhân</p>
+              <p className={cx("shortcut-title")}>
+                {" "}
+                <UserOutlined
+                  style={{
+                    fontSize: "24px",
+                    color: "#FF9B17",
+                    marginRight: "10px",
+                  }}
+                />{" "}
+                Hồ sơ cá nhân
+              </p>
             </CardContent>
-
           </Card>
         </Grid>
 
@@ -184,14 +211,21 @@ export const DashboardAssociate = () => {
               <Typography variant="h6" gutterBottom>
                 Trạng thái dự án
               </Typography>
-              <div style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                width: "100%",
-                height: "100%"
-              }}>
-                <Doughnut data={chartData} options={{ maintainAspectRatio: false }} width={500} height={400} />
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                <Doughnut
+                  data={chartData}
+                  options={{ maintainAspectRatio: false }}
+                  width={500}
+                  height={400}
+                />
               </div>
             </CardContent>
           </Card>
@@ -205,12 +239,32 @@ export const DashboardAssociate = () => {
               <div className="mt-6 flex flex-col gap-6 md:gap-8">
                 {progressProjectList &&
                   progressProjectList.map((project) => (
-                    <div key={project.projectId} className="w-full" onClick={() => navigate(`/home-associate/project-detail/${project.projectId}`)}>
-                      <p className="text-lg md:text-xl mb-2 md:mb-3">{project.projectName}</p>
+                    <div
+                      key={project.projectId}
+                      className="w-full"
+                      onClick={() =>
+                        navigate(
+                          `/home-associate/project-detail/${project.projectId}`
+                        )
+                      }
+                    >
+                      <p className="text-lg md:text-xl mb-2 md:mb-3">
+                        {project.projectName}
+                      </p>
                       <Progress
-                        percent={project.percentage}
-                        size={["100%", 20]} // Đảm bảo thanh progress co giãn theo màn hình 
-                        status={project.projectStatus === 'Kết thúc' ? 'success' : project.projectStatus === 'Hủy' ? 'exception' : 'active'}
+                        percent={
+                          project.projectStatus === "Hủy"
+                            ? 100
+                            : project.percentage
+                        }
+                        size={["100%", 20]} // Đảm bảo thanh progress co giãn theo màn hình
+                        status={
+                          project.projectStatus === "Kết thúc"
+                            ? "success"
+                            : project.projectStatus === "Hủy"
+                              ? "exception"
+                              : "active"
+                        }
                       />
                     </div>
                   ))}
@@ -219,7 +273,6 @@ export const DashboardAssociate = () => {
           </Card>
         </Grid>
       </Grid>
-
     </div>
   );
 };

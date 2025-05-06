@@ -15,7 +15,7 @@ const cx = classNames.bind(classes);
 
 export const AllFeedback = () => {
   const { user } = useAuth();
-  const ITEMS_PER_PAGE = 3;
+  const ITEMS_PER_PAGE = 10;
   const [pageNumber, setPageNumber] = useState(1);
   const [feedbackList, setFeedbackList] = useState([]);
   const { projectId } = useParams();

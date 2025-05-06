@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Button, Space } from "antd";
 import { CircularProgress, InputLabel } from "@mui/material";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, useWatch } from "react-hook-form";
 import { toast } from "react-toastify";
 import classNames from "classnames/bind";
 import classes from "./FeedbackTime.module.css";
@@ -18,7 +18,7 @@ const cx = classNames.bind(classes);
 export const FeedbackTime = () => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
-
+  const [displayedFeedbackTime, setDisplayedFeedbackTime] = useState(null);
   const {
     handleSubmit,
     control,
@@ -33,6 +33,7 @@ export const FeedbackTime = () => {
       const response = await getFeedbackTime();
       if (response.isSuccess) {
         setValue("maxFeedbackTime", response.result);
+        setDisplayedFeedbackTime(response.result);
       } else {
         console.error("Lỗi khi lấy thời gian:", response.message);
       }
@@ -52,6 +53,7 @@ export const FeedbackTime = () => {
       setLoading(true);
       await updateFeedbackTime(data.maxFeedbackTime);
       toast.success("Cập nhật thời gian đánh giá thành công!");
+      setDisplayedFeedbackTime(data.maxFeedbackTime);
       fetchFeedbackTime();
     } catch (error) {
       toast.error(error.message || "Đã xảy ra lỗi!");
@@ -70,6 +72,13 @@ export const FeedbackTime = () => {
         onSubmit={handleSubmit(onSubmit)}
         className={cx("feedback-time-form")}
       >
+        <p className={cx("feedback-time-description")}>
+          *Thời gian cho phép thực hiện đánh giá sau ngày kết thúc dự án là:
+          <br />
+          <span className={cx("feedback-time-value")}>
+            {displayedFeedbackTime} ngày
+          </span>
+        </p>
         <div className={cx("input-group")}>
           <label className={cx("input-label")}>Thời gian: </label>
           <Controller
@@ -92,15 +101,15 @@ export const FeedbackTime = () => {
                   className={cx("feedback-time-input")}
                   size="large"
                 />
-                {errors.maxFeedbackTime && (
-                  <p className={cx("error-message")}>
-                    {errors.maxFeedbackTime.message}
-                  </p>
-                )}
               </div>
             )}
           />
         </div>
+        {errors.maxFeedbackTime && (
+          <p className={cx("error-message")}>
+            {errors.maxFeedbackTime.message}
+          </p>
+        )}
 
         <Space style={{ marginTop: 16 }} className={cx("button-group")}>
           <Button

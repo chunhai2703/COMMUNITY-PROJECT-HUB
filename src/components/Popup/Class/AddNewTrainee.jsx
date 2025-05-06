@@ -151,6 +151,7 @@ export const AddNewTrainee = (props) => {
                   label="Tên tài khoản"
                   variant="outlined"
                   fullWidth
+                  required
                   margin="normal"
                   error={!!errors.accountName}
                   helperText={errors.accountName?.message}
@@ -179,6 +180,7 @@ export const AddNewTrainee = (props) => {
                   label="Họ và tên"
                   variant="outlined"
                   fullWidth
+                  required
                   margin="normal"
                   error={!!errors.fullName}
                   helperText={errors.fullName?.message}
@@ -203,6 +205,7 @@ export const AddNewTrainee = (props) => {
                   label="Số điện thoại"
                   variant="outlined"
                   fullWidth
+                  required
                   margin="normal"
                   error={!!errors.phone}
                   helperText={errors.phone?.message}
@@ -223,6 +226,7 @@ export const AddNewTrainee = (props) => {
                   label="Địa chỉ"
                   variant="outlined"
                   fullWidth
+                  required
                   margin="normal"
                   error={!!errors.address}
                   helperText={errors.address?.message}
@@ -248,6 +252,7 @@ export const AddNewTrainee = (props) => {
                   label="Email"
                   variant="outlined"
                   fullWidth
+                  required
                   margin="normal"
                   error={!!errors.email}
                   helperText={errors.email?.message}
@@ -270,6 +275,7 @@ export const AddNewTrainee = (props) => {
                   type="date"
                   variant="outlined"
                   fullWidth
+                  required
                   margin="normal"
                   InputLabelProps={{
                     shrink: true,

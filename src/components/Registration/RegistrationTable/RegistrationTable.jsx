@@ -6,6 +6,7 @@ import {
   CloseCircleOutlined,
   SyncOutlined,
   EyeInvisibleOutlined,
+  MinusCircleOutlined,
 } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
 import { debounce } from "lodash";
@@ -153,10 +154,17 @@ export const RegistrationTable = () => {
           >
             {text}
           </Tag>
-        ) : (
+        ) : text === "Từ chối" ? (
           <Tag
             icon={<CloseCircleOutlined style={{ verticalAlign: "middle" }} />}
             color="error"
+          >
+            {text}
+          </Tag>
+        ) : (
+          <Tag
+            icon={<MinusCircleOutlined style={{ verticalAlign: "middle" }} />}
+            color="red"
           >
             {text}
           </Tag>
@@ -256,7 +264,6 @@ export const RegistrationTable = () => {
               setRowsPerPage(pageSize);
             },
           }}
-          scroll={{ x: "max-content" }}
         />
       </ConfigProvider>
     </div>

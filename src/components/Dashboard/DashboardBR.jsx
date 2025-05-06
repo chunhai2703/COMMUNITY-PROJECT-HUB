@@ -305,8 +305,12 @@ export const DashboardBR = () => {
                         {project.projectName}
                       </p>
                       <Progress
-                        percent={project.percentage}
-                        size={["100%", 20]}
+                        percent={
+                          project.projectStatus === "Hủy"
+                            ? 100
+                            : project.percentage
+                        }
+                        size={["100%", 20]} // Đảm bảo thanh progress co giãn theo màn hình
                         status={
                           project.projectStatus === "Kết thúc"
                             ? "success"

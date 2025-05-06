@@ -64,6 +64,11 @@
   gap: 1.5rem;
 }
 
+.question-content {
+  white-space: normal;
+  word-break: break-word;
+}
+
 /* ✅ Responsive design */
 @media (max-width: 768px) {
   .feedback-management-title {

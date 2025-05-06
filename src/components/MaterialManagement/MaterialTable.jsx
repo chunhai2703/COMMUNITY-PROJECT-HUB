@@ -28,7 +28,7 @@ import { useForm, Controller } from "react-hook-form";
 import materials from "./MaterialTable.module.css";
 import classNames from "classnames/bind";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { debounce } from "lodash";
+import { debounce, set } from "lodash";
 import useAuth from "../../hooks/useAuth";
 import { Spinner } from "../Spinner/Spinner";
 import {
@@ -179,6 +179,7 @@ export const MaterialTable = (props) => {
       toast.success("Tạo mới tài liệu thành công!");
       fetchAllMaterial();
       handleCreateClose();
+      setSelectedMaterial(null);
       reset();
     } else {
       toast.error(responseData.message || "Tạo mới tài liệu thất bại!");
@@ -206,6 +207,7 @@ export const MaterialTable = (props) => {
       toast.success("Cập nhật tài liệu thành công");
       fetchAllMaterial();
       handleUpdateClose();
+      setSelectedMaterial(null);
       reset();
     } else {
       toast.error(responseData.message || "Lỗi khi cập nhật tài liệu");
@@ -234,7 +236,7 @@ export const MaterialTable = (props) => {
       key: "1",
       label: (
         <button
-          style={{ color: "blue", fontWeight: "600" }}
+          style={{ color: "#347ee7", fontWeight: "600" }}
           onClick={() => handleUpdateOpen(material)}
         >
           <EditOutlined style={{ marginRight: "8px" }} /> Cập nhật

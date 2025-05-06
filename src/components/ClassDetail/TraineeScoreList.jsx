@@ -61,6 +61,8 @@ const TraineeScoreList = ({ dataClass }) => {
   const [scores, setScores] = useState({});
   const [openErrorDialog, setOpenErrorDialog] = useState(false);
   const [errorList, setErrorList] = useState([]);
+  const ITEMS_PER_PAGE = 5;
+  const [pageNumber, setPageNumber] = useState(1);
 
   const {
     handleSubmit,
@@ -281,7 +283,8 @@ const TraineeScoreList = ({ dataClass }) => {
           style={{ fontWeight: "600" }}
           onClick={() => handleDetailOpen(trainee)}
         >
-          <InfoCircleOutlined style={{ marginRight: "8px" }} /> Chi tiết
+          <InfoCircleOutlined style={{ marginRight: "8px" }} />
+          Xem chi tiết
         </button>
       ),
     },
@@ -311,7 +314,7 @@ const TraineeScoreList = ({ dataClass }) => {
       key: "attendance",
       align: "center",
       render: (record) =>
-        record.totalPresentSlot === null ? (
+        record.isAttendanceImported === false ? (
           <span style={{ color: "red", fontWeight: 600 }}> Chưa có</span>
         ) : (
           <p>
@@ -610,7 +613,15 @@ const TraineeScoreList = ({ dataClass }) => {
               totalPresentSlot: trainee.totalPresentSlot,
               totalSlot: trainee.totalSlot,
               result: trainee.result,
+              isAttendanceImported: trainee.isAttendanceImported,
             }))}
+            pagination={{
+              position: ["bottomCenter"],
+              current: pageNumber,
+              pageSize: ITEMS_PER_PAGE,
+              total: traineeList.length,
+              onChange: (page) => setPageNumber(page),
+            }}
             scroll={{ x: "max-content" }}
           />
         </ConfigProvider>
@@ -639,18 +650,20 @@ const TraineeScoreList = ({ dataClass }) => {
                 <div className="w-1/2" style={{ marginRight: 5 }}>
                   <Avatar
                     src={
-                      selectedTrainee.avatarLink ? (
-                        <img src={selectedTrainee.avatarLink} alt="avatar" />
+                      selectedTrainee.avatar ? (
+                        <img src={selectedTrainee?.avatar} alt="avatar" />
                       ) : null
                     }
                     style={{
-                      backgroundColor: avatarBackground,
+                      backgroundColor: selectedTrainee.avatar
+                        ? ""
+                        : avatarBackground,
                       color: avatarBackground ? "#fff" : "",
                       fontSize: 100,
                     }}
                     size={200}
                   >
-                    {!selectedTrainee.avatarLink
+                    {!selectedTrainee.avatar
                       ? selectedTrainee.fullName.charAt(0)
                       : ""}
                   </Avatar>

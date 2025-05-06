@@ -75,7 +75,7 @@ export const MyRegistration = (props) => {
           </button>
         </div>
       </div>
-      <RegistrationList registrations={registrations} />
+      <RegistrationList registrations={registrations} refresh={fetchMyRegistrations} />
     </div>
   );
 }

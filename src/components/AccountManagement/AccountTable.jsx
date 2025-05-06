@@ -170,33 +170,35 @@ const AccountTable = ({
       >
         {selectedAccount && selectedAccount.roleId === 5 ? (
           <MenuItem
-            style={{ color: "blue" }}
+            style={{ color: "#347ee7", fontWeight: "600", fontSize: "14px" }}
             onClick={() => {
               onUpdateAssociate(selectedAccount.accountCode);
               handleCloseMenu();
             }}
           >
-            <Edit className="mr-2" /> Cập nhật đối tác
+            <Edit style={{ marginRight: "8px", fontSize: "16px" }} /> Cập nhật
+            đối tác
           </MenuItem>
         ) : (
           <MenuItem
-            style={{ color: "blue" }}
+            style={{ color: "#347ee7", fontWeight: "600", fontSize: "14px" }}
             onClick={() => {
               onUpdate(selectedAccount.accountCode);
               handleCloseMenu();
             }}
           >
-            <Edit className="mr-2" /> Cập nhật
+            <Edit style={{ marginRight: "8px", fontSize: "16px" }} /> Cập nhật
           </MenuItem>
         )}
         <MenuItem
-          style={{ color: "red" }}
+          style={{ color: "red", fontWeight: "600", fontSize: "14px" }}
           onClick={() => {
             onInactive(selectedAccount.accountCode);
             handleCloseMenu();
           }}
         >
-          <Delete className="mr-2" /> Vô hiệu hóa
+          <Delete style={{ marginRight: "8px", fontSize: "16px" }} /> Vô hiệu
+          hóa
         </MenuItem>
       </Menu>
     </TableContainer>

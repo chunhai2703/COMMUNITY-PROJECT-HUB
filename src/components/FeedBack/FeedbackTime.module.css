@@ -30,6 +30,18 @@
     margin-top: 10px;
 }
 
+.feedback-time-description {
+    font-size: 16px;
+    text-align: center;
+    color: rgb(243, 173, 44);
+    font-weight: 500;
+}
+
+.feedback-time-value {
+    font-style: italic;
+
+}
+
 .input-group {
     display: flex;
     align-items: center;
@@ -60,7 +72,8 @@
 
 .error-message {
     color: red;
-    font-size: 14px;
+    font-size: 18px;
+    text-align: center;
 }
 
 .button-group {
@@ -118,7 +131,8 @@
 
 .error-message {
     color: red;
-    font-size: 14px;
+    font-size: 18px;
+    text-align: center;
 }
 
 

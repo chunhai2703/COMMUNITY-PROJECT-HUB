@@ -150,7 +150,11 @@ const DashboardPM = () => {
                         {project.projectName}
                       </p>
                       <Progress
-                        percent={project.percentage}
+                        percent={
+                          project.projectStatus === "Hủy"
+                            ? 100
+                            : project.percentage
+                        }
                         size={["100%", 20]} // Đảm bảo thanh progress co giãn theo màn hình
                         status={
                           project.projectStatus === "Kết thúc"

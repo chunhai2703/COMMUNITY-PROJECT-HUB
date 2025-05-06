@@ -279,6 +279,7 @@ export const router = createBrowserRouter([
         element: <MaterialManagementPage />,
         errorElement: <ErrorPageStudent />,
       },
+
       {
         path: "my-registration",
         element: <MyRegistrationPage />,
@@ -463,6 +464,11 @@ export const router = createBrowserRouter([
         errorElement: <ErrorPageBR />,
       },
       {
+        path: "project-detail/:projectId/project-log",
+        element: <ProjectLog />,
+        errorElement: <ErrorPageBR />,
+      },
+      {
         path: "class-detail/:projectId/:classId",
         element: <ClassDetailPage />,
         errorElement: <ErrorPageBR />,
@@ -523,6 +529,11 @@ export const router = createBrowserRouter([
       {
         path: "project-detail/:projectId/material",
         element: <MaterialManagementPage />,
+        errorElement: <ErrorPageAssociate />,
+      },
+      {
+        path: "project-detail/:projectId/project-log",
+        element: <ProjectLog />,
         errorElement: <ErrorPageAssociate />,
       },
       {

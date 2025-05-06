@@ -3,6 +3,7 @@ import {
   SyncOutlined,
   CheckCircleOutlined,
   CloseCircleOutlined,
+  MinusCircleOutlined,
 } from "@ant-design/icons";
 import { Tag, Tooltip, ConfigProvider } from "antd";
 import classes from "./RegistrationItem.module.css";
@@ -24,7 +25,7 @@ export const RegistrationItem = (props) => {
           <h2 className={cx("registration-item-title")}>
             <span>Đơn đăng ký</span>
           </h2>
-          <RegistRemoveForm registrationId={props.registrationId} />
+          <RegistRemoveForm registrationId={props.registrationId} refresh={props.refresh} />
         </div>
         <div className={cx("registration-item-content")}>
           <p className={cx("project-name")}>
@@ -60,12 +61,21 @@ export const RegistrationItem = (props) => {
                 >
                   {props.status}
                 </Tag>
-              ) : (
+              ) : props.status === "Từ chối" ? (
                 <Tag
                   icon={
                     <CloseCircleOutlined style={{ verticalAlign: "middle" }} />
                   }
                   color="error"
+                >
+                  {props.status}
+                </Tag>
+              ) : (
+                <Tag
+                  icon={
+                    <MinusCircleOutlined style={{ verticalAlign: "middle" }} />
+                  }
+                  color="red"
                 >
                   {props.status}
                 </Tag>

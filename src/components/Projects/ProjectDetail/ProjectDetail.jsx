@@ -38,6 +38,12 @@ export const ProjectDetail = (props) => {
       navigate(`/home-lecturer/project-detail/${projectId}/project-log`);
     } else if (user && user?.roleId === 4) {
       navigate(`/home-department-head/project-detail/${projectId}/project-log`);
+    } else if (user && user?.roleId === 5) {
+      navigate(
+        `/home-business-relation/project-detail/${projectId}/project-log`
+      );
+    } else if (user && user?.roleId === 6) {
+      navigate(`/home-associate/project-detail/${projectId}/project-log`);
     }
   };
   const moveToProjectFeeback = () => {
@@ -47,12 +53,6 @@ export const ProjectDetail = (props) => {
       navigate(
         `/home-department-head/project-detail/${projectId}/all-feedback`
       );
-    } else if (user && user?.roleId === 5) {
-      navigate(
-        `/home-business-relation/project-detail/${projectId}/all-feedback`
-      );
-    } else if (user && user?.roleId === 6) {
-      navigate(`/home-associate/project-detail/${projectId}/all-feedback`);
     }
   };
 
@@ -213,21 +213,24 @@ export const ProjectDetail = (props) => {
           },
         ]
       : []),
-    {
-      key: "9",
-      label: (
-        <button
-          className={cx("project-detail-backlog")}
-          onClick={moveToProjectLog}
-        >
-          <FileTextOutlined style={{ marginRight: "8px" }} /> Xem log
-        </button>
-      ),
-    },
+    ...(user.roleId === 4 ||
+    (user.roleId === 2 && user.accountId === props.project.projectManagerId)
+      ? [
+          {
+            key: "9",
+            label: (
+              <button
+                className={cx("project-detail-backlog")}
+                onClick={moveToProjectLog}
+              >
+                <FileTextOutlined style={{ marginRight: "8px" }} /> Xem log
+              </button>
+            ),
+          },
+        ]
+      : []),
     ...(props.project.status === "Kết thúc" &&
     (user.roleId === 4 ||
-      user.roleId === 5 ||
-      user.roleId === 6 ||
       (user.roleId === 2 && user.accountId === props.project.projectManagerId))
       ? [
           {
@@ -268,8 +271,7 @@ export const ProjectDetail = (props) => {
           {user &&
           (user.roleId === 4 ||
             user.accountId === props.project.projectManagerId ||
-            user.roleId === 5 ||
-            user.roleId === 6) ? (
+            user.roleId === 5) ? (
             <Dropdown
               menu={{ items }}
               placement="bottomRight"
