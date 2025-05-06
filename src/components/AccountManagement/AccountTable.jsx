@@ -151,12 +151,12 @@ const AccountTable = ({
                   />
                 )}
               </TableCell>
-              <TableCell sx={{ fontSize: { xs: "14px", sm: "14px" } }}>
+              {/* <TableCell sx={{ fontSize: { xs: "14px", sm: "14px" } }}>
                 <MoreHorizOutlined
                   onClick={(e) => handleOpenMenu(e, account)}
                   style={{ cursor: "pointer" }}
                 />
-              </TableCell>
+              </TableCell> */}
             </TableRow>
           ))}
         </TableBody>
