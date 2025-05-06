@@ -37,6 +37,7 @@ import useAuth from "../../hooks/useAuth";
 import { Spinner } from "../Spinner/Spinner";
 import {
   ExportTraineeList,
+  ExportTraineeListTemplate,
   GetAllTraineeOfClass,
   RemoveTrainee,
 } from "../../services/TraineeApi";
@@ -153,9 +154,9 @@ const TraineeList = ({ dataClass }) => {
     fetchAllTrainee(); // Gọi API để tìm kiếm
   };
 
-  const handleExport = async () => {
+  const handleExportScoreTemplate = async () => {
     setIsLoading(true);
-    const response = await ExportTraineeList(classId);
+    const response = await ExportTraineeListTemplate(classId);
     if (response.ok) {
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
@@ -166,9 +167,9 @@ const TraineeList = ({ dataClass }) => {
       a.click();
       document.body.removeChild(a);
       window.URL.revokeObjectURL(url);
-      toast.success("Export dữ liệu thành công");
+      toast.success("Tải mẫu điểm thành công!");
     } else {
-      toast.error("Export dữ liệu thất bại");
+      toast.error("Tải mẫu điểm thất bại!");
     }
     setIsLoading(false);
   };
@@ -212,7 +213,8 @@ const TraineeList = ({ dataClass }) => {
             style={{ fontWeight: "600" }}
             onClick={() => handleDetailOpen(trainee)}
           >
-            <InfoCircleOutlined style={{ marginRight: "8px" }} /> Chi tiết
+            <InfoCircleOutlined style={{ marginRight: "8px" }} />
+            Xem chi tiết
           </button>
         ),
       },
@@ -388,14 +390,25 @@ const TraineeList = ({ dataClass }) => {
               user.accountId === dataClass.projectManagerId ||
               user.roleId === 4) &&
               dataClass.projectStatus === "Đang diễn ra" && (
-                <button className={cx("export-button")} onClick={handleExport}>
-                  <ExportOutlined
+                <Button
+                  size="large"
+                  color="primary"
+                  variant="contained"
+                  style={{
+                    backgroundColor: "#034ea2",
+                    color: "white",
+                    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+                    marginRight: "8px",
+                  }}
+                  onClick={handleExportScoreTemplate}
+                >
+                  <DownloadOutlined
                     color="white"
                     size={20}
                     style={{ marginRight: "5px" }}
                   />
-                  Export
-                </button>
+                  Tải mẫu
+                </Button>
               )}
           </div>
         </div>
@@ -456,83 +469,87 @@ const TraineeList = ({ dataClass }) => {
           Thông tin chi tiết
         </DialogTitle>
         <DialogContent>
-          {selectedTrainee && (
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "16px",
-                marginTop: 25,
-              }}
-            >
-              <div className="flex">
-                <div className="w-1/2" style={{ marginRight: 5 }}>
-                  <Avatar
-                    src={
-                      selectedTrainee.avatarLink ? (
-                        <img src={selectedTrainee.avatarLink} alt="avatar" />
-                      ) : null
-                    }
-                    style={{
-                      backgroundColor: avatarBackground,
-                      color: avatarBackground ? "#fff" : "",
-                      fontSize: 100,
-                    }}
-                    size={200}
-                  >
-                    {!selectedTrainee.avatarLink
-                      ? selectedTrainee.fullName.charAt(0)
-                      : ""}
-                  </Avatar>
+          {selectedTrainee &&
+            (console.log(selectedTrainee),
+            (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "16px",
+                  marginTop: 25,
+                }}
+              >
+                <div className="flex">
+                  <div className="w-1/2" style={{ marginRight: 5 }}>
+                    <Avatar
+                      src={
+                        selectedTrainee.avatar ? (
+                          <img src={selectedTrainee?.avatar} alt="avatar" />
+                        ) : null
+                      }
+                      style={{
+                        backgroundColor: selectedTrainee.avatar
+                          ? ""
+                          : avatarBackground,
+                        color: avatarBackground ? "#fff" : "",
+                        fontSize: 100,
+                      }}
+                      size={200}
+                    >
+                      {!selectedTrainee.avatar
+                        ? selectedTrainee.fullName.charAt(0)
+                        : ""}
+                    </Avatar>
+                  </div>
+                  <div className="w-1/2" style={{ flex: 1 }}>
+                    <TextField
+                      style={{ marginBottom: 18 }}
+                      label="ID"
+                      fullWidth
+                      value={selectedTrainee.accountCode}
+                      variant="outlined"
+                    />
+                    <TextField
+                      label="Họ và tên"
+                      fullWidth
+                      value={selectedTrainee.fullName}
+                      variant="outlined"
+                    />
+                  </div>
                 </div>
-                <div className="w-1/2" style={{ flex: 1 }}>
+                <div className="flex mt-2">
                   <TextField
-                    style={{ marginBottom: 18 }}
-                    label="ID"
+                    style={{ marginRight: 10 }}
+                    label="Email"
                     fullWidth
-                    value={selectedTrainee.accountCode}
+                    value={selectedTrainee.email}
                     variant="outlined"
                   />
                   <TextField
-                    label="Họ và tên"
+                    label="Số điện thoại"
                     fullWidth
-                    value={selectedTrainee.fullName}
+                    value={selectedTrainee.phone}
+                    variant="outlined"
+                  />
+                </div>
+                <div className="flex mt-2">
+                  <TextField
+                    style={{ marginRight: 10 }}
+                    label="Ngày sinh"
+                    fullWidth
+                    value={formatDate(selectedTrainee.birthdate)}
+                    variant="outlined"
+                  />
+                  <TextField
+                    label="Giới tính"
+                    fullWidth
+                    value={selectedTrainee.gender}
                     variant="outlined"
                   />
                 </div>
               </div>
-              <div className="flex mt-2">
-                <TextField
-                  style={{ marginRight: 10 }}
-                  label="Email"
-                  fullWidth
-                  value={selectedTrainee.email}
-                  variant="outlined"
-                />
-                <TextField
-                  label="Số điện thoại"
-                  fullWidth
-                  value={selectedTrainee.phone}
-                  variant="outlined"
-                />
-              </div>
-              <div className="flex mt-2">
-                <TextField
-                  style={{ marginRight: 10 }}
-                  label="Ngày sinh"
-                  fullWidth
-                  value={formatDate(selectedTrainee.birthdate)}
-                  variant="outlined"
-                />
-                <TextField
-                  label="Giới tính"
-                  fullWidth
-                  value={selectedTrainee.gender}
-                  variant="outlined"
-                />
-              </div>
-            </div>
-          )}
+            ))}
         </DialogContent>
         <DialogActions>
           <Button

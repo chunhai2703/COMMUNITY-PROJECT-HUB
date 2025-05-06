@@ -10,6 +10,7 @@ import useAuth from "../../hooks/useAuth";
 import { Spinner } from "../Spinner/Spinner";
 import { FeedbackCreateForm } from "../Popup/FeedbackForm/FeedbackCreateForm";
 import { getAllQuestionOfProject } from "../../services/FeedbackApi";
+import { render } from "@fullcalendar/core/preact.js";
 
 const cx = classNames.bind(classes);
 
@@ -90,6 +91,7 @@ export const FeedbackManage = () => {
       dataIndex: "questionContent",
       key: "questionContent",
       align: "center",
+      render: (value) => <p className={cx("question-content")}>{value}</p>,
     },
     {
       title: "Đáp án",
@@ -177,7 +179,7 @@ export const FeedbackManage = () => {
             total: questionList.length,
             onChange: (page) => setPageNumber(page),
           }}
-          scroll={{ x: "max-content" }}
+          // scroll={{ x: "max-content" }}
         />
       </ConfigProvider>
     </div>

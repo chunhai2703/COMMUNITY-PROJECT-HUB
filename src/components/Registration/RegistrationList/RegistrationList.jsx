@@ -44,7 +44,11 @@ export const RegistrationList = (props) => {
     <div className={cx("registration-list-container")}>
       <div className={cx("registration-list")}>
         {currentRegistrations.map((regis) => (
-          <RegistrationItem key={regis.registrationId} {...regis} />
+          <RegistrationItem
+            key={regis.registrationId}
+            {...regis}
+            refresh={props.refresh}
+          />
         ))}
         <Pagination
           align="center"

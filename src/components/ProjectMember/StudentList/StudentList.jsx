@@ -6,6 +6,8 @@ import {
   Tag,
   Modal as AntModal,
   message,
+  Avatar,
+  Button,
 } from "antd";
 import {
   EditOutlined,
@@ -16,7 +18,6 @@ import {
   InfoCircleOutlined,
 } from "@ant-design/icons";
 import {
-  Button,
   CircularProgress,
   Dialog,
   DialogActions,
@@ -61,6 +62,23 @@ export const StudentList = (props) => {
     reset,
     formState: { errors },
   } = useForm();
+  const [avatarBackground, setAvatarBackground] = useState("");
+
+  // Hàm lấy màu random cho avatar
+  const getRandomColor = () => {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+
+  // Fetch danh sách thông báo khi component mount
+  useEffect(() => {
+    const storedColor = getRandomColor();
+    setAvatarBackground(storedColor);
+  }, [selectedStudent]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -149,10 +167,11 @@ export const StudentList = (props) => {
       key: "1",
       label: (
         <button
-          style={{ color: "#00879E", fontWeight: "600" }}
+          style={{ color: "#347ee7", fontWeight: "600" }}
           onClick={() => handleDetailOpen(student)}
         >
-          <InfoCircleOutlined style={{ marginRight: "8px" }} /> Chi tiết
+          <InfoCircleOutlined style={{ marginRight: "8px" }} />
+          Xem chi tiết
         </button>
       ),
     },
@@ -339,15 +358,25 @@ export const StudentList = (props) => {
             >
               <div className="flex">
                 <div className="w-1/2" style={{ marginRight: 5 }}>
-                  <img
-                    src={selectedStudent.avatar}
-                    alt="Avatar"
+                  <Avatar
+                    src={
+                      selectedStudent.avatar ? (
+                        <img src={selectedStudent?.avatar} alt="avatar" />
+                      ) : null
+                    }
                     style={{
-                      width: "80px",
-                      height: "80px",
-                      borderRadius: "50%",
+                      backgroundColor: selectedStudent.avatar
+                        ? ""
+                        : avatarBackground,
+                      color: avatarBackground ? "#fff" : "",
+                      fontSize: 100,
                     }}
-                  />
+                    size={200}
+                  >
+                    {!selectedStudent.avatar
+                      ? selectedStudent.fullName.charAt(0)
+                      : ""}
+                  </Avatar>
                 </div>
                 <div className="w-1/2" style={{ flex: 1 }}>
                   <TextField
@@ -399,7 +428,11 @@ export const StudentList = (props) => {
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDetailClose} sx={{ textTransform: "none" }}>
+          <Button
+            type="primary"
+            onClick={handleDetailClose}
+            style={{ textTransform: "none" }}
+          >
             Đóng
           </Button>
         </DialogActions>
