@@ -271,7 +271,8 @@ export const ProjectDetail = (props) => {
           {user &&
           (user.roleId === 4 ||
             user.accountId === props.project.projectManagerId ||
-            user.roleId === 5) ? (
+            user.roleId === 5 ||
+            (user.roleId === 6 && props.project.status === "Kết thúc")) ? (
             <Dropdown
               menu={{ items }}
               placement="bottomRight"

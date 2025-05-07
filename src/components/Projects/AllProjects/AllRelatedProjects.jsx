@@ -95,6 +95,7 @@ export const AllRelatedProjects = () => {
       <div className={cx("all-related-projects-search")}>
         <div className={cx("search-box-container")}>
           <div className={cx("search-box")}>
+            <SearchOutlined color="#285D9A" size={20} />
             <input
               type="search"
               placeholder="Tìm kiếm dự án"

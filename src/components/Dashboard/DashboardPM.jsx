@@ -3,7 +3,7 @@ import useAuth from "../../hooks/useAuth";
 import { Spinner } from "../Spinner/Spinner";
 import { Card, CardContent, Grid, Typography } from "@mui/material";
 import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Chart as ChartJS, ArcElement, Legend } from "chart.js";
 import {
   GetAmountOfProject,
   GetAmountProjectWithStatus,
@@ -11,13 +11,13 @@ import {
 } from "../../services/DashboardApi";
 import classes from "./DashboardPM.module.css";
 import classNames from "classnames/bind";
-import { Progress } from "antd";
+import { Progress, Tooltip } from "antd";
 import { useNavigate } from "react-router-dom";
 
 const cx = classNames.bind(classes);
 
 // Đăng ký các thành phần của Chart.js
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Legend);
 
 const DashboardPM = () => {
   const { user } = useAuth();
@@ -146,9 +146,20 @@ const DashboardPM = () => {
                         )
                       }
                     >
-                      <p className="text-lg md:text-xl mb-2 md:mb-3">
-                        {project.projectName}
-                      </p>
+                      <Tooltip title="Nhấn vào để xem chi tiết">
+                        <p className="text-lg md:text-xl mb-2 md:mb-3 font-semibold">
+                          {project.projectName} -{" "}
+                          <span
+                            style={{
+                              fontWeight: "normal",
+                              fontStyle: "italic",
+                            }}
+                          >
+                            {project.projectStatus}
+                          </span>
+                        </p>
+                      </Tooltip>
+
                       <Progress
                         percent={
                           project.projectStatus === "Hủy"
