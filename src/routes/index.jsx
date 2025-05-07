@@ -463,11 +463,11 @@ export const router = createBrowserRouter([
         element: <MaterialManagementPage />,
         errorElement: <ErrorPageBR />,
       },
-      {
-        path: "project-detail/:projectId/project-log",
-        element: <ProjectLog />,
-        errorElement: <ErrorPageBR />,
-      },
+      // {
+      //   path: "project-detail/:projectId/project-log",
+      //   element: <ProjectLog />,
+      //   errorElement: <ErrorPageBR />,
+      // },
       {
         path: "class-detail/:projectId/:classId",
         element: <ClassDetailPage />,
@@ -531,11 +531,11 @@ export const router = createBrowserRouter([
         element: <MaterialManagementPage />,
         errorElement: <ErrorPageAssociate />,
       },
-      {
-        path: "project-detail/:projectId/project-log",
-        element: <ProjectLog />,
-        errorElement: <ErrorPageAssociate />,
-      },
+      // {
+      //   path: "project-detail/:projectId/project-log",
+      //   element: <ProjectLog />,
+      //   errorElement: <ErrorPageAssociate />,
+      // },
       {
         path: "project-detail/:projectId/all-feedback",
         element: <AllFeedbackPage />,

@@ -3,7 +3,7 @@ import useAuth from "../../hooks/useAuth";
 import { Spinner } from "../Spinner/Spinner";
 import { Card, CardContent, Grid, Typography } from "@mui/material";
 import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Chart as ChartJS, ArcElement, Legend } from "chart.js";
 import {
   GetAmountOfLecturer,
   GetAmountOfProject,
@@ -21,7 +21,7 @@ import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import "animate.css";
 import { Line } from "rc-progress";
-import { Progress } from "antd";
+import { Progress, Tooltip } from "antd";
 import {
   CalendarFilled,
   FolderFilled,
@@ -38,7 +38,7 @@ dayjs.extend(timezone);
 dayjs.locale("vi"); // Đặt ngôn ngữ mặc định là tiếng Việt
 
 // Đăng ký các thành phần của Chart.js
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Legend);
 
 const DashboardDepartmentHead = () => {
   const { user } = useAuth();
@@ -328,9 +328,19 @@ const DashboardDepartmentHead = () => {
                         )
                       }
                     >
-                      <p className="text-lg md:text-xl mb-2 md:mb-3">
-                        {project.projectName}
-                      </p>
+                      <Tooltip title="Nhấn vào để xem chi tiết">
+                        <p className="text-lg md:text-xl mb-2 md:mb-3 font-semibold">
+                          {project.projectName} -{" "}
+                          <span
+                            style={{
+                              fontWeight: "normal",
+                              fontStyle: "italic",
+                            }}
+                          >
+                            {project.projectStatus}
+                          </span>
+                        </p>
+                      </Tooltip>
                       <Progress
                         percent={
                           project.projectStatus === "Hủy"

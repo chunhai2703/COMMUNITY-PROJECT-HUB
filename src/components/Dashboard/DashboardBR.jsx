@@ -3,7 +3,7 @@ import useAuth from "../../hooks/useAuth";
 import { Spinner } from "../Spinner/Spinner";
 import { Card, CardContent, Grid, Typography } from "@mui/material";
 import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Chart as ChartJS, ArcElement,  Legend } from "chart.js";
 import {
   GetAmountOfLecturer,
   GetAmountOfProject,
@@ -20,7 +20,7 @@ import "dayjs/locale/vi"; // 🟢 Dùng tiếng Việt cho định dạng ngày
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import "animate.css";
-import { Progress } from "antd";
+import { Progress, Tooltip } from "antd";
 import { FolderFilled, InboxOutlined, UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
@@ -301,9 +301,19 @@ export const DashboardBR = () => {
                         )
                       }
                     >
-                      <p className="text-lg md:text-xl mb-2 md:mb-3">
-                        {project.projectName}
-                      </p>
+                       <Tooltip title="Nhấn vào để xem chi tiết">
+                        <p className="text-lg md:text-xl mb-2 md:mb-3 font-semibold">
+                          {project.projectName} -{" "}
+                          <span
+                            style={{
+                              fontWeight: "normal",
+                              fontStyle: "italic",
+                            }}
+                          >
+                            {project.projectStatus}
+                          </span>
+                        </p>
+                      </Tooltip>
                       <Progress
                         percent={
                           project.projectStatus === "Hủy"

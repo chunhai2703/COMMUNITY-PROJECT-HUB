@@ -73,4 +73,7 @@
   .search-box input {
     font-size: 14px;
   }
+  .search-button {
+    display: none;
+  }
 }
